@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MP BTech Lateral Entry College Predictor — Predict colleges, estimate rank, and explore engineering colleges across Madhya Pradesh using official DTE counselling data.">
+    <meta name="keywords"
+        content="MP DTE Lateral Entry, BTech Lateral Entry, College Predictor, Diploma to BTech, MP Engineering Counselling">
+    <title>{% block title %}MP BTech Lateral Entry College Predictor{% endblock %}</title>
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://{{ request.host }}">
+    <meta property="og:title" content="MP BTech Lateral Entry College Predictor 2025">
+    <meta property="og:description" content="Predict your future engineering college in MP! Get accurate college estimations based on official DTE cutoff data.">
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.png', _external=True) }}">
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MP BTech Lateral Entry College Predictor">
+    <meta name="twitter:description" content="Find the best engineering colleges in Madhya Pradesh based on your rank.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='favicon.png', _external=True) }}">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Lenis smooth scroll -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+</head>
+
+<body>
+
+    <header class="gov-header">
+        <div class="header-content">
+            <div class="emblem-placeholder">
+                <div class="circle">🎓</div>
+            </div>
+            <div class="title-section">
+                <h1>MP DTE Lateral Entry College Predictor</h1>
+                <h2>Diploma to B.Tech Counselling | Madhya Pradesh 2025-26</h2>
+            </div>
+        </div>
+        <div class="header-strip"></div>
+    </header>
+
+    <!-- ===== NAVBAR with active page highlight ===== -->
+    <nav class="gov-nav">
+        <div class="nav-inner">
+            <!-- Hamburger for mobile -->
+            <button class="nav-hamburger" id="nav-toggle" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="nav-menu">
+                <li>
+                    <a href="/" class="{% if request.endpoint == 'home' %}nav-active{% endif %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="/predictor" class="{% if request.endpoint == 'predictor' %}nav-active{% endif %}">
+                        <i class="fas fa-bullseye"></i> Predict College
+                    </a>
+                </li>
+                <li>
+                    <a href="/simulator" class="{% if request.endpoint == 'simulator' %}nav-active{% endif %}">
+                        <i class="fas fa-vial"></i> Allotment Simulator
+                    </a>
+                </li>
+                <li>
+                    <a href="/rank_predictor" class="{% if request.endpoint == 'rank' %}nav-active{% endif %}">
+                        <i class="fas fa-chart-line"></i> Check Rank
+                    </a>
+                </li>
+                <li>
+                    <a href="/search" class="{% if request.endpoint == 'search' %}nav-active{% endif %}">
+                        <i class="fas fa-search"></i> Search Colleges
+                    </a>
+                </li>
+                <li>
+                    <a href="/about" class="{% if request.endpoint == 'about' %}nav-active{% endif %}">
+                        <i class="fas fa-info-circle"></i> About Us
+                    </a>
+                </li>
+                <li>
+                    <a href="/how-it-works" class="{% if request.endpoint == 'how_it_works' %}nav-active{% endif %}">
+                        <i class="fas fa-book-open"></i> Counselling Guide
+                    </a>
+                </li>
+                <li>
+                    <a href="/faq" class="{% if request.endpoint == 'faq' %}nav-active{% endif %}">
+                        <i class="fas fa-question-circle"></i> FAQ
+                    </a>
+                </li>
+                <li>
+                    <a href="/contact" class="{% if request.endpoint == 'contact' %}nav-active{% endif %}">
+                        <i class="fas fa-headset"></i> Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <script>
+    // Hamburger toggle
+    document.getElementById('nav-toggle').addEventListener('click', function() {
+        var menu = document.getElementById('nav-menu');
+        var btn  = document.getElementById('nav-toggle');
+        menu.classList.toggle('nav-open');
+        btn.classList.toggle('nav-btn-open');
+    });
+    // Close menu when a link is clicked
+    document.querySelectorAll('#nav-menu a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            document.getElementById('nav-menu').classList.remove('nav-open');
+            document.getElementById('nav-toggle').classList.remove('nav-btn-open');
+        });
+    });
+    </script>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="gov-footer">
+        <p>&copy; 2025 MP B.Tech Lateral Entry Predictor — Built using official data from DTE MP.</p>
+        <p>
+            Developed with ❤️ by 
+            <a href="https://kkawasthi.vercel.app" target="_blank" style="color:var(--primary);font-weight:700;text-decoration:none;">
+                Krishan Kumar Awasthi
+            </a>
+        </p>
+        
+        <div class="social-links" style="margin-top:12px; display:flex; justify-content:center; gap:20px; font-size:1.3rem;">
+            <a href="https://github.com/Dev-Krishan-Kumar-Awasthi-" target="_blank" style="color:var(--text);" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/krishan_kumar_awasthi_kka/?__pwa=1" target="_blank" style="color:#E4405F;" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/@KrishanKumarAwasthi-kka" target="_blank" style="color:#FF0000;" title="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+        </div>
+
+        <div class="footer-nav" style="margin: 15px 0; font-size: 0.9rem; opacity: 0.8;">
+            <a href="/faq" style="color:inherit; text-decoration:none;">FAQ</a> &nbsp;|&nbsp;
+            <a href="/contact" style="color:inherit; text-decoration:none;">Contact & Support</a> &nbsp;|&nbsp;
+            <a href="/how-it-works" style="color:inherit; text-decoration:none;">Counselling Guide</a> &nbsp;|&nbsp;
+            <a href="/schedule" target="_blank" style="color:inherit; text-decoration:none;">DTE Schedule</a>
+        </div>
+
+        <p style="margin-top:12px;">
+            Note: This is an independent tool to help students. Final results depend on official DTE rules and seat availability. 
+            Always cross-check on <a href="https://dte.mponline.gov.in" target="_blank" style="color:inherit;">dte.mponline.gov.in</a>.
+        </p>
+    </footer>
+
+    <!-- PRO POLISH: Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loader-spinner"></div>
+        <div class="loading-text">Analyzing Colleges...</div>
+    </div>
+
+    <!-- Scroll to top button -->
+    <button id="scroll-top-btn" aria-label="Scroll to top" title="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script>
+    // ── Global App Logic ──────────────────────────────────────────
+
+    // 1. Mobile Nav Toggle
+    (function() {
+        const toggle = document.getElementById('nav-toggle');
+        const menu   = document.getElementById('nav-menu');
+        if (toggle && menu) {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggle.classList.toggle('nav-btn-open');
+                menu.classList.toggle('nav-open');
+            });
+            document.addEventListener('click', function() {
+                toggle.classList.remove('nav-btn-open');
+                menu.classList.remove('nav-open');
+            });
+        }
+    })();
+
+    // 2. Loading Overlay
+    window.showLoading = function() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+    };
+    document.addEventListener('submit', function(e) {
+        if (!e.target.classList.contains('no-loader')) {
+            showLoading();
+        }
+    });
+
+    // 3. Lenis Smooth Scroll
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+    });
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 4. Scroll-to-Top (Sync with Lenis)
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    if (scrollTopBtn) {
+        lenis.on('scroll', (e) => {
+            if (e.scroll > 500) {
+                scrollTopBtn.style.display = 'flex';
+                setTimeout(() => scrollTopBtn.style.opacity = '1', 10);
+            } else {
+                scrollTopBtn.style.opacity = '0';
+                setTimeout(() => { if(e.scroll <= 500) scrollTopBtn.style.display = 'none' }, 300);
+            }
+        });
+        scrollTopBtn.addEventListener('click', () => {
+            lenis.scrollTo(0, { duration: 1.5 });
+        });
+    }
+    // 5. PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register("{{ url_for('static', filename='service-worker.js') }}")
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed', err));
+        });
+    }
+
+    // 6. Google Analytics Placeholder (Optional: Add your ID here)
+    // window.dataLayer = window.dataLayer || [];
+    // function gtag(){dataLayer.push(arguments);}
+    // gtag('js', new Date());
+    // gtag('config', 'G-XXXXXXXXXX');
+    </script>
+</body>
+</html>

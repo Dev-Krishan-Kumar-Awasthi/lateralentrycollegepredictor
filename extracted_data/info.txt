@@ -1,0 +1,1 @@
+This directory contains extracted data from original mpdte data pdfs. you can use data_to_sql.py to create database.

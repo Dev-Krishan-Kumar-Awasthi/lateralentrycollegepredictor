@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}About — MP BTech Lateral Entry College Predictor{% endblock %}
+
+{% block content %}
+
+<!-- ===== ABOUT HERO ===== -->
+<section class="about-hero">
+    <h1>Why we built this tool?</h1>
+    <p>
+        Choosing the right college after Diploma can be stressful. We built this tool to help students in Madhya Pradesh 
+        find the best colleges based on their marks, without having to search through confusing official documents.
+    </p>
+</section>
+
+<div class="container">
+
+    <!-- ===== PROJECT OVERVIEW ===== -->
+    <div class="gov-box" style="margin-top:28px;">
+        <h2><i class="fas fa-project-diagram"></i> How it helps you</h2>
+        <p class="section-text" style="text-align:left;max-width:none;">
+            Instead of guessing, you can use our <strong>College Predictor</strong> and <strong>Rank Predictor</strong> 
+            to see where you stand. It's fast, accurate, and completely free.
+        </p>
+        <p class="section-text" style="text-align:left;max-width:none;margin-top:10px;">
+            The idea is simple: You give us your CGPA, and we show you the colleges that usually accept students with your profile. 
+            No more manual searching through hundreds of pages of PDF cutoffs.
+        </p>
+    </div>
+
+    <!-- ===== TECH STACK ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-code"></i> Technology Stack</h2>
+        <div class="cards-grid">
+            <div class="info-card">
+                <h3><i class="fab fa-python" style="color:#3B7EBB;margin-right:6px;"></i>Backend</h3>
+                <p>Python 3, Flask, SQLAlchemy ORM</p>
+            </div>
+            <div class="info-card">
+                <h3><i class="fab fa-html5" style="color:#E44D26;margin-right:6px;"></i>Frontend</h3>
+                <p>HTML5, CSS3, Jinja2 Templates</p>
+            </div>
+            <div class="info-card">
+                <h3><i class="fas fa-database" style="color:var(--secondary);margin-right:6px;"></i>Database</h3>
+                <p>SQLite (via SQLAlchemy)</p>
+            </div>
+            <div class="info-card">
+                <h3><i class="fas fa-table" style="color:var(--green);margin-right:6px;"></i>Data Processing</h3>
+                <p>Pandas, CSV parsing, binary search & linear interpolation</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DATA SOURCE ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-file-alt"></i> Data Source</h2>
+        <p class="section-text" style="text-align:left;max-width:none;">
+            The prediction system is built using publicly available counselling data released by the
+            <a href="https://dte.mponline.gov.in/portal/services/onlinecounselling/counshomepage/home.aspx"
+               target="_blank" class="link">Directorate of Technical Education (DTE), Madhya Pradesh</a>.
+            Data covers the 2024 and 2025 lateral entry counselling rounds.
+        </p>
+        <div class="data-link-grid">
+            <a href="/static/data/Merit24.pdf" target="_blank" class="data-link">
+                <i class="fas fa-file-pdf"></i> Merit List 2024
+            </a>
+            <a href="/static/data/Merit25.pdf" target="_blank" class="data-link">
+                <i class="fas fa-file-pdf"></i> Merit List 2025
+            </a>
+            <a href="/static/data/Oc24.pdf" target="_blank" class="data-link">
+                <i class="fas fa-file-pdf"></i> Opening & Closing Rank 2024
+            </a>
+            <a href="/static/data/oc25.pdf" target="_blank" class="data-link">
+                <i class="fas fa-file-pdf"></i> Opening & Closing Rank 2025
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-cogs"></i> How does it work?</h2>
+        <div class="faq-grid">
+            <div>
+                <div class="faq-q">1. Turning CGPA into Rank</div>
+                <div class="faq-a">We check your CGPA against past DTE merit lists to see what your rank might be. This is based on real data from official merit PDFs.</div>
+            </div>
+            <div>
+                <div class="faq-q">2. Finding Your Match</div>
+                <div class="faq-a">We look for colleges where the closing rank in previous years was similar to yours, keeping your category and branch in mind.</div>
+            </div>
+            <div>
+                <div class="faq-q">3. Comparing 2024 & 2025</div>
+                <div class="faq-a">We show you results from both years so you can see if a college is getting harder or easier to get into.</div>
+            </div>
+            <div>
+                <div class="faq-q">Is it 100% Guaranteed?</div>
+                <div class="faq-a">No tool can guarantee a seat because cutoffs change every year. But this gives you the best possible estimate to plan your choice filling.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DOCUMENTS CHECKLIST ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-file-alt"></i> Documents Required for Counselling</h2>
+        <p class="section-text" style="text-align:left;max-width:none;margin-bottom:18px;">
+            As per DTE MP Lateral Entry Rules 2025-26, the following documents are required:
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+            <div class="elig-card" style="background:#F8FAFC;border:1px solid var(--border);border-radius:6px;padding:16px 18px;">
+                <div style="font-weight:700;color:var(--primary);margin-bottom:10px;font-size:0.92rem;">
+                    <i class="fas fa-graduation-cap" style="margin-right:6px;"></i>Academic Documents
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        Diploma / B.Sc. final marksheet & certificate
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        All semester marksheets
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        10+2 marksheet (for B.Sc. route — must show Mathematics)
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        Grade-to-marks conversion certificate (if grading system)
+                    </li>
+                </ul>
+            </div>
+
+            <div class="elig-card" style="background:#F8FAFC;border:1px solid var(--border);border-radius:6px;padding:16px 18px;">
+                <div style="font-weight:700;color:var(--primary);margin-bottom:10px;font-size:0.92rem;">
+                    <i class="fas fa-id-card" style="margin-right:6px;"></i>Identity & Domicile
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        MP Domicile certificate — <strong>Proforma-6</strong> (from Naib Tehsildar/Tehsildar)
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        Photo ID proof
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        TC (Transfer Certificate) — to be deposited in admitted institution
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        Migration certificate — to be deposited in admitted institution
+                    </li>
+                </ul>
+            </div>
+
+            <div class="elig-card" style="background:#F8FAFC;border:1px solid var(--border);border-radius:6px;padding:16px 18px;">
+                <div style="font-weight:700;color:var(--primary);margin-bottom:10px;font-size:0.92rem;">
+                    <i class="fas fa-certificate" style="margin-right:6px;"></i>Category Certificates
+                </div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        SC/ST certificate — <strong>Proforma-1</strong> (from competent authority)
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        OBC certificate — <strong>Proforma-2</strong> (excl. creamy layer)
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        OBC Income certificate / Self-declaration (Proforma-10) — if OBC cert before 30 Apr 2022
+                    </li>
+                    <li style="font-size:0.86rem;color:#475569;padding:3px 0;padding-left:16px;position:relative;">
+                        <span style="position:absolute;left:0;color:var(--green);font-weight:700;">✓</span>
+                        Sports Gold Medal certificate — <strong>Proforma-9</strong> (if claiming 10% weightage)
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="background:#FFFBEB;border:1px solid #FDE68A;border-left:4px solid #F59E0B;padding:10px 16px;border-radius:4px;margin-top:16px;font-size:0.84rem;color:#92400E;">
+            <i class="fas fa-info-circle"></i>
+            Original documents are <strong>returned after verification</strong> during counselling.
+            Only TC and Migration are to be deposited in the admitted institution.
+            Do not submit original documents to any unauthorized person or institution.
+        </div>
+    </div>
+
+    </div>
+    
+    <!-- ===== CONNECT SECTION ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-paper-plane"></i> Connect with Me</h2>
+        <p class="section-text" style="text-align:left;max-width:none;margin-bottom:20px;">
+            Have questions or feedback? Feel free to reach out or follow me on social media.
+        </p>
+        <div class="cards-grid">
+            <a href="https://github.com/Dev-Krishan-Kumar-Awasthi-" target="_blank" class="social-card">
+                <div class="social-icon" style="color:#24292e;"><i class="fab fa-github"></i></div>
+                <h3>GitHub</h3>
+                <p>Check my projects</p>
+            </a>
+            <a href="https://www.instagram.com/krishan_kumar_awasthi_kka/?__pwa=1" target="_blank" class="social-card">
+                <div class="social-icon" style="color:#e4405f;"><i class="fab fa-instagram"></i></div>
+                <h3>Instagram</h3>
+                <p>Stay updated</p>
+            </a>
+            <a href="https://www.youtube.com/@KrishanKumarAwasthi-kka" target="_blank" class="social-card">
+                <div class="social-icon" style="color:#ff0000;"><i class="fab fa-youtube"></i></div>
+                <h3>YouTube</h3>
+                <p>Learning & Tech</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== DISCLAIMER ===== -->
+    <div class="gov-box" style="border-top-color:var(--saffron);">
+        <h2><i class="fas fa-exclamation-triangle" style="color:var(--saffron);"></i> Disclaimer</h2>
+        <p class="section-text" style="text-align:left;max-width:none;">
+            This is an independent tool and is <strong>not affiliated with DTE Madhya Pradesh</strong>
+            or any government body. All data used here is publicly available on the DTE MP website.
+        </p>
+        <p class="section-text" style="text-align:left;max-width:none;margin-top:10px;">
+            The predictions are based on past year cutoffs and may not match actual 2025-26 allotments.
+            Use this as a starting point for your planning — not as a final answer.
+            Always check the official cutoffs on
+            <a href="https://dte.mponline.gov.in" target="_blank" class="link">dte.mponline.gov.in</a>
+            before taking any admission decision.
+        </p>
+    </div>
+
+</div>
+{% endblock %}

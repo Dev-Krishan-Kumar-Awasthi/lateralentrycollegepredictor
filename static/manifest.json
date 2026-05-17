@@ -1,0 +1,21 @@
+{
+  "name": "MP DTE College Predictor",
+  "short_name": "MP Predictor",
+  "description": "Professional college predictor for MP B.Tech Lateral Entry counselling.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f2c5e",
+  "theme_color": "#0f2c5e",
+  "icons": [
+    {
+      "src": "/static/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Rank Predictor — MP BTech Lateral Entry{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- ===== RANK FORM ===== -->
+    <div class="gov-box" id="rank-tool">
+        <h2><i class="fas fa-chart-line"></i> Check Your Estimated Rank</h2>
+        <p class="subtitle">
+            Curious about your merit rank? Enter your CGPA to see where you might stand based on previous year trends.
+        </p>
+
+        {% if error %}
+        <div style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/rank_predictor" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cgpa">CGPA (10 Point Scale)</label>
+                    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10"
+                        placeholder="e.g. 8.33" required
+                        value="{{ data.cgpa if data else '' }}">
+                </div>
+                <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;">
+                    <button type="submit" class="btn-primary" style="flex:1;">
+                        <i class="fas fa-bolt"></i> Find My Rank
+                    </button>
+                    <button type="reset" class="btn-secondary">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- ===== RESULTS ===== -->
+    {% if data and prediction %}
+    <div class="gov-box" id="results">
+        <h2><i class="fas fa-trophy"></i> Estimated Rank</h2>
+        <p class="subtitle">Based on your CGPA of <strong>{{ data.cgpa }}</strong>:</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:14px;">
+            {% for year, yr_data in prediction.items() %}
+            <div class="rank-result-box">
+                <div class="rank-year-label">Year {{ year }}</div>
+                <div class="rank-value">{{ yr_data.min_rank }} – {{ yr_data.max_rank }}</div>
+                <div class="rank-sub">Your Probable Rank Range</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <p style="margin-top:22px;font-size:0.85rem;color:var(--muted);text-align:center;">
+            <i class="fas fa-info-circle"></i>
+            Estimates based on previous year DTE MP merit data. Actual rank depends on total applicants.
+        </p>
+    </div>
+
+    <div style="text-align:center;margin-bottom:28px;">
+        <a href="/predictor" class="hero-btn primary" style="display:inline-block;">
+            <i class="fas fa-bullseye"></i> Now Predict Your Colleges
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- ===== INFO BOX ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-info-circle"></i> How do we calculate this?</h2>
+        <div class="faq-grid" style="margin-top:14px;">
+            <div>
+                <div class="faq-q">Where is this data from?</div>
+                <div class="faq-a">We use the official merit lists released by DTE Madhya Pradesh for the 2024 and 2025 batches.</div>
+            </div>
+            <div>
+                <div class="faq-q">Is it accurate?</div>
+                <div class="faq-a">It's a very close estimate based on past data. Your actual rank might be slightly different depending on how many students apply this year.</div>
+            </div>
+            <div>
+                <div class="faq-q">Why check this?</div>
+                <div class="faq-a">Knowing your rank helps you pick the right colleges during choice filling, so you don't miss out on a good seat.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% block title %}{{ college_name }} — College Detail | MP DTE Lateral Entry{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Back Button -->
+    <div style="margin: 18px 0 10px;">
+        <a href="javascript:void(0)" onclick="window.opener ? window.close() : window.location='/predictor'" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Results
+        </a>
+    </div>
+
+    {% if not detail %}
+    <!-- Not Found -->
+    <div class="gov-box" style="text-align:center; padding:40px;">
+        <i class="fas fa-university" style="font-size:2.5rem; color:var(--muted); margin-bottom:14px;"></i>
+        <h3 style="color:var(--primary);">Oops! College Not Found</h3>
+        <p style="color:var(--muted); margin-top:8px;">
+            We couldn't find any data for: <strong>{{ college_name }}</strong>
+        </p>
+        <a href="/predictor" class="btn-primary" style="display:inline-flex;margin-top:18px;">
+            <i class="fas fa-bullseye"></i> Go to Predictor
+        </a>
+    </div>
+
+    {% else %}
+
+    <!-- College Header Card -->
+    <div class="college-header-card">
+        <div class="college-icon">
+            <i class="fas fa-university"></i>
+        </div>
+        <div class="college-title-block">
+            <h2 class="college-title">{{ detail.college_name }}</h2>
+            <div class="college-meta-row">
+                <span class="type-tag">{{ detail.college_type }}</span>
+                <span class="meta-pill">
+                    <i class="fas fa-code-branch"></i>
+                    {{ detail.branches | length }} Program{{ 's' if detail.branches | length != 1 }}
+                </span>
+                <span class="meta-pill">
+                    <i class="fas fa-calendar-alt"></i>
+                    Admission data available for: {{ detail.by_year.keys() | list | join(', ') }}
+                </span>
+            </div>
+            <!-- Branches chips -->
+            <div class="branch-chips">
+                {% for b in detail.branches %}
+                <span class="branch-chip" title="{{ b }}">{{ b | branch_name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Year-wise Tables -->
+    {% for year, rows in detail.by_year.items() %}
+    <div class="year-section">
+        <div class="year-section-header">
+            <i class="fas fa-calendar-check"></i> {{ year }} Cutoff Statistics
+            <span class="row-count">Showing {{ rows | length }} categories</span>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="gov-table detail-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Branch</th>
+                        <th>Category</th>
+                        <th>Quota</th>
+                        <th>Domicile</th>
+                        <th>Opening Rank</th>
+                        <th>Closing Rank</th>
+                        <th>Seats</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr class="{% if row.domicile == 'Y' %}domicile-row{% endif %}">
+                        <td style="color:var(--muted);font-weight:700;width:32px;">{{ loop.index }}</td>
+                        <td>
+                            <span class="branch-tag" title="{{ row.branch }}">{{ row.branch | branch_name }} ({{ row.branch }})</span>
+                        </td>
+                        <td>
+                            <span class="cat-tag cat-{{ row.category | lower }}">{{ row.category }}</span>
+                        </td>
+                        <td>
+                            {% if row.gender == 'F' %}
+                            <span class="gender-tag gender-f">F — Female</span>
+                            {% elif row.gender == 'OP' %}
+                            <span class="gender-tag gender-op">OP — Open</span>
+                            {% else %}
+                            <span class="gender-tag gender-m">M — Male</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if row.domicile == 'Y' %}
+                            <span style="color:var(--green);font-weight:600;font-size:0.82rem;">
+                                <i class="fas fa-map-marker-alt"></i> MP Only
+                            </span>
+                            {% else %}
+                            <span style="color:var(--muted);font-size:0.82rem;">All States</span>
+                            {% endif %}
+                        </td>
+                        <td style="font-family:monospace;">{{ row.opening_rank }}</td>
+                        <td style="font-family:monospace;font-weight:700;color:var(--primary);">{{ row.closing_rank }}</td>
+                        <td style="font-weight:600;">{{ row.total_seats }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Disclaimer -->
+    <div class="results-disclaimer" style="margin-top:20px;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>Note:</strong> Data from DTE MP official counselling records.
+        Closing rank = last rank admitted that year. Always verify on
+        <a href="https://dte.mponline.gov.in" target="_blank" class="link">dte.mponline.gov.in</a>.
+    </div>
+
+    {% endif %}
+</div>
+
+<style>
+/* Back button */
+.btn-back {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: #F1F5F9; color: var(--primary);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 7px 16px; font-size: 0.87rem; font-weight: 600;
+    text-decoration: none; transition: background 0.2s;
+}
+.btn-back:hover { background: #E2E8F0; }
+
+/* College header card */
+.college-header-card {
+    display: flex; align-items: flex-start; gap: 18px;
+    background: linear-gradient(135deg, #0F2849 0%, #1E3A5F 100%);
+    border-radius: 10px; padding: 24px 28px;
+    margin-bottom: 24px; color: #fff;
+}
+.college-icon {
+    width: 56px; height: 56px; border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+}
+.college-title-block { flex: 1; min-width: 0; }
+.college-title {
+    font-size: 1.2rem; font-weight: 700; color: #fff;
+    margin: 0 0 10px; line-height: 1.4;
+}
+.college-meta-row {
+    display: flex; align-items: center; gap: 10px;
+    flex-wrap: wrap; margin-bottom: 12px;
+}
+.meta-pill {
+    background: rgba(255,255,255,0.15);
+    padding: 3px 11px; border-radius: 20px;
+    font-size: 0.8rem; color: rgba(255,255,255,0.9);
+    display: inline-flex; align-items: center; gap: 5px;
+}
+
+/* Branch chips */
+.branch-chips {
+    display: flex; flex-wrap: wrap; gap: 7px;
+}
+.branch-chip {
+    background: rgba(255,255,255,0.18);
+    color: #fff; border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 5px; padding: 2px 10px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em;
+}
+
+/* Year section */
+.year-section { margin-bottom: 28px; }
+.year-section-header {
+    font-size: 1rem; font-weight: 700; color: var(--primary);
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px; padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+}
+.row-count {
+    font-size: 0.8rem; font-weight: 400;
+    color: var(--muted); margin-left: auto;
+}
+
+/* Category tags */
+.cat-tag {
+    display: inline-block; padding: 2px 9px;
+    border-radius: 5px; font-size: 0.78rem; font-weight: 700;
+}
+.cat-ur  { background: #EEF2FF; color: #3730A3; border: 1px solid #C7D2FE; }
+.cat-obc { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+.cat-sc  { background: #FCE7F3; color: #9D174D; border: 1px solid #F9A8D4; }
+.cat-st  { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+
+/* Detail table tweak */
+.detail-table th, .detail-table td { font-size: 0.85rem; }
+
+/* Mobile */
+@media (max-width: 768px) {
+    .college-header-card { flex-direction: column; gap: 14px; padding: 18px 16px; }
+    .college-title { font-size: 1rem; }
+    .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .detail-table { min-width: 640px; }
+}
+</style>
+
+{% endblock %}

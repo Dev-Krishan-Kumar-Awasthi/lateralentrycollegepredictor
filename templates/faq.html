@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Frequently Asked Questions — MP DTE College Predictor{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px;">
+    <div class="gov-box">
+        <h1 style="color:var(--primary); font-size:1.8rem; margin-bottom:10px;">
+            <i class="fas fa-question-circle" style="margin-right:10px;"></i> Frequently Asked Questions (FAQ)
+        </h1>
+        <p class="subtitle" style="margin-bottom:30px;">
+            Counselling aur admission se jude sabse aam sawaalon ke jawab yahan payein.
+        </p>
+
+        <div class="faq-container">
+            <!-- Category: Predictor Usage -->
+            <div class="faq-section">
+                <h3 class="faq-cat-title"><i class="fas fa-tools"></i> Predictor Tools</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question">Predictor Results kitne accurate hain?</button>
+                    <div class="faq-answer">
+                        <p>Hamaara predictor 2024 aur 2025 ke <strong>Official DTE MP Cutoff Data</strong> par aadharit hai. Halanki ye 95%+ accurate trends dikhata hai, lekin har saal cutoff thoda upar-neeche ho sakta hai. Isliye ise ek guideline ki tarah use karein.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">Multiple branches select karne ka kya fayda hai?</button>
+                    <div class="faq-answer">
+                        <p>Multiple branches select karne se aapko un sabhi branches mein milne wale colleges ki list ek saath mil jati hai. Isse aapko counselling choice filling list banane mein asani hoti hai.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: Counselling Rules -->
+            <div class="faq-section">
+                <h3 class="faq-cat-title"><i class="fas fa-gavel"></i> Counselling Rules</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question">TFW (Tuition Fee Waiver) seat kya hoti hai?</button>
+                    <div class="faq-answer">
+                        <p>TFW seats par tuition fee maaf hoti hai. Ye seats sirf un students ko milti hain jinki family income 8 Lakh se kam ho (Income Certificate zaroori hai). <strong>Note:</strong> Lateral Entry mein TFW seats ka rule alag ho sakta hai, kripya official notification check karein.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">Kya main Diploma ke baad branch badal sakta hoon?</button>
+                    <div class="faq-answer">
+                        <p>Haan! MP DTE Lateral Entry ke rules ke mutabik, Diploma holders <strong>kisi bhi branch</strong> mein Engineering kar sakte hain. Example: Civil Diploma ke baad Computer Science (CSE) liya ja sakta hai.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">EWS (Economically Weaker Section) quota kya hai?</button>
+                    <div class="faq-answer">
+                        <p>General category ke students jinki family income kam hai, unhe 10% seat reservation milta hai. Iske liye "EWS Certificate" hona anivarya hai.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category: Results & Admission -->
+            <div class="faq-section">
+                <h3 class="faq-cat-title"><i class="fas fa-university"></i> Admission Process</h3>
+                
+                <div class="faq-item">
+                    <button class="faq-question">Round 1 aur Round 2 mein kya antar hai?</button>
+                    <div class="faq-answer">
+                        <p>Round 1 main round hota hai. Round 2 un bachi hui seats ke liye hota hai jo Round 1 ke baad khaali reh jati hain. Round 2 mein aksar cutoffs thode high ho jate hain kyunki seats kam bachti hain.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">CLC (College Level Counselling) kya hoti hai?</button>
+                    <div class="faq-answer">
+                        <p>Ye sabse aakhri round hota hai jo direct college mein jaakar hota hai. Ismein "First Come, First Served" ya Merit ke aadhar par spot admission milta hai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-footer" style="margin-top:40px; text-align:center; padding-top:20px; border-top:1px solid var(--border);">
+            <p>Aapka sawaal yahan nahi mila? <a href="/contact" style="color:var(--secondary); font-weight:700;">Humein Contact Karein</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+.faq-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.faq-cat-title {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.faq-item {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+.faq-item:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.faq-question {
+    width: 100%;
+    padding: 18px 20px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+.faq-question::after {
+    content: '\f078';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+.faq-item.active .faq-question::after {
+    transform: rotate(180deg);
+}
+.faq-item.active .faq-question {
+    background: #f0f7ff;
+}
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background: #fff;
+}
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+}
+.faq-answer p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: #475569;
+    line-height: 1.6;
+}
+</style>
+
+<script>
+document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Close all other items
+        document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+        
+        // Toggle current item
+        if (!isActive) {
+            item.classList.add('active');
+        }
+    });
+});
+</script>
+{% endblock %}

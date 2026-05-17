@@ -1,0 +1,597 @@
+{% extends 'base.html' %}
+
+{% block title %}College Predictor — MP BTech Lateral Entry{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- ===== ELIGIBILITY INFO BOX ===== -->
+    <div class="gov-box eligibility-box" style="border-top-color:var(--green);margin-bottom:20px;">
+        <div class="elig-header" onclick="toggleEligibility()">
+            <span><i class="fas fa-clipboard-check" style="color:var(--green);margin-right:8px;"></i>
+                <strong>Am I Eligible? — Check Eligibility Before Predicting</strong></span>
+            <i class="fas fa-chevron-down" id="elig-chevron" style="color:var(--muted);transition:0.3s;"></i>
+        </div>
+
+        <div id="elig-content" style="display:none;margin-top:16px;">
+            <div class="elig-grid">
+                <!-- Route 1 -->
+                <div class="elig-card">
+                    <div class="elig-title"><i class="fas fa-graduation-cap" style="color:var(--primary);"></i> Route 1 — Diploma Holders</div>
+                    <ul class="elig-list">
+                        <li>3-year or 2-year Engineering Diploma <strong>in ANY branch</strong></li>
+                        <li>From AICTE/UGC recognized institute</li>
+                        <li>Min <strong>45%</strong> marks (UR) &nbsp;|&nbsp; Min <strong>40%</strong> (SC/ST/OBC-MP)</li>
+                        <li>Grace marks holders eligible — but grace marks excluded from % calc</li>
+                    </ul>
+                </div>
+                <!-- Route 2 -->
+                <div class="elig-card">
+                    <div class="elig-title"><i class="fas fa-flask" style="color:var(--secondary);"></i> Route 2 — B.Sc. Graduates</div>
+                    <ul class="elig-list">
+                        <li>B.Sc. Degree from UGC recognized university</li>
+                        <li><strong>10+2 with Mathematics</strong> as a subject required</li>
+                        <li>Min <strong>45%</strong> marks (UR) &nbsp;|&nbsp; Min <strong>40%</strong> (SC/ST/OBC-MP)</li>
+                    </ul>
+                </div>
+                <!-- Domicile & Seats -->
+                <div class="elig-card">
+                    <div class="elig-title"><i class="fas fa-map-marker-alt" style="color:var(--saffron);"></i> Domicile & Seat Info</div>
+                    <ul class="elig-list">
+                        <li>MP Domicile certificate mandatory for Govt. seats</li>
+                        <li>Certificate issued by <strong>Naib Tehsildar / Tehsildar</strong></li>
+                        <li>Lateral entry seats = <strong>10% supernumerary</strong> (over sanctioned intake)</li>
+                        <li>Out-of-state candidates: only on vacant seats in <strong>last round</strong></li>
+                    </ul>
+                </div>
+                <!-- Reservation -->
+                <div class="elig-card">
+                    <div class="elig-title"><i class="fas fa-percentage" style="color:var(--green);"></i> Seat Reservation (MP Quota)</div>
+                    <ul class="elig-list">
+                        <li><strong>SC</strong> — 16% of MP Quota</li>
+                        <li><strong>ST</strong> — 20% of MP Quota</li>
+                        <li><strong>OBC</strong> (excl. creamy layer) — 14%</li>
+                        <li><strong>Female</strong> — 30% horizontal in EACH category</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="elig-note">
+                <i class="fas fa-info-circle"></i>
+                <strong>Reserved category candidates:</strong> If your merit qualifies for UR (General) category,
+                you will be allotted a <strong>UR seat first</strong>. Reserved seat is allotted only if no UR seat is available as per your preference.
+                &nbsp;|&nbsp;
+                <strong>Transfer:</strong> Once admitted, transfer to another institution is <strong>NOT permitted</strong>.
+                &nbsp;|&nbsp;
+                <strong>TFW/EWS:</strong> Not available for lateral entry as per DTE MP rules.
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PREDICTOR FORM ===== -->
+    <div class="gov-box" id="predictor">
+        <h2><i class="fas fa-bullseye"></i> College Predictor Tool</h2>
+        <p class="subtitle">
+            Enter your academic details to get a list of eligible colleges based on historical DTE MP cutoff data (2024 & 2025).
+        </p>
+
+        {% if error %}
+        <div style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if has_prefill %}
+        <div id="share-banner" class="share-banner">
+            <span><i class="fas fa-link"></i> Form pre-filled from a shared link. Click <strong>Predict Colleges</strong> to see results.</span>
+            <button class="share-banner-close" onclick="this.closest('.share-banner').remove()" title="Dismiss">✕</button>
+        </div>
+        {% endif %}
+
+        <form action="/predictor" method="POST" id="predictor-form">
+
+            <div class="form-row">
+                <!-- CGPA -->
+                <div class="form-group">
+                    <label for="cgpa">
+                        CGPA (10 Point Scale)
+                        <span class="field-hint">UR: min 45% &nbsp;|&nbsp; SC/ST/OBC: min 40%</span>
+                    </label>
+                    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10"
+                        placeholder="e.g. 8.33" required
+                        value="{{ data.cgpa if data else (prefill.cgpa if prefill else '') }}">
+                </div>
+
+                <!-- Category -->
+                {% set category = data.category if data else (prefill.category if prefill else '') %}
+                <div class="form-group">
+                    <label for="category">
+                        Select Your Category
+                        <span class="field-hint">OBC/SC/ST students have reserved seats</span>
+                    </label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled {% if not category %}selected{% endif %}>Select Category</option>
+                        <option value="UR"  {% if category=='UR'  %}selected{% endif %}>Unreserved (UR) — 45% min</option>
+                        <option value="OBC" {% if category=='OBC' %}selected{% endif %}>OBC (excl. Creamy Layer) — 40% min</option>
+                        <option value="SC"  {% if category=='SC'  %}selected{% endif %}>Scheduled Caste (SC) — 40% min</option>
+                        <option value="ST"  {% if category=='ST'  %}selected{% endif %}>Scheduled Tribe (ST) — 40% min</option>
+                    </select>
+                </div>
+
+                <!-- Gender -->
+                {% set gender = data.gender if data else (prefill.gender if prefill else '') %}
+                <div class="form-group">
+                    <label for="gender">
+                        Gender
+                        <span class="field-hint">Female: 30% reserved in each category</span>
+                    </label>
+                    <select id="gender" name="gender" required>
+                        <option value="" disabled {% if not gender %}selected{% endif %}>Select Gender</option>
+                        <option value="M" {% if gender=='M' %}selected{% endif %}>Male (Open seats only)</option>
+                        <option value="F" {% if gender=='F' %}selected{% endif %}>Female (Female + Open seats)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- College Type -->
+                {% set college_type = data.college_type if data else (prefill.college_type if prefill else '') %}
+                <div class="form-group">
+                    <label for="college_type">
+                        Which type of college?
+                        <span class="field-hint">Govt colleges usually have lower fees</span>
+                    </label>
+                    <select id="college_type" name="college_type" required>
+                        <option value="" disabled {% if not college_type %}selected{% endif %}>Select Type</option>
+                        <option value="GOVT"     {% if college_type=='GOVT'     %}selected{% endif %}>Government / Aided</option>
+                        <option value="S.F.I."   {% if college_type=='S.F.I.'   %}selected{% endif %}>Semi-Govt (SFI / Self Finance)</option>
+                        <option value="GOVT+SFI" {% if college_type=='GOVT+SFI' %}selected{% endif %}>Govt + Semi-Govt (Both)</option>
+                        <option value="Private"  {% if college_type=='Private'  %}selected{% endif %}>Private Institutes</option>
+                        <option value="Any"      {% if college_type=='Any'      %}selected{% endif %}>Any Type (All)</option>
+                    </select>
+                </div>
+
+                <!-- Branch — Custom Multi-select Dropdown -->
+                {% set branch = data.branch if data else (prefill.branch if prefill else []) %}
+                <div class="form-group">
+                    <label for="branch-select-container">
+                        Preferred Branch(es)
+                        <span class="field-hint">Click to select one or more branches</span>
+                    </label>
+                    
+                    <div class="custom-multi-select" id="branch-select-container">
+                        <div class="select-display" id="branch-display">
+                            {% if not branch or 'All' in branch or (branch is string and branch == 'All') %}
+                                🔍 All Branches
+                            {% elif branch is string %}
+                                {{ branch }}
+                            {% else %}
+                                {{ branch | length }} Branches Selected
+                            {% endif %}
+                        </div>
+                        <div class="options-dropdown" id="branch-options">
+                            <!-- JS will populate checkboxes here from the hidden select -->
+                        </div>
+                    </div>
+
+                    <!-- Hidden real select for form submission -->
+                    <select name="branch" id="real-branch-select" multiple style="display:none;" required>
+                        <option value="All" {% if 'All' in branch or (branch is string and branch == 'All') %}selected{% endif %}>🔍 All Branches</option>
+                        {% include 'components/branch_options.html' %}
+                    </select>
+
+                    <div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">
+                        <i class="fas fa-info-circle"></i> Selecting multiple branches will show results for all of them.
+                    </div>
+                </div>
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const container = document.getElementById('branch-select-container');
+                    const display = document.getElementById('branch-display');
+                    const optionsContainer = document.getElementById('branch-options');
+                    const realSelect = document.getElementById('real-branch-select');
+                    
+                    function generateUI() {
+                        optionsContainer.innerHTML = '';
+                        Array.from(realSelect.querySelectorAll('optgroup, option')).forEach(el => {
+                            if (el.tagName === 'OPTGROUP') {
+                                const groupLabel = document.createElement('div');
+                                groupLabel.className = 'opt-group-label';
+                                groupLabel.textContent = el.label;
+                                optionsContainer.appendChild(groupLabel);
+                            } else if (el.tagName === 'OPTION') {
+                                const item = document.createElement('div');
+                                item.className = 'option-item';
+                                const checkbox = document.createElement('input');
+                                checkbox.type = 'checkbox';
+                                checkbox.value = el.value;
+                                checkbox.checked = el.selected;
+                                checkbox.id = 'cb-' + el.value.replace(/\s+/g, '-');
+                                const label = document.createElement('label');
+                                label.htmlFor = checkbox.id;
+                                label.textContent = el.textContent.trim();
+                                item.appendChild(checkbox);
+                                item.appendChild(label);
+                                optionsContainer.appendChild(item);
+                                checkbox.addEventListener('change', function() { handleCheckboxChange(this); });
+                            }
+                        });
+                    }
+
+                    function handleCheckboxChange(changedCb) {
+                        const allCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
+                        if (changedCb.value === 'All' && changedCb.checked) {
+                            allCheckboxes.forEach(cb => { if (cb.value !== 'All') cb.checked = false; });
+                        } else if (changedCb.value !== 'All' && changedCb.checked) {
+                            const allCb = Array.from(allCheckboxes).find(cb => cb.value === 'All');
+                            if (allCb) allCb.checked = false;
+                        }
+                        syncToRealSelect();
+                    }
+
+                    function syncToRealSelect() {
+                        const allCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
+                        const selectedLabels = [];
+                        allCheckboxes.forEach(cb => {
+                            const opt = Array.from(realSelect.options).find(o => o.value === cb.value);
+                            if (opt) {
+                                opt.selected = cb.checked;
+                                if (cb.checked) selectedLabels.push(cb.nextElementSibling.textContent);
+                            }
+                        });
+                        const allCb = Array.from(allCheckboxes).find(cb => cb.value === 'All');
+                        if (allCb && allCb.checked) {
+                            display.textContent = "🔍 All Branches";
+                        } else if (selectedLabels.length === 0) {
+                            display.textContent = "Select Branches";
+                        } else if (selectedLabels.length === 1) {
+                            display.textContent = selectedLabels[0];
+                        } else {
+                            display.textContent = selectedLabels.length + " Branches Selected";
+                        }
+                    }
+
+                    display.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        container.classList.toggle('active');
+                    });
+                    document.addEventListener('click', () => container.classList.remove('active'));
+                    optionsContainer.addEventListener('click', (e) => e.stopPropagation());
+                    generateUI();
+                    syncToRealSelect();
+                });
+                </script>
+
+                <!-- MP Domicile Filter -->
+                {% set domicile = data.domicile if data else (prefill.domicile if prefill else 'Y') %}
+                <div class="form-group">
+                    <label for="domicile">
+                        Are you from MP?
+                        <span class="field-hint">MP Domicile is needed for Govt seats</span>
+                    </label>
+                    <select id="domicile" name="domicile" required>
+                        <option value="Y" {% if domicile == 'Y' %}selected{% endif %}>
+                            Yes (MP Resident) — All Seats
+                        </option>
+                        <option value="N" {% if domicile == 'N' %}selected{% endif %}>
+                            No (Other State) — Open Seats Only
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Row 3: City Filter -->
+            {% set city = data.city if data else (prefill.city if prefill else 'All') %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">
+                        Preferred City (Optional)
+                        <span class="field-hint">Select a specific city or stay with Any City</span>
+                    </label>
+                    <select id="city" name="city">
+                        <option value="All" {% if city == 'All' %}selected{% endif %}>🗺️ Any City (All MP)</option>
+                        {% for c in mp_cities %}
+                        <option value="{{ c }}" {% if city == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Submit Actions -->
+            <div class="form-actions" style="margin-top:4px;">
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-search"></i> Show My Best Colleges
+                </button>
+                <button type="reset" class="btn-secondary">
+                    <i class="fas fa-redo"></i> Reset
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if data and prediction %}
+    <!-- Results Header / Profile Summary -->
+    <div class="profile-summary">
+        <strong>CGPA:</strong> {{ data.cgpa }} &nbsp;|&nbsp;
+        <strong>Category:</strong> {{ data.category }} &nbsp;|&nbsp;
+        <strong>Gender:</strong> {{ 'Female' if data.gender == 'F' else 'Male' }} &nbsp;|&nbsp;
+        <strong>Type:</strong> {{ data.college_type }} &nbsp;|&nbsp;
+        <strong>Branch:</strong> 
+        {% if 'All' in data.branch %}
+            All Branches
+        {% elif data.branch is string %}
+            {{ data.branch | branch_name }} ({{ data.branch }})
+        {% else %}
+            {% for b in data.branch %}{{ b | branch_name }} ({{ b }}){% if not loop.last %}, {% endif %}{% endfor %}
+        {% endif %}
+        &nbsp;|&nbsp;
+        <strong>Domicile:</strong> {{ 'MP Resident' if data.domicile == 'Y' else 'Non-MP' }}
+    </div>
+
+    {% if not prediction[2024] and not prediction[2025] %}
+        <div class="no-results">
+            <div class="no-results-icon"><i class="fas fa-search-location"></i></div>
+            <h3>No colleges found for this profile</h3>
+            <p>Don't worry! Try these tips to find a seat:</p>
+            <ul style="display:inline-block; text-align:left; margin-top:10px; color:var(--muted); font-size:0.9rem; line-height:1.6;">
+                <li>Change <strong>College Type</strong> to Govt Aided + S.F.I</li>
+                <li>Select <strong>All Branches</strong> to see more options</li>
+                <li>Verify your <strong>Category</strong> and <strong>Gender</strong> filters</li>
+                <li>Waiting for <strong>Round 2 or CLC</strong> often opens more seats</li>
+            </ul>
+        </div>
+    {% else %}
+        <div id="results-area">
+            <div class="results-header">
+                <h3><i class="fas fa-list-check"></i> Analysis of Available Colleges</h3>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button id="share-btn" class="btn-share" onclick="copyShareLink()">
+                        <i class="fas fa-link"></i> Share Link
+                    </button>
+                    <button class="btn-pdf" onclick="downloadPDF()">
+                        <i class="fas fa-file-pdf"></i> Download All PDF
+                    </button>
+                </div>
+            </div>
+
+            <div class="results-content">
+                <div class="rules-note-bar">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>OP</strong> = Open (all genders) &nbsp; <strong>F</strong> = Female only
+                    &nbsp;|&nbsp; Highlighted rows show high admission probability based on last year's trends.
+                </div>
+
+                {% for year, yr_data in prediction.items() %}
+                <h3 style="color:var(--primary);font-size:1.05rem;margin:20px 0 8px;">
+                    <i class="fas fa-calendar-alt"></i> Historical Data: Year {{ year }}
+                    <span style="font-size:0.82rem;font-weight:400;color:var(--muted);margin-left:8px;">
+                        ({{ yr_data.colleges | length }} colleges found)
+                    </span>
+                </h3>
+
+                <div class="prediction-box">
+                    Estimated Merit Rank Range: <strong>{{ yr_data.min_rank }} – {{ yr_data.max_rank }}</strong>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="gov-table" id="results-table-{{ year }}">
+                        <thead>
+                            <tr>
+                                <th style="width:36px;"><input type="checkbox" class="select-all-check" data-table="results-table-{{ year }}" onchange="toggleSelectAll(this)"></th>
+                                <th>#</th>
+                                <th>College Name</th>
+                                <th>Branch</th>
+                                <th>Type</th>
+                                <th>Opening</th>
+                                <th>Closing</th>
+                                <th>Quota</th>
+                                <th>Resident</th>
+                                <th>Seats</th>
+                                <th>Chance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in yr_data.colleges %}
+                            {% set college = item.college %}
+                            {% set prob = item.probability %}
+                            <tr class="result-row">
+                                <td style="text-align:center;">
+                                    <input type="checkbox" class="shortlist-check" data-id="{{ college.college_name }}|{{ college.branch }}|{{ year }}" onchange="updateShortlistBar()">
+                                </td>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank">{{ college.college_name }}</a>
+                                    <button class="cmp-add-btn" onclick="addToCompare(this, '{{ college.college_name | replace("'","\\'") }}')">
+                                        <i class="fas fa-balance-scale"></i> Compare
+                                    </button>
+                                </td>
+                                <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch }})</span></td>
+                                <td><span class="type-tag">{{ college.college_type }}</span></td>
+                                <td style="font-family:monospace;">{{ college.opening_rank }}</td>
+                                <td style="font-family:monospace;font-weight:700;">{{ college.closing_rank }}</td>
+                                <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender }}</span></td>
+                                <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
+                                <td>{{ college.total_seats }}</td>
+                                <td>
+                                    <span class="prob-badge prob-{{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{ prob }}%</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- ===== FLOATING UI COMPONENTS ===== -->
+    <div id="compare-tray" style="display:none;">
+        <div class="cmp-tray-inner">
+            <span class="cmp-tray-label"><i class="fas fa-balance-scale"></i> Compare:</span>
+            <div id="compare-chips" class="cmp-chips"></div>
+            <div class="cmp-tray-actions">
+                <button id="cmp-go-btn" class="cmp-go-btn" onclick="goCompare()" disabled>Compare Now</button>
+                <button class="cmp-clear-btn" onclick="clearCompare()"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shortlist-bar" style="display:none;">
+        <div class="sl-bar-inner">
+            <span class="sl-bar-info"><i class="fas fa-bookmark"></i> <strong id="shortlist-count">0</strong> shortlisted</span>
+            <div class="sl-bar-actions">
+                <button class="sl-btn-download" onclick="downloadShortlistedPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="sl-btn-clear" onclick="clearShortlist()">Clear All</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+/* Eligibility & Forms */
+.eligibility-box { cursor:default; }
+.elig-header { display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+.elig-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:14px; margin-bottom:14px; }
+.elig-card { background:#F8FAFC; border:1px solid var(--border); border-radius:6px; padding:14px 16px; }
+.elig-title { font-size:0.88rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.elig-list { list-style:none; padding:0; margin:0; }
+.elig-list li { font-size:0.84rem; color:#475569; padding:3px 0 3px 14px; position:relative; }
+.elig-list li::before { content:'✓'; position:absolute; left:0; color:var(--green); font-weight:700; }
+.elig-note { background:var(--info-bg); border-left:4px solid var(--secondary); padding:10px 14px; border-radius:4px; font-size:0.84rem; }
+
+/* Tags & Badges */
+.field-hint { display:block; font-size:0.75rem; color:var(--muted); }
+.rules-note-bar { background:#FFFBEB; border-left:4px solid #F59E0B; padding:10px 16px; border-radius:4px; font-size:0.84rem; margin-bottom:18px; }
+.gender-tag { display:inline-block; padding:2px 9px; border-radius:12px; font-size:0.76rem; font-weight:700; }
+.gender-f { background:#FCE7F3; color:#9D174D; }
+.gender-op { background:#D1FAE5; color:#065F46; }
+.prob-badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:0.78rem; font-weight:700; }
+.prob-high { background:#D1FAE5; color:#065F46; }
+.prob-med  { background:#FEF9C3; color:#713F12; }
+.prob-low  { background:#FEE2E2; color:#991B1B; }
+
+/* Floating Bars */
+#shortlist-bar, #compare-tray { position:fixed; bottom:0; left:0; right:0; z-index:9999; animation: slideUp 0.25s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.sl-bar-inner, .cmp-tray-inner { background: #1E3A5F; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:12px 28px; box-shadow: 0 -4px 20px rgba(0,0,0,0.25); }
+.sl-bar-actions, .cmp-tray-actions { display:flex; gap:10px; }
+.sl-btn-download, .cmp-go-btn { background:#22C55E; color:#fff; border:none; padding:8px 18px; border-radius:6px; font-weight:700; cursor:pointer; }
+.sl-btn-clear, .cmp-clear-btn { background:rgba(255,255,255,0.15); border:none; color:#fff; padding:8px 14px; border-radius:6px; cursor:pointer; }
+
+/* Utils */
+.branch-tag { display:inline-block; padding:2px 9px; background:#EEF2FF; color:#3730A3; border-radius:5px; font-size:0.78rem; font-weight:700; }
+.btn-pdf, .btn-share { display:inline-flex; align-items:center; gap:6px; border:none; padding:7px 16px; border-radius:5px; font-size:0.85rem; font-weight:600; cursor:pointer; color:#fff; }
+.btn-pdf { background:#DC2626; }
+.btn-share { background:#6366F1; }
+.btn-share.copied { background:#22C55E !important; }
+
+@media (max-width: 768px) {
+    .form-row { grid-template-columns: 1fr !important; }
+    .gov-table { min-width: 800px; }
+    .table-wrapper { overflow-x: auto; }
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+function toggleEligibility() {
+    const content = document.getElementById('elig-content');
+    const chevron = document.getElementById('elig-chevron');
+    const isHidden = content.style.display === 'none';
+    content.style.display = isHidden ? 'block' : 'none';
+    chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+
+function copyShareLink() {
+    const form = document.getElementById('predictor-form');
+    const params = new URLSearchParams({
+        cgpa: form.querySelector('[name=cgpa]').value,
+        category: form.querySelector('[name=category]').value,
+        gender: form.querySelector('[name=gender]').value,
+        college_type: form.querySelector('[name=college_type]').value,
+        domicile: form.querySelector('[name=domicile]').value,
+        city: form.querySelector('[name=city]').value
+    });
+    form.querySelectorAll('select[name=branch] option:selected').forEach(opt => params.append('branch', opt.value));
+    const url = window.location.origin + '/predictor?' + params.toString();
+    const btn = document.getElementById('share-btn');
+    navigator.clipboard.writeText(url).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
+    });
+}
+
+let compareList = {};
+function addToCompare(btn, name) {
+    if (compareList[name]) { delete compareList[name]; btn.classList.remove('added'); btn.innerHTML = '<i class="fas fa-balance-scale"></i> Compare'; }
+    else {
+        if (Object.keys(compareList).length >= 3) { alert('Max 3 colleges!'); return; }
+        compareList[name] = name.substring(0,25); btn.classList.add('added'); btn.innerHTML = '<i class="fas fa-check"></i> Added';
+    }
+    updateCompareTray();
+}
+function updateCompareTray() {
+    const tray = document.getElementById('compare-tray');
+    const chips = document.getElementById('compare-chips');
+    const names = Object.keys(compareList);
+    tray.style.display = names.length ? 'block' : 'none';
+    chips.innerHTML = names.map(n => `<span class="cmp-chip">${compareList[n]}</span>`).join('');
+    document.getElementById('cmp-go-btn').disabled = names.length < 2;
+}
+function goCompare() {
+    const params = Object.keys(compareList).map(n => 'colleges=' + encodeURIComponent(n)).join('&');
+    window.open('/compare?' + params, '_blank');
+}
+
+function updateShortlistBar() {
+    const checked = document.querySelectorAll('.shortlist-check:checked');
+    const count = checked.length;
+    localStorage.setItem('mp_dte_shortlist', JSON.stringify(Array.from(checked).map(cb => cb.dataset.id)));
+    document.getElementById('shortlist-bar').style.display = count > 0 ? 'block' : 'none';
+    document.getElementById('shortlist-count').textContent = count;
+}
+function toggleSelectAll(sa) {
+    document.getElementById(sa.dataset.table).querySelectorAll('.shortlist-check').forEach(cb => cb.checked = sa.checked);
+    updateShortlistBar();
+}
+function clearShortlist() { localStorage.removeItem('mp_dte_shortlist'); document.querySelectorAll('.shortlist-check').forEach(cb => cb.checked = false); updateShortlistBar(); }
+
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation:'landscape', unit:'pt', format:'a4' });
+    doc.setFillColor(15,40,90); doc.rect(0,0,842,60,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255);
+    doc.text('MP DTE LATERAL ENTRY — CHOICE LIST', 40, 38);
+    
+    let y = 80;
+    document.querySelectorAll('[id^="results-table-"]').forEach(table => {
+        const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => Array.from(tr.querySelectorAll('td')).slice(1).map(td => td.innerText.trim()));
+        doc.autoTable({ startY: y, head: [['#','College','Branch','Type','Open','Close','Quota','Resident','Seats','Chance']], body: rows, theme:'striped', headStyles:{fillColor:[15,40,90]}, margin:{left:40,right:40} });
+        y = doc.lastAutoTable.finalY + 30;
+    });
+    doc.save('MP-DTE-Colleges.pdf');
+}
+function downloadShortlistedPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation:'landscape', unit:'pt', format:'a4' });
+    doc.text('My Shortlisted Colleges', 40, 40);
+    const rows = Array.from(document.querySelectorAll('.shortlist-check:checked')).map(cb => Array.from(cb.closest('tr').querySelectorAll('td')).slice(2).map(td => td.innerText.trim()));
+    doc.autoTable({ startY: 60, head: [['College','Branch','Type','Open','Close','Quota','Resident','Seats','Chance']], body: rows, theme:'grid' });
+    doc.save('My-Shortlist.pdf');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
+    document.querySelectorAll('.shortlist-check').forEach(cb => { if (saved.includes(cb.dataset.id)) cb.checked = true; });
+    updateShortlistBar();
+});
+</script>
+{% endblock %}

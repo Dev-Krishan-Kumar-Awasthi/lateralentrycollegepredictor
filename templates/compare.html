@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% block title %}College Comparison | MP DTE Lateral Entry{% endblock %}
+
+{% block content %}
+<div class="container cmp-page">
+
+  <!-- Back -->
+  <div style="margin:18px 0 10px;">
+    <a href="javascript:void(0)" onclick="window.opener?window.close():window.location='/predictor'" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Back to Results
+    </a>
+  </div>
+
+  <!-- Hero -->
+  <div class="cmp-hero">
+    <div class="cmp-hero-icon"><i class="fas fa-balance-scale"></i></div>
+    <div>
+      <h2 class="cmp-hero-title">Compare Colleges</h2>
+      <p class="cmp-hero-sub">Compare {{ colleges|length }} colleges side-by-side to see which one is better for you.</p>
+    </div>
+  </div>
+
+  {% if colleges|length < 2 %}
+  <div class="gov-box" style="text-align:center;padding:40px;">
+    <p>Not enough data to compare. <a href="/predictor">Go back to Predictor</a>.</p>
+  </div>
+  {% else %}
+
+  <!-- ══ COMPARISON TABLE ══ -->
+  <div class="cmp-card">
+    <div class="cmp-section-title"><i class="fas fa-table"></i> Quick Comparison</div>
+    <div class="cmp-table-wrap">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th class="cmp-param-col">Details</th>
+            {% for c in colleges %}
+            <th class="cmp-col-{{ loop.index }}">
+              <div class="cmp-college-name">{{ c.college_name }}</div>
+              <span class="type-tag">{{ c.college_type }}</span>
+            </th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- Branches Count -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-code-branch"></i> No. of Branches</td>
+            {% set max_br = colleges | map(attribute='branch_count') | max %}
+            {% for c in colleges %}
+            <td class="{% if c.branch_count == max_br %}cmp-best{% endif %}">
+              <strong>{{ c.branch_count }}</strong>
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Total Seats -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-chair"></i> Total Seats (2025)</td>
+            {% set max_seats = colleges | map(attribute='total_seats') | max %}
+            {% for c in colleges %}
+            <td class="{% if c.total_seats == max_seats %}cmp-best{% endif %}">
+              <strong>{{ c.total_seats if c.total_seats else '—' }}</strong>
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Easiest Cutoff -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-door-open"></i> Easiest to Get Into
+              <div class="cmp-param-hint">Highest rank = easiest branch</div>
+            </td>
+            {% set max_easy = colleges | selectattr('easiest_cutoff') | map(attribute='easiest_cutoff') | list %}
+            {% set best_easy = max_easy | max if max_easy else 0 %}
+            {% for c in colleges %}
+            <td class="{% if c.easiest_cutoff == best_easy %}cmp-best{% endif %}">
+              {{ c.easiest_cutoff if c.easiest_cutoff else '—' }}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Hardest Cutoff -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-lock"></i> Most Competitive Branch
+              <div class="cmp-param-hint">Lowest rank = hardest to get</div>
+            </td>
+            {% set hard_list = colleges | selectattr('hardest_cutoff') | map(attribute='hardest_cutoff') | list %}
+            {% set best_hard = hard_list | min if hard_list else 0 %}
+            {% for c in colleges %}
+            <td class="{% if c.hardest_cutoff == best_hard %}cmp-highlight-red{% endif %}">
+              {{ c.hardest_cutoff if c.hardest_cutoff else '—' }}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Avg Cutoff 2025 -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-calculator"></i> Avg. Closing Rank (2025)
+              <div class="cmp-param-hint">Across all categories & branches</div>
+            </td>
+            {% for c in colleges %}
+            <td>{{ c.avg_cutoff_2025 if c.avg_cutoff_2025 else '—' }}</td>
+            {% endfor %}
+          </tr>
+
+          <!-- Avg Cutoff 2024 -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-history"></i> Avg. Closing Rank (2024)</td>
+            {% for c in colleges %}
+            <td>{{ c.avg_cutoff_2024 if c.avg_cutoff_2024 else '—' }}</td>
+            {% endfor %}
+          </tr>
+
+          <!-- Trend -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-chart-line"></i> Trend (2024→2025)</td>
+            {% for c in colleges %}
+            <td>
+              {% if c.trend == 'tighter' %}
+              <span class="trend-badge trend-hard"><i class="fas fa-arrow-down"></i> Tighter</span>
+              {% elif c.trend == 'easier' %}
+              <span class="trend-badge trend-easy"><i class="fas fa-arrow-up"></i> Easier</span>
+              {% elif c.trend == 'stable' %}
+              <span class="trend-badge trend-stable"><i class="fas fa-minus"></i> Stable</span>
+              {% else %}
+              <span style="color:var(--muted);font-size:0.82rem;">No 2024 data</span>
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- MP Domicile -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-map-marker-alt"></i> MP Domicile</td>
+            {% for c in colleges %}
+            <td>
+              {% if c.domicile_required %}
+              <span style="color:#DC2626;font-weight:700;font-size:0.85rem;">
+                <i class="fas fa-check"></i> Required
+              </span>
+              {% else %}
+              <span style="color:#16A34A;font-weight:700;font-size:0.85rem;">
+                <i class="fas fa-times"></i> Not Required
+              </span>
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Data Years -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-database"></i> Data Available</td>
+            {% for c in colleges %}
+            <td style="font-size:0.83rem;">
+              {% if c.has_2025 %}<span class="year-pill y25">2025</span>{% endif %}
+              {% if c.has_2024 %}<span class="year-pill y24">2024</span>{% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ BRANCHES COMPARISON ══ -->
+  <div class="cmp-card">
+    <div class="cmp-section-title"><i class="fas fa-code-branch"></i> Branch Availability (2025)</div>
+
+    {% set all_branches = [] %}
+    {% for c in colleges %}
+      {% for b in c.branches_2025 %}
+        {% if b not in all_branches %}{% set _ = all_branches.append(b) %}{% endif %}
+      {% endfor %}
+    {% endfor %}
+    {% set all_branches = all_branches | sort %}
+
+    <div class="cmp-table-wrap">
+      <table class="cmp-table cmp-branch-table">
+        <thead>
+          <tr>
+            <th class="cmp-param-col">Branch</th>
+            {% for c in colleges %}
+            <th class="cmp-col-{{ loop.index }}">{{ c.college_name | truncate(30, true, '…') }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for b in all_branches %}
+          <tr>
+            <td class="cmp-param">
+              <span class="branch-tag" title="{{ b }}">{{ b | branch_name }}</span>
+            </td>
+            {% for c in colleges %}
+            <td style="text-align:center;">
+              {% if b in c.branches_2025 %}
+              <span class="avail-yes"><i class="fas fa-check-circle"></i></span>
+              {% else %}
+              <span class="avail-no"><i class="fas fa-times-circle"></i></span>
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="results-disclaimer" style="margin-bottom:30px;">
+    <i class="fas fa-exclamation-triangle"></i>
+    <strong>Note:</strong> Green highlight = best value for that metric. Cutoff data from DTE MP official records.
+    Always verify on <a href="https://dte.mponline.gov.in" target="_blank" style="color:var(--primary);">dte.mponline.gov.in</a>.
+  </div>
+
+  {% endif %}
+</div>
+
+<style>
+.cmp-page { padding-bottom: 40px; }
+
+.btn-back {
+  display:inline-flex;align-items:center;gap:7px;
+  background:#F1F5F9;color:var(--primary);border:1px solid var(--border);
+  border-radius:6px;padding:7px 16px;font-size:0.87rem;font-weight:600;
+  text-decoration:none;transition:background 0.2s;
+}
+.btn-back:hover { background:#E2E8F0; }
+
+/* Hero */
+.cmp-hero {
+  display:flex;align-items:center;gap:20px;
+  background:linear-gradient(135deg,#0F2849,#1E3A5F);
+  color:#fff;border-radius:10px;padding:24px 28px;margin:0 0 20px;
+}
+.cmp-hero-icon {
+  width:54px;height:54px;background:rgba(255,255,255,0.15);
+  border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:1.5rem;flex-shrink:0;
+}
+.cmp-hero-title { font-size:1.25rem;font-weight:700;color:#fff;margin:0 0 5px; }
+.cmp-hero-sub { font-size:0.87rem;color:rgba(255,255,255,0.8);margin:0; }
+
+/* Cards */
+.cmp-card {
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:20px 22px;margin-bottom:18px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);
+}
+.cmp-section-title {
+  font-size:1rem;font-weight:700;color:var(--primary);
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:2px solid var(--border);
+}
+
+/* Table */
+.cmp-table-wrap { overflow-x:auto;-webkit-overflow-scrolling:touch; }
+.cmp-table { width:100%;border-collapse:collapse;min-width:480px; }
+.cmp-table th, .cmp-table td {
+  padding:11px 14px;text-align:left;
+  border-bottom:1px solid var(--border);font-size:0.86rem;vertical-align:top;
+}
+.cmp-table thead th {
+  background:#F8FAFC;font-weight:700;color:var(--primary);font-size:0.82rem;
+}
+.cmp-param-col { width:200px;min-width:170px; }
+.cmp-param { color:#374151;font-weight:600;font-size:0.84rem; }
+.cmp-param-hint { font-size:0.75rem;color:var(--muted);font-weight:400;margin-top:2px; }
+
+/* College name in header */
+.cmp-college-name {
+  font-size:0.83rem;font-weight:700;color:var(--primary);
+  line-height:1.4;margin-bottom:5px;
+}
+
+/* Column accent colors */
+.cmp-col-1 { border-top:3px solid #6366F1; }
+.cmp-col-2 { border-top:3px solid #22C55E; }
+.cmp-col-3 { border-top:3px solid #F59E0B; }
+
+/* Best value highlight */
+.cmp-best { background:#F0FDF4;font-weight:700;color:#16A34A; }
+.cmp-highlight-red { background:#FEF2F2;font-weight:700;color:#DC2626; }
+
+/* Trend badges */
+.trend-badge {
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:0.79rem;font-weight:700;
+}
+.trend-hard   { background:#FEE2E2;color:#991B1B; }
+.trend-easy   { background:#D1FAE5;color:#065F46; }
+.trend-stable { background:#F1F5F9;color:#475569; }
+
+/* Year pills */
+.year-pill {
+  display:inline-block;padding:2px 8px;border-radius:12px;
+  font-size:0.75rem;font-weight:700;margin-right:4px;
+}
+.y25 { background:#EEF2FF;color:#3730A3;border:1px solid #C7D2FE; }
+.y24 { background:#FEF3C7;color:#92400E;border:1px solid #FDE68A; }
+
+/* Branch availability */
+.cmp-branch-table td { text-align:center; }
+.cmp-branch-table .cmp-param { text-align:left; }
+.avail-yes { color:#22C55E;font-size:1.1rem; }
+.avail-no  { color:#D1D5DB;font-size:1.1rem; }
+
+/* Mobile */
+@media(max-width:768px) {
+  .cmp-hero { flex-direction:column;padding:18px;gap:12px; }
+  .cmp-hero-title { font-size:1.05rem; }
+  .cmp-table th, .cmp-table td { padding:8px 10px;font-size:0.8rem; }
+}
+</style>
+{% endblock %}
