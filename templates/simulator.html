@@ -120,9 +120,9 @@
             </div>
 
             <div class="choice-filling-section" style="margin-top:30px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <div class="priority-header">
                     <h3 style="margin:0;"><i class="fas fa-tasks"></i> Your Priority List</h3>
-                    <div style="display:flex; gap:8px;">
+                    <div class="btn-group">
                         <button type="button" class="btn-secondary-small" style="background:#475569; color:#fff; border-color:#475569;" onclick="downloadChoicesPDF()">
                             <i class="fas fa-file-pdf"></i> Download PDF
                         </button>
@@ -256,6 +256,47 @@
 .modal-search-results { max-height: 300px; overflow-y: auto; margin-top: 10px; }
 .search-item { padding: 10px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 0.9rem; }
 .search-item:hover { background: #f8fafc; }
+/* Responsive adjustments */
+.priority-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 12px;
+}
+.priority-header .btn-group {
+    display: flex;
+    gap: 8px;
+}
+@media (max-width: 768px) {
+    .allotted-meta {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    .allotted-college {
+        font-size: 1.45rem;
+    }
+}
+@media (max-width: 600px) {
+    .priority-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    .priority-header .btn-group {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .priority-header .btn-group button {
+        flex: 1 1 auto;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.78rem !important;
+        padding: 8px 10px !important;
+    }
+}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
