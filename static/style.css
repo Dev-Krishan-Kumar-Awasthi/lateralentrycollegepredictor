@@ -937,6 +937,7 @@ button {
         align-items: center;
         flex-wrap: wrap;
         padding: 0 4%;
+        min-height: 50px;
     }
     .gov-nav .nav-links {
         display: none;
