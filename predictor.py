@@ -64,6 +64,67 @@ BRANCH_NAMES = {
 }
 
 
+# ── College name aliases & acronyms mapping ──────────────────────────────────
+COLLEGE_ALIASES = {
+    "sgsits": ["Shri G.S. Institute", "SGSITS", "GSITS"],
+    "gsits": ["Shri G.S. Institute", "SGSITS", "GSITS"],
+    "sgits": ["Shri G.S. Institute", "SGSITS", "GSITS"],
+    "mits": ["Madhav Institute", "MITS"],
+    "iet": ["Institute of Engineering and Technology", "IET DAVV", "IET-DAVV"],
+    "iet davv": ["Institute of Engineering and Technology", "IET DAVV", "IET-DAVV"],
+    "iet-davv": ["Institute of Engineering and Technology", "IET DAVV", "IET-DAVV"],
+    "davv": ["Institute of Engineering and Technology", "IET DAVV", "IET-DAVV"],
+    "jec": ["JABALPUR ENGINEERING COLLEGE", "JEC"],
+    "uit rgpv": ["University Institute of Technology RGPV", "University Institute of Technology REPV", "UIT RGPV", "UIT-RGPV"],
+    "uit-rgpv": ["University Institute of Technology RGPV", "University Institute of Technology REPV", "UIT RGPV", "UIT-RGPV"],
+    "rgpv": ["University Institute of Technology", "RGPV", "SCHOOL OF INFORMATION TECHNOLOGY RGPV"],
+    "uit": ["University Institute of Technology", "UIT"],
+    "lnct": ["Lakshmi Narain College", "LNCT"],
+    "lncts": ["Lakshmi Narain College of Technology & Science", "LNCTS"],
+    "lncte": ["Lakshmi Narain College of Technology Excellence", "LNCTE"],
+    "jnct": ["Jai Narain College", "JNCT"],
+    "uec": ["UJJAIN ENGINEERING COLLEGE", "UEC"],
+    "sati": ["Samrat Ashok", "SATI"],
+    "rec": ["Rewa Engineering", "REC", "RADHARAMAN ENGINEERING"],
+    "igec": ["Indira Gandhi Engineering", "IGEC"],
+    "rjit": ["Rustamji Institute", "RJIT"],
+    "tit": ["TECHNOCRATS INSTITUTE", "TIT"],
+    "sistec": ["Sagar Institute of Science", "SISTEC"],
+    "sirt": ["Sagar Institute of Research", "SIRT"],
+    "acropolis": ["Acropolis Institute", "AITR"],
+    "aitr": ["Acropolis Institute", "AITR"],
+    "ips": ["IPS Academy", "IPS College"],
+    "ipsa": ["IPS Academy", "IPSA"],
+    "oist": ["Oriental Institute", "OIST"],
+    "oct": ["Oriental College", "OCT"],
+    "ggits": ["GYAN GANGA INSTITUTE", "GGITS"],
+    "ggct": ["Gyan Ganga College", "GGCT"],
+    "gyan ganga": ["Gyan Ganga"],
+    "prestige": ["Prestige Institute", "PIEMR"],
+    "piemr": ["Prestige Institute", "PIEMR"],
+    "iist": ["Indore Institute of Science", "IIST"],
+    "btirt": ["Babulal Tarabai Institute", "BTIRT"],
+    "sdbc": ["Sushila Devi Bansal", "SDBC"],
+    "svce": ["Swami Vivekanand College", "SVCE"],
+    "vits": ["VINDHYA INSTITUTE", "VITS"],
+    "nec": ["Nowgong Engineering", "NEC"],
+    "soit": ["SCHOOL OF INFORMATION TECHNOLOGY", "SOIT"],
+    "truba": ["Truba Institute", "Truba"],
+    "bits": ["Bansal Institute", "BITS"],
+    "birt": ["Bansal Institute of Research", "BIRT"],
+    "bist": ["Bansal Institute of Science", "BIST"],
+    "cdgi": ["Chameli Devi", "CDGI"],
+    "hcet": ["Hitkarni College", "HCET"],
+    "itm": ["INSTITUTE OF TECHNOLOGY AND MANAGEMENT", "ITM"],
+    "jit": ["Jawaharlal Institute", "JIT"],
+    "mit": ["Mahakal Instute", "Mahakal Institute", "MIT"],
+    "mpct": ["Maharana Pratap", "MPCT"],
+    "mist": ["Malwa Institute of Science", "MIST"],
+    "pcst": ["PATEL COLLEGE", "PCST"],
+    "srkcesm": ["SHRI RAMA KRISHNA COLLEGE", "SRKCESM"]
+}
+
+
 def calc_probability(rank_min: int, rank_max: int,
                      opening_rank: int, closing_rank: int) -> int:
     """
@@ -213,12 +274,39 @@ def _cgpa_for_rank(lookup, year, rank):
 def search_colleges(q, category=None, gender=None, college_type=None, branch=None, year=None, city=None):
     query = SeatInfo.query
 
-    query = query.filter(
-        db.or_(
-            SeatInfo.college_name.ilike(f"%{q}%"),
-            SeatInfo.branch.ilike(f"%{q}%")
-        )
-    )
+    # Clean the query for alias mapping
+    q_clean = q.strip().lower()
+    
+    # We will build a list of OR filters
+    search_filters = [
+        SeatInfo.college_name.ilike(f"%{q}%"),
+        SeatInfo.branch.ilike(f"%{q}%")
+    ]
+    
+    # Check for alias matches
+    alias_matches = []
+    
+    # Check individual words in query
+    words = q_clean.split()
+    for word in words:
+        if len(word) >= 2:
+            for alias, names in COLLEGE_ALIASES.items():
+                if word == alias or word in alias:
+                    alias_matches.extend(names)
+                    
+    # Check full query phrase
+    for alias, names in COLLEGE_ALIASES.items():
+        if alias == q_clean or alias in q_clean:
+            alias_matches.extend(names)
+            
+    # Deduplicate alias match strings
+    alias_matches = list(set(alias_matches))
+    
+    # Add alias filters to query
+    for name in alias_matches:
+        search_filters.append(SeatInfo.college_name.ilike(f"%{name}%"))
+
+    query = query.filter(db.or_(*search_filters))
 
     if category:
         query = query.filter(SeatInfo.category == category)
@@ -372,26 +460,76 @@ def get_compare_data(college_names: list) -> list:
 def run_counselling_simulation(rank, choice_list, category, gender, domicile, year):
     allotted = None
     from models import SeatInfo
+    from sqlalchemy import func
+    
     for idx, choice in enumerate(choice_list):
         c_name = choice['college_name']
         c_branch = choice['branch']
-        query = SeatInfo.query.filter(SeatInfo.college_name == c_name, SeatInfo.branch == c_branch, SeatInfo.year == year)
-        if domicile == 'N':
-            match = query.filter(SeatInfo.category == 'UR', SeatInfo.gender == 'OP', SeatInfo.domicile == 'N').first()
-            if match and rank <= match.closing_rank: allotted = match; break
-            continue
-        possible_seats = query.filter(SeatInfo.domicile == 'Y').all()
-        ur_op = next((s for s in possible_seats if s.category == 'UR' and s.gender == 'OP'), None)
-        if ur_op and rank <= ur_op.closing_rank: allotted = ur_op; break
-        if gender == 'F':
-            ur_f = next((s for s in possible_seats if s.category == 'UR' and s.gender == 'F'), None)
-            if ur_f and rank <= ur_f.closing_rank: allotted = ur_f; break
-        if category != 'UR':
-            cat_op = next((s for s in possible_seats if s.category == category and s.gender == 'OP'), None)
-            if cat_op and rank <= cat_op.closing_rank: allotted = cat_op; break
-            if gender == 'F':
-                cat_f = next((s for s in possible_seats if s.category == category and s.gender == 'F'), None)
-                if cat_f and rank <= cat_f.closing_rank: allotted = cat_f; break
+        
+        # Normalize the choice name by removing commas, periods, and all spaces
+        clean_c_name = c_name.replace(",", "").replace(".", "").replace(" ", "").lower()
+        
+        # Query seats for this college & branch in this year using double replace on database column
+        seats = SeatInfo.query.filter(
+            func.replace(func.replace(func.replace(SeatInfo.college_name, ',', ''), '.', ''), ' ', '').ilike(clean_c_name),
+            SeatInfo.branch == c_branch,
+            SeatInfo.year == year
+        ).all()
+        
+        # Filter seats down to only those that are eligible for this student
+        eligible_seats = []
+        for s in seats:
+            # 1. Rank must be <= closing rank
+            if rank > s.closing_rank:
+                continue
+                
+            # 2. Domicile eligibility
+            # Non-MP students (domicile == 'N') can ONLY get seats open to all states (domicile == 'N')
+            if domicile == 'N' and s.domicile != 'N':
+                continue
+            # Note: MP Resident (domicile == 'Y') can match both 'Y' and 'N' seats
+                
+            # 3. Category eligibility
+            # UR seats are open to all categories. Reserved seats only match student's specific category.
+            if s.category != 'UR' and s.category != category:
+                continue
+                
+            # 4. Gender eligibility
+            # Male students ('M') cannot take Female ('F') seats. They can match ('M', 'OP') seats.
+            # Female students ('F') can match both ('F', 'M', 'OP') seats.
+            if gender == 'M' and s.gender == 'F':
+                continue
+                
+            eligible_seats.append(s)
+            
+        if eligible_seats:
+            # Prioritize matching quotas: UR OP -> UR F -> Reserved OP -> Reserved F
+            def allotment_priority(seat):
+                is_ur = (seat.category == 'UR')
+                is_op_or_m = (seat.gender in ['OP', 'M'])
+                
+                if is_ur and is_op_or_m:
+                    return 1
+                elif is_ur and seat.gender == 'F':
+                    return 2
+                elif seat.category == category and is_op_or_m:
+                    return 3
+                elif seat.category == category and seat.gender == 'F':
+                    return 4
+                return 5
+                
+            eligible_seats.sort(key=allotment_priority)
+            allotted = eligible_seats[0]
+            break
+            
     if allotted:
-        return {'success': True, 'college': allotted.college_name, 'branch': allotted.branch, 'choice_no': idx + 1, 'allotted_category': allotted.category, 'allotted_gender': allotted.gender, 'year': year}
+        return {
+            'success': True,
+            'college': allotted.college_name,
+            'branch': allotted.branch,
+            'choice_no': idx + 1,
+            'allotted_category': allotted.category,
+            'allotted_gender': allotted.gender,
+            'year': year
+        }
     return {'success': False}

@@ -70,6 +70,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/recommendation-list" class="{% if request.endpoint == 'recommendation_list' %}nav-active{% endif %}">
+                        <i class="fas fa-list-ol"></i> Recommendation Choice Filling List
+                    </a>
+                </li>
+                <li>
                     <a href="/rank_predictor" class="{% if request.endpoint == 'rank' %}nav-active{% endif %}">
                         <i class="fas fa-chart-line"></i> Check Rank
                     </a>

@@ -107,7 +107,9 @@
                     {% for college in colleges %}
                     <tr>
                         <td style="color:var(--muted);font-weight:700;width:40px;">{{ loop.index }}</td>
-                        <td style="font-weight:600;color:var(--primary);">{{ college.college_name }}</td>
+                        <td style="font-weight:600;color:var(--primary);">
+                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank" style="color:var(--primary);text-decoration:none;">{{ college.college_name }}</a>
+                        </td>
                         <td><span class="type-tag">{{ college.college_type }}</span></td>
                         <td>{{ college.branch | branch_name }} ({{ college.branch }})</td>
                         <td style="font-family:monospace;">

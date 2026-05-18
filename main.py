@@ -215,8 +215,14 @@ def search():
     )
 
     if request.args.get('json'):
-        from models import model_to_dict
-        return [model_to_dict(c) for c in colleges]
+        seen = set()
+        deduped = []
+        for c in colleges:
+            key = (c['college_name'], c['branch'])
+            if key not in seen:
+                seen.add(key)
+                deduped.append(c)
+        return deduped
 
     return render_template("search.html", data=data, colleges=colleges, mp_cities=MP_CITIES)
 
@@ -281,10 +287,85 @@ def simulator():
             'gender': gender, 'domicile': domicile, 'year': year
         }
         
-        return render_template('simulator.html', result=sim_result, user=user_data, choices=choices)
+        # 3. Generate smart recommendations (options they have high/medium probability of getting)
+        recommendations = []
+        try:
+            all_options = get_colleges(cgpa, 'All', category, gender, 'Any', domicile, 'All')
+            seen_recommendations = set()
+            choice_keys = {(c['college_name'], c['branch']) for c in choices}
+            
+            for yr in [2025, 2024]:
+                if yr in all_options:
+                    for item in all_options[yr]['colleges']:
+                        col = item['college']
+                        prob = item['probability']
+                        if prob >= 50 and (col.college_name, col.branch) not in choice_keys:
+                            key = (col.college_name, col.branch)
+                            if key not in seen_recommendations:
+                                seen_recommendations.add(key)
+                                recommendations.append({
+                                    'college_name': col.college_name,
+                                    'branch': col.branch,
+                                    'probability': prob,
+                                    'college_type': col.college_type
+                                })
+                                if len(recommendations) >= 5:
+                                    break
+                if len(recommendations) >= 5:
+                    break
+        except Exception:
+            pass  # Fail-safe: don't crash simulation if recommendations fail
+            
+        return render_template('simulator.html', result=sim_result, user=user_data, choices=choices, recommendations=recommendations)
 
     except Exception as e:
         return render_template('simulator.html', error=str(e))
+
+
+@app.route('/recommendation-list')
+def recommendation_list():
+    # Pre-defined recommendation list of 37 colleges from 'recommendation choice'
+    # mapped exactly to database-compatible names for seamless shortlist and simulator sync!
+    best_choices = [
+        {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE", "display_name": "SGSITS Indore: CS"},
+        {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT", "display_name": "SGSITS Indore: IT"},
+        {"sn": 3, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CSE", "display_name": "IET DAVV Indore: CS"},
+        {"sn": 4, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "IT", "display_name": "IET DAVV Indore: IT"},
+        {"sn": 5, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "ET", "display_name": "SGSITS Indore: ETC"},
+        {"sn": 6, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "ET", "display_name": "IET DAVV Indore: ETC"},
+        {"sn": 7, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "CSE", "display_name": "JEC Jabalpur: CS"},
+        {"sn": 8, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "IT", "display_name": "JEC Jabalpur: IT"},
+        {"sn": 9, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EE", "display_name": "SGSITS Indore: EE"},
+        {"sn": 10, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EI", "display_name": "SGSITS Indore: E&I"},
+        {"sn": 11, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "MECH", "display_name": "SGSITS Indore: Mech."},
+        {"sn": 12, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "EI", "display_name": "IET DAVV Indore: E&I"},
+        {"sn": 13, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "CSE", "display_name": "MITS Gwalior: CS"},
+        {"sn": 14, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "IT", "display_name": "MITS Gwalior: IT"},
+        {"sn": 15, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "CSE", "display_name": "UIT RGPV Bhopal: CS"},
+        {"sn": 16, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "IT", "display_name": "UIT RGPV Bhopal: IT"},
+        {"sn": 17, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "CSE", "display_name": "LNCT Bhopal [Main]: CS"},
+        {"sn": 18, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "CSE", "display_name": "Acropolis Indore: CS"},
+        {"sn": 19, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "IT", "display_name": "Acropolis Indore: IT"},
+        {"sn": 20, "db_name": "Oriental Institute of Science & Technology, Bhopal (1995)", "branch": "CSE", "display_name": "Oriental Bhopal: CS/IT"},
+        {"sn": 21, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "ET", "display_name": "JEC Jabalpur: ETC"},
+        {"sn": 22, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "EE", "display_name": "JEC Jabalpur: EE"},
+        {"sn": 23, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "ET", "display_name": "MITS Gwalior: EC"},
+        {"sn": 24, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "EE", "display_name": "MITS Gwalior: EE"},
+        {"sn": 25, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "ET", "display_name": "RGPV Bhopal: EC"},
+        {"sn": 26, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "EE", "display_name": "RGPV Bhopal: EE"},
+        {"sn": 27, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CIVIL", "display_name": "SGSITS Indore: Civil"},
+        {"sn": 28, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CIVIL", "display_name": "IET DAVV Indore: Civil"},
+        {"sn": 29, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "CSE", "display_name": "SATI Vidisha: CS"},
+        {"sn": 30, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "IT", "display_name": "SATI Vidisha: IT"},
+        {"sn": 31, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "CSE", "display_name": "IPS Indore: CS"},
+        {"sn": 32, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "IT", "display_name": "IPS Indore: IT"},
+        {"sn": 33, "db_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)", "branch": "CSE", "display_name": "LNCT Science: CS"},
+        {"sn": 34, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "AIML", "display_name": "LNCT Main: CS SP."},
+        {"sn": 35, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "AIML", "display_name": "Acropolis: CS SP."},
+        {"sn": 36, "db_name": "Rewa Engineering College, Rewa (REC) (1964)", "branch": "CSE", "display_name": "Rewa Engineering: CS"},
+        {"sn": 37, "db_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)", "branch": "CSE", "display_name": "UGC: CS"},
+    ]
+    return render_template('recommendation_list.html', choices=best_choices)
 
 
 @app.route('/contact')

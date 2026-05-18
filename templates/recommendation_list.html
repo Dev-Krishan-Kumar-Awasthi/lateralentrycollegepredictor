@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block title %}Recommendation Choice Filling List — MP DTE 2025{% endblock %}
+
+{% block content %}
+<div class="container animate-fade-in" style="max-width:960px; margin: 0 auto 50px;">
+    
+    <!-- Hero Banner with Confused Message -->
+    <div class="gov-box" style="border-left: 6px solid var(--saffron); background: linear-gradient(135deg, #FFFDF5 0%, #FFFBEB 100%); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(217, 119, 6, 0.08); margin-bottom: 30px; text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 15px; color: var(--saffron);">
+            <i class="fas fa-lightbulb"></i>
+        </div>
+        <h2 style="color: #78350F; font-size: 1.6rem; font-weight: 800; line-height: 1.4; margin-top: 0; margin-bottom: 12px;">
+            Confused About Choice Filling?
+        </h2>
+        <p style="color: #92400E; font-size: 1.15rem; font-weight: 600; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+            "If you are confused about which college or branch to select within Madhya Pradesh, you can use this choice filling list as a preference order as-is."
+        </p>
+    </div>
+
+    <!-- Main List Container -->
+    <div class="gov-box" style="padding: 30px; box-shadow: 0 10px 30px rgba(15,44,94,0.06);">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--border); padding-bottom:15px; margin-bottom:25px;">
+            <h3 style="margin:0; font-size:1.4rem; color:var(--primary); display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-list-ol" style="color:var(--primary);"></i>
+                <span>Best Choice Filling Order for MPDTE B.Tech Counselling</span>
+            </h3>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button type="button" class="btn-primary-small" style="background:#475569; border-color:#475569; cursor:pointer;" onclick="downloadRecommendationsPDF()">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                <span style="background:var(--primary); color:#fff; font-size:0.8rem; font-weight:800; padding:6px 12px; border-radius:20px; white-space:nowrap;">
+                    37 Recommendations
+                </span>
+            </div>
+        </div>
+
+        <p class="subtitle" style="font-size:0.9rem; color:var(--muted); margin-bottom:20px; line-height:1.5;">
+            Below is the optimized priority list prepared by experts based on academic infrastructure, placement records, and brand recognition in MP. Click <strong>Shortlist</strong> on the colleges you like, then navigate to the <strong>Allotment Simulator</strong> to import them instantly!
+        </p>
+
+        <!-- Search Filter inside the list -->
+        <div style="margin-bottom: 25px;">
+            <div style="position:relative;">
+                <i class="fas fa-filter" style="position:absolute; left:12px; top:12px; color:var(--muted);"></i>
+                <input type="text" id="rec-filter" placeholder="Quick filter by college or branch..." style="width:100%; padding:10px 15px 10px 35px; border:1px solid var(--border); border-radius:6px; font-size:0.9rem; box-sizing:border-box; outline:none; transition:0.3s;" onkeyup="filterRecommendations()">
+            </div>
+        </div>
+
+        <!-- Recommendation Choice Filling Grid -->
+        <div id="rec-list" style="display:flex; flex-direction:column; gap:12px;">
+            {% for choice in choices %}
+            <div class="rec-row-item animate-pop" style="background:#fff; border:1px solid var(--border); padding:16px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; gap:15px; transition:0.3s;" data-text="{{ choice.display_name | lower }}">
+                
+                <div style="display:flex; align-items:center; gap:15px; flex:1;">
+                    <!-- Sequence Number -->
+                    <div style="background:#EEF2FF; color:#4F46E5; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.95rem; flex-shrink:0;">
+                        {{ choice.sn }}
+                    </div>
+                    
+                    <!-- Details -->
+                    <div style="text-align:left;">
+                        <h4 style="margin:0; font-size:1.02rem; color:var(--text); font-weight:700;">{{ choice.display_name.split(':')[0] }}</h4>
+                        <div style="font-size:0.8rem; margin-top:4px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                            <span style="background:#FFF1F2; color:#E11D48; padding:2px 6px; border-radius:4px; font-weight:700; text-transform:uppercase;">
+                                {{ choice.branch | branch_name }} ({{ choice.branch }})
+                            </span>
+                            <span style="color:var(--muted); font-size:0.75rem; display:flex; align-items:center; gap:4px;">
+                                <i class="fas fa-database"></i> {{ choice.db_name }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button type="button" class="btn-primary-small btn-shortlist-action" style="padding:8px 14px; font-size:0.8rem; white-space:nowrap; cursor:pointer;" data-college="{{ choice.db_name }}" data-branch="{{ choice.branch }}" onclick="toggleShortlist('{{ choice.db_name | replace("'","\\'") }}', '{{ choice.branch }}', this)">
+                    <i class="fas fa-plus"></i> Shortlist
+                </button>
+
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="no-rec-results" style="display:none; text-align:center; padding:30px; color:var(--muted);">
+            <i class="fas fa-search" style="font-size:2rem; margin-bottom:10px;"></i>
+            <p>Koi matching college nahi mila. Apne filter terms check karein!</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Generate highly polished, printable vector PDF of the 37 priority choices
+function downloadRecommendationsPDF() {
+    const listRows = document.querySelectorAll('.rec-row-item');
+    if (listRows.length === 0) return;
+    
+    const printWindow = window.open('', '_blank');
+    let htmlContent = `
+    <html>
+    <head>
+        <title>MP BTech Lateral Entry — Expert Recommended Choice Filling Order</title>
+        <style>
+            body { font-family: 'Inter', system-ui, sans-serif; padding: 40px; color: #1e293b; line-height: 1.5; }
+            h2 { color: #0f2849; border-bottom: 2px solid #0f2849; padding-bottom: 10px; margin-bottom: 5px; margin-top: 0; }
+            p { font-size: 0.9rem; color: #64748b; margin-bottom: 25px; }
+            .header-info { display: flex; justify-content: space-between; margin-bottom: 25px; background: #fffbeb; padding: 15px; border-radius: 8px; border: 1px solid #fde68a; font-size: 0.9rem; color: #92400e; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: left; font-size: 0.88rem; }
+            th { background-color: #0f2849; color: white; font-weight: 700; }
+            tr:nth-child(even) { background-color: #f8fafc; }
+            .badge { background: #ffe4e6; color: #be123c; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+            .footer { text-align: center; margin-top: 50px; font-size: 0.8rem; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+        </style>
+    </head>
+    <body>
+        <h2>MP DTE Lateral Entry B.Tech Counselling 2025</h2>
+        <p>Expert Recommended Choice Filling Preference Order (For General Reference)</p>
+        
+        <div class="header-info">
+            <div>
+                <strong>"If you are confused about which college or branch to select within Madhya Pradesh, you can use this choice filling list as a preference order as-is."</strong>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 10%; text-align: center;">Rank No.</th>
+                    <th style="width: 60%;">College / Institute Name</th>
+                    <th style="width: 30%;">Recommended Branch</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    // We fetch all 37 elements in order
+    const choicesData = [];
+    {% for choice in choices %}
+    choicesData.push({
+        sn: "{{ choice.sn }}",
+        college: "{{ choice.display_name.split(':')[0] }}",
+        branch: "{{ choice.branch | branch_name }} ({{ choice.branch }})"
+    });
+    {% endfor %}
+    
+    choicesData.forEach((item) => {
+        htmlContent += `
+            <tr>
+                <td style="font-weight: 800; text-align: center;">${item.sn}</td>
+                <td style="font-weight: 600;">${item.college}</td>
+                <td><span class="badge">${item.branch}</span></td>
+            </tr>
+        `;
+    });
+    
+    htmlContent += `
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            Generated via MP BTech Lateral Entry College Predictor © 2025-26. Always submit choices on the official MP DTE portal.
+        </div>
+        
+        <script>
+            window.onload = function() {
+                window.print();
+                setTimeout(function() { window.close(); }, 500);
+            };
+        <\/script>
+    </body>
+    </html>
+    `;
+    
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+}
+
+// Toggle College Shortlist state in localStorage
+function toggleShortlist(db_name, branch, btn) {
+    let shortlist = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
+    const key = `${db_name}|${branch}||2025`; // Matches standard shortlist formatting
+    
+    if (shortlist.includes(key)) {
+        // Remove from list
+        shortlist = shortlist.filter(x => x !== key);
+        btn.innerHTML = '<i class="fas fa-plus"></i> Shortlist';
+        btn.style.background = '';
+        btn.style.borderColor = '';
+    } else {
+        // Add to list
+        shortlist.push(key);
+        btn.innerHTML = '<i class="fas fa-check"></i> Shortlisted';
+        btn.style.background = '#22C55E';
+        btn.style.borderColor = '#22C55E';
+    }
+    localStorage.setItem('mp_dte_shortlist', JSON.stringify(shortlist));
+}
+
+// Sync buttons on page load with existing localStorage shortlist
+document.addEventListener('DOMContentLoaded', () => {
+    const shortlist = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
+    document.querySelectorAll('.btn-shortlist-action').forEach(btn => {
+        const key = `${btn.dataset.college}|${btn.dataset.branch}||2025`;
+        if (shortlist.includes(key)) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Shortlisted';
+            btn.style.background = '#22C55E';
+            btn.style.borderColor = '#22C55E';
+        }
+    });
+});
+
+// Client-side quick filter
+function filterRecommendations() {
+    const query = document.getElementById('rec-filter').value.trim().toLowerCase();
+    const rows = document.querySelectorAll('.rec-row-item');
+    let visibleCount = 0;
+    
+    rows.forEach(row => {
+        const text = row.dataset.text;
+        if (text.includes(query)) {
+            row.style.display = 'flex';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    const noResultsBox = document.getElementById('no-rec-results');
+    if (visibleCount === 0) {
+        noResultsBox.style.display = 'block';
+    } else {
+        noResultsBox.style.display = 'none';
+    }
+}
+</script>
+
+<style>
+.rec-row-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-color: var(--primary) !important;
+}
+.btn-shortlist-action {
+    transition: 0.2s ease-in-out;
+}
+</style>
+{% endblock %}

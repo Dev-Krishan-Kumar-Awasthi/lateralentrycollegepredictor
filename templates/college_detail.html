@@ -53,6 +53,91 @@
         </div>
     </div>
 
+    <!-- Cutoff Trend Analytics Dashboard (2024 vs 2025) -->
+    {% if detail.by_year.keys() | list | length >= 2 %}
+    <div class="gov-box trend-analytics-card" style="margin-bottom: 28px; border-top: 4px solid var(--primary); background: #FAFBFD; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+        <h3 style="color:var(--primary); font-size:1.1rem; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+            <i class="fas fa-chart-line" style="color:var(--saffron);"></i> 
+            <strong>Year-on-Year Cutoff Trend Analysis (2024 vs 2025)</strong>
+        </h3>
+        <p style="font-size:0.82rem; margin-bottom:18px; color:var(--muted); line-height:1.4;">
+            This dashboard compares the average closing ranks between 2024 and 2025 across all engineering branches to help you understand which direction the cutoffs are moving.
+        </p>
+        
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+            {% for b in detail.branches %}
+                {% set ns = namespace(avg_2024=0, count_2024=0, avg_2025=0, count_2025=0) %}
+                {% if 2024 in detail.by_year %}
+                    {% for r in detail.by_year[2024] %}
+                        {% if r.branch == b %}
+                            {% set ns.avg_2024 = ns.avg_2024 + r.closing_rank %}
+                            {% set ns.count_2024 = ns.count_2024 + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if 2025 in detail.by_year %}
+                    {% for r in detail.by_year[2025] %}
+                        {% if r.branch == b %}
+                            {% set ns.avg_2025 = ns.avg_2025 + r.closing_rank %}
+                            {% set ns.count_2025 = ns.count_2025 + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                
+                {% if ns.count_2024 > 0 and ns.count_2025 > 0 %}
+                    {% set avg_val_2024 = (ns.avg_2024 / ns.count_2024) | round | int %}
+                    {% set avg_val_2025 = (ns.avg_2025 / ns.count_2025) | round | int %}
+                    {% set diff = avg_val_2025 - avg_val_2024 %}
+                    
+                    <div class="trend-card" style="background:#fff; border:1px solid var(--border); padding:16px; border-radius:8px; display:flex; flex-direction:column; gap:10px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: 0.2s;">
+                        <div style="font-weight:700; font-size:0.88rem; color:var(--primary); text-align: left;">
+                            {{ b | branch_name }} ({{ b }})
+                        </div>
+                        
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
+                            <div style="text-align:left;">
+                                <div style="font-size:0.75rem; color:var(--muted);">2024 Avg Cutoff</div>
+                                <div style="font-weight:700; font-size:1.1rem; color:#475569; font-family:monospace;">{{ avg_val_2024 }}</div>
+                            </div>
+                            
+                            <div style="font-size:1.2rem; color:#94A3B8;">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                            
+                            <div style="text-align:right;">
+                                <div style="font-size:0.75rem; color:var(--muted);">2025 Avg Cutoff</div>
+                                <div style="font-weight:700; font-size:1.1rem; color:var(--primary); font-family:monospace;">{{ avg_val_2025 }}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Visual share bar to show relatively larger or smaller closing ranks -->
+                        <div style="margin-top:5px; height:8px; background:#F1F5F9; border-radius:4px; overflow:hidden; display:flex;">
+                            {% set total_avg = avg_val_2024 + avg_val_2025 %}
+                            {% set pct_2024 = (avg_val_2024 / total_avg * 100) | round | int %}
+                            {% set pct_2025 = 100 - pct_2024 %}
+                            <div style="width:{{ pct_2024 }}%; background:#94A3B8; height:100%;" title="2024 Average: {{ avg_val_2024 }}"></div>
+                            <div style="width:{{ pct_2025 }}%; background:var(--primary); height:100%;" title="2025 Average: {{ avg_val_2025 }}"></div>
+                        </div>
+                        
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:3px;">
+                            {% if diff < -50 %}
+                                <span style="color:#DC2626; font-weight:700;"><i class="fas fa-arrow-down"></i> Cutoff Tightened (-{{ diff | abs }})</span>
+                                <span style="background:#FEE2E2; color:#991B1B; padding:2px 6px; border-radius:4px; font-weight:700; font-size:0.7rem; letter-spacing: 0.05em;">HARDER TO GET</span>
+                            {% elif diff > 50 %}
+                                <span style="color:#16A34A; font-weight:700;"><i class="fas fa-arrow-up"></i> Cutoff Relaxed (+{{ diff }})</span>
+                                <span style="background:#D1FAE5; color:#065F46; padding:2px 6px; border-radius:4px; font-weight:700; font-size:0.7rem; letter-spacing: 0.05em;">EASIER TO GET</span>
+                            {% else %}
+                                <span style="color:#4F46E5; font-weight:700;"><i class="fas fa-equals"></i> Cutoff Stable ({{ diff if diff >=0 else diff }})</span>
+                                <span style="background:#EEF2FF; color:#3730A3; padding:2px 6px; border-radius:4px; font-weight:700; font-size:0.7rem; letter-spacing: 0.05em;">STABLE</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Year-wise Tables -->
     {% for year, rows in detail.by_year.items() %}
     <div class="year-section">
@@ -201,6 +286,12 @@
 
 /* Detail table tweak */
 .detail-table th, .detail-table td { font-size: 0.85rem; }
+
+.trend-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(15, 44, 94, 0.08);
+    border-color: var(--primary) !important;
+}
 
 /* Mobile */
 @media (max-width: 768px) {
