@@ -6,7 +6,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, request, redirect, jsonify, session
+from flask import Flask, render_template, request, redirect, jsonify, session, url_for
 from flask_cors import CORS
 from urllib.parse import quote as url_quote
 from db import db
@@ -43,6 +43,19 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 init_auth(app)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+# ── Security Headers (injected on every response) ───────────────────────────
+@app.after_request
+def set_security_headers(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    # Block admin paths from being cached by browser
+    if request.path.startswith("/admin"):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+    return response
 
 db.init_app(app)
 
@@ -224,6 +237,12 @@ def about():
 
 @app.route('/predictor', methods=['GET', 'POST'])
 def predictor():
+    if request.method == 'POST' and not current_user():
+        return render_template(
+            'predictor.html', data=None, prediction=None,
+            needs_login=True, mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+        )
+
     if request.method == 'GET':
         prefill = {
             'cgpa': request.args.get('cgpa', ''),
@@ -300,6 +319,12 @@ def choice_builder():
             shortlisted_keys.add(cname)
 
     if request.method == 'POST':
+        if not user:
+            return render_template(
+                'choice_builder.html', result=None, form_data=None,
+                needs_login=True, mp_cities=MP_CITIES,
+                cloud_shortlist=[], shortlisted_keys=set(),
+            )
         try:
             cgpa = float(request.form.get('cgpa', '').strip())
             form_data = {
@@ -471,6 +496,11 @@ def search():
     if not has_filters:
         return render_template("search.html", data=None, colleges=None, mp_cities=MP_CITIES)
 
+    # Login required to view search results
+    if not current_user():
+        return render_template("search.html", data=data, colleges=None,
+                               mp_cities=MP_CITIES, needs_login=True)
+
     data = {
         "q": q, "category": category, "gender": gender,
         "college_type": college_type, "branch": branch, "city": city, "year": year,
@@ -516,6 +546,9 @@ def search():
 
 @app.route('/rank_predictor', methods=['GET', 'POST'])
 def rank():
+    if request.method == 'POST' and not current_user():
+        return render_template('rank.html', data=None, prediction=None, needs_login=True)
+
     if request.method == 'GET':
         return render_template('rank.html', data=None, prediction=None)
 
@@ -534,6 +567,9 @@ def rank():
 
 @app.route('/simulator', methods=['GET', 'POST'])
 def simulator():
+    if request.method == 'POST' and not current_user():
+        return render_template('simulator.html', result=None, needs_login=True)
+
     if request.method == 'GET':
         return render_template('simulator.html', result=None)
 
@@ -599,6 +635,8 @@ def simulator():
 
 @app.route('/recommendation-list')
 def recommendation_list():
+    if not current_user():
+        return redirect(url_for('account_page', next=request.url))
     best_choices = [
         {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE", "display_name": "SGSITS Indore: CS"},
         {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT", "display_name": "SGSITS Indore: IT"},
@@ -692,15 +730,34 @@ def account_page():
             logout_user()
             return redirect('/account')
         if action == 'login':
+            import time
+            # ── Rate-limit login attempts (max 5 per 10 minutes per session) ──
+            now = time.time()
+            login_attempts = session.get("login_attempts", [])
+            # purge attempts older than 10 minutes
+            login_attempts = [t for t in login_attempts if now - t < 600]
+            if len(login_attempts) >= 5:
+                return render_template(
+                    'account.html',
+                    error="Too many login attempts. Please wait 10 minutes before trying again."
+                )
+            login_attempts.append(now)
+            session["login_attempts"] = login_attempts
+
             user, err = authenticate(
                 request.form.get('email', ''),
                 request.form.get('password', ''),
             )
             if err:
                 return render_template('account.html', error=err)
+            # Successful login → clear rate-limit
+            session.pop("login_attempts", None)
             login_user(user)
-            nxt = request.args.get('next') or '/account'
-            return redirect(nxt)
+            # ── Safe redirect: only allow relative paths (prevent open redirect) ──
+            nxt = request.args.get('next') or ''
+            if nxt and (nxt.startswith('http') or nxt.startswith('//') or not nxt.startswith('/')):
+                nxt = '/account'
+            return redirect(nxt or '/account')
         if action == 'register':
             try:
                 cgpa_val = float(request.form.get('cgpa', '0').strip())
@@ -937,6 +994,7 @@ def get_admin_dashboard_stats(users):
 
 
 @app.route('/admin/users')
+@login_required
 def admin_users():
     user = current_user()
     admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()

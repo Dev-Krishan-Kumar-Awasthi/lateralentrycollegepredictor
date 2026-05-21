@@ -12,30 +12,38 @@ def test_predictor_template():
             resp = client.get('/predictor?cgpa=8.0&category=UR&gender=M')
             print(f"GET /predictor status code: {resp.status_code}")
             assert resp.status_code == 200, f"Expected 200, got {resp.status_code}"
-            # Verify GET works
+            # Verify GET works (no login required for GET)
             html = resp.get_data(as_text=True)
             assert "whatif-slider" not in html, "whatif-slider should have been removed!"
             assert "whatif-preview" not in html, "whatif-preview should have been removed!"
             assert "What-if" not in html, "What-if text should have been removed!"
             assert "toggleAdvancedLocation" in html, "toggleAdvancedLocation script should be present!"
             assert "advanced-location-row" in html, "advanced-location-row container should be present!"
-            
-            # Verify POST works
+
+            # Verify unauthenticated POST returns 200 with login modal (no redirect)
             post_data = {
-                'cgpa': '8.5',
-                'category': 'UR',
-                'gender': 'M',
-                'college_type': 'Any',
-                'branch': ['CSE', 'ECE'],
-                'domicile': 'Y',
-                'city': 'All',
-                'district': 'All',
-                'home_city': 'All',
-                'max_distance_km': ''
+                'cgpa': '8.5', 'category': 'UR', 'gender': 'M',
+                'college_type': 'Any', 'branch': ['CSE', 'ECE'],
+                'domicile': 'Y', 'city': 'All', 'district': 'All',
+                'home_city': 'All', 'max_distance_km': ''
             }
+            resp_unauth = client.post('/predictor', data=post_data)
+            print(f"POST /predictor (unauthenticated) status code: {resp_unauth.status_code}")
+            assert resp_unauth.status_code == 200, f"Expected 200 (login modal), got {resp_unauth.status_code}"
+            html_unauth = resp_unauth.get_data(as_text=True)
+            assert 'login-required-modal' in html_unauth or 'needs_login' in html_unauth or 'Login Required' in html_unauth, \
+                "Should contain login required modal"
+
+            # Login as admin, then verify POST works
+            client.post('/account', data={
+                'action': 'login',
+                'email': 'krishnaawasthi701@gmail.com',
+                'password': 'kkawasthi@202956@kka'
+            }, follow_redirects=True)
+
             resp_post = client.post('/predictor', data=post_data)
-            print(f"POST /predictor status code: {resp_post.status_code}")
-            assert resp_post.status_code == 200, f"Expected 200 on POST, got {resp_post.status_code}"
+            print(f"POST /predictor (authenticated) status code: {resp_post.status_code}")
+            assert resp_post.status_code == 200, f"Expected 200 on authenticated POST, got {resp_post.status_code}"
             html_post = resp_post.get_data(as_text=True)
             assert "Analysis of Available Colleges" in html_post, "Should display results section"
             print("Template POST test passed successfully!")
@@ -129,9 +137,11 @@ def test_account_registration_and_admin():
         # Logout standard user
         client.post('/account', data={'action': 'logout'}, follow_redirects=True)
 
-        # Anonymous user should get 403 Access Denied and should not see navbar Admin link
+        # Anonymous user should be redirected to login (302) by @login_required
+        # (not 403, because login_required fires before admin email check)
         resp_admin_fail2 = client.get('/admin/users')
-        assert resp_admin_fail2.status_code == 403, f"Expected 403 on anonymous user, got {resp_admin_fail2.status_code}"
+        assert resp_admin_fail2.status_code in (302, 403), \
+            f"Expected 302 or 403 on anonymous user, got {resp_admin_fail2.status_code}"
         
         resp_nav_anon = client.get('/about')
         assert "Admin Panel" not in resp_nav_anon.get_data(as_text=True), "Anonymous user should not see Admin Panel in navbar"
@@ -215,7 +225,12 @@ def test_seo_routes_and_choice_builder_recs():
         assert "Sitemap:" in robots_txt
         print("Robots.txt test passed!")
 
-        # 3. Test Choice Builder priority sort
+        # 3. Test Choice Builder priority sort (login required for POST)
+        client.post('/account', data={
+            'action': 'login',
+            'email': 'krishnaawasthi701@gmail.com',
+            'password': 'kkawasthi@202956@kka'
+        }, follow_redirects=True)
         cb_data = {
             'cgpa': '8.5',
             'category': 'UR',

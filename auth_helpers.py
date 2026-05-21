@@ -11,11 +11,25 @@ from models import User, CloudShortlist
 
 
 def init_auth(app):
-    secret = os.environ.get("SECRET_KEY", "mp-dte-predictor-dev-change-in-production")
+    secret = os.environ.get("SECRET_KEY")
+    if not secret:
+        # In production, always set SECRET_KEY in .env
+        # Using a generated default for local dev only
+        import secrets as _secrets
+        secret = _secrets.token_hex(32)
+        print("[SECURITY WARNING] SECRET_KEY not set in environment. "
+              "Using a randomly generated key — sessions will be invalidated on restart. "
+              "Set SECRET_KEY in your .env file for production.")
     app.config["SECRET_KEY"] = secret
+    # ── Secure session cookie settings ──
+    app.config["SESSION_COOKIE_HTTPONLY"] = True       # JS cannot read the cookie
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"     # CSRF protection
+    app.config["SESSION_COOKIE_SECURE"] = False        # Set True when HTTPS is enabled
+    app.config["PERMANENT_SESSION_LIFETIME"] = 86400   # Sessions last 24h if made permanent
 
 
 def login_user(user: User):
+    session.permanent = False  # Session dies when browser closes
     session["user_id"] = user.id
     session["user_email"] = user.email
     session["user_name"] = user.display_name or user.email.split("@")[0]

@@ -264,11 +264,23 @@
         <h2 style="color:var(--primary); margin-top:0; text-align:center;"><i class="fas fa-cloud"></i> Save Shortlist to Cloud</h2>
         <p class="subtitle" style="text-align:center; margin-bottom:30px;">Create an account to backup your shortlisted colleges, sync across your mobile and computer, and get counselling support.</p>
 
+        {# ── Login-Required Banner (shows when user is redirected from a locked tool) ── #}
+        {% set next_url = request.args.get('next', '') %}
+        {% if next_url %}
+        <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff; border-radius:12px; padding:18px 20px; margin-bottom:24px; display:flex; align-items:flex-start; gap:14px; box-shadow:0 8px 20px rgba(30,58,138,0.25);">
+            <div style="font-size:1.8rem; flex-shrink:0;">🔒</div>
+            <div>
+                <div style="font-size:1rem; font-weight:800; margin-bottom:4px;">Login Required to Use This Tool</div>
+                <div style="font-size:0.88rem; opacity:0.9; line-height:1.5;">Yeh feature sirf registered students ke liye hai. Please <strong>Sign In</strong> karein ya <strong>Register Now</strong> karein — free hai aur 2 minutes lagti hai!</div>
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Login Form Accordion / Section -->
         <div style="background:#F8FAFC; border:1px solid var(--border); padding:20px; border-radius:8px; margin-bottom:24px;">
             <div id="login-form-wrapper">
                 <h3 style="font-size:1.1rem; margin-top:0; margin-bottom:14px; color:var(--primary);"><i class="fas fa-sign-in-alt"></i> Sign In to Your Account</h3>
-                <form method="POST" class="no-loader">
+                <form method="POST" action="/account?next={{ request.args.get('next', '')|urlencode }}" class="no-loader">
                     <input type="hidden" name="action" value="login">
                     <div class="form-row" style="grid-template-columns: 1fr 1fr; gap:12px;">
                         <div class="form-group">
