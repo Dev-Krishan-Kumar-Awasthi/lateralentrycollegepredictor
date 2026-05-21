@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Counselling Allotment Simulator — MP DTE 2025{% endblock %}
+{% block title %}Counselling Allotment Simulator — MP DTE Lateral Entry 2025 | Practice Choice Filling{% endblock %}
+{% block meta_description %}Practice MP DTE BTech Lateral Entry counselling allotment with our free simulator. Simulate round-wise choice filling for LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, and top 10 govt colleges in mp.{% endblock %}
+{% block meta_keywords %}MP DTE counselling simulator, lateral entry allotment simulator, DTE MP choice filling practice, BTech lateral entry round simulation, MP engineering counselling 2025, LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling{% endblock %}
+{% block og_title %}Counselling Allotment Simulator — MP DTE Lateral Entry 2025{% endblock %}
+{% block og_description %}Practice filling your MP DTE lateral entry college choice list and simulate the allotment process before the actual counselling starts.{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -9,7 +13,7 @@
             <i class="fas fa-vial" style="margin-right:10px;"></i> Counselling Allotment Simulator
         </h1>
         <p class="subtitle">
-            Create your priority list (Choice Filling) and see which college you would be allotted based on DTE's official algorithm.
+            Build your college priority list and see which seat you might get. This uses the same rules as DTE allotment, based on last year's cutoff data.
         </p>
 
         {% if error %}
@@ -41,24 +45,31 @@
                             <span><i class="fas fa-history"></i> Based on {{ result.year }} Trend</span>
                         </div>
                         <p style="margin-top:20px; font-size:0.85rem; color:#64748B;">
-                            Note: Yeh ek simulation hai. Asli allotment DTE MP ke portal par choice filling ke baad hi pata chalega.
+                            This is only a practice result. Your real allotment will appear on the official DTE MP website after you fill and lock your choices there.
                         </p>
                         <!-- WhatsApp Share Action -->
                         <div style="margin-top:20px;">
-                            <a href="#" id="whatsapp-share-btn-allotted" class="btn-whatsapp" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem; transition:0.3s; box-shadow:0 4px 10px rgba(37,211,102,0.3);">
-                                <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Share Result on WhatsApp
-                            </a>
+                            <div class="share-result-btns" data-share-result>
+                                <a href="#" data-share-whatsapp class="btn-whatsapp" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem;">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="#" data-share-telegram class="btn-telegram" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#0088cc; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem; margin-left:8px;">
+                                    <i class="fab fa-telegram"></i> Telegram
+                                </a>
+                            </div>
                         </div>
                     </div>
                 {% else %}
                     <div class="not-allotted-box">
                         <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#F59E0B; margin-bottom:15px;"></i>
                         <h3>Seat Not Allotted!</h3>
-                        <p>Aapke rank ({{ user.rank }}) aur choice list ke mutabik pichle saal koi seat nahi mili. <br><strong>Advice:</strong> Choice list mein aur colleges add karein ya preference badlein.</p>
-                        <!-- WhatsApp Share Action -->
-                        <div style="margin-top:15px;">
-                            <a href="#" id="whatsapp-share-btn-not-allotted" class="btn-whatsapp" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem; transition:0.3s; box-shadow:0 4px 10px rgba(37,211,102,0.3);">
-                                <i class="fab fa-whatsapp" style="font-size:1.2rem;"></i> Share with Friends on WhatsApp
+                        <p>Based on your rank ({{ user.rank }}) and last year's cutoffs, no seat matched your list. <br><strong>Tip:</strong> Add more colleges to your list or change the order of your choices.</p>
+                        <div class="share-result-btns" data-share-result style="margin-top:15px;">
+                            <a href="#" data-share-whatsapp class="btn-whatsapp" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 22px;border-radius:24px;text-decoration:none;font-weight:700;">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                            <a href="#" data-share-telegram target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#0088cc;color:#fff;padding:10px 22px;border-radius:24px;text-decoration:none;font-weight:700;margin-left:8px;">
+                                <i class="fab fa-telegram"></i> Telegram
                             </a>
                         </div>
                     </div>
@@ -117,17 +128,57 @@
                         <option value="F" {% if user and user.gender == 'F' %}selected{% endif %}>Female</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Simulation Rank Mode</label>
+                    <select name="rank_mode">
+                        <option value="average" {% if not user or user.rank_mode == 'average' %}selected{% endif %}>Average Rank</option>
+                        <option value="best" {% if user and user.rank_mode == 'best' %}selected{% endif %}>Best Case (optimistic)</option>
+                        <option value="worst" {% if user and user.rank_mode == 'worst' %}selected{% endif %}>Worst Case (conservative)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data Year</label>
+                    <select name="year">
+                        <option value="2025" {% if not user or user.year == 2025 %}selected{% endif %}>2025</option>
+                        <option value="2024" {% if user and user.year == 2024 %}selected{% endif %}>2024</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>MP Domicile</label>
+                    <select name="domicile">
+                        <option value="Y" {% if not user or user.domicile == 'Y' %}selected{% endif %}>Yes — MP resident</option>
+                        <option value="N" {% if user and user.domicile == 'N' %}selected{% endif %}>No — other state</option>
+                    </select>
+                </div>
             </div>
+            {% if user %}
+            <p class="rank-mode-note">
+                Rank range: <strong>{{ user.min_rank }} – {{ user.max_rank }}</strong>
+                &nbsp;|&nbsp; Simulating with: <strong>{{ user.rank }}</strong> ({{ user.rank_mode }})
+            </p>
+            {% endif %}
 
             <div class="choice-filling-section" style="margin-top:30px;">
-                <div class="priority-header">
+                <div class="priority-header-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                     <h3 style="margin:0;"><i class="fas fa-tasks"></i> Your Priority List</h3>
-                    <div class="btn-group">
+                    <div class="priority-actions" style="display:flex; gap:8px;">
+                        <button type="button" class="btn-secondary-small" onclick="exportChoicesCsv()">
+                            <i class="fas fa-file-csv"></i> DTE CSV
+                        </button>
+                        <button type="button" class="btn-secondary-small" onclick="exportChoicesCopy()">
+                            <i class="fas fa-copy"></i> Copy for DTE
+                        </button>
                         <button type="button" class="btn-secondary-small" style="background:#475569; color:#fff; border-color:#475569;" onclick="downloadChoicesPDF()">
-                            <i class="fas fa-file-pdf"></i> Download PDF
+                            <i class="fas fa-file-pdf"></i> PDF
                         </button>
                         <button type="button" class="btn-secondary-small" onclick="loadFromShortlist()">
                             <i class="fas fa-sync"></i> Sync from Shortlist
+                        </button>
+                        <button type="button" class="btn-secondary-small" style="background:#1d4ed8; color:#fff; border-color:#1d4ed8;" onclick="syncChoicesToCloud()">
+                            <i class="fas fa-cloud-upload-alt"></i> Sync to Cloud
+                        </button>
+                        <button type="button" class="btn-secondary-small" style="background:#dc2626; color:#fff; border-color:#dc2626;" onclick="clearAllChoices()">
+                            <i class="fas fa-trash-alt"></i> Clear All
                         </button>
                         <button type="button" class="btn-primary-small" onclick="showQuickAdd()">
                             <i class="fas fa-plus"></i> Add College
@@ -136,7 +187,7 @@
                 </div>
 
                 <div class="priority-guide">
-                    <i class="fas fa-info-circle"></i> Drag colleges to reorder. Sabse upar wala college aapki <strong>No. 1 Priority</strong> hona chahiye.
+                    <i class="fas fa-info-circle"></i> Drag colleges to reorder. The college at the top should be your <strong>first choice</strong>.
                 </div>
 
                 <div id="choice-list" class="choice-list-container">
@@ -204,31 +255,7 @@
     padding: 15px;
     background: #F8FAFC;
 }
-.choice-item {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 12px 18px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: grab;
-    transition: all 0.2s;
-}
-.choice-item:active { cursor: grabbing; transform: scale(0.98); }
-.choice-item:hover { border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-.choice-rank {
-    width: 28px; height: 28px; background: #E2E8F0;
-    border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; font-weight: 800; font-size: 0.8rem; color: #64748B;
-}
-.choice-content { flex: 1; }
-.choice-title { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
-.choice-branch { font-size: 0.82rem; color: var(--muted); }
-.choice-remove { color: #EF4444; cursor: pointer; padding: 5px; opacity: 0.6; transition: 0.2s; }
-.choice-remove:hover { opacity: 1; }
-.drag-handle { color: #CBD5E1; cursor: grab; }
+/* Choice list container styles (items are styled globally via .choice-item-kanban) */
 
 .btn-simulate {
     background: linear-gradient(135deg, #0F2C5E, #1D4ED8);
@@ -256,47 +283,6 @@
 .modal-search-results { max-height: 300px; overflow-y: auto; margin-top: 10px; }
 .search-item { padding: 10px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-size: 0.9rem; }
 .search-item:hover { background: #f8fafc; }
-/* Responsive adjustments */
-.priority-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 12px;
-}
-.priority-header .btn-group {
-    display: flex;
-    gap: 8px;
-}
-@media (max-width: 768px) {
-    .allotted-meta {
-        flex-direction: column;
-        gap: 10px;
-        align-items: center;
-    }
-    .allotted-college {
-        font-size: 1.45rem;
-    }
-}
-@media (max-width: 600px) {
-    .priority-header {
-        flex-direction: column;
-        align-items: flex-start !important;
-    }
-    .priority-header .btn-group {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    .priority-header .btn-group button {
-        flex: 1 1 auto;
-        justify-content: center;
-        text-align: center;
-        font-size: 0.78rem !important;
-        padding: 8px 10px !important;
-    }
-}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -307,23 +293,43 @@ function renderChoices() {
     const container = document.getElementById('choice-list');
     container.innerHTML = '';
     
+    // Save choices to localStorage for persistence
+    localStorage.setItem('mp_dte_choices_list', JSON.stringify(choices));
+    
     if (choices.length === 0) {
-        container.innerHTML = '<div style="text-align:center; color:#94A3B8; padding:30px;">Aapki choice list khali hai. Colleges add karein!</div>';
+        container.innerHTML = `
+            <div class="sim-empty-state">
+                <i class="fas fa-layer-group"></i>
+                <h4>Your priority choice list is empty</h4>
+                <p>Add engineering colleges using the 'Add College' button or the smart recommendations below.</p>
+                <button type="button" class="btn-primary" onclick="showQuickAdd()"><i class="fas fa-plus"></i> Add College</button>
+            </div>
+        `;
         return;
     }
 
     choices.forEach((choice, index) => {
+        let cardClass = 'private';
+        const nameUpper = choice.college_name.toUpperCase();
+        if (nameUpper.includes('GOVT') || nameUpper.includes('GOVERNMENT') || nameUpper.includes('AUTONOMOUS') || nameUpper.includes('SGSITS') || nameUpper.includes('MITS') || nameUpper.includes('JEC') || nameUpper.includes('UIT') || nameUpper.includes('DAVV') || nameUpper.includes('REWA') || nameUpper.includes('UJJAIN')) {
+            cardClass = 'govt';
+        } else if (nameUpper.includes('S.F.I') || nameUpper.includes('SFI') || nameUpper.includes('SELF FINANCE')) {
+            cardClass = 'sfi';
+        }
+
         const item = document.createElement('div');
-        item.className = 'choice-item';
+        item.className = `choice-item-kanban ${cardClass}`;
         item.dataset.index = index;
         item.innerHTML = `
-            <i class="fas fa-grip-vertical drag-handle"></i>
-            <div class="choice-rank">${index + 1}</div>
-            <div class="choice-content">
-                <div class="choice-title">${choice.college_name}</div>
-                <div class="choice-branch">${choice.branch_name || choice.branch}</div>
+            <i class="fas fa-grip-vertical drag-handle-vertical"></i>
+            <div class="choice-rank-circle">${index + 1}</div>
+            <div style="flex: 1;">
+                <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">${choice.college_name}</div>
+                <div style="font-size: 0.82rem; color: var(--muted); font-weight: 500; margin-top: 2px;">
+                    <i class="fas fa-code-branch" style="font-size: 0.75rem;"></i> ${choice.branch_name || choice.branch}
+                </div>
             </div>
-            <i class="fas fa-trash choice-remove" onclick="removeChoice(${index})"></i>
+            <i class="fas fa-trash-alt" style="color: #ef4444; cursor: pointer; padding: 6px; opacity: 0.7; transition: 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7" onclick="removeChoice(${index})"></i>
         `;
         container.appendChild(item);
     });
@@ -331,10 +337,10 @@ function renderChoices() {
     // Initialize Sortable
     new Sortable(container, {
         animation: 150,
-        handle: '.drag-handle',
+        handle: '.drag-handle-vertical',
         onEnd: function() {
             const newOrder = [];
-            document.querySelectorAll('.choice-item').forEach(el => {
+            document.querySelectorAll('.choice-item-kanban').forEach(el => {
                 newOrder.push(choices[el.dataset.index]);
             });
             choices = newOrder;
@@ -343,9 +349,16 @@ function renderChoices() {
     });
 }
 
+function exportChoicesCsv() { DteExport.exportCsv(choices); }
+function exportChoicesCopy() {
+    DteExport.copyToClipboard(choices).then(function(ok) {
+        if (ok) showToast('Choice list copied for DTE portal reference!', 'success');
+    });
+}
+
 function downloadChoicesPDF() {
     if (choices.length === 0) {
-        alert("Choice list khali hai! Pehle choices add karein.");
+        showToast("Your choice list is empty. Please add colleges first.", "warning");
         return;
     }
     
@@ -430,10 +443,10 @@ function removeChoice(idx) {
 
 function loadFromShortlist() {
     const raw = localStorage.getItem('mp_dte_shortlist');
-    if (!raw) { alert('Koi shortlisted college nahi mila!'); return; }
+    if (!raw) { showToast('No shortlisted colleges found. Shortlist colleges on the Predictor page first.', 'warning'); return; }
     
     const ids = JSON.parse(raw);
-    // ID format: Name|Branch|Category|Year
+    let addedCount = 0;
     ids.forEach(id => {
         const parts = id.split('|');
         if (parts.length >= 2) {
@@ -442,10 +455,60 @@ function loadFromShortlist() {
             // Check for duplicates
             if (!choices.some(c => c.college_name === college_name && c.branch === branch)) {
                 choices.push({ college_name, branch });
+                addedCount++;
             }
         }
     });
     renderChoices();
+    if (addedCount > 0) {
+        showToast(`Successfully synced ${addedCount} colleges from your shortlist!`, 'success');
+    } else {
+        showToast('All shortlisted colleges are already in your simulator list.', 'info');
+    }
+}
+
+function syncChoicesToCloud() {
+    if (choices.length === 0) {
+        showToast("Your choice list is empty. Add some colleges first.", "warning");
+        return;
+    }
+    const category = document.querySelector('select[name="category"]').value || 'UR';
+    const year = document.querySelector('select[name="year"]').value || '2025';
+    const items = choices.map(choice => `${choice.college_name}|${choice.branch}|${category}|${year}`);
+    
+    fetch('/api/v1/shortlist/cloud', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({items: items})
+    }).then(function(r) {
+        if (r.status === 401) { 
+            window.location = '/account?next=' + encodeURIComponent(window.location.pathname + window.location.search); 
+            return; 
+        }
+        return r.json();
+    }).then(function(d) {
+        if (d && d.success) {
+            localStorage.setItem('mp_dte_shortlist', JSON.stringify(items));
+            showToast('Your choices have been synced to your Cloud account (' + d.count + ' items)!', 'success');
+        } else if (d && d.error) {
+            showToast('Error: ' + d.error, 'error');
+        }
+    }).catch(function(err) {
+        console.error(err);
+        showToast('An unexpected error occurred during sync.', 'error');
+    });
+}
+
+function clearAllChoices() {
+    if (choices.length === 0) {
+        showToast("Your choice list is already empty.", "info");
+        return;
+    }
+    if (confirm("Are you sure you want to clear all choices from your priority list?")) {
+        choices = [];
+        renderChoices();
+        showToast("Choice list cleared.", "success");
+    }
 }
 
 // Modal Search Logic
@@ -492,9 +555,30 @@ function prepareSimulation() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial render if user coming back from POST
     const initialRaw = '{{ choices | tojson | safe if choices else "[]" }}';
-    choices = JSON.parse(initialRaw);
+    let parsed = JSON.parse(initialRaw);
+    if (!parsed.length) {
+        const stored = localStorage.getItem('mp_dte_choices_list');
+        if (stored) {
+            try {
+                parsed = JSON.parse(stored);
+            } catch (e) {
+                console.error("Error parsing stored choices list", e);
+            }
+        }
+        if (!parsed.length) {
+            const prefill = localStorage.getItem('mp_dte_simulator_prefill');
+            if (prefill) {
+                try {
+                    parsed = JSON.parse(prefill);
+                } catch (e) {
+                    console.error("Error parsing prefill simulator choices", e);
+                }
+                localStorage.removeItem('mp_dte_simulator_prefill');
+            }
+        }
+    }
+    choices = parsed;
     renderChoices();
 
     // If there is a result, run the animation
@@ -539,22 +623,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800);
         }
     }, 600); // 600ms delay per choice for "realistic" feel
-        // Setup WhatsApp Share Link Dynamically
-        const whatsappShareAllotted = document.getElementById('whatsapp-share-btn-allotted');
-        if (whatsappShareAllotted) {
-            const text = encodeURIComponent(
-                `Hey! I just ran my MP DTE Mock Allotment Simulator and got provisionally allotted to *{{ result.college }}* in the *{{ result.branch | branch_name }} ({{ result.branch }})* branch! 🎓🎉\n\nCheck your own lateral entry college predictions here: https://${window.location.host}/`
-            );
-            whatsappShareAllotted.href = `https://api.whatsapp.com/send?text=${text}`;
-        }
-        
-        const whatsappShareNotAllotted = document.getElementById('whatsapp-share-btn-not-allotted');
-        if (whatsappShareNotAllotted) {
-            const text = encodeURIComponent(
-                `Hey! I checked my MP DTE Lateral Entry college admission chances using this super cool simulator. Check your own college prediction now: https://${window.location.host}/`
-            );
-            whatsappShareNotAllotted.href = `https://api.whatsapp.com/send?text=${text}`;
-        }
+        document.querySelectorAll('[data-share-result]').forEach(function(shareBox) {
+            if (typeof ShareUtils !== 'undefined') {
+                const links = ShareUtils.shareSimulatorResult(
+                    {% if result.success %}'{{ result.college | replace("'", "") }}'{% else %}null{% endif %},
+                    '{{ result.branch | branch_name if result.success else "" }}',
+                    {{ 'true' if result.success else 'false' }}
+                );
+                ShareUtils.bindShareButtons(shareBox, links);
+            }
+        });
     {% endif %}
 });
 </script>

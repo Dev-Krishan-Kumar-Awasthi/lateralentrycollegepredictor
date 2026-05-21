@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}College Comparison | MP DTE Lateral Entry{% endblock %}
+{% block title %}Compare Engineering Colleges side-by-side — MP DTE Lateral Entry{% endblock %}
+{% block meta_description %}Compare up to 3 MP engineering colleges side-by-side on cutoffs, average placement packages, highest packages, fees, and location for Diploma Lateral Entry admissions.{% endblock %}
+{% block meta_keywords %}compare engineering colleges MP, college comparison DTE, lateral entry college cutoffs comparison, MP engineering college comparison{% endblock %}
+{% block og_title %}Compare Engineering Colleges side-by-side — MP DTE Lateral Entry{% endblock %}
+{% block og_description %}Compare tuition fees, placement rate, average LPA, cutoffs, and campus ratings side-by-side to make the best counselling choice.{% endblock %}
+{% block twitter_title %}Compare MP Engineering Colleges — Lateral Entry{% endblock %}
+{% block twitter_description %}Compare tuition fees, placement packages, cutoffs, and ratings side-by-side.{% endblock %}
 
 {% block content %}
 <div class="container cmp-page">
@@ -25,6 +31,43 @@
     <p>Not enough data to compare. <a href="/predictor">Go back to Predictor</a>.</p>
   </div>
   {% else %}
+
+  <!-- VS CARDS -->
+  <div class="vs-container">
+    {% for c in colleges %}
+      {% if not loop.first %}
+        <div class="vs-divider-badge">
+          <span>VS</span>
+        </div>
+      {% endif %}
+      <div class="vs-college-card glass-panel cmp-border-{{ loop.index }}">
+        <span class="vs-college-badge {% if 'Government' in c.college_type or 'Govt' in c.college_type %}govt{% else %}private{% endif %}">
+          {{ c.college_type }}
+        </span>
+        <h3 class="vs-college-title" title="{{ c.college_name }}">{{ c.college_name }}</h3>
+        <div class="vs-college-location"><i class="fas fa-map-marker-alt"></i> {{ c.city or 'Madhya Pradesh' }}</div>
+        
+        <div class="vs-stats-row">
+          <div class="vs-stat-box">
+            <span class="vs-stat-label">Avg Package</span>
+            <span class="vs-stat-value text-saffron">
+              {% if c.placement and c.placement.average_package_lpa > 0 %}
+                {{ c.placement.average_package_lpa }} LPA
+              {% else %}
+                —
+              {% endif %}
+            </span>
+          </div>
+          <div class="vs-stat-box">
+            <span class="vs-stat-label">Annual Fee</span>
+            <span class="vs-stat-value text-primary">
+              {{ c.fee_display or '—' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 
   <!-- ══ COMPARISON TABLE ══ -->
   <div class="cmp-card">
@@ -63,6 +106,107 @@
             <td class="{% if c.total_seats == max_seats %}cmp-best{% endif %}">
               <strong>{{ c.total_seats if c.total_seats else '—' }}</strong>
             </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Approx Fee -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-rupee-sign"></i> Approx. Annual Fee</td>
+            {% for c in colleges %}
+            <td style="font-size:0.85rem;">
+              {{ c.fee_display or '—' }}
+              {% if c.fee_approximate %}<div class="cmp-param-hint">estimate</div>{% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Average Placement Package -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-briefcase" style="color:var(--saffron);"></i> Avg Placement Package
+              <div class="cmp-param-hint">Average package per annum</div>
+            </td>
+            {% set max_avg_pkg = colleges | selectattr('placement') | map(attribute='placement.average_package_lpa') | list %}
+            {% set best_avg_pkg = max_avg_pkg | max if max_avg_pkg else 0 %}
+            {% for c in colleges %}
+            <td class="{% if c.placement and c.placement.average_package_lpa == best_avg_pkg and best_avg_pkg > 0 %}cmp-best{% endif %}" style="font-weight: 700; font-family: monospace;">
+              {% if c.placement and c.placement.average_package_lpa > 0 %}
+                {{ c.placement.average_package_lpa }} LPA
+                {% if c.placement.is_predicted %}
+                  <div class="cmp-param-hint" style="color:#2563EB;"><i class="fas fa-brain"></i> estimated</div>
+                {% else %}
+                  <div class="cmp-param-hint" style="color:#059669;"><i class="fas fa-check-circle"></i> verified</div>
+                {% endif %}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Highest Placement Package -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-trophy" style="color:#E11D48;"></i> Highest Package
+              <div class="cmp-param-hint">Peak package offered</div>
+            </td>
+            {% set max_hi_pkg = colleges | selectattr('placement') | map(attribute='placement.highest_package_lpa') | list %}
+            {% set best_hi_pkg = max_hi_pkg | max if max_hi_pkg else 0 %}
+            {% for c in colleges %}
+            <td class="{% if c.placement and c.placement.highest_package_lpa == best_hi_pkg and best_hi_pkg > 0 %}cmp-best{% endif %}" style="font-weight: 700; font-family: monospace; color: #E11D48;">
+              {% if c.placement and c.placement.highest_package_lpa > 0 %}
+                {{ c.placement.highest_package_lpa }} LPA
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Placement Rate -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-chart-bar" style="color:#059669;"></i> Placement Rate
+              <div class="cmp-param-hint">Percent of students placed</div>
+            </td>
+            {% set max_rate = colleges | selectattr('placement') | map(attribute='placement.placement_percentage') | list %}
+            {% set best_rate = max_rate | max if max_rate else 0 %}
+            {% for c in colleges %}
+            <td class="{% if c.placement and c.placement.placement_percentage == best_rate and best_rate > 0 %}cmp-best{% endif %}" style="font-weight: 700;">
+              {% if c.placement and c.placement.placement_percentage > 0 %}
+                {{ c.placement.placement_percentage }}%
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- Top Recruiters -->
+          <tr>
+            <td class="cmp-param">
+              <i class="fas fa-building" style="color:#475569;"></i> Top Recruiters
+            </td>
+            {% for c in colleges %}
+            <td style="font-size: 0.8rem; line-height: 1.4;">
+              {% if c.placement and c.placement.top_recruiters %}
+                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                  {% for rec in c.placement.top_recruiters %}
+                    <span style="background: #F1F5F9; color: #334155; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">{{ rec }}</span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+
+          <!-- City / District -->
+          <tr>
+            <td class="cmp-param"><i class="fas fa-map-marker-alt"></i> Location</td>
+            {% for c in colleges %}
+            <td>{{ c.city or '—' }}{% if c.district %}<div class="cmp-param-hint">{{ c.district }}</div>{% endif %}</td>
             {% endfor %}
           </tr>
 
@@ -167,6 +311,29 @@
     </div>
   </div>
 
+  <!-- ══ VISUAL COMPARISON CHARTS ══ -->
+  <div class="cmp-card">
+    <div class="cmp-section-title"><i class="fas fa-chart-bar"></i> Visual Comparison Charts</div>
+    <div class="charts-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 15px;">
+      <div class="chart-box" style="background: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+        <h4 style="text-align: center; margin-top: 0; margin-bottom: 10px; color: var(--primary); font-size: 0.95rem;">
+          <i class="fas fa-rupee-sign"></i> Approximate Annual Tuition Fees (INR)
+        </h4>
+        <div style="position: relative; height: 250px;">
+          <canvas id="tuitionChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box" style="background: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+        <h4 style="text-align: center; margin-top: 0; margin-bottom: 10px; color: var(--primary); font-size: 0.95rem;">
+          <i class="fas fa-briefcase"></i> Placement Packages (LPA)
+        </h4>
+        <div style="position: relative; height: 250px;">
+          <canvas id="placementChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ BRANCHES COMPARISON ══ -->
   <div class="cmp-card">
     <div class="cmp-section-title"><i class="fas fa-code-branch"></i> Branch Availability (2025)</div>
@@ -228,34 +395,185 @@
   display:inline-flex;align-items:center;gap:7px;
   background:#F1F5F9;color:var(--primary);border:1px solid var(--border);
   border-radius:6px;padding:7px 16px;font-size:0.87rem;font-weight:600;
-  text-decoration:none;transition:background 0.2s;
+  text-decoration:none;transition:background 0.2s, transform 0.2s;
 }
-.btn-back:hover { background:#E2E8F0; }
+.btn-back:hover {
+  background:#E2E8F0;
+  transform: translateX(-2px);
+}
 
 /* Hero */
 .cmp-hero {
   display:flex;align-items:center;gap:20px;
-  background:linear-gradient(135deg,#0F2849,#1E3A5F);
-  color:#fff;border-radius:10px;padding:24px 28px;margin:0 0 20px;
+  background: linear-gradient(135deg, hsl(217, 80%, 20%) 0%, hsl(210, 85%, 35%) 100%);
+  color:#fff;border-radius:12px;padding:24px 28px;margin:0 0 24px;
+  box-shadow: var(--primary-glow);
 }
 .cmp-hero-icon {
   width:54px;height:54px;background:rgba(255,255,255,0.15);
   border-radius:12px;display:flex;align-items:center;
   justify-content:center;font-size:1.5rem;flex-shrink:0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .cmp-hero-title { font-size:1.25rem;font-weight:700;color:#fff;margin:0 0 5px; }
 .cmp-hero-sub { font-size:0.87rem;color:rgba(255,255,255,0.8);margin:0; }
 
+/* VS Cards Container */
+.vs-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.vs-college-card {
+  flex: 1 1 280px;
+  max-width: 380px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 24px 20px 20px;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.vs-college-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+}
+.cmp-border-1 { border-top: 4px solid #6366F1; }
+.cmp-border-2 { border-top: 4px solid #22C55E; }
+.cmp-border-3 { border-top: 4px solid #F59E0B; }
+
+.vs-college-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.vs-college-badge.govt {
+  background: hsl(142, 70%, 93%);
+  color: hsl(142, 70%, 25%);
+}
+.vs-college-badge.private {
+  background: hsl(210, 100%, 93%);
+  color: hsl(210, 100%, 25%);
+}
+
+.vs-college-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 16px 0 6px 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 3.1rem;
+}
+.vs-college-location {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.vs-stats-row {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+.vs-stat-box {
+  flex: 1;
+  background: rgba(248, 250, 252, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.vs-stat-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  letter-spacing: 0.2px;
+}
+.vs-stat-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.vs-divider-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.vs-divider-badge span {
+  background: var(--primary);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+  animation: pulse-vs 2s infinite ease-in-out;
+}
+
+@keyframes pulse-vs {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(11, 42, 92, 0.4);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 8px rgba(11, 42, 92, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(11, 42, 92, 0);
+  }
+}
+
 /* Cards */
 .cmp-card {
-  background:#fff;border:1px solid var(--border);border-radius:10px;
-  padding:20px 22px;margin-bottom:18px;
-  box-shadow:0 1px 4px rgba(0,0,0,0.05);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--glass-shadow);
 }
 .cmp-section-title {
-  font-size:1rem;font-weight:700;color:var(--primary);
+  font-size:1.05rem;font-weight:700;color:var(--primary);
   display:flex;align-items:center;gap:8px;
-  margin-bottom:14px;padding-bottom:10px;
+  margin-bottom:18px;padding-bottom:10px;
   border-bottom:2px solid var(--border);
 }
 
@@ -263,11 +581,12 @@
 .cmp-table-wrap { overflow-x:auto;-webkit-overflow-scrolling:touch; }
 .cmp-table { width:100%;border-collapse:collapse;min-width:480px; }
 .cmp-table th, .cmp-table td {
-  padding:11px 14px;text-align:left;
+  padding:14px 16px;text-align:left;
   border-bottom:1px solid var(--border);font-size:0.86rem;vertical-align:top;
 }
 .cmp-table thead th {
-  background:#F8FAFC;font-weight:700;color:var(--primary);font-size:0.82rem;
+  background: rgba(248, 250, 252, 0.7);
+  font-weight:700;color:var(--primary);font-size:0.82rem;
 }
 .cmp-param-col { width:200px;min-width:170px; }
 .cmp-param { color:#374151;font-weight:600;font-size:0.84rem; }
@@ -285,8 +604,18 @@
 .cmp-col-3 { border-top:3px solid #F59E0B; }
 
 /* Best value highlight */
-.cmp-best { background:#F0FDF4;font-weight:700;color:#16A34A; }
-.cmp-highlight-red { background:#FEF2F2;font-weight:700;color:#DC2626; }
+.cmp-best {
+  background: rgba(34, 197, 94, 0.08) !important;
+  font-weight: 700;
+  color: #15803d !important;
+  border-left: 3px solid #22C55E !important;
+}
+.cmp-highlight-red {
+  background: rgba(239, 68, 68, 0.08) !important;
+  font-weight: 700;
+  color: #b91c1c !important;
+  border-left: 3px solid #EF4444 !important;
+}
 
 /* Trend badges */
 .trend-badge {
@@ -315,7 +644,113 @@
 @media(max-width:768px) {
   .cmp-hero { flex-direction:column;padding:18px;gap:12px; }
   .cmp-hero-title { font-size:1.05rem; }
-  .cmp-table th, .cmp-table td { padding:8px 10px;font-size:0.8rem; }
+  .cmp-table th, .cmp-table td { padding:10px;font-size:0.8rem; }
+  .vs-divider-badge { margin: 8px 0; }
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const collegesData = {{ colleges | tojson | safe }};
+    
+    // 1. Prepare Tuition Chart Data
+    const labels = collegesData.map(c => {
+        const name = c.college_name;
+        return name.length > 25 ? name.substring(0, 22) + '...' : name;
+    });
+    
+    const tuitionFees = collegesData.map(c => {
+        const fee = c.fee || {};
+        return fee.tuition || fee.tuition_min || 0;
+    });
+
+    const ctxTuition = document.getElementById('tuitionChart').getContext('2d');
+    new Chart(ctxTuition, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Tuition Fee (₹/Year)',
+                data: tuitionFees,
+                backgroundColor: [
+                    'rgba(99, 102, 241, 0.7)',
+                    'rgba(34, 197, 94, 0.7)',
+                    'rgba(245, 158, 11, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(99, 102, 241, 1)',
+                    'rgba(34, 197, 94, 1)',
+                    'rgba(245, 158, 11, 1)'
+                ],
+                borderWidth: 1.5,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₹' + value.toLocaleString('en-IN');
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // 2. Prepare Placement Chart Data (Average vs Highest Package)
+    const avgPackages = collegesData.map(c => (c.placement && c.placement.average_package_lpa) || 0);
+    const highestPackages = collegesData.map(c => (c.placement && c.placement.highest_package_lpa) || 0);
+
+    const ctxPlacement = document.getElementById('placementChart').getContext('2d');
+    new Chart(ctxPlacement, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Average Package (LPA)',
+                    data: avgPackages,
+                    backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                },
+                {
+                    label: 'Highest Package (LPA)',
+                    data: highestPackages,
+                    backgroundColor: 'rgba(239, 68, 68, 0.75)',
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Lakhs Per Annum (LPA)'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
 {% endblock %}

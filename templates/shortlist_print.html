@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My College Shortlist — MP DTE Lateral Entry Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #1E293B;
+            padding: 20px;
+        }
+        .print-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .print-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            padding: 28px 32px;
+            color: #fff;
+        }
+        .print-header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .print-header p { font-size: 0.9rem; opacity: 0.85; }
+        .student-meta {
+            background: #EFF6FF;
+            border-bottom: 1px solid #DBEAFE;
+            padding: 16px 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            font-size: 0.875rem;
+        }
+        .student-meta span { font-weight: 600; color: #1E3A8A; display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .student-meta strong { font-size: 0.95rem; color: #1E293B; }
+        .shortlist-body { padding: 24px 32px; }
+        .shortlist-body h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 8px;
+        }
+        .college-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #F8FAFC;
+            gap: 12px;
+        }
+        .college-card:nth-child(even) { background: #fff; }
+        .college-index {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #CBD5E1;
+            min-width: 28px;
+        }
+        .college-info { flex: 1; }
+        .college-info strong { display: block; font-size: 0.95rem; color: #1E293B; font-weight: 700; }
+        .college-info small { font-size: 0.8rem; color: #64748B; font-weight: 600; }
+        .prob-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .safe { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+        .moderate { background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; }
+        .borderline { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #94A3B8;
+        }
+        .empty-state i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+        .action-bar {
+            padding: 16px 32px;
+            background: #F8FAFC;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-print { background: #1E3A8A; color: #fff; }
+        .btn-whatsapp { background: #16A34A; color: #fff; }
+        .btn-back { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        .footer-note {
+            text-align: center;
+            padding: 12px;
+            font-size: 0.75rem;
+            color: #94A3B8;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .action-bar, .btn { display: none !important; }
+            .print-container { box-shadow: none; border: none; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="print-container">
+    <div class="print-header">
+        <h1><i class="fas fa-list-ul"></i> My College Shortlist</h1>
+        <p>MP DTE Lateral Entry Counselling — Preferred Colleges Report</p>
+    </div>
+
+    {% if user %}
+    <div class="student-meta">
+        <div>
+            <span>Student Name</span>
+            <strong>{{ user.display_name or '—' }}</strong>
+        </div>
+        <div>
+            <span>Diploma Branch</span>
+            <strong>{{ user.diploma_branch or '—' }}</strong>
+        </div>
+        <div>
+            <span>Diploma CGPA</span>
+            <strong>{{ user.cgpa or '—' }}</strong>
+        </div>
+        <div>
+            <span>Category</span>
+            <strong>{{ user.category or 'UR' }} / {{ 'Male' if user.gender == 'M' else 'Female' }}</strong>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="shortlist-body">
+        <h2><i class="fas fa-star"></i> Shortlisted Colleges ({{ shortlist|length }} Total)</h2>
+
+        {% if shortlist %}
+            {% for item in shortlist %}
+            {% set prob = item.prob_type | default('') %}
+            <div class="college-card">
+                <div class="college-index">{{ loop.index }}</div>
+                <div class="college-info">
+                    <strong>{{ item.college_name }}</strong>
+                    <small>
+                        <i class="fas fa-graduation-cap"></i> {{ item.branch_name or 'All Branches' }}
+                        {% if item.city %} &nbsp;|&nbsp; <i class="fas fa-map-marker-alt"></i> {{ item.city }}{% endif %}
+                    </small>
+                </div>
+                <div>
+                    <span class="prob-badge {% if prob == 'Safe' %}safe{% elif prob == 'Moderate' %}moderate{% else %}borderline{% endif %}">
+                        {{ prob or 'N/A' }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-folder-open"></i>
+            <p>No colleges in your cloud shortlist yet.</p>
+            <p style="font-size:0.8rem; margin-top:6px;">Save colleges from the Predictor page first.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="action-bar">
+        <button class="btn btn-print" onclick="window.print()">
+            <i class="fas fa-print"></i> Print / Save as PDF
+        </button>
+        {% if shortlist %}
+        <button class="btn btn-whatsapp" onclick="shareOnWhatsApp()">
+            <i class="fab fa-whatsapp"></i> Share on WhatsApp
+        </button>
+        {% endif %}
+        <a href="/account" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Account
+        </a>
+    </div>
+
+    <div class="footer-note">
+        Generated by MP Polytechnic Lateral Entry College Predictor &bull; For reference only
+    </div>
+</div>
+
+<script>
+function shareOnWhatsApp() {
+    const items = {{ shortlist | tojson | safe }};
+    if (!items || items.length === 0) return;
+
+    let text = "🎓 *My MP DTE Lateral Entry College Shortlist*\n";
+    text += "━━━━━━━━━━━━━━━━━━━━\n";
+    {% if user %}
+    text += "👤 *Name:* {{ user.display_name or '' }}\n";
+    text += "📚 *Branch:* {{ user.diploma_branch or '' }}\n";
+    text += "⭐ *CGPA:* {{ user.cgpa or '' }}\n";
+    text += "🏷️ *Category:* {{ user.category or 'UR' }}\n";
+    {% endif %}
+    text += "━━━━━━━━━━━━━━━━━━━━\n\n";
+
+    items.forEach((item, i) => {
+        const prob = item.prob_type || '';
+        const emoji = prob === 'Safe' ? '🟢' : (prob === 'Moderate' ? '🟡' : '🔴');
+        text += `${i + 1}. ${emoji} *${item.college_name}*\n`;
+        text += `   Branch: ${item.branch_name || 'All'}\n`;
+        text += `   Admission Chance: ${prob}\n\n`;
+    });
+
+    text += "━━━━━━━━━━━━━━━━━━━━\n";
+    text += "Powered by MP Polytechnic Lateral Entry Predictor";
+
+    const url = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(url, '_blank');
+}
+</script>
+</body>
+</html>

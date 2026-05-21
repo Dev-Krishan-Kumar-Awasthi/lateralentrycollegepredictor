@@ -1,0 +1,674 @@
+"""Optional user accounts — session-based auth with cloud shortlist."""
+import json
+import os
+from functools import wraps
+
+from flask import session, redirect, url_for, request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from db import db
+from models import User, CloudShortlist
+
+
+def init_auth(app):
+    secret = os.environ.get("SECRET_KEY", "mp-dte-predictor-dev-change-in-production")
+    app.config["SECRET_KEY"] = secret
+
+
+def login_user(user: User):
+    session["user_id"] = user.id
+    session["user_email"] = user.email
+    session["user_name"] = user.display_name or user.email.split("@")[0]
+
+
+def logout_user():
+    session.pop("user_id", None)
+    session.pop("user_email", None)
+    session.pop("user_name", None)
+
+
+def current_user():
+    uid = session.get("user_id")
+    if not uid:
+        return None
+    return db.session.get(User, uid)
+
+
+def login_required(f):
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        if not session.get("user_id"):
+            if request.path.startswith("/api/"):
+                return jsonify({"error": "Login required"}), 401
+            return redirect(url_for("account_page", next=request.path))
+        return f(*args, **kwargs)
+    return wrapped
+
+
+import re
+
+def validate_password_strength(password: str) -> tuple:
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long"
+    if not re.search(r"[A-Z]", password):
+        return False, "Password must contain at least one uppercase letter"
+    if not re.search(r"[a-z]", password):
+        return False, "Password must contain at least one lowercase letter"
+    if not re.search(r"\d", password):
+        return False, "Password must contain at least one digit"
+    if not re.search(r"[@$!%*?&_#^-]", password):
+        return False, "Password must contain at least one special character (@$!%*?&_#^-)"
+    return True, None
+
+
+def is_gibberish(text: str) -> bool:
+    text_clean = text.strip().lower()
+    if not text_clean:
+        return True
+    # Check if same char is repeated 4 times continuously
+    if re.search(r'(.)\1\1\1', text_clean):
+        return True
+    # Keyboard walks block
+    keyboard_walks = ["asdf", "sdfg", "dfgh", "fghj", "ghjk", "hjkl", "qwerty", "zxcv"]
+    for walk in keyboard_walks:
+        if walk in text_clean:
+            return True
+    return False
+
+def validate_email_strict(email: str) -> bool:
+    email = email.strip().lower()
+    if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        return False
+    
+    # Common disposable / mock email domains (allow test emails used in automated testing)
+    blacklisted_domains = [
+        "yopmail.com", "tempmail.com", "mailinator.com", "10minutemail.com",
+        "guerrillamail.com", "dispostable.com", "fakeinbox.com", "trashmail.com",
+        "abc.com", "xyz.com", "test.com"
+    ]
+    domain = email.split('@')[-1]
+    if domain in blacklisted_domains:
+        return False
+        
+    username = email.split('@')[0]
+    if is_gibberish(username) or len(username) < 3:
+        return False
+        
+    return True
+
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_otp_email(to_email: str, otp: str) -> tuple:
+    """Sends a verification OTP to the target email asynchronously. Returns (success, message)."""
+    import os
+    from flask import current_app
+    
+    smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
+    smtp_port_str = os.environ.get("SMTP_PORT", "587")
+    smtp_username = os.environ.get("SMTP_USERNAME")
+    smtp_password = os.environ.get("SMTP_PASSWORD")
+    
+    # Fallback/Simulator if SMTP credentials are not configured, in testing mode, or targeting test domain
+    is_testing = False
+    try:
+        is_testing = current_app.config.get('TESTING', False) or current_app.testing
+    except Exception:
+        pass
+
+    if not smtp_username or not smtp_password or is_testing or to_email.endswith('@example.com'):
+        print(f"\n=======================================================")
+        print(f"[SMTP SIMULATOR] Email verification code for {to_email} is: {otp}")
+        print(f"To configure live SMTP, set SMTP_USERNAME and SMTP_PASSWORD in your env.")
+        print(f"=======================================================\n")
+        return True, "Simulator Mode: OTP logged to console."
+    
+    import threading
+    
+    def _async_send():
+        try:
+            smtp_port = int(smtp_port_str)
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = f"{otp} is your MP Polytechnic Predictor verification code"
+            msg["From"] = f"MP Polytechnic Predictor <{smtp_username}>"
+            msg["To"] = to_email
+            
+            # HTML template for beautiful email styling
+            html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <title>Verification Code</title>
+            </head>
+            <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
+                <tr>
+                  <td align="center">
+                    <!-- Main Wrapper -->
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+                      
+                      <!-- Saffron Header Strip -->
+                      <tr>
+                        <td style="background-color: #ff9933; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
+                      </tr>
+                      
+                      <!-- Logo & Brand Header -->
+                      <tr>
+                        <td align="center" style="padding: 32px 24px 20px 24px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td align="center" style="background-color: #1e3a8a; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
+                                <span style="font-size: 32px; line-height: 64px; display: block;">🎓</span>
+                              </td>
+                            </tr>
+                          </table>
+                          <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">MP DTE Lateral Entry Predictor</h1>
+                          <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Diploma to B.Tech Counselling Support</p>
+                        </td>
+                      </tr>
+                      
+                      <!-- Content Body -->
+                      <tr>
+                        <td style="padding: 0 40px 24px 40px;">
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                              <td align="center" style="padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                                <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0;">Verify Your Email Address</h2>
+                                <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0; text-align: center;">
+                                  Welcome to the MP B.Tech Lateral Entry Predictor platform! To complete your registration and secure your account, please use the 6-digit verification code below:
+                                </p>
+                              </td>
+                            </tr>
+                            
+                            <!-- OTP Box -->
+                            <tr>
+                              <td align="center">
+                                <table border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; border: 1.5px solid #e2e8f0; width: 100%;">
+                                  <tr>
+                                    <td align="center" style="padding: 22px 16px;">
+                                      <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #2563eb; font-family: 'Courier New', Courier, monospace; margin-left: 8px;">{otp}</div>
+                                      <div style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;">Verification Code</div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            
+                            <!-- Expiry Note -->
+                            <tr>
+                              <td align="center" style="padding-top: 16px;">
+                                <table border="0" cellpadding="0" cellspacing="0">
+                                  <tr>
+                                    <td style="background-color: #fff1f2; border-radius: 20px; padding: 6px 14px; border: 1px solid #ffe4e6;">
+                                      <span style="font-size: 12px; color: #e11d48; font-weight: 600;">⚠️ Code expires in 10 minutes</span>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+    
+                            <tr>
+                              <td style="padding-top: 24px; font-size: 13px; line-height: 1.5; color: #64748b; text-align: center;">
+                                If you did not request this verification, you can safely ignore this email. Someone may have typed your address by mistake.
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      
+                      <!-- Divider -->
+                      <tr>
+                        <td style="padding: 0 40px;"><hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 0;"></td>
+                      </tr>
+                      
+                      <!-- Footer -->
+                      <tr>
+                        <td style="padding: 24px 40px 32px 40px; background-color: #fafafa; text-align: center;">
+                          <p style="margin: 0 0 8px 0; font-size: 12px; color: #94a3b8; font-weight: 500;">
+                            &copy; 2025 MP Lateral Entry College Predictor. All rights reserved.
+                          </p>
+                          <p style="margin: 0; font-size: 11px; color: #cbd5e1;">
+                            This is an automated security transmission. Please do not reply directly to this mail.
+                          </p>
+                        </td>
+                      </tr>
+                      
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>
+            """
+            msg.attach(MIMEText(html, "html"))
+            
+            if smtp_port == 465:
+                server = smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=10)
+            else:
+                server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
+                server.starttls()
+            
+            server.login(smtp_username, smtp_password)
+            server.sendmail(smtp_username, to_email, msg.as_string())
+            server.quit()
+            print(f"[SMTP SUCCESS] Verification email sent to {to_email} asynchronously.")
+        except Exception as e:
+            print(f"[SMTP ERROR] Failed to send email to {to_email} asynchronously: {e}")
+            
+    threading.Thread(target=_async_send, name=f"EmailThread-{to_email}").start()
+    return True, "Dispatching..."
+
+
+def pre_validate_registration(email: str, password: str, display_name: str = "",
+                              mobile_number: str = "", polytechnic_college: str = "",
+                              diploma_branch: str = "", cgpa: float = 0.0,
+                              category: str = "UR", gender: str = "M") -> tuple:
+    email = email.strip().lower()
+    display_name = display_name.strip()
+    mobile = mobile_number.strip()
+    poly_col = polytechnic_college.strip()
+    diploma_branch = diploma_branch.strip()
+    category = category.strip()
+    gender = gender.strip()
+
+    # Mandatory field check
+    if not display_name:
+        return None, "Full Name is mandatory"
+    if not email:
+        return None, "Email address is mandatory"
+    if not password:
+        return None, "Password is mandatory"
+    if not mobile:
+        return None, "Mobile number is mandatory"
+    if not poly_col:
+        return None, "Polytechnic College name is mandatory"
+    if not diploma_branch:
+        return None, "Diploma branch selection is mandatory"
+    if not cgpa:
+        return None, "Diploma CGPA is mandatory"
+
+    # 1. Full Name check
+    if len(display_name) < 3:
+        return None, "Full Name must be at least 3 characters long"
+    if not re.match(r'^[a-zA-Z\s.]+$', display_name):
+        return None, "Full Name can only contain letters, spaces, and dots"
+    if is_gibberish(display_name):
+        return None, "Please enter a valid, real Full Name"
+
+    # 2. Email Validation
+    if not validate_email_strict(email):
+        return None, "Please enter a valid email address (no disposable/gibberish emails)"
+    if User.query.filter_by(email=email).first():
+        return None, "Email already registered"
+
+    # 3. Password Validation
+    is_ok, pass_err = validate_password_strength(password)
+    if not is_ok:
+        return None, pass_err
+
+    # 4. Mobile Number Validation
+    if not re.match(r'^[6-9]\d{9}$', mobile):
+        return None, "Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9)"
+    # Prevent sequential/repeating digits like 9999999999, 1234567890
+    if len(set(mobile)) <= 2:
+        return None, "Invalid mobile number: Too many repeating digits"
+    if mobile in ["1234567890", "0987654321"]:
+        return None, "Invalid mobile number: Sequential numbers are not allowed"
+
+    # 5. Polytechnic College Validation
+    if len(poly_col) < 6:
+        return None, "College name must be at least 6 characters long"
+    if not re.search(r'[a-zA-Z]', poly_col):
+        return None, "College name must contain letters"
+    if is_gibberish(poly_col):
+        return None, "Please enter a valid Polytechnic College name"
+
+    # 6. CGPA Validation
+    try:
+        cgpa_val = float(cgpa)
+        if cgpa_val < 2.0 or cgpa_val > 10.0:
+            return None, "Diploma CGPA must be a valid number between 2.0 and 10.0"
+    except (ValueError, TypeError):
+        return None, "Please enter a valid decimal CGPA"
+
+    # 7. Category & Gender options
+    if category not in ["UR", "OBC", "SC", "ST"]:
+        return None, "Please select a valid reservation category"
+    if gender not in ["M", "F"]:
+        return None, "Please select a valid gender"
+
+    return {
+        "email": email,
+        "password": password,
+        "display_name": display_name,
+        "mobile_number": mobile,
+        "polytechnic_college": poly_col,
+        "diploma_branch": diploma_branch,
+        "cgpa": cgpa_val,
+        "category": category,
+        "gender": gender
+    }, None
+
+
+def register_user(email: str, password: str, display_name: str = "",
+                  mobile_number: str = "", polytechnic_college: str = "",
+                  diploma_branch: str = "", cgpa: float = 0.0,
+                  category: str = "UR", gender: str = "M") -> tuple:
+    
+    sanitized, err = pre_validate_registration(
+        email=email, password=password, display_name=display_name,
+        mobile_number=mobile_number, polytechnic_college=polytechnic_college,
+        diploma_branch=diploma_branch, cgpa=cgpa,
+        category=category, gender=gender
+    )
+    # Note: If called from inside authenticate() or seeds, we bypass
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if err and email.strip().lower() != admin_email:
+        return None, err
+
+    # Use sanitized inputs if available, else fall back to raw (e.g. for hardcoded admin seeding)
+    data = sanitized if sanitized else {
+        "email": email.strip().lower(),
+        "password": password,
+        "display_name": display_name.strip(),
+        "mobile_number": mobile_number.strip(),
+        "polytechnic_college": polytechnic_college.strip(),
+        "diploma_branch": diploma_branch.strip(),
+        "cgpa": float(cgpa),
+        "category": category.strip(),
+        "gender": gender.strip()
+    }
+
+    user = User(
+        email=data["email"],
+        password_hash=generate_password_hash(data["password"]),
+        display_name=data["display_name"],
+        mobile_number=data["mobile_number"],
+        polytechnic_college=data["polytechnic_college"],
+        diploma_branch=data["diploma_branch"],
+        cgpa=data["cgpa"],
+        category=data["category"],
+        gender=data["gender"],
+    )
+    db.session.add(user)
+    db.session.commit()
+    return user, None
+
+
+def authenticate(email: str, password: str) -> tuple:
+    email = email.strip().lower()
+    
+    # Hardcoded Admin authentication bypass to guarantee success
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    admin_pass = os.getenv("ADMIN_PASSWORD", "kkawasthi@202956@kka")
+    if email == admin_email and password == admin_pass:
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            user = User(
+                email=email,
+                password_hash=generate_password_hash(password),
+                display_name="Admin",
+                mobile_number="9999999999",
+                polytechnic_college="System Admin",
+                diploma_branch="Admin",
+                cgpa=10.0,
+                category="UR",
+                gender="M"
+            )
+            db.session.add(user)
+            db.session.commit()
+        else:
+            # Ensure the password hash matches the hardcoded one
+            if not check_password_hash(user.password_hash, password):
+                user.password_hash = generate_password_hash(password)
+                db.session.commit()
+        return user, None
+
+    user = User.query.filter_by(email=email).first()
+    if not user or not check_password_hash(user.password_hash, password):
+        return None, "Invalid email or password"
+    return user, None
+
+
+def save_cloud_shortlist(user_id: int, items: list, name: str = "My Shortlist") -> CloudShortlist:
+    payload = json.dumps(items)
+    existing = CloudShortlist.query.filter_by(user_id=user_id, name=name).first()
+    if existing:
+        existing.items_json = payload
+        db.session.commit()
+        return existing
+    row = CloudShortlist(user_id=user_id, name=name, items_json=payload)
+    db.session.add(row)
+    db.session.commit()
+    return row
+
+
+def load_cloud_shortlist(user_id: int, name: str = "My Shortlist") -> list:
+    row = CloudShortlist.query.filter_by(user_id=user_id, name=name).first()
+    if not row:
+        return []
+    try:
+        return json.loads(row.items_json)
+    except json.JSONDecodeError:
+        return []
+
+
+def reset_password_in_db(email: str, new_password: str) -> tuple:
+    email = email.strip().lower()
+    is_ok, pass_err = validate_password_strength(new_password)
+    if not is_ok:
+        return False, pass_err
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return False, "User not found"
+    user.password_hash = generate_password_hash(new_password)
+    db.session.commit()
+    return True, None
+
+
+def pre_validate_profile_update(current_user_id: int, display_name: str, mobile_number: str, 
+                                polytechnic_college: str, diploma_branch: str, cgpa: float, 
+                                category: str, gender: str) -> tuple:
+    display_name = display_name.strip()
+    mobile = mobile_number.strip()
+    poly_col = polytechnic_college.strip()
+    diploma_branch = diploma_branch.strip()
+    category = category.strip()
+    gender = gender.strip()
+
+    # Mandatory field check
+    if not display_name:
+        return None, "Full Name is mandatory"
+    if not mobile:
+        return None, "Mobile number is mandatory"
+    if not poly_col:
+        return None, "Polytechnic College name is mandatory"
+    if not diploma_branch:
+        return None, "Diploma branch selection is mandatory"
+    if not cgpa:
+        return None, "Diploma CGPA is mandatory"
+
+    # 1. Full Name check
+    if len(display_name) < 3:
+        return None, "Full Name must be at least 3 characters long"
+    if not re.match(r'^[a-zA-Z\s.]+$', display_name):
+        return None, "Full Name can only contain letters, spaces, and dots"
+    if is_gibberish(display_name):
+        return None, "Please enter a valid, real Full Name"
+
+    # 2. Mobile Number Validation
+    if not re.match(r'^[6-9]\d{9}$', mobile):
+        return None, "Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9)"
+    if len(set(mobile)) <= 2:
+        return None, "Invalid mobile number: Too many repeating digits"
+    if mobile in ["1234567890", "0987654321"]:
+        return None, "Invalid mobile number: Sequential numbers are not allowed"
+
+    # 3. Polytechnic College Validation
+    if len(poly_col) < 6:
+        return None, "College name must be at least 6 characters long"
+    if not re.search(r'[a-zA-Z]', poly_col):
+        return None, "College name must contain letters"
+    if is_gibberish(poly_col):
+        return None, "Please enter a valid Polytechnic College name"
+
+    # 4. CGPA Validation
+    try:
+        cgpa_val = float(cgpa)
+        if cgpa_val < 2.0 or cgpa_val > 10.0:
+            return None, "Diploma CGPA must be a valid number between 2.0 and 10.0"
+    except (ValueError, TypeError):
+        return None, "Please enter a valid decimal CGPA"
+
+    # 5. Category & Gender options
+    if category not in ["UR", "OBC", "SC", "ST"]:
+        return None, "Please select a valid reservation category"
+    if gender not in ["M", "F"]:
+        return None, "Please select a valid gender"
+
+    sanitized = {
+        "display_name": display_name,
+        "mobile_number": mobile,
+        "polytechnic_college": poly_col,
+        "diploma_branch": diploma_branch,
+        "cgpa": cgpa_val,
+        "category": category,
+        "gender": gender
+    }
+    return sanitized, None
+
+
+def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tuple:
+    """Sends a custom broadcast notification email to all target emails. Returns (success_count, fail_count)."""
+    smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
+    smtp_port_str = os.environ.get("SMTP_PORT", "587")
+    smtp_username = os.environ.get("SMTP_USERNAME")
+    smtp_password = os.environ.get("SMTP_PASSWORD")
+    
+    # Check if app is running in testing/mock mode or target emails are test addresses
+    from flask import current_app
+    is_testing = False
+    try:
+        is_testing = current_app.config.get('TESTING', False) or current_app.testing
+    except Exception:
+        pass
+
+    if not smtp_username or not smtp_password or is_testing or any(e.endswith('@example.com') for e in to_emails):
+        print(f"\n=======================================================")
+        print(f"[SMTP SIMULATOR] Broadcast email to {len(to_emails)} users.")
+        print(f"Subject: {subject}")
+        print(f"Body:\n{body_content}")
+        print(f"=======================================================\n")
+        return len(to_emails), 0
+    
+    success_count = 0
+    fail_count = 0
+    
+    try:
+        smtp_port = int(smtp_port_str)
+        if smtp_port == 465:
+            server = smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=10)
+        else:
+            server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
+            server.starttls()
+            
+        server.login(smtp_username, smtp_password)
+        
+        for email in to_emails:
+            try:
+                msg = MIMEMultipart("alternative")
+                msg["Subject"] = subject
+                msg["From"] = f"MP Polytechnic Predictor Alert <{smtp_username}>"
+                msg["To"] = email
+                
+                # HTML template for beautiful email styling
+                html = f"""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                  <meta charset="utf-8">
+                  <title>{subject}</title>
+                </head>
+                <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
+                    <tr>
+                      <td align="center">
+                        <!-- Main Wrapper -->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+                          
+                          <!-- Saffron Header Strip -->
+                          <tr>
+                            <td style="background-color: #ff9933; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
+                          </tr>
+                          
+                          <!-- Logo & Brand Header -->
+                          <tr>
+                            <td align="center" style="padding: 32px 24px 20px 24px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);">
+                              <table border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                  <td align="center" style="background-color: #1e3a8a; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
+                                    <span style="font-size: 32px; line-height: 64px; display: block;">🎓</span>
+                                  </td>
+                                </tr>
+                              </table>
+                              <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">MP DTE Lateral Entry Predictor</h1>
+                              <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Official Counselling Alerts &amp; Updates</p>
+                            </td>
+                          </tr>
+                          
+                          <!-- Content Body -->
+                          <tr>
+                            <td style="padding: 0 40px 24px 40px;">
+                              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                  <td style="padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                                    <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0; text-align: center;">{subject}</h2>
+                                    <div style="font-size: 15px; line-height: 1.6; color: #334155; margin: 0 0 24px 0; white-space: pre-line;">
+                                        {body_content}
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          
+                          <!-- Divider -->
+                          <tr>
+                            <td style="padding: 0 40px;"><hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 0;"></td>
+                          </tr>
+                          
+                          <!-- Footer -->
+                          <tr>
+                            <td style="padding: 24px 40px 32px 40px; background-color: #fafafa; text-align: center;">
+                              <p style="margin: 0 0 8px 0; font-size: 12px; color: #94a3b8; font-weight: 500;">
+                                &copy; 2025 MP Lateral Entry College Predictor. All rights reserved.
+                              </p>
+                              <p style="margin: 0; font-size: 11px; color: #cbd5e1; line-height: 1.4;">
+                                You received this email because you subscribed to counselling alerts on the MP Polytechnic Predictor.
+                                <br>To unsubscribe, log in to your account dashboard and toggle the alerts switch.
+                              </p>
+                            </td>
+                          </tr>
+                          
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </body>
+                </html>
+                """
+                msg.attach(MIMEText(html, "html"))
+                server.sendmail(smtp_username, email, msg.as_string())
+                success_count += 1
+            except Exception as e:
+                print(f"[SMTP BROADCAST ERROR] Failed to send to {email}: {e}")
+                fail_count += 1
+                
+        server.quit()
+        return success_count, fail_count
+    except Exception as e:
+        print(f"[SMTP BROADCAST CONNECTION ERROR]: {e}")
+        return 0, len(to_emails)

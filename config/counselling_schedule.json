@@ -1,0 +1,44 @@
+{
+  "academic_year": "2025-26",
+  "events": [
+    {
+      "id": "registration",
+      "title": "Online Registration",
+      "date": "2025-06-01",
+      "end_date": "2025-06-15",
+      "status": "upcoming",
+      "description": "Register on dte.mponline.gov.in with required documents."
+    },
+    {
+      "id": "merit_list",
+      "title": "Provisional Merit List",
+      "date": "2025-06-20",
+      "status": "upcoming",
+      "description": "Merit list published on DTE MP portal."
+    },
+    {
+      "id": "choice_filling_r1",
+      "title": "Choice Filling — Round 1",
+      "date": "2025-06-25",
+      "end_date": "2025-06-28",
+      "status": "upcoming",
+      "description": "Lock your priority choice list on the official portal."
+    },
+    {
+      "id": "allotment_r1",
+      "title": "Round 1 Allotment Result",
+      "date": "2025-07-02",
+      "status": "upcoming",
+      "description": "Check allotment and report to allotted institute if satisfied."
+    },
+    {
+      "id": "choice_filling_r2",
+      "title": "Choice Filling — Round 2",
+      "date": "2025-07-10",
+      "end_date": "2025-07-12",
+      "status": "upcoming",
+      "description": "Upgrade or change choices for remaining seats."
+    }
+  ],
+  "portal_url": "https://dte.mponline.gov.in"
+}

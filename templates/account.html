@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+{% block title %}My Account — MP DTE Predictor{% endblock %}
+{% block meta_description %}Manage your MP DTE BTech Lateral Entry student account. Update academic details, CGPA, category, toggle counselling email reminders, and view saved shortlists.{% endblock %}
+{% block meta_keywords %}MP DTE student login, lateral entry college predictor account, DTE candidate portal{% endblock %}
+{% block og_title %}My Account — MP DTE Predictor{% endblock %}
+{% block og_description %}Log in or sign up to save your college cloud shortlists, toggle counselling event reminders, customize your document checklist, and edit academic settings.{% endblock %}
+{% block twitter_title %}My Account — MP DTE Predictor{% endblock %}
+{% block twitter_description %}Log in to save college cloud shortlists and manage counselling notifications.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="gov-box" style="max-width:600px; margin:30px auto;">
+        {% if error %}
+        <div class="alert-danger" style="background:#FEE2E2; color:#991B1B; padding:12px; border-radius:6px; margin-bottom:16px; font-weight:600;">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if success %}
+        <div class="alert-success" style="background:#DEF7EC; color:#03543F; padding:12px; border-radius:6px; margin-bottom:16px; font-weight:600;">
+            <i class="fas fa-check-circle"></i> {{ success }}
+        </div>
+        {% endif %}
+
+        {% if user %}
+        <h2 style="color:var(--primary); margin-top:0;"><i class="fas fa-user-check"></i> Welcome, {{ user.display_name }}</h2>
+        <p style="color:var(--muted); margin-bottom:20px;">{{ user.email }}</p>
+
+        <!-- Profile Details Card -->
+        <div style="margin:20px 0; padding:18px; background:#EEF2FF; border-radius:8px; border:1px solid #C7D2FE;">
+            <h3 style="margin-top:0; font-size:1.05rem; color:#3730A3; border-bottom:1px solid #E0E7FF; padding-bottom:8px; margin-bottom:12px;">
+                <i class="fas fa-id-card"></i> Student Profile Details
+            </h3>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:0.9rem; line-height:1.6;">
+                <div><span style="color:#6366F1; font-weight:700;"><i class="fas fa-phone"></i> Mobile:</span> <span style="font-weight:600; font-family:monospace;">{{ user.mobile_number or '—' }}</span></div>
+                <div><span style="color:#6366F1; font-weight:700;"><i class="fas fa-university"></i> Polytechnic:</span> <span style="font-weight:600;">{{ user.polytechnic_college or '—' }}</span></div>
+                <div><span style="color:#6366F1; font-weight:700;"><i class="fas fa-graduation-cap"></i> Diploma Branch:</span> <span style="font-weight:600;">{{ user.diploma_branch or '—' }}</span></div>
+                <div><span style="color:#6366F1; font-weight:700;"><i class="fas fa-star"></i> Diploma CGPA:</span> <span style="font-weight:600; font-family:monospace;">{{ user.cgpa or '0.0' }}</span></div>
+                <div><span style="color:#6366F1; font-weight:700;"><i class="fas fa-users"></i> Category:</span> <span style="font-weight:700; color:var(--secondary);">{{ user.category or 'UR' }}</span></div>
+                <div><span style="color:#6366F1; font-weight:700;"><i class="fas fa-venus-mars"></i> Gender:</span> <span style="font-weight:600;">{{ 'Male' if user.gender == 'M' else 'Female' }}</span></div>
+            </div>
+            <div style="margin-top:16px; padding-top:12px; border-top:1px solid #E0E7FF; display:flex; flex-wrap:wrap; align-items:center; gap:12px;">
+                <a href="/checklist" class="btn-primary-small" style="text-decoration:none; background:#3730A3; color:#fff; display:inline-flex; align-items:center; gap:6px;"><i class="fas fa-file-invoice"></i> My Counselling Checklist</a>
+                
+                <button type="button" class="btn-primary-small" onclick="openEditProfileModal()" style="background:#4F46E5; color:#fff; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:4px; font-weight:700; cursor:pointer; padding:6px 12px; font-size:0.8rem;">
+                    <i class="fas fa-user-edit"></i> Edit Profile
+                </button>
+
+                <form method="POST" class="no-loader" style="margin:0; margin-left:auto;">
+                    <input type="hidden" name="action" value="toggle_alerts">
+                    <button type="submit" class="btn-secondary" style="font-size:0.8rem; padding:6px 12px; display:inline-flex; align-items:center; gap:8px; border:1px solid #CBD5E1; background:#F8FAFC; color:#334155; font-weight:600; cursor:pointer;">
+                        {% if user.notify_counselling == 1 %}
+                            <i class="fas fa-bell" style="color:#16A34A;"></i> Email Alerts: <span style="color:#16A34A; font-weight:800;">ACTIVE</span>
+                        {% else %}
+                            <i class="fas fa-bell-slash" style="color:#64748B;"></i> Email Alerts: <span style="color:#64748B; font-weight:800;">DISABLED</span>
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Cloud Shortlist Card -->
+        <div style="margin:20px 0; padding:18px; background:#F8FAFC; border-radius:8px; border:1px solid var(--border);">
+            <h3 style="margin-top:0; font-size:1.05rem; color:var(--primary);"><i class="fas fa-cloud"></i> Cloud Shortlist</h3>
+            {% if cloud_shortlist %}
+            <p style="margin-bottom:14px;">You have <strong>{{ cloud_shortlist|length }}</strong> colleges saved in your cloud account.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                <button type="button" class="btn-primary-small" onclick="loadCloudToLocal()" style="display:inline-flex; align-items:center; gap:6px;">
+                    <i class="fas fa-file-download"></i> Load into Browser
+                </button>
+                <a href="/shortlist/print" target="_blank" class="btn-primary-small" style="text-decoration:none; background:#1E3A8A; color:#fff; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:4px; font-weight:700; font-size:0.8rem;">
+                    <i class="fas fa-print"></i> Print / Save PDF
+                </a>
+                <button type="button" class="btn-primary-small" onclick="shareShortlistWhatsApp()" style="background:#16A34A; color:#fff; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:4px; font-weight:700; cursor:pointer; padding:6px 12px; font-size:0.8rem;">
+                    <i class="fab fa-whatsapp"></i> Share on WhatsApp
+                </button>
+            </div>
+            {% else %}
+            <p style="color:var(--muted);">No cloud shortlist saved yet. Shortlist your preferred colleges on the <strong>Predictor</strong> page and click <strong>Save to Cloud</strong>.</p>
+            {% endif %}
+        </div>
+
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px;">
+            <form method="POST" class="no-loader" style="margin:0;">
+                <input type="hidden" name="action" value="logout">
+                <button type="submit" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+            </form>
+            
+            {% if user.email == 'krishnaawasthi701@gmail.com' %}
+            <a href="/admin/users" class="btn-primary" style="text-decoration:none;"><i class="fas fa-user-shield"></i> Open Admin DB</a>
+            {% endif %}
+        </div>
+
+        <!-- Edit Profile Modal Overlay -->
+        <div id="edit-profile-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+            <div style="background:#fff; margin:auto; border-radius:10px; max-width:550px; width:90%; box-shadow:0 10px 25px rgba(0,0,0,0.15); overflow:hidden; border:1px solid var(--border);">
+                <div style="background:var(--primary); padding:16px 20px; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+                    <h3 style="margin:0; font-size:1.1rem; font-weight:bold; color:#fff;"><i class="fas fa-user-edit"></i> Update Student Profile</h3>
+                    <span style="font-size:1.6rem; font-weight:bold; cursor:pointer; line-height:1;" onclick="closeEditProfileModal()">&times;</span>
+                </div>
+                <form method="POST" style="padding:20px; display:flex; flex-direction:column; gap:14px; margin:0;">
+                    <input type="hidden" name="action" value="update_profile">
+                    
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Full Name (As per documents)</label>
+                        <input type="text" name="display_name" value="{{ user.display_name }}" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div>
+                            <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Mobile Number</label>
+                            <input type="text" name="mobile_number" value="{{ user.mobile_number or '' }}" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                        </div>
+                        <div>
+                            <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Diploma CGPA (2.0 - 10.0)</label>
+                            <input type="number" step="0.01" name="cgpa" value="{{ user.cgpa or '' }}" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Polytechnic College Name</label>
+                        <input type="text" name="polytechnic_college" value="{{ user.polytechnic_college or '' }}" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div>
+                            <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Diploma Branch</label>
+                            <select name="diploma_branch" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; background:#fff; height:40px;">
+                                <option value="CSE" {% if user.diploma_branch == 'CSE' %}selected{% endif %}>Computer Science & Engg (CSE)</option>
+                                <option value="IT" {% if user.diploma_branch == 'IT' %}selected{% endif %}>Information Technology (IT)</option>
+                                <option value="EE" {% if user.diploma_branch == 'EE' %}selected{% endif %}>Electrical Engg (EE)</option>
+                                <option value="ET" {% if user.diploma_branch == 'ET' %}selected{% endif %}>Electronics & Comm (ET/ECE)</option>
+                                <option value="MECH" {% if user.diploma_branch == 'MECH' %}selected{% endif %}>Mechanical Engg (ME)</option>
+                                <option value="CIVIL" {% if user.diploma_branch == 'CIVIL' %}selected{% endif %}>Civil Engg (CE)</option>
+                                <option value="CHEM" {% if user.diploma_branch == 'CHEM' %}selected{% endif %}>Chemical Engg</option>
+                                <option value="Other" {% if user.diploma_branch == 'Other' %}selected{% endif %}>Other / Non-Engineering</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Reservation Category</label>
+                            <select name="category" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; background:#fff; height:40px;">
+                                <option value="UR" {% if user.category == 'UR' %}selected{% endif %}>UR (General)</option>
+                                <option value="OBC" {% if user.category == 'OBC' %}selected{% endif %}>OBC</option>
+                                <option value="SC" {% if user.category == 'SC' %}selected{% endif %}>SC</option>
+                                <option value="ST" {% if user.category == 'ST' %}selected{% endif %}>ST</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Gender</label>
+                        <div style="display:flex; gap:16px; align-items:center; padding:5px 0;">
+                            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                                <input type="radio" name="gender" value="M" {% if user.gender == 'M' %}checked{% endif %}> Male
+                            </label>
+                            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                                <input type="radio" name="gender" value="F" {% if user.gender == 'F' %}checked{% endif %}> Female
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+                        <button type="button" onclick="closeEditProfileModal()" style="padding:10px 16px; border:1px solid var(--border); background:#F1F5F9; color:#334155; border-radius:6px; cursor:pointer; font-weight:600;">Cancel</button>
+                        <button type="submit" style="padding:10px 16px; background:#4F46E5; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:700;">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+        function loadCloudToLocal() {
+            const items = {{ cloud_shortlist | tojson | safe }};
+            localStorage.setItem('mp_dte_shortlist', JSON.stringify(items));
+            if (window.showToast) {
+                window.showToast('Loaded ' + items.length + ' items to your browser. Redirecting to Predictor...', 'success');
+                setTimeout(() => { window.location = '/predictor'; }, 1500);
+            } else {
+                alert('Loaded ' + items.length + ' items to your browser. Open Predictor to see them.');
+                window.location = '/predictor';
+            }
+        }
+        function openEditProfileModal() {
+            document.getElementById('edit-profile-modal').style.display = 'flex';
+        }
+        function closeEditProfileModal() {
+            document.getElementById('edit-profile-modal').style.display = 'none';
+        }
+        function shareShortlistWhatsApp() {
+            const items = {{ cloud_shortlist | tojson | safe }};
+            if (!items || items.length === 0) return;
+            let text = "🎓 *My MP DTE Lateral Entry College Shortlist*\n";
+            text += "━━━━━━━━━━━━━━━━━━━━\n";
+            text += "👤 *Name:* {{ user.display_name or '' }}\n";
+            text += "📚 *Branch:* {{ user.diploma_branch or '' }}\n";
+            text += "⭐ *CGPA:* {{ user.cgpa or '' }}\n";
+            text += "🏷️ *Category:* {{ user.category or 'UR' }}\n";
+            text += "━━━━━━━━━━━━━━━━━━━━\n\n";
+            items.forEach((item, i) => {
+                const prob = item.prob_type || '';
+                const emoji = prob === 'Safe' ? '🟢' : (prob === 'Moderate' ? '🟡' : '🔴');
+                text += `${i + 1}. ${emoji} *${item.college_name}*\n`;
+                text += `   Branch: ${item.branch_name || 'All'}\n`;
+                text += `   Admission Chance: ${prob}\n\n`;
+            });
+            text += "━━━━━━━━━━━━━━━━━━━━\n";
+            text += "Powered by MP Polytechnic Lateral Entry Predictor";
+            window.open("https://wa.me/?text=" + encodeURIComponent(text), '_blank');
+        }
+        </script>
+
+        {% else %}
+        {% if session.get("reset_email") %}
+        <div style="max-width: 500px; margin: 40px auto; border:1px solid #E2E8F0; padding:30px; border-radius:12px; background:#fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); text-align:center;">
+            <div style="background:#FEF3C7; width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto; color:#D97706; font-size:1.8rem;">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2 style="color:var(--primary); margin:0 0 8px 0; font-size:1.4rem;">Reset Your Password</h2>
+            <p style="color:var(--muted); font-size:0.9rem; margin-bottom:24px;">Enter the 6-digit OTP reset code sent to <strong style="color:var(--primary);">{{ session.reset_email }}</strong> and choose a new password.</p>
+            
+            <form method="POST" class="no-loader" style="text-align: left; max-width: 320px; margin: 0 auto;">
+                <input type="hidden" name="action" value="verify_reset_otp">
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label style="font-weight:600; margin-bottom:6px; display:block;">Verification OTP Code</label>
+                    <input type="text" name="otp" required maxlength="6" pattern="[0-9]{6}" placeholder="e.g. 123456" 
+                           style="text-align:center; font-size:1.5rem; letter-spacing:4px; padding:8px; font-family:monospace; font-weight:bold; width:100%; border:2px solid var(--border); border-radius:8px; box-sizing:border-box;">
+                </div>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label style="font-weight:600; margin-bottom:6px; display:block;">New Password (min 6 characters)</label>
+                    <input type="password" name="new_password" required minlength="6" placeholder="Choose new password" 
+                           style="padding:10px; width:100%; border:1px solid var(--border); border-radius:8px; box-sizing:border-box;">
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; padding:12px; font-size:1rem; font-weight:bold; margin-bottom:12px;"><i class="fas fa-check-circle"></i> Reset Password</button>
+            </form>
+            
+            <form method="POST" class="no-loader" style="margin-top:10px;">
+                <input type="hidden" name="action" value="cancel_reset">
+                <button type="submit" style="border:none; background:none; color:#EF4444; font-weight:600; cursor:pointer; text-decoration:underline; font-size:0.88rem;"><i class="fas fa-times-circle"></i> Cancel & Go Back</button>
+            </form>
+        </div>
+        {% elif session.get("pending_registration") %}
+        <div style="max-width: 500px; margin: 40px auto; border:1px solid #E2E8F0; padding:30px; border-radius:12px; background:#fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); text-align:center;">
+            <div style="background:#EFF6FF; width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto; color:#2563EB; font-size:1.8rem;">
+                <i class="fas fa-envelope-open-text"></i>
+            </div>
+            <h2 style="color:var(--primary); margin:0 0 8px 0; font-size:1.4rem;">Verify Your Email</h2>
+            <p style="color:var(--muted); font-size:0.9rem; margin-bottom:24px;">We've sent a 6-digit OTP code to <strong style="color:var(--primary);">{{ session.pending_registration.email }}</strong>. Please enter the code below to complete your registration.</p>
+            
+            <form method="POST" class="no-loader">
+                <input type="hidden" name="action" value="verify_otp">
+                <div class="form-group" style="margin-bottom:20px;">
+                    <input type="text" name="otp" required maxlength="6" pattern="[0-9]{6}" placeholder="Enter OTP" 
+                           style="text-align:center; font-size:1.8rem; letter-spacing:8px; padding:10px; font-family:monospace; font-weight:bold; width:100%; max-width:280px; border:2px solid var(--border); border-radius:8px; box-sizing:border-box;">
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; max-width:280px; padding:12px; font-size:1rem; font-weight:bold; margin-bottom:12px;"><i class="fas fa-check-circle"></i> Verify & Create Account</button>
+            </form>
+            
+            <form method="POST" class="no-loader" style="margin-top:10px;">
+                <input type="hidden" name="action" value="cancel_registration">
+                <button type="submit" style="border:none; background:none; color:#EF4444; font-weight:600; cursor:pointer; text-decoration:underline; font-size:0.88rem;"><i class="fas fa-times-circle"></i> Cancel & Go Back</button>
+            </form>
+        </div>
+        {% else %}
+        <h2 style="color:var(--primary); margin-top:0; text-align:center;"><i class="fas fa-cloud"></i> Save Shortlist to Cloud</h2>
+        <p class="subtitle" style="text-align:center; margin-bottom:30px;">Create an account to backup your shortlisted colleges, sync across your mobile and computer, and get counselling support.</p>
+
+        <!-- Login Form Accordion / Section -->
+        <div style="background:#F8FAFC; border:1px solid var(--border); padding:20px; border-radius:8px; margin-bottom:24px;">
+            <div id="login-form-wrapper">
+                <h3 style="font-size:1.1rem; margin-top:0; margin-bottom:14px; color:var(--primary);"><i class="fas fa-sign-in-alt"></i> Sign In to Your Account</h3>
+                <form method="POST" class="no-loader">
+                    <input type="hidden" name="action" value="login">
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" required placeholder="e.g. name@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" required minlength="6" placeholder="Your password">
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; margin-top:10px; flex-wrap:wrap; gap:14px;">
+                        <button type="submit" class="btn-primary"><i class="fas fa-unlock"></i> Login</button>
+                        <a href="javascript:void(0)" onclick="toggleForgotPassword(true)" style="font-size:0.88rem; color:var(--primary); font-weight:600; text-decoration:underline;">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+
+            <div id="forgot-form-wrapper" style="display:none;">
+                <h3 style="font-size:1.1rem; margin-top:0; margin-bottom:12px; color:#D97706;"><i class="fas fa-key"></i> Recover Your Password</h3>
+                <p style="font-size:0.85rem; color:var(--muted); margin-bottom:16px; line-height:1.4;">Enter your registered email below. We will send you a 6-digit OTP code to verify and reset your password.</p>
+                <form method="POST" class="no-loader">
+                    <input type="hidden" name="action" value="forgot_password">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label>Registered Email Address</label>
+                        <input type="email" name="email" required placeholder="e.g. registered_email@gmail.com" style="width:100%; box-sizing:border-box;">
+                    </div>
+                    <div style="display:flex; align-items:center; flex-wrap:wrap; gap:14px;">
+                        <button type="submit" class="btn-warning" style="background:#D97706; color:#fff; border:none; padding:10px 18px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-paper-plane"></i> Send Reset Code</button>
+                        <a href="javascript:void(0)" onclick="toggleForgotPassword(false)" style="font-size:0.88rem; color:var(--muted); font-weight:600; text-decoration:underline;">Back to Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+        function toggleForgotPassword(show) {
+            document.getElementById('login-form-wrapper').style.display = show ? 'none' : 'block';
+            document.getElementById('forgot-form-wrapper').style.display = show ? 'block' : 'none';
+        }
+        </script>
+
+        <!-- Registration Form Section -->
+        <div style="border:1px solid #E2E8F0; padding:24px; border-radius:8px; background:#fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <h3 style="font-size:1.1rem; margin-top:0; margin-bottom:14px; color:var(--primary); border-bottom:1px solid var(--border); padding-bottom:8px;">
+                <i class="fas fa-user-plus"></i> Register New Student Account
+            </h3>
+            <form method="POST" class="no-loader">
+                <input type="hidden" name="action" value="register">
+                
+                <div class="form-row" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="display_name" required placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number (10 digits)</label>
+                        <input type="tel" name="mobile_number" required pattern="[0-9]{10}" placeholder="e.g. 9876543210">
+                    </div>
+                </div>
+
+                <div class="form-row" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required placeholder="e.g. email@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password (min 6 characters)</label>
+                        <input type="password" name="password" required minlength="6" placeholder="Choose a secure password">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Polytechnic College (Diploma College Name)</label>
+                    <input type="text" name="polytechnic_college" required placeholder="e.g. Government Polytechnic College, Indore">
+                </div>
+
+                <div class="form-row" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label>Diploma Branch</label>
+                        <select name="diploma_branch" required>
+                            <option value="CSE">Computer Science & Engg (CSE)</option>
+                            <option value="IT">Information Technology (IT)</option>
+                            <option value="EE">Electrical Engg (EE)</option>
+                            <option value="ET">Electronics & Comm (ET/ECE)</option>
+                            <option value="MECH">Mechanical Engg (ME)</option>
+                            <option value="CIVIL">Civil Engg (CE)</option>
+                            <option value="CHEM">Chemical Engg</option>
+                            <option value="Other">Other / Non-Engineering</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Diploma CGPA (out of 10.0)</label>
+                        <input type="number" name="cgpa" required step="0.01" min="0" max="10" placeholder="e.g. 8.45">
+                    </div>
+                </div>
+
+                <div class="form-row" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                    <div class="form-group">
+                        <label>Reservation Category</label>
+                        <select name="category" required>
+                            <option value="UR">UR (General)</option>
+                            <option value="OBC">OBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="gender" required>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-secondary" style="width:100%; margin-top:14px; font-weight:700; font-size:1rem; padding:12px;"><i class="fas fa-check-circle"></i> Create My Account & Save</button>
+            </form>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

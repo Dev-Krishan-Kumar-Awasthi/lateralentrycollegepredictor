@@ -1,0 +1,8 @@
+{
+  "meta": {
+    "source": "google_maps_platform",
+    "note": "Run scripts/enrich_colleges_google.py with GOOGLE_MAPS_API_KEY to populate all 261 colleges",
+    "fee_note": "Tuition not available via Google Places — see college_fees.json with verified public sources"
+  },
+  "colleges": {}
+}

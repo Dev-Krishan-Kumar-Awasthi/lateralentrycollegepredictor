@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}DTE MP Counselling Schedule 2025-26 — Lateral Entry Important Dates{% endblock %}
+{% block meta_description %}MP DTE BTech Lateral Entry Counselling 2025-26 important dates — registration dates, choice filling window, document verification, allotment rounds and college reporting dates.{% endblock %}
+{% block meta_keywords %}MP DTE counselling schedule 2025, lateral entry important dates, DTE MP registration dates, BTech lateral entry counselling timeline, DTE MP counselling calendar 2026{% endblock %}
+{% block og_title %}DTE MP Counselling Schedule 2025-26 — Lateral Entry Important Dates{% endblock %}
+{% block og_description %}Track all important dates for MP DTE BTech Lateral Entry counselling 2025-26. Registration, choice filling, allotment, and reporting dates all in one place.{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 30px auto;">
+    
+    <!-- Title Page Header -->
+    <div class="gov-box" style="border-top: 4px solid var(--primary); margin-bottom: 24px; padding: 24px; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div>
+                <h1 style="color:var(--primary); margin:0; font-size:1.6rem; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-calendar-alt" style="color:var(--saffron);"></i>
+                    DTE MP Counselling Schedule (2026)
+                </h1>
+                <p style="color:var(--muted); margin:4px 0 0 0; font-size:0.92rem;">
+                    Tentative timeline for Lateral Entry admission round cycles. Keep track of deadlines.
+                </p>
+            </div>
+            <div>
+                <a href="{{ schedule.portal_url or 'https://dte.mponline.gov.in' }}" target="_blank" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                    <i class="fas fa-external-link-alt"></i> Official DTE Portal
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Subscription Status Header Widget -->
+    <div class="gov-box" style="margin-bottom: 24px; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); 
+        {% if not user %}
+            background: #F8FAFC; border: 1px solid #E2E8F0;
+        {% elif user.notify_counselling == 1 %}
+            background: #F0FDF4; border: 1px solid #BBF7D0;
+        {% else %}
+            background: #FFFBEB; border: 1px solid #FDE68A;
+        {% endif %}">
+        
+        <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            {% if not user %}
+                <div style="background:#E2E8F0; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#475569; font-size:1.3rem;">
+                    <i class="fas fa-bell-slash"></i>
+                </div>
+                <div style="flex:1;">
+                    <strong style="color:#334155; font-size:1rem; display:block;">Email Alerts Inactive</strong>
+                    <span style="color:#64748B; font-size:0.88rem;">Create or sign in to your student account to receive automated reminders directly in your inbox.</span>
+                </div>
+                <a href="/account" class="btn-primary-small" style="text-decoration:none;"><i class="fas fa-user-plus"></i> Sign In / Sign Up</a>
+            {% elif user.notify_counselling == 1 %}
+                <div style="background:#DCFCE7; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#16A34A; font-size:1.3rem;">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div style="flex:1;">
+                    <strong style="color:#14532D; font-size:1rem; display:block;">Counselling Alerts Active!</strong>
+                    <span style="color:#15803D; font-size:0.88rem;">Reminders will be sent to your registered email address (<strong style="font-family:monospace;">{{ user.email }}</strong>) before key deadlines.</span>
+                </div>
+                <a href="/account" class="btn-secondary" style="font-size:0.8rem; padding:6px 12px; background:#fff; border:1px solid #BBF7D0; color:#15803D; text-decoration:none;"><i class="fas fa-cog"></i> Settings</a>
+            {% else %}
+                <div style="background:#FEF3C7; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#D97706; font-size:1.3rem;">
+                    <i class="fas fa-bell-slash"></i>
+                </div>
+                <div style="flex:1;">
+                    <strong style="color:#78350F; font-size:1rem; display:block;">Email Notifications Muted</strong>
+                    <span style="color:#B45309; font-size:0.88rem;">You have opted out of counselling alerts. You can enable them anytime from your account settings.</span>
+                </div>
+                <a href="/account" class="btn-primary-small" style="text-decoration:none; background:#D97706; color:#fff;"><i class="fas fa-bell"></i> Enable Alerts</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Timeline Grid Cards -->
+    <div style="display:flex; flex-direction:column; gap:20px; margin-bottom:40px;">
+        {% if schedule and schedule.events %}
+            {% for ev in schedule.events %}
+                <!-- Determine date state/urgency (mock logic based on dates) -->
+                {% set is_active = "Online Registration" in ev.title or "Choice Filling" in ev.title %}
+                <div class="gov-box" style="background:#fff; padding:20px; border-radius:8px; border:1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); display:flex; gap:20px; align-items:flex-start;">
+                    
+                    <!-- Date badge marker column -->
+                    <div style="min-width: 140px; text-align: center; border-right: 2px solid #F1F5F9; padding-right: 20px;">
+                        <span style="display:block; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; color:#64748B; margin-bottom:6px;"><i class="fas fa-clock"></i> Date Range</span>
+                        <strong style="display:block; font-size:0.95rem; color:var(--primary); line-height:1.3;">{{ ev.date }}</strong>
+                        {% if ev.end_date %}
+                            <span style="display:block; font-size:0.75rem; color:var(--muted); margin:4px 0;">to</span>
+                            <strong style="display:block; font-size:0.95rem; color:var(--primary); line-height:1.3;">{{ ev.end_date }}</strong>
+                        {% endif %}
+                    </div>
+
+                    <!-- Description column -->
+                    <div style="flex:1;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
+                            <h3 style="margin:0; font-size:1.15rem; color:var(--primary);">{{ ev.title }}</h3>
+                            {% if is_active %}
+                                <span style="background:#EFF6FF; color:#1E40AF; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:800; text-transform:uppercase;"><i class="fas fa-hourglass-half"></i> Upcoming Round</span>
+                            {% else %}
+                                <span style="background:#F1F5F9; color:#475569; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; text-transform:uppercase;">Scheduled</span>
+                            {% endif %}
+                        </div>
+                        <p style="margin:0 0 12px 0; color:var(--muted); font-size:0.9rem; line-height:1.5;">{{ ev.description }}</p>
+                        
+                        <!-- Mini Checklist guideline tips -->
+                        <div style="padding:10px 14px; background:#F8FAFC; border-radius:6px; border-left:3px solid var(--primary); font-size:0.8rem; color:#475569; line-height:1.4;">
+                            {% if "Registration" in ev.title %}
+                                💡 <strong>Requirements:</strong> Needs Diploma marksheets (all sem), Aadhaar card, and domicile proof for choice submission.
+                            {% elif "Choice Filling" in ev.title %}
+                                💡 <strong>Pro Tip:</strong> Use the <strong>Predictor Choice Builder</strong> to export your customized target college choices before locking!
+                            {% else %}
+                                💡 Verify final allotment results on the DTE candidate login portal using your registered application credentials.
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color:var(--muted); text-align:center;">No timeline events listed. Please check back later.</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

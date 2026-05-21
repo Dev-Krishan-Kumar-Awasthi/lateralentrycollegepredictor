@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %}Smart Choice List Builder — MP DTE Lateral Entry 2025 | Safe Target Dream Colleges{% endblock %}
+{% block meta_description %}Build your Smart College Choice List for MP DTE BTech Lateral Entry 2025. Get categorized Safe, Target, and Dream college recommendations. Optimize choice filling for LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, and top 10 govt colleges in mp.{% endblock %}
+{% block meta_keywords %}MP DTE choice list builder, lateral entry safe target dream colleges, MP engineering college choice list 2025, DTE counselling choice filling, BTech lateral entry college list MP, LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling{% endblock %}
+{% block og_title %}Smart Choice List Builder — MP DTE Lateral Entry 2025{% endblock %}
+{% block og_description %}Build your Safe-Target-Dream college list for MP DTE BTech Lateral Entry counselling 2025. Filter by branch, city, category. Export as CSV.{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="gov-box">
+        <h1 style="color:var(--primary);"><i class="fas fa-magic"></i> Smart Choice List Builder</h1>
+        <p class="subtitle">Enter your details and we will suggest colleges in three groups: safe, target, and dream. You can export the list as a CSV file or copy it for the DTE portal.</p>
+
+        <form method="POST" class="no-loader">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>CGPA</label>
+                    <input type="number" name="cgpa" step="0.01" min="0" max="10" required
+                        value="{{ form_data.cgpa if form_data and form_data.cgpa else '' }}">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="UR" {% if form_data and form_data.category == 'UR' %}selected{% endif %}>UR</option>
+                        <option value="OBC" {% if form_data and form_data.category == 'OBC' %}selected{% endif %}>OBC</option>
+                        <option value="SC" {% if form_data and form_data.category == 'SC' %}selected{% endif %}>SC</option>
+                        <option value="ST" {% if form_data and form_data.category == 'ST' %}selected{% endif %}>ST</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>College Type</label>
+                    <select name="college_type">
+                        <option value="Any">Any</option>
+                        <option value="GOVT">Government</option>
+                        <option value="Private">Private</option>
+                        <option value="GOVT+SFI">Govt + SFI</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>City</label>
+                    <select name="city">
+                        <option value="All">Any City</option>
+                        {% for c in mp_cities %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Domicile</label>
+                    <select name="domicile">
+                        <option value="Y">MP Resident</option>
+                        <option value="N">Non-MP</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary"><i class="fas fa-cogs"></i> Build Smart List</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="gov-box" style="margin-top:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+            <p style="margin:0;">Estimated rank: <strong>{{ result.min_rank }} – {{ result.max_rank }}</strong> ({{ result.year }})</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn-secondary-small" onclick="exportSmartCsv()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                <button type="button" class="btn-secondary-small" onclick="exportSmartCopy()"><i class="fas fa-copy"></i> Copy List</button>
+                <a href="/simulator" class="btn-primary-small" onclick="sendToSimulator(); return false;"><i class="fas fa-vial"></i> Open in Simulator</a>
+            </div>
+        </div>
+
+        {% set shortlisted_count = namespace(n=0) %}
+        {% set recommended_count = namespace(n=0) %}
+        {% for bucket, label, color in [('dream', 'Dream (25–49% chance)', '#7C3AED'), ('target', 'Target (50–79%)', '#D97706'), ('safe', 'Safe (80%+)', '#059669')] %}
+        {% set items = result[bucket] %}
+        {% if items %}
+
+        {# Count recommended and shortlisted items in this bucket #}
+        {% set rec_in_bucket = items | selectattr('in_recommendation', 'defined') | selectattr('in_recommendation') | list %}
+        {% set sl_in_bucket = items | selectattr('in_shortlist', 'defined') | selectattr('in_shortlist') | selectattr('in_recommendation', 'equalto', false) | list %}
+        
+        {% if rec_in_bucket %}{% set recommended_count.n = recommended_count.n + rec_in_bucket|length %}{% endif %}
+        {% set full_sl_in_bucket = items | selectattr('in_shortlist', 'defined') | selectattr('in_shortlist') | list %}
+        {% if full_sl_in_bucket %}{% set shortlisted_count.n = shortlisted_count.n + full_sl_in_bucket|length %}{% endif %}
+
+        <h3 style="color:{{ color }};margin-top:28px;"><i class="fas fa-layer-group"></i> {{ label }} ({{ items|length }})</h3>
+
+        {% if rec_in_bucket %}
+        <div style="background:#FFFDF5; border:1px solid #FDE68A; border-radius:8px; padding:10px 16px; margin-bottom:10px; font-size:0.85rem; color:#78350F; display:flex; align-items:center; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.02);">
+            <span style="background:var(--saffron); color:#fff; border-radius:50%; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem;"><i class="fas fa-award"></i></span>
+            <span><strong>{{ rec_in_bucket|length }} college(s)</strong> match the DTE Official Recommended Choice Filling List — prioritized at the top!</span>
+        </div>
+        {% endif %}
+
+        {% if sl_in_bucket %}
+        <div style="background:#ECFDF5; border:1px solid #A7F3D0; border-radius:8px; padding:10px 16px; margin-bottom:10px; font-size:0.85rem; color:#065F46; display:flex; align-items:center; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.02);">
+            <span style="background:#10B981; color:#fff; border-radius:50%; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:0.75rem;"><i class="fas fa-star"></i></span>
+            <span><strong>{{ sl_in_bucket|length }} college(s)</strong> from your Cloud Shortlist appear here — shown next!</span>
+        </div>
+        {% endif %}
+
+        <div class="table-wrapper">
+            <table class="gov-table">
+                <thead><tr><th>#</th><th>College</th><th>Branch</th><th>Chance</th><th>Closing</th></tr></thead>
+                <tbody>
+                    {% set ns = namespace(showed_rec_sep=false, showed_sl_sep=false) %}
+                    {% for item in items %}
+                    
+                    {# Separator logic #}
+                    {% if not item.get('in_recommendation', false) and rec_in_bucket and not ns.showed_rec_sep %}
+                        {% set ns.showed_rec_sep = true %}
+                        <tr>
+                            <td colspan="5" style="background:#FFFDF5; padding:8px 12px; font-size:0.78rem; color:#B45309; font-weight:800; letter-spacing:1px; text-align:center; border-top:2px dashed #FDE68A; border-bottom:2px dashed #FDE68A;">
+                                ── OTHER SUGGESTED COLLEGES ──
+                            </td>
+                        </tr>
+                    {% endif %}
+                    
+                    {% if not item.get('in_recommendation', false) and not item.get('in_shortlist', false) and sl_in_bucket and not ns.showed_sl_sep %}
+                        {% set ns.showed_sl_sep = true %}
+                        <tr>
+                            <td colspan="5" style="background:#F8FAFC; padding:8px 12px; font-size:0.75rem; color:#64748B; font-weight:700; letter-spacing:0.8px; text-align:center; border-top:1px dashed #CBD5E1; border-bottom:1px dashed #CBD5E1;">
+                                ── GENERAL COLLEGES ──
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                    <tr style="{% if item.get('in_recommendation', false) %}background:linear-gradient(90deg, #FFFDF5 0%, #FFFFFF 100%); border-left:4px solid var(--saffron);{% elif item.get('in_shortlist', false) %}background:#F0FDF4; border-left:4px solid #16A34A;{% endif %}">
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            {% if item.get('in_recommendation', false) %}
+                            <span class="badge-rec" style="background:var(--saffron); color:#fff; font-size:0.68rem; font-weight:800; padding:2px 6px; border-radius:4px; margin-right:6px; display:inline-flex; align-items:center; gap:3px;" title="DTE Official Choice Filling Order #{{ item.rec_sn }}"><i class="fas fa-award"></i> Rec #{{ item.rec_sn }}</span>
+                            {% endif %}
+                            {% if item.get('in_shortlist', false) %}
+                            <span style="color:#F59E0B; margin-right:5px;" title="Saved in your Cloud Shortlist"><i class="fas fa-star"></i></span>
+                            {% endif %}
+                            {{ item.college_name }}
+                        </td>
+                        <td>{{ item.branch_name }} ({{ item.branch }})</td>
+                        <td>
+                            <span class="prob-badge {% if bucket == 'safe' %}prob-safe{% elif bucket == 'target' %}prob-moderate{% else %}prob-low{% endif %}">
+                                {{ item.probability }}%
+                            </span>
+                        </td>
+                        <td>{{ item.closing_rank }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        {% if recommended_count.n > 0 or shortlisted_count.n > 0 %}
+        <p style="font-size:0.8rem; color:#64748B; margin-top:20px; text-align:center; line-height:1.5;">
+            {% if recommended_count.n > 0 %}
+            <span style="background:var(--saffron); color:#fff; font-size:0.7rem; font-weight:800; padding:1px 5px; border-radius:3px; margin-right:3px;"><i class="fas fa-award"></i> Rec #X</span> = MP DTE Official Recommended Preference Order &nbsp;|&nbsp;
+            {% endif %}
+            {% if shortlisted_count.n > 0 %}
+            <i class="fas fa-star" style="color:#F59E0B;"></i> = Saved in Cloud Shortlist &nbsp;|&nbsp;
+            {% endif %}
+            Recommended choices and shortlisted colleges are prioritized at the top of each category.
+        </p>
+        {% endif %}
+    </div>
+
+
+    <script>
+    const smartMerged = {{ result.merged | tojson | safe }};
+    function exportSmartCsv() { DteExport.exportCsv(smartMerged); }
+    function exportSmartCopy() {
+        DteExport.copyToClipboard(smartMerged).then(function(ok) {
+            if (ok) {
+                if (window.showToast) window.showToast('Full smart choice list copied!', 'success');
+                else alert('Full smart choice list copied!');
+            }
+        });
+    }
+    function sendToSimulator() {
+        localStorage.setItem('mp_dte_simulator_prefill', JSON.stringify(smartMerged));
+        window.location = '/simulator';
+    }
+    </script>
+    {% endif %}
+</div>
+{% endblock %}

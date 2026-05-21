@@ -168,6 +168,8 @@ def interpolate_range(c, c1, r1_min, r1_max, c2, r2_min, r2_max):
 
 
 def estimate_rank_range(cgpa_to_rank_map, cgpa):
+    if not cgpa_to_rank_map:
+        return (99999, 99999)
     if cgpa > cgpa_to_rank_map[0].cgpa:
         return (1, 1)
     if cgpa < cgpa_to_rank_map[-1].cgpa:
@@ -388,6 +390,61 @@ def get_college_detail(college_name: str) -> dict:
     }
 
 
+def get_seat_heatmap(college_name: str, year: int = 2025) -> dict:
+    """Branch × category matrix with closing rank and seats for heatmap UI."""
+    rows = (
+        db.session.query(SeatInfo)
+        .filter_by(college_name=college_name, year=year, gender="OP")
+        .order_by(SeatInfo.branch, SeatInfo.category)
+        .all()
+    )
+    if not rows:
+        rows = (
+            db.session.query(SeatInfo)
+            .filter_by(college_name=college_name, year=year)
+            .order_by(SeatInfo.branch, SeatInfo.category)
+            .all()
+        )
+    branches = sorted({r.branch for r in rows})
+    categories = ["UR", "OBC", "SC", "ST"]
+    matrix = []
+    for branch in branches:
+        row_cells = []
+        for cat in categories:
+            matches = [r for r in rows if r.branch == branch and r.category == cat]
+            if matches:
+                best = min(matches, key=lambda x: x.closing_rank)
+                row_cells.append({
+                    "closing_rank": best.closing_rank,
+                    "seats": sum(m.total_seats for m in matches),
+                    "has_data": True,
+                })
+            else:
+                row_cells.append({"closing_rank": None, "seats": 0, "has_data": False})
+        matrix.append({"branch": branch, "cells": row_cells})
+    return {"branches": branches, "categories": categories, "matrix": matrix, "year": year}
+
+
+def get_cutoff_chart_data(college_name: str) -> dict:
+    """Per-branch average closing ranks for 2024 vs 2025 line chart."""
+    detail = get_college_detail(college_name)
+    if not detail:
+        return {"labels": [], "data_2024": [], "data_2025": []}
+    labels = detail["branches"]
+    data_2024, data_2025 = [], []
+    for branch in labels:
+        for year, bucket in ((2024, data_2024), (2025, data_2025)):
+            rows = detail["by_year"].get(year, [])
+            closings = [r.closing_rank for r in rows if r.branch == branch]
+            bucket.append(round(sum(closings) / len(closings)) if closings else None)
+    return {
+        "labels": [BRANCH_NAMES.get(b, b) for b in labels],
+        "branch_codes": labels,
+        "data_2024": data_2024,
+        "data_2025": data_2025,
+    }
+
+
 # ── College Comparison ────────────────────────────────────────────────────────
 
 def get_compare_data(college_names: list) -> list:
@@ -437,6 +494,10 @@ def get_compare_data(college_names: list) -> list:
         easiest_cutoff  = max(closing_2025) if closing_2025 else None
         hardest_cutoff  = min(closing_2025) if closing_2025 else None
 
+        from college_meta import get_fee_info, format_fee_display, infer_city_from_college_name, get_district_for_city, get_placement_info
+        fee = get_fee_info(name, rows_latest[0].college_type)
+        city = infer_city_from_college_name(name)
+        placement = get_placement_info(name, rows_latest[0].college_type)
         result.append({
             'college_name':     name,
             'college_type':     rows_latest[0].college_type,
@@ -453,6 +514,12 @@ def get_compare_data(college_names: list) -> list:
             'trend':            trend,
             'has_2025':         bool(rows_2025),
             'has_2024':         bool(rows_2024),
+            'fee_display':      format_fee_display(fee),
+            'fee_approximate':  fee.get('is_approximate', True),
+            'fee':              fee,
+            'city':             city,
+            'district':         get_district_for_city(city) if city else None,
+            'placement':        placement,
         })
 
     return result

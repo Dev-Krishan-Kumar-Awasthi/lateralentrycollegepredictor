@@ -1,0 +1,9 @@
+{
+  "last_updated": "2025-05-20",
+  "years_available": [2025, 2024],
+  "years_pipeline_ready": [2026, 2025, 2024],
+  "source": "DTE MP Official Counselling PDFs",
+  "total_colleges_approx": 250,
+  "total_cutoff_records_approx": 9000,
+  "notes": "2026 data slot ready — import via extracted_data/data_to_sql.py when PDF releases"
+}

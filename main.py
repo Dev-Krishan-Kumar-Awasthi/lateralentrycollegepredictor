@@ -1,38 +1,75 @@
-from flask import Flask, render_template, request, redirect
+import json
+import os
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+from flask import Flask, render_template, request, redirect, jsonify, session
+from flask_cors import CORS
 from urllib.parse import quote as url_quote
 from db import db
 from predictor import (
     fetch_cgpa_to_rank_map, estimate_rank_range,
     fetch_colleges_from_rank, search_colleges,
     calc_probability, MP_CITIES, get_college_detail,
-    BRANCH_NAMES, get_compare_data, run_counselling_simulation
+    BRANCH_NAMES, get_compare_data, run_counselling_simulation,
+    get_seat_heatmap, get_cutoff_chart_data,
+)
+from college_meta import (
+    get_data_metadata, get_counselling_schedule,
+    MP_DISTRICTS, distance_from_home, get_fee_info, format_fee_display,
+    infer_city_from_college_name, get_district_for_city, get_college_info_bundle,
+    get_city_coords, get_placement_info,
+)
+from google_college_service import api_key_configured
+from smart_choices import build_smart_choices
+from auth_helpers import (
+    init_auth, login_user, logout_user, current_user,
+    register_user, authenticate, login_required,
+    save_cloud_shortlist, load_cloud_shortlist,
+    pre_validate_registration, send_otp_email, reset_password_in_db,
+    pre_validate_profile_update, send_broadcast_email,
+)
+from models import CollegeReview, User, SeatInfo
+from faq_data import (
+    FAQ_LIST, get_faq_by_slug, get_faqs_by_category, get_all_categories
 )
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"]  = "sqlite:///data.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Jinja2 filter: URL-encode a string (for college name in query param)
-app.jinja_env.filters['urlencode_val'] = lambda s: url_quote(str(s), safe='')
-# Jinja2 filter: branch code → full name (fallback to original code)
-app.jinja_env.filters['branch_name'] = lambda s: BRANCH_NAMES.get(str(s).strip(), s)
+init_auth(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 db.init_app(app)
 
+app.jinja_env.filters['urlencode_val'] = lambda s: url_quote(str(s), safe='')
+app.jinja_env.filters['branch_name'] = lambda s: BRANCH_NAMES.get(str(s).strip(), s)
 
-# ── In-memory rank-map cache (loaded once at startup) ───────────────────────
+from datetime import timezone, timedelta
+
+def to_ist(dt):
+    if not dt:
+        return dt
+    return dt.astimezone(timezone(timedelta(hours=5, minutes=30)))
+
+app.jinja_env.filters['to_ist'] = to_ist
+
+
 RANK_MAPS_CACHE = {}
 YEARS = [2025, 2024]
+
 
 def fetch_rank_maps_cache():
     for year in YEARS:
         RANK_MAPS_CACHE[year] = fetch_cgpa_to_rank_map(year)
 
 
-# ── Business logic helpers ───────────────────────────────────────────────────
-
-def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y', city='All'):
+def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
+                 city='All', district='All', home_city='All', max_distance_km=None):
     result = {}
     for year in YEARS:
         cgpa_to_rank_map = RANK_MAPS_CACHE[year]
@@ -41,23 +78,46 @@ def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y', cit
             min_rank, max_rank, branch, category, gender, college_type, year, domicile
         )
 
-        # City filter (in-memory: city name appears in college_name)
         if city and city != 'All':
             raw_colleges = [c for c in raw_colleges
                             if city.lower() in c.college_name.lower()]
 
-        # Attach probability to each college and sort by probability desc
+        if district and district != 'All':
+            raw_colleges = [
+                c for c in raw_colleges
+                if get_district_for_city(infer_city_from_college_name(c.college_name) or '') == district
+                or (infer_city_from_college_name(c.college_name) and
+                    district.lower() in (infer_city_from_college_name(c.college_name) or '').lower())
+            ]
+
         college_data = []
         for c in raw_colleges:
             prob = calc_probability(min_rank, max_rank, c.opening_rank, c.closing_rank)
-            college_data.append({'college': c, 'probability': prob})
+            dist = distance_from_home(home_city, c.college_name) if home_city and home_city != 'All' else None
+            dist_km = dist.get('distance_km') if dist else None
+            if max_distance_km and dist_km is not None and dist_km > int(max_distance_km):
+                continue
+            fee = get_fee_info(c.college_name, c.college_type)
+            college_data.append({
+                'college': c,
+                'probability': prob,
+                'distance_km': dist_km,
+                'distance_text': dist.get('distance_text') if dist else None,
+                'distance_source': dist.get('source') if dist else None,
+                'fee_display': format_fee_display(fee),
+                'fee': fee,
+                'district': get_district_for_city(infer_city_from_college_name(c.college_name) or city or ''),
+            })
 
-        college_data.sort(key=lambda x: x['probability'], reverse=True)
+        college_data.sort(key=lambda x: (
+            -(x['probability']),
+            x['distance_km'] if x['distance_km'] is not None else 99999,
+        ))
 
         result[year] = {
-            'colleges':  college_data,
-            'min_rank':  min_rank,
-            'max_rank':  max_rank,
+            'colleges': college_data,
+            'min_rank': min_rank,
+            'max_rank': max_rank,
         }
     return result
 
@@ -67,48 +127,122 @@ def get_rank(cgpa):
     for year in YEARS:
         cgpa_to_rank_map = RANK_MAPS_CACHE[year]
         min_rank, max_rank = estimate_rank_range(cgpa_to_rank_map, cgpa)
-        result[year] = {
-            "min_rank": min_rank,
-            "max_rank": max_rank,
-        }
+        result[year] = {"min_rank": min_rank, "max_rank": max_rank}
     return result
 
 
-# ── Load cache on startup ────────────────────────────────────────────────────
+def _resolve_simulation_rank(cgpa, year, rank_mode):
+    cgpa_map = RANK_MAPS_CACHE[year]
+    min_rank, max_rank = estimate_rank_range(cgpa_map, cgpa)
+    if rank_mode == 'best':
+        return min_rank, min_rank, max_rank
+    if rank_mode == 'worst':
+        return max_rank, min_rank, max_rank
+    avg = (min_rank + max_rank) // 2
+    return avg, min_rank, max_rank
+
+
+@app.context_processor
+def inject_globals():
+    meta = get_data_metadata()
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    is_admin = user and user.email.strip().lower() == admin_email
+    return {
+        'data_last_updated': meta.get('last_updated', '2025'),
+        'data_years': meta.get('years_available', YEARS),
+        'current_user': user,
+        'mp_districts': MP_DISTRICTS,
+        'google_api_enabled': api_key_configured(),
+        'is_admin': bool(is_admin),
+    }
+
+
 with app.app_context():
+    db.create_all()
+    # Dynamic SQLite migration for User table columns
+    try:
+        from sqlalchemy import text
+        for col, col_type in [
+            ("mobile_number", "TEXT"),
+            ("polytechnic_college", "TEXT"),
+            ("diploma_branch", "TEXT"),
+            ("cgpa", "REAL"),
+            ("category", "TEXT"),
+            ("gender", "TEXT"),
+            ("notify_counselling", "INTEGER DEFAULT 1")
+        ]:
+            try:
+                db.session.execute(text(f"ALTER TABLE User ADD COLUMN {col} {col_type}"))
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
+    except Exception:
+        pass
+
+    # Auto-seed the admin user
+    try:
+        from werkzeug.security import generate_password_hash
+        admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+        admin_pass = os.getenv("ADMIN_PASSWORD", "kkawasthi@202956@kka")
+        admin_user = User.query.filter_by(email=admin_email).first()
+        if not admin_user:
+            admin_user = User(
+                email=admin_email,
+                password_hash=generate_password_hash(admin_pass),
+                display_name="Admin",
+                mobile_number="9999999999",
+                polytechnic_college="System Admin",
+                diploma_branch="Admin",
+                cgpa=10.0,
+                category="UR",
+                gender="M"
+            )
+            db.session.add(admin_user)
+            db.session.commit()
+        else:
+            # Enforce the password specified by the user
+            admin_user.password_hash = generate_password_hash(admin_pass)
+            db.session.commit()
+    except Exception as e:
+        print("Admin seeding failed:", e)
+
     fetch_rank_maps_cache()
 
 
-# ── Routes ───────────────────────────────────────────────────────────────────
+# ── Pages ────────────────────────────────────────────────────────────────────
 
 @app.route('/', methods=['GET'])
 def home():
-    return render_template('home.html')
+    return render_template('home.html', schedule=get_counselling_schedule())
 
 
 @app.route('/about', methods=['GET'])
 def about():
-    return render_template('about.html')
+    return render_template('about.html', metadata=get_data_metadata())
 
 
 @app.route('/predictor', methods=['GET', 'POST'])
 def predictor():
     if request.method == 'GET':
-        # Pre-fill form from shared link query params
         prefill = {
-            'cgpa':         request.args.get('cgpa', ''),
-            'category':     request.args.get('category', ''),
-            'gender':       request.args.get('gender', ''),
+            'cgpa': request.args.get('cgpa', ''),
+            'category': request.args.get('category', ''),
+            'gender': request.args.get('gender', ''),
             'college_type': request.args.get('college_type', ''),
-            'branch':       request.args.getlist('branch') if 'branch' in request.args else '',
-            'domicile':     request.args.get('domicile', 'Y'),
-            'city':         request.args.get('city', 'All'),
+            'branch': request.args.getlist('branch') if 'branch' in request.args else '',
+            'domicile': request.args.get('domicile', 'Y'),
+            'city': request.args.get('city', 'All'),
+            'district': request.args.get('district', 'All'),
+            'home_city': request.args.get('home_city', 'All'),
+            'max_distance_km': request.args.get('max_distance_km', ''),
         }
         has_prefill = bool(prefill['cgpa'] and prefill['category'] and prefill['gender'])
-        return render_template('predictor.html', data=None, prediction=None,
-                               mp_cities=MP_CITIES, prefill=prefill, has_prefill=has_prefill)
+        return render_template(
+            'predictor.html', data=None, prediction=None,
+            mp_cities=MP_CITIES, prefill=prefill, has_prefill=has_prefill,
+        )
 
-    # ── Validate CGPA input ──
     try:
         raw = request.form.get('cgpa', '').strip()
         cgpa = float(raw)
@@ -116,42 +250,163 @@ def predictor():
             raise ValueError("CGPA must be between 0 and 10.")
     except ValueError:
         return render_template(
-            'predictor.html',
-            data=None,
-            prediction=None,
+            'predictor.html', data=None, prediction=None,
             error="Invalid CGPA. Please enter a number between 0 and 10.",
-            mp_cities=MP_CITIES,
-            prefill=None,
-            has_prefill=False
+            mp_cities=MP_CITIES, prefill=None, has_prefill=False,
         )
 
-    category     = request.form.get('category')
-    gender       = request.form.get('gender')
+    category = request.form.get('category')
+    gender = request.form.get('gender')
     college_type = request.form.get('college_type')
-    # Use getlist to handle multiple branch selections
-    branch_list  = request.form.getlist('branch')
-    domicile     = request.form.get('domicile', 'Y')
-    city         = request.form.get('city', 'All')
+    branch_list = request.form.getlist('branch')
+    domicile = request.form.get('domicile', 'Y')
+    city = request.form.get('city', 'All')
+    district = request.form.get('district', 'All')
+    home_city = request.form.get('home_city', 'All')
+    max_dist = request.form.get('max_distance_km', '').strip()
+    max_distance_km = int(max_dist) if max_dist.isdigit() else None
 
     form_data = {
-        'cgpa':         cgpa,
-        'category':     category,
-        'gender':       gender,
-        'college_type': college_type,
-        'branch':       branch_list,
-        'domicile':     domicile,
-        'city':         city,
+        'cgpa': cgpa, 'category': category, 'gender': gender,
+        'college_type': college_type, 'branch': branch_list,
+        'domicile': domicile, 'city': city, 'district': district,
+        'home_city': home_city, 'max_distance_km': max_dist,
     }
 
-    prediction = get_colleges(cgpa, branch_list, category, gender, college_type, domicile, city)
+    prediction = get_colleges(
+        cgpa, branch_list, category, gender, college_type,
+        domicile, city, district, home_city, max_distance_km,
+    )
+    return render_template(
+        'predictor.html', data=form_data, prediction=prediction,
+        mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+    )
 
-    return render_template('predictor.html', data=form_data, prediction=prediction,
-                           mp_cities=MP_CITIES, prefill=None, has_prefill=False)
+
+@app.route('/choice-builder', methods=['GET', 'POST'])
+def choice_builder():
+    def normalize(name):
+        return " ".join((name or "").replace(",", " ").split()).lower().strip()
+
+    result = None
+    form_data = None
+    user = current_user()
+    cloud_shortlist = load_cloud_shortlist(user.id) if user else []
+    # Build a set of (college_name, branch_code) from the user's saved shortlist
+    shortlisted_keys = set()
+    for item in cloud_shortlist:
+        cname = normalize(item.get('college_name'))
+        if cname:
+            shortlisted_keys.add(cname)
+
+    if request.method == 'POST':
+        try:
+            cgpa = float(request.form.get('cgpa', '').strip())
+            form_data = {
+                'cgpa': cgpa,
+                'category': request.form.get('category'),
+                'gender': request.form.get('gender'),
+                'college_type': request.form.get('college_type', 'Any'),
+                'branch': request.form.getlist('branch') or ['All'],
+                'domicile': request.form.get('domicile', 'Y'),
+                'city': request.form.get('city', 'All'),
+            }
+            result = build_smart_choices(
+                cgpa, form_data['branch'], form_data['category'],
+                form_data['gender'], form_data['college_type'],
+                form_data['domicile'], form_data['city'],
+                year=2025, rank_maps_cache=RANK_MAPS_CACHE,
+                max_per_bucket=9999
+            )
+            # Annotate and sort: official recommendation list first, then shortlisted colleges
+            best_choices_list = [
+                {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE"},
+                {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT"},
+                {"sn": 3, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CSE"},
+                {"sn": 4, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "IT"},
+                {"sn": 5, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "ET"},
+                {"sn": 6, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "ET"},
+                {"sn": 7, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "CSE"},
+                {"sn": 8, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "IT"},
+                {"sn": 9, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EE"},
+                {"sn": 10, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EI"},
+                {"sn": 11, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "MECH"},
+                {"sn": 12, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "EI"},
+                {"sn": 13, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "CSE"},
+                {"sn": 14, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "IT"},
+                {"sn": 15, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "CSE"},
+                {"sn": 16, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "IT"},
+                {"sn": 17, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "CSE"},
+                {"sn": 18, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "CSE"},
+                {"sn": 19, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "IT"},
+                {"sn": 20, "db_name": "Oriental Institute of Science & Technology, Bhopal (1995)", "branch": "CSE"},
+                {"sn": 21, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "ET"},
+                {"sn": 22, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "EE"},
+                {"sn": 23, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "ET"},
+                {"sn": 24, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "EE"},
+                {"sn": 25, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "ET"},
+                {"sn": 26, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "EE"},
+                {"sn": 27, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CIVIL"},
+                {"sn": 28, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CIVIL"},
+                {"sn": 29, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "CSE"},
+                {"sn": 30, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "IT"},
+                {"sn": 31, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "CSE"},
+                {"sn": 32, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "IT"},
+                {"sn": 33, "db_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)", "branch": "CSE"},
+                {"sn": 34, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "AIML"},
+                {"sn": 35, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "AIML"},
+                {"sn": 36, "db_name": "Rewa Engineering College, Rewa (REC) (1964)", "branch": "CSE"},
+                {"sn": 37, "db_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)", "branch": "CSE"}
+            ]
+            recommendation_map = {
+                (normalize(item["db_name"]), item["branch"].strip().lower()): item["sn"]
+                for item in best_choices_list
+            }
+
+            for bucket in ('safe', 'target', 'dream'):
+                for item in result[bucket]:
+                    key = (normalize(item['college_name']), item['branch'].strip().lower())
+                    rec_sn = recommendation_map.get(key)
+                    item['in_recommendation'] = rec_sn is not None
+                    item['rec_sn'] = rec_sn if rec_sn is not None else 9999
+                    item['in_shortlist'] = normalize(item['college_name']) in shortlisted_keys
+
+                result[bucket].sort(key=lambda x: (
+                    0 if x.get('in_recommendation') else 1,
+                    x.get('rec_sn', 9999),
+                    0 if x.get('in_shortlist') else 1,
+                    -x['probability'],
+                    x['closing_rank']
+                ))
+                result[bucket] = result[bucket][:15]
+
+            # Rebuild the merged list and update total count using post-sorted and sliced buckets
+            merged = []
+            for label in ("dream", "target", "safe"):
+                for item in result[label]:
+                    merged.append({**item, "bucket": label})
+            result["merged"] = merged
+            result["total"] = len(merged)
+        except (ValueError, TypeError):
+            form_data = {'error': 'Invalid CGPA'}
+    return render_template(
+        'choice_builder.html', result=result, form_data=form_data, mp_cities=MP_CITIES,
+        shortlisted_keys=list(shortlisted_keys), user=user,
+    )
 
 
 @app.route('/schedule')
 def schedule():
-    return redirect('https://dte.mponline.gov.in', code=302)
+    user = current_user()
+    sched_data = get_counselling_schedule()
+    return render_template('schedule.html', user=user, schedule=sched_data)
+
+
+@app.route('/checklist')
+@login_required
+def checklist():
+    user = current_user()
+    return render_template('checklist.html', user=user)
 
 
 @app.route('/college')
@@ -162,7 +417,23 @@ def college_detail_page():
     detail = get_college_detail(name)
     if not detail:
         return render_template('college_detail.html', detail=None, college_name=name)
-    return render_template('college_detail.html', detail=detail, college_name=name)
+    home_city = request.args.get('home_city', 'All')
+    bundle = get_college_info_bundle(name, detail['college_type'], home_city)
+    heatmap = get_seat_heatmap(name, 2025)
+    chart_data = get_cutoff_chart_data(name)
+    reviews = CollegeReview.query.filter_by(
+        college_name=name, is_approved=True
+    ).order_by(CollegeReview.created_at.desc()).limit(20).all()
+    return render_template(
+        'college_detail.html', detail=detail, college_name=name,
+        heatmap=heatmap, chart_data=chart_data,
+        fee_display=bundle['fee_display'], fee=bundle['fee'],
+        college_city=bundle['city'], college_district=bundle['district'],
+        profile=bundle['profile'], distance=bundle['distance'],
+        home_city=home_city, reviews=reviews,
+        mp_cities=MP_CITIES, placement=bundle['placement'],
+        coords=bundle['coords'], city_coords=get_city_coords()
+    )
 
 
 @app.route('/how-it-works')
@@ -177,42 +448,58 @@ def compare():
     if len(names) < 2:
         return redirect('/predictor')
     data = get_compare_data(names)
-    return render_template('compare.html', colleges=data,
-                           branch_names=BRANCH_NAMES)
+    return render_template('compare.html', colleges=data, branch_names=BRANCH_NAMES)
 
 
 @app.route('/search')
 def search():
-    q            = request.args.get("q",            "").strip()
-    category     = request.args.get("category",     "").strip()
-    gender       = request.args.get("gender",       "").strip()
+    q = request.args.get("q", "").strip()
+    category = request.args.get("category", "").strip()
+    gender = request.args.get("gender", "").strip()
     college_type = request.args.get("college_type", "").strip()
-    branch       = request.args.get("branch",       "").strip()
-    city         = request.args.get("city",         "All").strip()
-    year         = request.args.get("year",         "").strip()
+    branch = request.args.get("branch", "").strip()
+    city = request.args.get("city", "All").strip()
+    year = request.args.get("year", "").strip()
+    
+    try:
+        min_package = float(request.args.get("min_package", "0").strip() or "0")
+    except ValueError:
+        min_package = 0.0
 
-    if not q:
+    # Execute search if q or min_package or any filters are specified
+    has_filters = bool(q or category or gender or college_type or branch or (city and city != 'All') or year or min_package > 0)
+    if not has_filters:
         return render_template("search.html", data=None, colleges=None, mp_cities=MP_CITIES)
 
     data = {
-        "q":            q,
-        "category":     category,
-        "gender":       gender,
-        "college_type": college_type,
-        "branch":       branch,
-        "city":         city,
-        "year":         year,
+        "q": q, "category": category, "gender": gender,
+        "college_type": college_type, "branch": branch, "city": city, "year": year,
+        "min_package": min_package,
     }
 
     colleges = search_colleges(
-        q=q,
-        category=category     or None,
-        gender=gender         or None,
-        college_type=college_type or None,
-        branch=branch         or None,
-        year=year             or None,
-        city=city             or None
+        q=q, category=category or None, gender=gender or None,
+        college_type=college_type or None, branch=branch or None,
+        year=year or None, city=city or None,
     )
+    
+    filtered_colleges = []
+    for c in colleges:
+        fee = get_fee_info(c['college_name'], c.get('college_type'))
+        c['fee_display'] = format_fee_display(fee)
+        c['fee_approximate'] = fee.get('is_approximate', True)
+        
+        # Attach placement statistics
+        placement = get_placement_info(c['college_name'], c.get('college_type'))
+        c['placement'] = placement
+        
+        if min_package > 0:
+            if placement['average_package_lpa'] >= min_package:
+                filtered_colleges.append(c)
+        else:
+            filtered_colleges.append(c)
+            
+    colleges = filtered_colleges
 
     if request.args.get('json'):
         seen = set()
@@ -222,7 +509,7 @@ def search():
             if key not in seen:
                 seen.add(key)
                 deduped.append(c)
-        return deduped
+        return jsonify(deduped)
 
     return render_template("search.html", data=data, colleges=colleges, mp_cities=MP_CITIES)
 
@@ -232,22 +519,17 @@ def rank():
     if request.method == 'GET':
         return render_template('rank.html', data=None, prediction=None)
 
-    # ── Validate CGPA input ──
     try:
-        raw = request.form.get('cgpa', '').strip()
-        cgpa = float(raw)
+        cgpa = float(request.form.get('cgpa', '').strip())
         if not (0.0 <= cgpa <= 10.0):
-            raise ValueError("CGPA must be between 0 and 10.")
+            raise ValueError()
     except ValueError:
         return render_template(
-            'rank.html',
-            data=None,
-            prediction=None,
-            error="Invalid CGPA. Please enter a number between 0 and 10."
+            'rank.html', data=None, prediction=None,
+            error="Invalid CGPA. Please enter a number between 0 and 10.",
         )
 
-    data = {"cgpa": cgpa}
-    return render_template('rank.html', data=data, prediction=get_rank(cgpa))
+    return render_template('rank.html', data={"cgpa": cgpa}, prediction=get_rank(cgpa))
 
 
 @app.route('/simulator', methods=['GET', 'POST'])
@@ -255,46 +537,37 @@ def simulator():
     if request.method == 'GET':
         return render_template('simulator.html', result=None)
 
-    # POST: Process simulation
     try:
-        raw_cgpa = request.form.get('cgpa', '').strip()
-        cgpa = float(raw_cgpa)
+        cgpa = float(request.form.get('cgpa', '').strip())
         category = request.form.get('category')
         gender = request.form.get('gender')
         domicile = request.form.get('domicile', 'Y')
         year = int(request.form.get('year', 2025))
+        rank_mode = request.form.get('rank_mode', 'average')
 
-        # Get prioritized choice list from hidden input (JSON)
-        import json
         raw_choices = request.form.get('choice_list_json', '[]')
         choices = json.loads(raw_choices)
-        
+
         if not choices:
-            return render_template('simulator.html', error="Choice list khali hai! Pehle colleges add karein.")
+            return render_template('simulator.html', error="Your choice list is empty. Please add colleges first.")
 
-        # 1. Estimate rank (using our existing logic)
-        cgpa_to_rank_map = RANK_MAPS_CACHE[year]
-        min_rank, max_rank = estimate_rank_range(cgpa_to_rank_map, cgpa)
-        
-        # Use average rank for a single simulation point
-        avg_rank = (min_rank + max_rank) // 2
+        sim_rank, min_rank, max_rank = _resolve_simulation_rank(cgpa, year, rank_mode)
+        sim_result = run_counselling_simulation(
+            sim_rank, choices, category, gender, domicile, year,
+        )
 
-        # 2. Run simulation
-        sim_result = run_counselling_simulation(avg_rank, choices, category, gender, domicile, year)
-        
         user_data = {
-            'cgpa': cgpa, 'rank': avg_rank, 'category': category, 
-            'gender': gender, 'domicile': domicile, 'year': year
+            'cgpa': cgpa, 'rank': sim_rank, 'min_rank': min_rank, 'max_rank': max_rank,
+            'rank_mode': rank_mode, 'category': category,
+            'gender': gender, 'domicile': domicile, 'year': year,
         }
-        
-        # 3. Generate smart recommendations (options they have high/medium probability of getting)
+
         recommendations = []
         try:
             all_options = get_colleges(cgpa, 'All', category, gender, 'Any', domicile, 'All')
             seen_recommendations = set()
             choice_keys = {(c['college_name'], c['branch']) for c in choices}
-            
-            for yr in [2025, 2024]:
+            for yr in YEARS:
                 if yr in all_options:
                     for item in all_options[yr]['colleges']:
                         col = item['college']
@@ -307,25 +580,25 @@ def simulator():
                                     'college_name': col.college_name,
                                     'branch': col.branch,
                                     'probability': prob,
-                                    'college_type': col.college_type
+                                    'college_type': col.college_type,
                                 })
                                 if len(recommendations) >= 5:
                                     break
                 if len(recommendations) >= 5:
                     break
         except Exception:
-            pass  # Fail-safe: don't crash simulation if recommendations fail
-            
-        return render_template('simulator.html', result=sim_result, user=user_data, choices=choices, recommendations=recommendations)
+            pass
 
+        return render_template(
+            'simulator.html', result=sim_result, user=user_data,
+            choices=choices, recommendations=recommendations,
+        )
     except Exception as e:
         return render_template('simulator.html', error=str(e))
 
 
 @app.route('/recommendation-list')
 def recommendation_list():
-    # Pre-defined recommendation list of 37 colleges from 'recommendation choice'
-    # mapped exactly to database-compatible names for seamless shortlist and simulator sync!
     best_choices = [
         {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE", "display_name": "SGSITS Indore: CS"},
         {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT", "display_name": "SGSITS Indore: IT"},
@@ -375,8 +648,625 @@ def contact():
 
 @app.route('/faq')
 def faq():
-    return render_template('faq.html')
+    categories = get_all_categories()
+    faqs_by_cat = {cat: get_faqs_by_category(cat) for cat in categories}
+    return render_template(
+        'faq.html',
+        categories=categories,
+        faqs_by_cat=faqs_by_cat,
+        all_faqs=FAQ_LIST
+    )
+
+
+@app.route('/faq/<string:slug>')
+def faq_detail(slug):
+    faq = get_faq_by_slug(slug)
+    if not faq:
+        return redirect('/faq')
+    
+    try:
+        idx = FAQ_LIST.index(faq)
+        prev_faq = FAQ_LIST[idx - 1] if idx > 0 else None
+        next_faq = FAQ_LIST[idx + 1] if idx < len(FAQ_LIST) - 1 else None
+    except ValueError:
+        prev_faq = None
+        next_faq = None
+        
+    related = [f for f in FAQ_LIST if f["category"] == faq["category"] and f["slug"] != faq["slug"]][:4]
+    
+    return render_template(
+        'faq_detail.html',
+        faq=faq,
+        prev_faq=prev_faq,
+        next_faq=next_faq,
+        related=related
+    )
+
+
+
+@app.route('/account', methods=['GET', 'POST'])
+def account_page():
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'logout':
+            logout_user()
+            return redirect('/account')
+        if action == 'login':
+            user, err = authenticate(
+                request.form.get('email', ''),
+                request.form.get('password', ''),
+            )
+            if err:
+                return render_template('account.html', error=err)
+            login_user(user)
+            nxt = request.args.get('next') or '/account'
+            return redirect(nxt)
+        if action == 'register':
+            try:
+                cgpa_val = float(request.form.get('cgpa', '0').strip())
+            except ValueError:
+                cgpa_val = 0.0
+            
+            sanitized, err = pre_validate_registration(
+                email=request.form.get('email', ''),
+                password=request.form.get('password', ''),
+                display_name=request.form.get('display_name', ''),
+                mobile_number=request.form.get('mobile_number', ''),
+                polytechnic_college=request.form.get('polytechnic_college', ''),
+                diploma_branch=request.form.get('diploma_branch', ''),
+                cgpa=cgpa_val,
+                category=request.form.get('category', 'UR'),
+                gender=request.form.get('gender', 'M'),
+            )
+            if err:
+                return render_template('account.html', error=err)
+            
+            import random, time
+            otp = str(random.randint(100000, 999999))
+            
+            session["pending_registration"] = sanitized
+            session["registration_otp"] = otp
+            session["registration_otp_expiry"] = time.time() + 600
+            session["registration_otp_attempts"] = 0
+            
+            success, msg = send_otp_email(sanitized["email"], otp)
+            if success:
+                return render_template('account.html', success=f"Verification OTP has been sent to {sanitized['email']}. Please check your inbox / spam folder. ({msg})")
+            else:
+                return render_template('account.html', error=f"Could not send OTP: {msg}")
+
+        elif action == 'verify_otp':
+            entered_otp = request.form.get('otp', '').strip()
+            pending_data = session.get("pending_registration")
+            saved_otp = session.get("registration_otp")
+            expiry = session.get("registration_otp_expiry", 0)
+            
+            import time
+            if not pending_data or not saved_otp:
+                return render_template('account.html', error="No pending registration found. Please try again.")
+            
+            if time.time() > expiry:
+                session.pop("pending_registration", None)
+                session.pop("registration_otp", None)
+                session.pop("registration_otp_expiry", None)
+                session.pop("registration_otp_attempts", None)
+                return render_template('account.html', error="OTP verification code expired. Please register again.")
+            
+            if entered_otp != saved_otp:
+                attempts = session.get("registration_otp_attempts", 0) + 1
+                session["registration_otp_attempts"] = attempts
+                if attempts >= 3:
+                    session.pop("pending_registration", None)
+                    session.pop("registration_otp", None)
+                    session.pop("registration_otp_expiry", None)
+                    session.pop("registration_otp_attempts", None)
+                    return render_template('account.html', error="Too many failed attempts. Please register again.")
+                return render_template('account.html', error=f"Incorrect OTP. Please try again. ({3 - attempts} attempts remaining)")
+            
+            user, err = register_user(
+                email=pending_data["email"],
+                password=pending_data["password"],
+                display_name=pending_data["display_name"],
+                mobile_number=pending_data["mobile_number"],
+                polytechnic_college=pending_data["polytechnic_college"],
+                diploma_branch=pending_data["diploma_branch"],
+                cgpa=pending_data["cgpa"],
+                category=pending_data["category"],
+                gender=pending_data["gender"]
+            )
+            if err:
+                return render_template('account.html', error=err)
+            
+            session.pop("pending_registration", None)
+            session.pop("registration_otp", None)
+            session.pop("registration_otp_expiry", None)
+            session.pop("registration_otp_attempts", None)
+            
+            login_user(user)
+            return redirect('/account')
+
+        elif action == 'cancel_registration':
+            session.pop("pending_registration", None)
+            session.pop("registration_otp", None)
+            session.pop("registration_otp_expiry", None)
+            session.pop("registration_otp_attempts", None)
+            return redirect('/account')
+            
+        elif action == 'forgot_password':
+            email = request.form.get('email', '').strip().lower()
+            if not email:
+                return render_template('account.html', error="Please enter your registered email address.")
+            
+            existing_user = User.query.filter_by(email=email).first()
+            if not existing_user:
+                return render_template('account.html', error="This email address is not registered with us.")
+            
+            import random, time
+            otp = str(random.randint(100000, 999999))
+            session["reset_email"] = email
+            session["reset_otp"] = otp
+            session["reset_otp_expiry"] = time.time() + 600
+            session["reset_otp_attempts"] = 0
+            
+            success, msg = send_otp_email(email, otp)
+            if success:
+                return render_template('account.html', success=f"A password reset code has been sent to {email}. ({msg})")
+            else:
+                return render_template('account.html', error=f"Could not send reset code: {msg}")
+                
+        elif action == 'verify_reset_otp':
+            entered_otp = request.form.get('otp', '').strip()
+            new_password = request.form.get('new_password', '')
+            reset_email = session.get("reset_email")
+            saved_otp = session.get("reset_otp")
+            expiry = session.get("reset_otp_expiry", 0)
+            
+            import time
+            if not reset_email or not saved_otp:
+                return render_template('account.html', error="No active password reset request found.")
+            
+            if time.time() > expiry:
+                session.pop("reset_email", None)
+                session.pop("reset_otp", None)
+                session.pop("reset_otp_expiry", None)
+                session.pop("reset_otp_attempts", None)
+                return render_template('account.html', error="Reset code has expired. Please try again.")
+            
+            if entered_otp != saved_otp:
+                attempts = session.get("reset_otp_attempts", 0) + 1
+                session["reset_otp_attempts"] = attempts
+                if attempts >= 3:
+                    session.pop("reset_email", None)
+                    session.pop("reset_otp", None)
+                    session.pop("reset_otp_expiry", None)
+                    session.pop("reset_otp_attempts", None)
+                    return render_template('account.html', error="Too many failed attempts. Please try again.")
+                return render_template('account.html', error=f"Incorrect OTP. Please try again. ({3 - attempts} attempts remaining)")
+                
+            ok, err = reset_password_in_db(reset_email, new_password)
+            if not ok:
+                return render_template('account.html', error=err)
+                
+            session.pop("reset_email", None)
+            session.pop("reset_otp", None)
+            session.pop("reset_otp_expiry", None)
+            session.pop("reset_otp_attempts", None)
+            
+            return render_template('account.html', success="Password has been reset successfully. You can now log in.")
+            
+        elif action == 'cancel_reset':
+            session.pop("reset_email", None)
+            session.pop("reset_otp", None)
+            session.pop("reset_otp_expiry", None)
+            session.pop("reset_otp_attempts", None)
+            return redirect('/account')
+            
+        elif action == 'toggle_alerts':
+            user = current_user()
+            if user:
+                user.notify_counselling = 0 if user.notify_counselling == 1 else 1
+                db.session.commit()
+            return redirect('/account')
+
+        elif action == 'update_profile':
+            user = current_user()
+            if not user:
+                return redirect('/account')
+            
+            try:
+                cgpa_val = float(request.form.get('cgpa', '0').strip())
+            except ValueError:
+                cgpa_val = 0.0
+
+            sanitized, err = pre_validate_profile_update(
+                current_user_id=user.id,
+                display_name=request.form.get('display_name', ''),
+                mobile_number=request.form.get('mobile_number', ''),
+                polytechnic_college=request.form.get('polytechnic_college', ''),
+                diploma_branch=request.form.get('diploma_branch', ''),
+                cgpa=cgpa_val,
+                category=request.form.get('category', 'UR'),
+                gender=request.form.get('gender', 'M')
+            )
+            if err:
+                shortlist = load_cloud_shortlist(user.id)
+                return render_template('account.html', user=user, cloud_shortlist=shortlist, error=err)
+            
+            user.display_name = sanitized["display_name"]
+            user.mobile_number = sanitized["mobile_number"]
+            user.polytechnic_college = sanitized["polytechnic_college"]
+            user.diploma_branch = sanitized["diploma_branch"]
+            user.cgpa = sanitized["cgpa"]
+            user.category = sanitized["category"]
+            user.gender = sanitized["gender"]
+            db.session.commit()
+            
+            shortlist = load_cloud_shortlist(user.id)
+            return render_template('account.html', user=user, cloud_shortlist=shortlist, success="Profile updated successfully!")
+
+    user = current_user()
+    shortlist = load_cloud_shortlist(user.id) if user else []
+    return render_template('account.html', user=user, cloud_shortlist=shortlist)
+
+
+def get_admin_dashboard_stats(users):
+    total_users = len(users)
+    total_cgpa = 0.0
+    valid_cgpa_count = 0
+    branch_stats = {}
+    category_stats = {}
+    
+    for u in users:
+        if u.cgpa:
+            total_cgpa += u.cgpa
+            valid_cgpa_count += 1
+        
+        br = u.diploma_branch or 'Other'
+        branch_stats[br] = branch_stats.get(br, 0) + 1
+        
+        cat = u.category or 'UR'
+        category_stats[cat] = category_stats.get(cat, 0) + 1
+        
+    avg_cgpa = round(total_cgpa / valid_cgpa_count, 2) if valid_cgpa_count > 0 else 0.0
+    return {
+        'total_users': total_users,
+        'avg_cgpa': avg_cgpa,
+        'branch_stats': branch_stats,
+        'category_stats': category_stats
+    }
+
+
+@app.route('/admin/users')
+def admin_users():
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    users = User.query.order_by(User.created_at.desc()).all()
+    
+    export_csv = request.args.get('export')
+    if export_csv == '1':
+        import io, csv
+        from flask import Response
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['ID', 'Name', 'Email', 'Mobile', 'Polytechnic College', 'Diploma Branch', 'CGPA', 'Category', 'Gender', 'Registered At'])
+        for u in users:
+            writer.writerow([
+                u.id, 
+                u.display_name or '', 
+                u.email or '', 
+                u.mobile_number or '', 
+                u.polytechnic_college or '', 
+                u.diploma_branch or '', 
+                u.cgpa or 0.0, 
+                u.category or 'UR', 
+                u.gender or 'M', 
+                to_ist(u.created_at).strftime('%d %b %Y, %I:%M %p') if u.created_at else '—'
+            ])
+        return Response(
+            output.getvalue(),
+            mimetype="text/csv",
+            headers={"Content-disposition": "attachment; filename=dte_registered_users.csv"}
+        )
+        
+    stats = get_admin_dashboard_stats(users)
+    reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
+
+    return render_template(
+        'admin_dashboard.html', 
+        users=users, 
+        total_users=stats['total_users'], 
+        avg_cgpa=stats['avg_cgpa'], 
+        branch_stats=stats['branch_stats'], 
+        category_stats=stats['category_stats'],
+        reviews=reviews
+    )
+
+
+@app.route('/admin/delete-user/<int:user_id>', methods=['POST'])
+@login_required
+def admin_delete_user(user_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    # Delete child relation shortlists first
+    from models import CloudShortlist
+    CloudShortlist.query.filter_by(user_id=user_id).delete()
+    
+    user_to_delete = User.query.get(user_id)
+    if user_to_delete:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        
+    return redirect('/admin/users')
+
+
+@app.route('/api/v1/admin/user-shortlist/<int:user_id>')
+@login_required
+def admin_user_shortlist(user_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return jsonify({"error": "Access Denied"}), 403
+        
+    from models import CloudShortlist
+    row = CloudShortlist.query.filter_by(user_id=user_id).first()
+    if not row:
+        return jsonify({"items": []})
+        
+    try:
+        import json
+        items = json.loads(row.items_json)
+        return jsonify({"items": items if isinstance(items, list) else []})
+    except Exception:
+        return jsonify({"items": []})
+
+
+@app.route('/admin/broadcast', methods=['POST'])
+@login_required
+def admin_broadcast():
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    subject = request.form.get('subject', '').strip()
+    body = request.form.get('body', '').strip()
+
+    users = User.query.order_by(User.created_at.desc()).all()
+    stats = get_admin_dashboard_stats(users)
+    reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
+
+    if not subject or not body:
+        # Re-render admin panel with error
+        return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
+            avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
+            reviews=reviews, broadcast_error="Subject and Message body cannot be empty.")
+
+    # Only send to users who have alerts enabled
+    subscribed_users = User.query.filter_by(notify_counselling=1).all()
+    emails = [u.email for u in subscribed_users if u.email]
+
+    if not emails:
+        return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
+            avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
+            reviews=reviews, broadcast_error="No subscribed users found. All students have alerts disabled.")
+
+    success_count, fail_count = send_broadcast_email(emails, subject, body)
+
+    return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
+        avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
+        reviews=reviews, broadcast_success=f"Email sent to {success_count} students. ({fail_count} failed)")
+
+
+@app.route('/admin/approve-review/<int:review_id>', methods=['POST'])
+@login_required
+def admin_approve_review(review_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    review = CollegeReview.query.get(review_id)
+    if review:
+        review.is_approved = True
+        db.session.commit()
+    return redirect('/admin/users#reviews')
+
+
+@app.route('/admin/delete-review/<int:review_id>', methods=['POST'])
+@login_required
+def admin_delete_review(review_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    review = CollegeReview.query.get(review_id)
+    if review:
+        db.session.delete(review)
+        db.session.commit()
+    return redirect('/admin/users#reviews')
+
+
+@app.route('/shortlist/print')
+@login_required
+def shortlist_print():
+    user = current_user()
+    shortlist = load_cloud_shortlist(user.id) if user else []
+    return render_template('shortlist_print.html', user=user, shortlist=shortlist)
+
+
+# ── API v1 ───────────────────────────────────────────────────────────────────
+
+@app.route('/api/v1/counselling-schedule')
+def api_schedule():
+    return jsonify(get_counselling_schedule())
+
+
+@app.route('/api/v1/reviews', methods=['GET', 'POST'])
+def api_reviews():
+    if request.method == 'GET':
+        name = request.args.get('college_name', '').strip()
+        if not name:
+            return jsonify({"error": "college_name required"}), 400
+        rows = CollegeReview.query.filter_by(
+            college_name=name, is_approved=True,
+        ).order_by(CollegeReview.created_at.desc()).limit(30).all()
+        return jsonify([{
+            "author_name": r.author_name,
+            "rating": r.rating,
+            "comment": r.comment,
+            "branch": r.branch,
+        } for r in rows])
+
+    data = request.get_json(silent=True) or request.form
+    name = (data.get('college_name') or '').strip()
+    author = (data.get('author_name') or 'Anonymous').strip()[:80]
+    comment = (data.get('comment') or '').strip()
+    try:
+        rating = int(data.get('rating', 0))
+    except (TypeError, ValueError):
+        rating = 0
+    if not name or not comment or rating < 1 or rating > 5:
+        return jsonify({"error": "Invalid review data"}), 400
+    review = CollegeReview(
+        college_name=name, author_name=author,
+        rating=rating, comment=comment[:1000],
+        branch=(data.get('branch') or '')[:32],
+    )
+    db.session.add(review)
+    db.session.commit()
+    return jsonify({"success": True, "id": review.id})
+
+
+@app.route('/api/v1/shortlist/cloud', methods=['GET', 'POST'])
+@login_required
+def api_cloud_shortlist():
+    user = current_user()
+    if request.method == 'GET':
+        return jsonify({"items": load_cloud_shortlist(user.id)})
+    data = request.get_json(silent=True) or {}
+    items = data.get('items', [])
+    save_cloud_shortlist(user.id, items)
+    return jsonify({"success": True, "count": len(items)})
+
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    """Generate dynamic sitemap.xml for SEO indexing."""
+    from urllib.parse import quote
+    
+    # Core student-facing pages
+    static_routes = [
+        '',
+        'about',
+        'predictor',
+        'choice-builder',
+        'schedule',
+        'how-it-works',
+        'compare',
+        'search',
+        'contact',
+        'faq',
+        'account'
+    ]
+    
+    base_url = request.url_root.rstrip('/')
+    
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    ]
+    
+    # Add static routes
+    from datetime import datetime
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+    for route in static_routes:
+        loc = f"{base_url}/{route}" if route else base_url
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>{loc}</loc>')
+        xml_lines.append(f'    <lastmod>{today}</lastmod>')
+        xml_lines.append('    <changefreq>weekly</changefreq>')
+        xml_lines.append('    <priority>0.8</priority>')
+        xml_lines.append('  </url>')
+        
+    # Add dynamic college details pages
+    try:
+        colleges = db.session.query(SeatInfo.college_name).distinct().all()
+        for c in colleges:
+            name = c[0]
+            if name:
+                encoded_name = quote(name)
+                loc = f"{base_url}/college?name={encoded_name}"
+                xml_lines.append('  <url>')
+                # Escape XML entity characters in loc if any remain
+                xml_loc = loc.replace('&', '&amp;').replace("'", '&apos;').replace('"', '&quot;')
+                xml_lines.append(f'    <loc>{xml_loc}</loc>')
+                xml_lines.append(f'    <lastmod>{today}</lastmod>')
+                xml_lines.append('    <changefreq>monthly</changefreq>')
+                xml_lines.append('    <priority>0.6</priority>')
+                xml_lines.append('  </url>')
+    except Exception as e:
+        # Fallback if DB query fails
+        pass
+        
+    # Add dynamic FAQ details pages
+    for f in FAQ_LIST:
+        loc = f"{base_url}/faq/{f['slug']}"
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>{loc}</loc>')
+        xml_lines.append(f'    <lastmod>{today}</lastmod>')
+        xml_lines.append('    <changefreq>monthly</changefreq>')
+        xml_lines.append('    <priority>0.7</priority>')
+        xml_lines.append('  </url>')
+        
+    xml_lines.append('</urlset>')
+    
+    xml_content = '\n'.join(xml_lines)
+    return app.response_class(xml_content, mimetype='application/xml')
+
+
+@app.route('/robots.txt', methods=['GET'])
+def robots():
+    """Serve standard robots.txt file."""
+    base_url = request.url_root.rstrip('/')
+    content = f"""User-agent: *
+Allow: /
+Allow: /about
+Allow: /predictor
+Allow: /choice-builder
+Allow: /schedule
+Allow: /how-it-works
+Allow: /compare
+Allow: /search
+Allow: /contact
+Allow: /faq
+Allow: /college
+Disallow: /admin/
+Disallow: /checklist
+Disallow: /shortlist/print
+Disallow: /api/
+Disallow: /account
+
+Sitemap: {base_url}/sitemap.xml
+"""
+    return app.response_class(content, mimetype='text/plain')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 if __name__ == '__main__':
-    app.run(debug=False)   # Never run debug=True in production
+    app.run(debug=False)

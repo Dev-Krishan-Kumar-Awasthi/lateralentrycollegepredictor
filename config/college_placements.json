@@ -1,0 +1,93 @@
+{
+  "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)": {
+    "average_package_lpa": 8.5,
+    "highest_package_lpa": 44.5,
+    "placement_percentage": 92.5,
+    "top_recruiters": ["Goldman Sachs", "Amazon", "TCS Digital", "Infosys", "Cognizant", "Wipro"],
+    "source": "SGSITS Placement Cell Report 2024-25"
+  },
+  "Institute of Engineering and Technology, DAVV, Indore (1996)": {
+    "average_package_lpa": 7.8,
+    "highest_package_lpa": 28.0,
+    "placement_percentage": 88.0,
+    "top_recruiters": ["VMware", "Nucleus Software", "Cognizant", "TCS Digital", "Infosys", "Wipro"],
+    "source": "IET DAVV Placement Office"
+  },
+  "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)": {
+    "average_package_lpa": 6.2,
+    "highest_package_lpa": 18.0,
+    "placement_percentage": 82.0,
+    "top_recruiters": ["TCS", "Wipro", "Infosys", "Cognizant", "Hexaware", "L&T Infotech"],
+    "source": "JEC Jabalpur Training & Placement Cell"
+  },
+  "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)": {
+    "average_package_lpa": 5.8,
+    "highest_package_lpa": 16.0,
+    "placement_percentage": 80.0,
+    "top_recruiters": ["TCS Ninja", "Infosys", "Cognizant", "Wipro", "Accenture"],
+    "source": "MITS Gwalior Placement Cell"
+  },
+  "University Institute of Technology RGPV, Bhopal (1986)": {
+    "average_package_lpa": 5.5,
+    "highest_package_lpa": 15.0,
+    "placement_percentage": 78.0,
+    "top_recruiters": ["TCS", "Infosys", "Cognizant", "Wipro", "Capgemini"],
+    "source": "UIT RGPV T&P Department"
+  },
+  "Lakshmi Narain College of Technology, Bhopal (1994)": {
+    "average_package_lpa": 5.2,
+    "highest_package_lpa": 19.5,
+    "placement_percentage": 85.0,
+    "top_recruiters": ["Cognizant", "TCS", "Wipro", "Infosys", "VMware", "Capgemini"],
+    "source": "LNCT Group Placement Reports"
+  },
+  "Acropolis Institute of Technology & Research, Indore (2005)": {
+    "average_package_lpa": 4.8,
+    "highest_package_lpa": 12.0,
+    "placement_percentage": 82.0,
+    "top_recruiters": ["TCS", "Cognizant", "Capgemini", "Wipro", "Infosys"],
+    "source": "AITR Indore Placement Office"
+  },
+  "Oriental Institute of Science & Technology, Bhopal (1995)": {
+    "average_package_lpa": 4.5,
+    "highest_package_lpa": 11.5,
+    "placement_percentage": 80.0,
+    "top_recruiters": ["TCS", "Wipro", "Cognizant", "Infosys", "Capgemini"],
+    "source": "OIST Bhopal T&P Cell"
+  },
+  "Samrat Ashok Technological Institute, Vidisha (1960)": {
+    "average_package_lpa": 4.6,
+    "highest_package_lpa": 10.0,
+    "placement_percentage": 75.0,
+    "top_recruiters": ["TCS", "Infosys", "Wipro", "Cognizant"],
+    "source": "SATI Vidisha Placement Cell"
+  },
+  "IPS Academy, Institute of Engineering and Science, Indore (1999)": {
+    "average_package_lpa": 4.4,
+    "highest_package_lpa": 10.5,
+    "placement_percentage": 76.0,
+    "top_recruiters": ["TCS", "Cognizant", "Wipro", "Capgemini"],
+    "source": "IPS Academy Placement Office"
+  },
+  "Lakshmi Narain College of Technology & Science, Bhopal (2006)": {
+    "average_package_lpa": 4.3,
+    "highest_package_lpa": 10.0,
+    "placement_percentage": 78.0,
+    "top_recruiters": ["Cognizant", "TCS", "Wipro", "Infosys"],
+    "source": "LNCT Group Placement Reports"
+  },
+  "Rewa Engineering College, Rewa (REC) (1964)": {
+    "average_package_lpa": 4.8,
+    "highest_package_lpa": 9.5,
+    "placement_percentage": 70.0,
+    "top_recruiters": ["TCS", "Wipro", "Infosys", "Cognizant"],
+    "source": "Rewa Engg College T&P Unit"
+  },
+  "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)": {
+    "average_package_lpa": 5.0,
+    "highest_package_lpa": 12.0,
+    "placement_percentage": 74.0,
+    "top_recruiters": ["TCS", "Infosys", "Wipro", "Cognizant", "Adani Power"],
+    "source": "UEC Ujjain Training & Placement Cell"
+  }
+}

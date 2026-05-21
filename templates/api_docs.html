@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}API Documentation — MP DTE Predictor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="gov-box">
+        <h1 style="color:var(--primary);"><i class="fas fa-code"></i> Public API v1</h1>
+        <p class="subtitle">Read-only REST endpoints. Base URL: <code>{{ request.url_root.rstrip('/') }}</code></p>
+        <p>Data years: <strong>{{ metadata.years_available | join(', ') }}</strong> | Last updated: <strong>{{ metadata.last_updated }}</strong></p>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/metadata</h3>
+        <p>Dataset version and update info.</p>
+        <pre class="api-code">curl "{{ request.url_root }}api/v1/metadata"</pre>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/whatif</h3>
+        <p>Live rank estimate + top 5 colleges for a CGPA.</p>
+        <pre class="api-code">curl "{{ request.url_root }}api/v1/whatif?cgpa=8.2&category=UR&gender=M&college_type=Any"</pre>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/predict</h3>
+        <p>Full college prediction (max 30 per year).</p>
+        <pre class="api-code">curl "{{ request.url_root }}api/v1/predict?cgpa=8.0&category=UR&gender=M&branch=CSE"</pre>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/smart-choices</h3>
+        <p>Safe / Target / Dream choice buckets.</p>
+        <pre class="api-code">curl "{{ request.url_root }}api/v1/smart-choices?cgpa=8.0&category=UR&gender=M"</pre>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/colleges/search?q=...</h3>
+        <p>Search colleges by name (min 2 chars).</p>
+        <pre class="api-code">curl "{{ request.url_root }}api/v1/colleges/search?q=sgsits"</pre>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/colleges/detail?name=...</h3>
+        <p>College detail with chart, heatmap, fee data.</p>
+        <pre class="api-code">curl "{{ request.url_root }}api/v1/colleges/detail?name=Shri+G.S.+Institute..."</pre>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET/POST /api/v1/reviews</h3>
+        <p>College alumni notes (GET by college_name, POST to add).</p>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET /api/v1/counselling-schedule</h3>
+        <p>Important counselling dates for notifications.</p>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>GET/POST /api/v1/shortlist/cloud</h3>
+        <p><strong>Auth required.</strong> Sync shortlist to user account.</p>
+    </div>
+
+    <div class="api-endpoint-card gov-box">
+        <h3>POST /api/v1/colleges/google-enrich</h3>
+        <p>Fetch one college from <strong>Google Places API</strong> (needs <code>GOOGLE_MAPS_API_KEY</code> on server).</p>
+        <pre class="api-code">curl -X POST {{ request.url_root }}api/v1/colleges/google-enrich -H "Content-Type: application/json" -d "{\"college_name\": \"SGSITS Indore\"}"</pre>
+    </div>
+
+    <div class="gov-box" style="margin-top:20px;background:#EFF6FF;">
+        <h3 style="margin-top:0;">Data Sources</h3>
+        <ul style="line-height:1.7;font-size:0.9rem;">
+            <li><strong>Cutoffs &amp; ranks:</strong> DTE MP official counselling PDFs</li>
+            <li><strong>Address, phone, Maps, website:</strong> Google Places API (<code>scripts/enrich_colleges_google.py</code>)</li>
+            <li><strong>Driving distance:</strong> Google Distance Matrix API (or city estimate without key)</li>
+            <li><strong>Fees:</strong> Official college websites + verified listings — Google does not provide tuition</li>
+        </ul>
+    </div>
+
+    <p class="section-text" style="margin-top:24px;color:var(--muted);">
+        Rate limit: please cache responses. Data is for educational use only — not affiliated with DTE MP.
+    </p>
+</div>
+
+<style>
+.api-endpoint-card { margin-top:16px; }
+.api-code { background:#0F172A; color:#E2E8F0; padding:14px; border-radius:8px; overflow-x:auto; font-size:0.82rem; }
+</style>
+{% endblock %}

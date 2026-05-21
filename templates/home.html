@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}MP DTE Lateral Entry College Predictor — BTech 2025-26{% endblock %}
+{% block title %}MP DTE Lateral Entry College Predictor 2025 — Diploma to BTech Admission MP{% endblock %}
+
+{% block meta_description %}MP BTech Lateral Entry College Predictor 2025-26. Predict your engineering college in Madhya Pradesh based on your Diploma CGPA. Official DTE MP cutoff data for all branches — CSE, Mechanical, Civil, Electrical, ECE. Free tool for Diploma holders. Find safe, target, and dream colleges for LTBE college predictor, polytechnic to b.tech college, mp dte lateral entry, lateral entry b.tech, top 10 govt colleges in mp, and diploma to degree engineering choice filling.{% endblock %}
+
+{% block meta_keywords %}MP DTE lateral entry 2025, BTech lateral entry Madhya Pradesh, diploma to BTech admission MP, LEET MP predictor, DTE MP college predictor, MP engineering college CGPA predictor, lateral entry counselling 2025, MP polytechnic BTech conversion, LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling{% endblock %}
+
+{% block og_title %}MP DTE Lateral Entry College Predictor 2025 — Predict Your BTech College{% endblock %}
+{% block og_description %}Free tool for Diploma holders in MP. Predict your BTech lateral entry college using official DTE MP 2024 cutoff data. Compare colleges, check admission chances, plan your counselling.{% endblock %}
+{% block twitter_title %}MP DTE Lateral Entry College Predictor 2025{% endblock %}
+{% block twitter_description %}Predict your BTech college in MP! Free tool for Diploma holders using official DTE MP cutoff data. Check admission chances & compare colleges.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "MP BTech Lateral Entry College Predictor",
+  "url": "https://{{ request.host }}",
+  "description": "Free college predictor tool for MP DTE BTech Lateral Entry 2025. Predict admission chances using official DTE MP cutoff data for Diploma holders.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "inLanguage": "en-IN",
+  "audience": { "@type": "EducationalAudience", "educationalRole": "student" }
+}
+</script>
+{% endblock %}
 
 {% block content %}
 
@@ -19,15 +45,15 @@
         </div>
 
         <div class="hero-stats">
-            <div class="stat-card">
+            <div class="stat-card glass-panel">
                 <h3>2+</h3>
                 <p>Years of Data</p>
             </div>
-            <div class="stat-card">
+            <div class="stat-card glass-panel">
                 <h3>250+</h3>
                 <p>Engineering Colleges</p>
             </div>
-            <div class="stat-card">
+            <div class="stat-card glass-panel">
                 <h3>9000+</h3>
                 <p>Cutoff Records</p>
             </div>
@@ -39,13 +65,18 @@
 <section class="section">
     <div class="section-inner">
         <h2>What You Can Do Here</h2>
-        <p class="subtitle">Three simple tools to help you plan your counselling better.</p>
+        <p class="subtitle">Use these tools to check your rank, find colleges, and plan your choice list.</p>
 
         <div class="cards-grid">
             <a href="/predictor" class="feature-card">
                 <div class="feature-icon"><i class="fas fa-bullseye" style="color:var(--primary)"></i></div>
                 <h3>College Predictor</h3>
                 <p>Just enter your CGPA and branch. We'll show you exactly which colleges fit your profile based on past cutoffs.</p>
+            </a>
+            <a href="/search" class="feature-card" style="border-top: 3px solid var(--saffron);">
+                <div class="feature-icon"><i class="fas fa-briefcase" style="color:var(--saffron)"></i></div>
+                <h3>Placement Predictor</h3>
+                <p>Filter and search colleges directly by average package requirements (4+ LPA, 6+ LPA, 8+ LPA) and view recruiter stats.</p>
             </a>
             <a href="/rank_predictor" class="feature-card">
                 <div class="feature-icon"><i class="fas fa-chart-line" style="color:var(--primary)"></i></div>
@@ -60,6 +91,70 @@
         </div>
     </div>
 </section>
+
+<!-- ADVANCED TOOLS -->
+<section class="section alt-bg">
+    <div class="section-inner">
+        <h2>Advanced Counselling Tools</h2>
+        <p class="subtitle">More tools to compare colleges, build your choice list, and test allotment.</p>
+        <div class="cards-grid">
+            <a href="/simulator" class="feature-card">
+                <div class="feature-icon"><i class="fas fa-vial" style="color:#7C3AED"></i></div>
+                <h3>Allotment Simulator</h3>
+                <p>Build your priority list and see which college you'd get based on DTE's allotment logic.</p>
+            </a>
+            <a href="/choice-builder" class="feature-card">
+                <div class="feature-icon"><i class="fas fa-magic" style="color:var(--saffron)"></i></div>
+                <h3>Smart Choice Builder</h3>
+                <p>Auto-generate Safe, Target & Dream college lists — export directly for DTE choice filling.</p>
+            </a>
+            <a href="/compare" class="feature-card">
+                <div class="feature-icon"><i class="fas fa-balance-scale" style="color:var(--green)"></i></div>
+                <h3>Compare Colleges</h3>
+                <p>Side-by-side comparison of seats, cutoffs, fees and trends for up to 3 colleges.</p>
+            </a>
+            <a href="/recommendation-list" class="feature-card">
+                <div class="feature-icon"><i class="fas fa-list-ol" style="color:var(--primary)"></i></div>
+                <h3>Top 37 Colleges List</h3>
+                <p>Curated priority list of the most sought-after MP engineering colleges for lateral entry.</p>
+            </a>
+            <a href="/account" class="feature-card">
+                <div class="feature-icon"><i class="fas fa-cloud" style="color:#0EA5E9"></i></div>
+                <h3>Cloud Shortlist</h3>
+                <p>Optional free account to save your shortlisted colleges across devices.</p>
+            </a>
+            <a href="/predictor" class="feature-card">
+                <div class="feature-icon"><i class="fas fa-map-marked-alt" style="color:#D97706"></i></div>
+                <h3>Interactive Maps</h3>
+                <p>Visualize engineering college campus locations and animate route maps from your city.</p>
+            </a>
+        </div>
+        <div style="text-align:center;margin-top:24px;">
+            <button type="button" id="enable-notifications-btn" class="btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+                <i class="fas fa-bell"></i> Enable Counselling Date Reminders
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- COUNSELLING TIMELINE -->
+{% if schedule and schedule.events %}
+<section class="section">
+    <div class="section-inner">
+        <h2>Upcoming DTE Counselling Timeline</h2>
+        <p class="subtitle">Tentative schedule — always verify on <a href="{{ schedule.portal_url }}" target="_blank" class="link">dte.mponline.gov.in</a></p>
+        <div class="timeline-grid">
+            {% for ev in schedule.events %}
+            <div class="timeline-card">
+                <div class="timeline-date"><i class="fas fa-calendar"></i> {{ ev.date }}{% if ev.end_date %} – {{ ev.end_date }}{% endif %}</div>
+                <h3>{{ ev.title }}</h3>
+                <p>{{ ev.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
 
 <!-- WHY USE -->
 <section class="section alt-bg">
@@ -153,84 +248,191 @@
     <div class="section-inner">
         <h2>Common Questions — DTE MP Lateral Entry Rules 2025-26</h2>
         <p class="subtitle">Answers based on the official rules released by DTE Madhya Pradesh.</p>
+        <div style="max-width: 800px; margin: 30px auto 0 auto;">
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:20px;">
-
-            <div class="faq-item">
-                <h3><i class="fas fa-question-circle" style="color:var(--secondary);margin-right:6px;"></i>What is the minimum marks needed?</h3>
-                <p><strong>General (UR):</strong> At least <strong>45%</strong> in your diploma.<br>
-                <strong>SC / ST / OBC (MP):</strong> At least <strong>40%</strong>.<br>
-                Grace marks are allowed for eligibility, but they are <em>not counted</em> when calculating your percentage.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-1" class="faq-toggle">
+                <label for="faq-toggle-1" class="faq-accordion-header">
+                    <i class="fas fa-question-circle"></i>
+                    <span>What is the minimum marks needed?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p><strong>General (UR):</strong> At least <strong>45%</strong> in your diploma.<br>
+                        <strong>SC / ST / OBC (MP):</strong> At least <strong>40%</strong>.<br>
+                        Grace marks are allowed for eligibility, but they are <em>not counted</em> when calculating your percentage.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-user-graduate" style="color:var(--secondary);margin-right:6px;"></i>Who can apply for lateral entry?</h3>
-                <p><strong>Option 1:</strong> 3-year (or 2-year) Engineering Diploma from an AICTE/UGC recognized institute.<br>
-                <strong>Option 2:</strong> B.Sc. degree (UGC recognized) with <strong>Mathematics in 10+2</strong>.<br>
-                You must be an Indian citizen.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-2" class="faq-toggle">
+                <label for="faq-toggle-2" class="faq-accordion-header">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Who can apply for lateral entry?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p><strong>Option 1:</strong> 3-year (or 2-year) Engineering Diploma from an AICTE/UGC recognized institute.<br>
+                        <strong>Option 2:</strong> B.Sc. degree (UGC recognized) with <strong>Mathematics in 10+2</strong>.<br>
+                        You must be an Indian citizen.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-map-marker-alt" style="color:var(--secondary);margin-right:6px;"></i>Is MP domicile compulsory?</h3>
-                <p>Yes, for <strong>Govt. college seats</strong> — you need an MP Domicile certificate from Naib Tehsildar or Tehsildar.<br>
-                For <strong>Private college UR seats</strong>, students from other states can apply — but only on seats that remain vacant after the last round.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-3" class="faq-toggle">
+                <label for="faq-toggle-3" class="faq-accordion-header">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Is MP domicile compulsory?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>Yes, for <strong>Govt. college seats</strong> — you need an MP Domicile certificate from Naib Tehsildar or Tehsildar.<br>
+                        For <strong>Private college UR seats</strong>, students from other states can apply — but only on seats that remain vacant after the last round.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-percentage" style="color:var(--secondary);margin-right:6px;"></i>What are the seat reservations?</h3>
-                <p>From the MP quota seats:<br>
-                • <strong>SC</strong> — 16% &nbsp;|&nbsp; <strong>ST</strong> — 20% &nbsp;|&nbsp; <strong>OBC</strong> (non-creamy layer) — 14%<br>
-                • <strong>Female</strong> — 30% in each category (horizontal).<br>
-                If female seats are empty, they go to Open (OP) of the same category first.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-4" class="faq-toggle">
+                <label for="faq-toggle-4" class="faq-accordion-header">
+                    <i class="fas fa-percentage"></i>
+                    <span>What are the seat reservations?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>From the MP quota seats:<br>
+                        • <strong>SC</strong> — 16% &nbsp;|&nbsp; <strong>ST</strong> — 20% &nbsp;|&nbsp; <strong>OBC</strong> (non-creamy layer) — 14%<br>
+                        • <strong>Female</strong> — 30% in each category (horizontal).<br>
+                        If female seats are empty, they go to Open (OP) of the same category first.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-star" style="color:var(--secondary);margin-right:6px;"></i>What is the 10% sports weightage?</h3>
-                <p>If you have a <strong>Gold Medal from a National Level Sports Competition</strong>, you get 10% added to your qualifying exam marks.<br>
-                You need a certificate from Director, Sports & Youth Welfare, Govt of MP (Proforma-9).<br>
-                Note: these candidates are ranked <em>after</em> candidates with the same marks but no weightage.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-5" class="faq-toggle">
+                <label for="faq-toggle-5" class="faq-accordion-header">
+                    <i class="fas fa-star"></i>
+                    <span>What is the 10% sports weightage?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>If you have a <strong>Gold Medal from a National Level Sports Competition</strong>, you get 10% added to your qualifying exam marks.<br>
+                        You need a certificate from Director, Sports & Youth Welfare, Govt of MP (Proforma-9).<br>
+                        Note: these candidates are ranked <em>after</em> candidates with the same marks but no weightage.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-sort" style="color:var(--secondary);margin-right:6px;"></i>What if two students have the same rank?</h3>
-                <p>If two students have the same percentage:<br>
-                1. The <strong>older student</strong> gets preference.<br>
-                2. If age is also the same → names are compared in <strong>English alphabetical order</strong>.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-6" class="faq-toggle">
+                <label for="faq-toggle-6" class="faq-accordion-header">
+                    <i class="fas fa-sort"></i>
+                    <span>What if two students have the same rank?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>If two students have the same percentage:<br>
+                        1. The <strong>older student</strong> gets preference.<br>
+                        2. If age is also the same → names are compared in <strong>English alphabetical order</strong>.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-exchange-alt" style="color:var(--secondary);margin-right:6px;"></i>Can SC/ST/OBC students get a general seat?</h3>
-                <p>Yes. If an SC/ST/OBC student has a good enough rank to qualify in the <strong>UR (General) merit list</strong>, they are given a UR seat first. A reserved seat is only given if no UR seat is available in their preferred colleges.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-7" class="faq-toggle">
+                <label for="faq-toggle-7" class="faq-accordion-header">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Can SC/ST/OBC students get a general seat?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>Yes. If an SC/ST/OBC student has a good enough rank to qualify in the <strong>UR (General) merit list</strong>, they are given a UR seat first. A reserved seat is only given if no UR seat is available in their preferred colleges.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-chair" style="color:var(--secondary);margin-right:6px;"></i>How many lateral entry seats are there?</h3>
-                <p>Maximum <strong>10% extra seats</strong> on top of the sanctioned strength (supernumerary) from the previous year.<br>
-                Also, any unfilled 1st year seats from the previous batch are added to this pool.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-8" class="faq-toggle">
+                <label for="faq-toggle-8" class="faq-accordion-header">
+                    <i class="fas fa-chair"></i>
+                    <span>How many lateral entry seats are there?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>Maximum <strong>10% extra seats</strong> on top of the sanctioned strength (supernumerary) from the previous year.<br>
+                        Also, any unfilled 1st year seats from the previous batch are added to this pool.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-file-alt" style="color:var(--secondary);margin-right:6px;"></i>What documents do I need?</h3>
-                <p>• Diploma / B.Sc. marksheets and certificate<br>
-                • MP Domicile certificate (Proforma-6)<br>
-                • Category certificate: SC/ST (Proforma-1), OBC (Proforma-2)<br>
-                • TC + Migration (given to the college at admission)<br>
-                • Sports certificate if applicable (Proforma-9)</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-9" class="faq-toggle">
+                <label for="faq-toggle-9" class="faq-accordion-header">
+                    <i class="fas fa-file-alt"></i>
+                    <span>What documents do I need?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>• Diploma / B.Sc. marksheets and certificate<br>
+                        • MP Domicile certificate (Proforma-6)<br>
+                        • Category certificate: SC/ST (Proforma-1), OBC (Proforma-2)<br>
+                        • TC + Migration (given to the college at admission)<br>
+                        • Sports certificate if applicable (Proforma-9)</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-ban" style="color:var(--secondary);margin-right:6px;"></i>Can I change colleges after admission?</h3>
-                <p><strong>No.</strong> Transfer to another college is <strong>not allowed</strong> once you take admission through lateral entry. This is a strict DTE MP rule.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-10" class="faq-toggle">
+                <label for="faq-toggle-10" class="faq-accordion-header">
+                    <i class="fas fa-ban"></i>
+                    <span>Can I change colleges after admission?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p><strong>No.</strong> Transfer to another college is <strong>not allowed</strong> once you take admission through lateral entry. This is a strict DTE MP rule.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-rupee-sign" style="color:var(--secondary);margin-right:6px;"></i>Are TFW or EWS seats available?</h3>
-                <p><strong>No.</strong> TFW (Tuition Fee Waiver) and EWS quota seats are <strong>not available</strong> for lateral entry admissions as per DTE MP rules.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-11" class="faq-toggle">
+                <label for="faq-toggle-11" class="faq-accordion-header">
+                    <i class="fas fa-rupee-sign"></i>
+                    <span>Are TFW or EWS seats available?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p><strong>No.</strong> TFW (Tuition Fee Waiver) and EWS quota seats are <strong>not available</strong> for lateral entry admissions as per DTE MP rules.</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="faq-item">
-                <h3><i class="fas fa-laptop" style="color:var(--secondary);margin-right:6px;"></i>Is this tool official?</h3>
-                <p>No. This is an independent tool built using public DTE MP data. It is <strong>not connected to DTE MP</strong> or any government body. Always verify on <a href="https://dte.mponline.gov.in" target="_blank" class="link">dte.mponline.gov.in</a>.</p>
+            <div class="faq-accordion-item">
+                <input type="checkbox" id="faq-toggle-12" class="faq-toggle">
+                <label for="faq-toggle-12" class="faq-accordion-header">
+                    <i class="fas fa-laptop"></i>
+                    <span>Is this tool official?</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </label>
+                <div class="faq-accordion-content">
+                    <div class="faq-accordion-content-inner">
+                        <p>No. This is an independent tool built using public DTE MP data. It is <strong>not connected to DTE MP</strong> or any government body. Always verify on <a href="https://dte.mponline.gov.in" target="_blank" class="link">dte.mponline.gov.in</a>.</p>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -250,4 +452,14 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof MpNotifications !== 'undefined') {
+        MpNotifications.initSubscribeButton('enable-notifications-btn', '/api/v1/counselling-schedule');
+    }
+});
+</script>
 {% endblock %}

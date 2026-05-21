@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% block title %}{{ faq.question }} | MP DTE B.Tech Lateral Entry{% endblock %}
+{% block meta_description %}{{ faq.description }}{% endblock %}
+{% block meta_keywords %}{{ faq.keywords }}, lateral entry MP 2025, BTech lateral entry Madhya Pradesh, DTE MP counselling{% endblock %}
+{% block og_title %}{{ faq.question }}{% endblock %}
+{% block og_description %}{{ faq.description }}{% endblock %}
+{% block twitter_title %}{{ faq.question }}{% endblock %}
+{% block twitter_description %}{{ faq.description }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": {{ faq.question | tojson }},
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": {{ faq.answer | striptags | tojson }}
+    }
+  }]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Home","item":"{{ request.url_root }}"},
+    {"@type":"ListItem","position":2,"name":"FAQ","item":"{{ request.url_root }}faq"},
+    {"@type":"ListItem","position":3,"name":"{{ faq.category }}","item":"{{ request.url_root }}faq#{{ faq.category | replace(' ', '-') | lower }}"},
+    {"@type":"ListItem","position":4,"name":{{ faq.question | tojson }},"item":"{{ request.url }}"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container faq-detail-layout">
+
+  <!-- ── Breadcrumb ─────────────────────────────────────────────────── -->
+  <nav class="faq-breadcrumb" aria-label="breadcrumb">
+    <a href="/">Home</a>
+    <span class="bc-sep">›</span>
+    <a href="/faq">FAQ</a>
+    <span class="bc-sep">›</span>
+    <a href="/faq#{{ faq.category | replace(' ', '-') | lower }}">{{ faq.category }}</a>
+    <span class="bc-sep">›</span>
+    <span class="bc-current">{{ faq.question | truncate(55) }}</span>
+  </nav>
+
+  <div class="faq-detail-grid">
+
+    <!-- ── Main Article ───────────────────────────────────────────────── -->
+    <main class="faq-article gov-box">
+      <div class="faq-article-header">
+        <span class="faq-cat-badge">
+          <i class="fas fa-tag"></i> {{ faq.category }}
+        </span>
+        <h1 class="faq-article-title">{{ faq.question }}</h1>
+        <p class="faq-article-meta">
+          <i class="fas fa-database" style="color:var(--saffron);"></i>
+          Based on official DTE MP data &nbsp;|&nbsp;
+          <i class="fas fa-calendar-alt" style="color:var(--secondary);"></i>
+          Updated 2025
+        </p>
+      </div>
+
+      <div class="faq-article-body">
+        {{ faq.answer | safe }}
+      </div>
+
+      <!-- Share buttons -->
+      <div class="faq-share-row">
+        <span style="font-size:0.85rem;color:#64748B;font-weight:600;">Share this answer:</span>
+        <a class="share-btn share-wa" target="_blank"
+           href="https://wa.me/?text={{ (faq.question + ' — ' + request.url) | urlencode }}">
+           <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a class="share-btn share-tw" target="_blank"
+           href="https://twitter.com/intent/tweet?text={{ faq.question | urlencode }}&url={{ request.url | urlencode }}">
+           <i class="fab fa-twitter"></i> Twitter
+        </a>
+        <button class="share-btn share-cp" onclick="navigator.clipboard.writeText('{{ request.url }}');this.textContent='✓ Copied!'">
+          <i class="fas fa-link"></i> Copy Link
+        </button>
+      </div>
+
+      <!-- Navigation between questions -->
+      <div class="faq-nav-row">
+        {% if prev_faq %}
+        <a class="faq-nav-btn" href="/faq/{{ prev_faq.slug }}">
+          <i class="fas fa-chevron-left"></i>
+          <span>{{ prev_faq.question | truncate(55) }}</span>
+        </a>
+        {% else %}<div></div>{% endif %}
+        {% if next_faq %}
+        <a class="faq-nav-btn faq-nav-next" href="/faq/{{ next_faq.slug }}">
+          <span>{{ next_faq.question | truncate(55) }}</span>
+          <i class="fas fa-chevron-right"></i>
+        </a>
+        {% endif %}
+      </div>
+    </main>
+
+    <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+    <aside class="faq-sidebar">
+
+      <!-- CTA card -->
+      <div class="faq-cta-card">
+        <div class="faq-cta-icon"><i class="fas fa-magic"></i></div>
+        <h3>Check Your Admission Chance</h3>
+        <p>Enter your CGPA and get the list of all colleges where you can get admission — with probability %.</p>
+        <a href="/predictor" class="btn-primary" style="display:block;text-align:center;margin-top:12px;">
+          <i class="fas fa-search"></i> Predict My Colleges
+        </a>
+        <a href="/choice-builder" class="btn-outline-sm" style="display:block;text-align:center;margin-top:8px;">
+          <i class="fas fa-list-ol"></i> Build My Choice List
+        </a>
+      </div>
+
+      <!-- Related Q&As -->
+      {% if related %}
+      <div class="faq-related-card gov-box">
+        <h4 class="faq-related-title">
+          <i class="fas fa-link" style="color:var(--secondary);"></i>
+          Related Questions
+        </h4>
+        <ul class="faq-related-list">
+          {% for r in related %}
+          <li>
+            <a href="/faq/{{ r.slug }}">
+              <i class="fas fa-angle-right" style="color:var(--saffron);"></i>
+              {{ r.question | truncate(70) }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <a href="/faq" class="faq-all-link">View all FAQs →</a>
+      </div>
+      {% endif %}
+
+      <!-- Quick links -->
+      <div class="faq-quick-links gov-box">
+        <h4 class="faq-related-title">
+          <i class="fas fa-bolt" style="color:var(--saffron);"></i>
+          Quick Tools
+        </h4>
+        <ul class="faq-related-list">
+          <li><a href="/predictor"><i class="fas fa-search fa-fw"></i> College Predictor</a></li>
+          <li><a href="/choice-builder"><i class="fas fa-magic fa-fw"></i> Smart Choice Builder</a></li>
+          <li><a href="/compare"><i class="fas fa-balance-scale fa-fw"></i> Compare Colleges</a></li>
+          <li><a href="/recommendation-list"><i class="fas fa-star fa-fw"></i> DTE Recommended List</a></li>
+          <li><a href="/schedule"><i class="fas fa-calendar fa-fw"></i> Counselling Schedule</a></li>
+          <li><a href="/search"><i class="fas fa-university fa-fw"></i> Search Colleges</a></li>
+        </ul>
+      </div>
+    </aside>
+
+  </div><!-- /faq-detail-grid -->
+
+  <!-- Bottom CTA banner -->
+  <div class="faq-bottom-cta">
+    <div>
+      <strong>🎓 Ready to start your lateral entry journey?</strong>
+      <span style="margin-left:8px;font-size:0.9rem;opacity:0.9;">Find your best-fit college in 30 seconds</span>
+    </div>
+    <a href="/predictor" class="btn-white-outline">Predict Colleges Free →</a>
+  </div>
+
+</div><!-- /container -->
+
+<style>
+/* ── Layout ─────────────────────────────────────────────────────────── */
+.faq-detail-layout { max-width: 1140px; padding-top: 16px; }
+.faq-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  align-items: start;
+  margin-top: 18px;
+}
+@media (max-width: 900px) {
+  .faq-detail-grid { grid-template-columns: 1fr; }
+  .faq-sidebar { order: -1; }
+}
+
+/* ── Breadcrumb ─────────────────────────────────────────────────────── */
+.faq-breadcrumb {
+  display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
+  font-size: 0.82rem; color: #64748B; margin-bottom: 4px;
+}
+.faq-breadcrumb a { color: var(--secondary); text-decoration: none; }
+.faq-breadcrumb a:hover { text-decoration: underline; }
+.bc-sep { color: #CBD5E1; }
+.bc-current { color: #475569; font-weight: 500; }
+
+/* ── Article card ───────────────────────────────────────────────────── */
+.faq-article { padding: 32px 36px; }
+@media (max-width: 600px) { .faq-article { padding: 20px 18px; } }
+
+.faq-article-header { margin-bottom: 28px; }
+.faq-cat-badge {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  background: linear-gradient(90deg, var(--saffron), #F97316);
+  color: #fff; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px;
+}
+.faq-article-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.7rem);
+  font-weight: 800; color: var(--primary); line-height: 1.35;
+  margin: 0 0 10px 0;
+}
+.faq-article-meta {
+  font-size: 0.8rem; color: #94A3B8; display: flex;
+  align-items: center; gap: 10px; flex-wrap: wrap;
+}
+
+/* ── Article body ───────────────────────────────────────────────────── */
+.faq-article-body {
+  font-size: 0.97rem; color: #334155; line-height: 1.75;
+  border-top: 2px solid var(--border); padding-top: 24px;
+}
+.faq-article-body h4 { color: var(--primary); margin: 22px 0 10px; font-size: 1rem; }
+.faq-article-body ul, .faq-article-body ol {
+  padding-left: 24px; margin-bottom: 16px;
+}
+.faq-article-body li { margin-bottom: 6px; }
+.faq-article-body table {
+  width: 100%; border-collapse: collapse; font-size: 0.87rem; margin: 16px 0;
+  border-radius: 8px; overflow: hidden;
+}
+.faq-article-body th {
+  background: var(--primary); color: #fff;
+  padding: 10px 12px; text-align: left; font-weight: 600;
+}
+.faq-article-body td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+.faq-article-body tr:nth-child(even) td { background: #F8FAFC; }
+.faq-article-body a { color: var(--secondary); }
+.faq-article-body a:hover { text-decoration: underline; }
+
+/* ── Share row ──────────────────────────────────────────────────────── */
+.faq-share-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);
+}
+.share-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 0.8rem;
+  font-weight: 700; text-decoration: none; cursor: pointer;
+  border: none; transition: all 0.2s;
+}
+.share-wa  { background: #25D366; color: #fff; }
+.share-wa:hover { background: #1aab52; }
+.share-tw  { background: #1DA1F2; color: #fff; }
+.share-tw:hover { background: #0d8de0; }
+.share-cp  { background: #F1F5F9; color: #334155; border: 1px solid #CBD5E1; }
+.share-cp:hover { background: #E2E8F0; }
+
+/* ── Nav row ────────────────────────────────────────────────────────── */
+.faq-nav-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-top: 24px; flex-wrap: wrap;
+}
+.faq-nav-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: #F8FAFC; border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 16px; font-size: 0.82rem; color: var(--primary);
+  text-decoration: none; max-width: 48%; transition: all 0.2s;
+  font-weight: 600;
+}
+.faq-nav-btn:hover { background: #EFF6FF; border-color: var(--secondary); }
+.faq-nav-next { flex-direction: row-reverse; text-align: right; }
+@media (max-width: 600px) { .faq-nav-btn { max-width: 100%; } }
+
+/* ── Sidebar ────────────────────────────────────────────────────────── */
+.faq-cta-card {
+  background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
+  border-radius: 14px; padding: 24px 20px; color: #fff;
+  text-align: center; margin-bottom: 20px;
+}
+.faq-cta-icon {
+  width: 52px; height: 52px; background: rgba(255,255,255,0.15);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin: 0 auto 14px;
+}
+.faq-cta-card h3 { font-size: 1.1rem; font-weight: 800; margin: 0 0 8px; }
+.faq-cta-card p { font-size: 0.82rem; opacity: 0.9; margin: 0; line-height: 1.5; }
+.btn-white-outline, .btn-outline-sm {
+  display: inline-block; border: 2px solid rgba(255,255,255,0.5);
+  color: #fff; border-radius: 8px; padding: 8px 18px;
+  font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: all 0.2s;
+}
+.btn-outline-sm { background: rgba(255,255,255,0.08); }
+.btn-white-outline:hover, .btn-outline-sm:hover {
+  background: rgba(255,255,255,0.2); border-color: #fff;
+}
+
+.faq-related-card, .faq-quick-links { padding: 20px 18px; margin-bottom: 18px; }
+.faq-related-title {
+  font-size: 0.9rem; font-weight: 800; color: var(--primary);
+  margin: 0 0 14px; display: flex; align-items: center; gap: 8px;
+}
+.faq-related-list { list-style: none; padding: 0; margin: 0; }
+.faq-related-list li { margin-bottom: 10px; }
+.faq-related-list a {
+  font-size: 0.83rem; color: #475569; text-decoration: none;
+  display: flex; align-items: flex-start; gap: 6px; line-height: 1.4;
+  transition: color 0.2s;
+}
+.faq-related-list a:hover { color: var(--secondary); }
+.faq-all-link {
+  display: block; text-align: center; margin-top: 12px;
+  font-size: 0.82rem; font-weight: 700; color: var(--secondary);
+  text-decoration: none;
+}
+
+/* ── Bottom CTA ─────────────────────────────────────────────────────── */
+.faq-bottom-cta {
+  background: linear-gradient(90deg, var(--saffron) 0%, #F97316 100%);
+  border-radius: 14px; padding: 22px 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 18px; flex-wrap: wrap; margin-top: 32px; color: #fff;
+  font-size: 1rem; font-weight: 700;
+}
+.faq-bottom-cta .btn-white-outline {
+  border-color: #fff; white-space: nowrap; padding: 10px 22px;
+}
+@media (max-width: 600px) {
+  .faq-bottom-cta { flex-direction: column; text-align: center; }
+}
+</style>
+{% endblock %}

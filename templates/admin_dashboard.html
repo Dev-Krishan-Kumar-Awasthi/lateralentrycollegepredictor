@@ -1,0 +1,690 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard — Registered Users{% endblock %}
+
+{% block content %}
+<style>
+/* Modern Admin Dashboard styling */
+.admin-card-summary {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.admin-card-summary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+.admin-tab-btn {
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    font-weight: 700;
+    font-size: 1.02rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+.admin-tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--primary);
+    transition: width 0.25s ease;
+}
+.admin-tab-btn.active {
+    color: var(--primary) !important;
+}
+.admin-tab-btn.active::after {
+    width: 100%;
+}
+.admin-tab-btn.inactive {
+    color: var(--muted) !important;
+}
+.admin-tab-btn.inactive::after {
+    width: 0;
+}
+.pending-badge {
+    background: #EF4444;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+}
+
+/* Distribution cards */
+.admin-dist-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.admin-dist-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+.admin-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #F1F5F9;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.admin-progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.progress-fill-blue {
+    background: linear-gradient(90deg, #6366F1, #4F46E5);
+}
+.progress-fill-amber {
+    background: linear-gradient(90deg, #F59E0B, #D97706);
+}
+
+/* Broadcast Panel */
+.admin-broadcast-panel {
+    background: linear-gradient(135deg, rgba(254, 247, 237, 0.85), rgba(254, 215, 170, 0.45));
+    border: 1px solid rgba(254, 215, 170, 0.7);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: var(--glass-shadow);
+}
+.admin-broadcast-title {
+    margin-top: 0;
+    font-size: 1.05rem;
+    color: #9A3412;
+    border-bottom: 1px solid rgba(254, 215, 170, 0.8);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+/* Filters Vibe */
+.admin-filter-bar {
+    background: rgba(248, 250, 252, 0.65);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Table overrides */
+.gov-table {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border) !important;
+}
+.gov-table thead th {
+    background: rgba(241, 245, 249, 0.7) !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid var(--border) !important;
+}
+.gov-table tbody tr {
+    transition: background 0.2s;
+}
+.gov-table tbody tr:hover {
+    background: rgba(241, 245, 249, 0.4) !important;
+}
+
+/* Modal animations */
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes zoomInModal {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
+
+<div class="container">
+    <div class="gov-box" style="margin-top: 30px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+            <div>
+                <h1 style="color:var(--primary); margin:0;"><i class="fas fa-users-cog"></i> Student Registration Database</h1>
+                <p class="subtitle" style="margin: 4px 0 0 0;">Total Students Registered: <strong>{{ users|length }}</strong></p>
+            </div>
+            <div>
+                <a href="/admin/users?export=1" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                    <i class="fas fa-file-csv" style="font-size:1.1rem;"></i> Export CSV (Excel)
+                </a>
+            </div>
+        </div>
+
+        <!-- Analytics Summary Cards -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
+            <div class="admin-card-summary" style="background: linear-gradient(135deg, rgba(239, 246, 255, 0.85), rgba(219, 234, 254, 0.65)); border:1px solid #BFDBFE; padding:16px; border-radius:12px; display:flex; align-items:center; gap:12px; box-shadow: var(--glass-shadow); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);">
+                <div style="background:#3B82F6; color:#fff; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <span style="font-size:0.8rem; color:#1E3A8A; display:block; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Total Registered</span>
+                    <strong style="font-size:1.6rem; color:#1E3A8A;">{{ total_users }}</strong>
+                </div>
+            </div>
+            
+            <div class="admin-card-summary" style="background: linear-gradient(135deg, rgba(255, 241, 242, 0.85), rgba(254, 205, 211, 0.65)); border:1px solid #FECDD3; padding:16px; border-radius:12px; display:flex; align-items:center; gap:12px; box-shadow: var(--glass-shadow); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);">
+                <div style="background:#F43F5E; color:#fff; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div>
+                    <span style="font-size:0.8rem; color:#881337; display:block; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Average CGPA</span>
+                    <strong style="font-size:1.6rem; color:#881337; font-family:monospace;">{{ avg_cgpa }}</strong>
+                </div>
+            </div>
+            
+            <div class="admin-card-summary" style="background: linear-gradient(135deg, rgba(236, 253, 245, 0.85), rgba(167, 243, 208, 0.65)); border:1px solid #A7F3D0; padding:16px; border-radius:12px; display:flex; align-items:center; gap:12px; box-shadow: var(--glass-shadow); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);">
+                <div style="background:#10B981; color:#fff; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div>
+                    <span style="font-size:0.8rem; color:#064E3B; display:block; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Active Branches</span>
+                    <strong style="font-size:1.6rem; color:#064E3B;">{{ branch_stats|length }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modern Tabs Selector -->
+        <div style="display:flex; gap:8px; border-bottom:2px solid var(--border); margin-bottom:24px; padding-bottom:2px;">
+            <button type="button" id="tab-btn-students" onclick="switchTab('students')" class="admin-tab-btn active">
+                <i class="fas fa-user-graduate"></i> Registered Students
+            </button>
+            <button type="button" id="tab-btn-reviews" onclick="switchTab('reviews')" class="admin-tab-btn inactive">
+                <i class="fas fa-comments"></i> College Reviews Moderation
+                {% set pending_count = reviews | rejectattr('is_approved') | list | length %}
+                {% if pending_count > 0 %}
+                    <span class="pending-badge">{{ pending_count }}</span>
+                {% endif %}
+            </button>
+        </div>
+
+        <div id="tab-pane-students">
+            <!-- Distributions Grid -->
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap:20px; margin-bottom:28px;">
+                <!-- Branch Distribution -->
+                <div class="admin-dist-card">
+                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary); margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px;"><i class="fas fa-chart-bar"></i> Registration by Branch</h3>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        {% for br, count in branch_stats.items() | sort(attribute='1', reverse=True) %}
+                            {% set pct = (count / total_users * 100) | round if total_users > 0 else 0 %}
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px; font-weight:600;">
+                                    <span style="color:var(--primary);">{{ br }}</span>
+                                    <span style="color:var(--muted);">{{ count }} ({{ pct }}%)</span>
+                                </div>
+                                <div class="admin-progress-bar">
+                                    <div class="admin-progress-fill progress-fill-blue" style="width:{{ pct }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Category Distribution -->
+                <div class="admin-dist-card">
+                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary); margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px;"><i class="fas fa-users-cog"></i> Registration by Category</h3>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                        {% for cat, count in category_stats.items() | sort(attribute='1', reverse=True) %}
+                            {% set pct = (count / total_users * 100) | round if total_users > 0 else 0 %}
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:4px; font-weight:600;">
+                                    <span style="color:var(--primary);">{{ cat }}</span>
+                                    <span style="color:var(--muted);">{{ count }} ({{ pct }}%)</span>
+                                </div>
+                                <div class="admin-progress-bar">
+                                    <div class="admin-progress-fill progress-fill-amber" style="width:{{ pct }}%;"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Broadcast Notification Panel -->
+            <div class="admin-broadcast-panel">
+                <h3 class="admin-broadcast-title">
+                    <i class="fas fa-bullhorn"></i> Send Counselling Alert to All Subscribed Students
+                </h3>
+                {% if broadcast_success %}
+                <div style="background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; padding:12px 16px; border-radius:6px; margin-bottom:14px; font-weight:700; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-check-circle"></i> {{ broadcast_success }}
+                </div>
+                {% endif %}
+                {% if broadcast_error %}
+                <div style="background:#FEF2F2; border:1px solid #FECACA; color:#991B1B; padding:12px 16px; border-radius:6px; margin-bottom:14px; font-weight:700; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-exclamation-triangle"></i> {{ broadcast_error }}
+                </div>
+                {% endif %}
+                <form method="POST" action="/admin/broadcast" style="display:flex; flex-direction:column; gap:12px;" onsubmit="return confirm('Send this email to ALL subscribed students? This cannot be undone.');">
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:700; color:#9A3412; margin-bottom:4px;">Email Subject</label>
+                        <input type="text" name="subject" required placeholder="e.g. MP DTE Lateral Entry Counselling Dates Announced!" style="width:100%; padding:10px; border:1px solid #FED7AA; border-radius:6px; box-sizing:border-box; background:#fff;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:700; color:#9A3412; margin-bottom:4px;">Message Body</label>
+                        <textarea name="body" required rows="4" placeholder="Type your counselling update message here..." style="width:100%; padding:10px; border:1px solid #FED7AA; border-radius:6px; box-sizing:border-box; background:#fff; resize:vertical;"></textarea>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                        <p style="margin:0; font-size:0.82rem; color:#C2410C;">
+                            <i class="fas fa-info-circle"></i> Email will only be sent to students with alerts <strong>ACTIVE</strong>. Students who have disabled alerts will be skipped.
+                        </p>
+                        <button type="submit" style="padding:10px 20px; background:#EA580C; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:8px; white-space:nowrap;">
+                            <i class="fas fa-paper-plane"></i> Send Alert Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Live Search and Filter Bar -->
+            <div class="admin-filter-bar">
+                <div style="flex:1; min-width:240px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Search Student</label>
+                    <div style="position:relative;">
+                        <input type="text" id="admin-search-input" placeholder="Search by Name, Email, or Mobile..." style="width:100%; padding:10px 12px 10px 34px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                        <i class="fas fa-search" style="position:absolute; left:12px; top:13px; color:var(--muted);"></i>
+                    </div>
+                </div>
+                
+                <div style="width:180px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Filter Branch</label>
+                    <select id="admin-branch-filter" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; background:#fff;">
+                        <option value="">All Branches</option>
+                        {% for br in branch_stats.keys() %}
+                            <option value="{{ br }}">{{ br }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div style="width:150px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Filter Category</label>
+                    <select id="admin-category-filter" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; background:#fff;">
+                        <option value="">All Categories</option>
+                        {% for cat in category_stats.keys() %}
+                            <option value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            {% if users %}
+            <div class="table-wrapper">
+                <table class="gov-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Polytechnic College</th>
+                            <th>Branch</th>
+                            <th>CGPA</th>
+                            <th>Category</th>
+                            <th>Gender</th>
+                            <th>Registered Date</th>
+                            <th style="text-align:center; min-width:140px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr class="student-row" data-name="{{ u.display_name or '' }}" data-email="{{ u.email or '' }}" data-mobile="{{ u.mobile_number or '' }}" data-branch="{{ u.diploma_branch or '' }}" data-category="{{ u.category or 'UR' }}">
+                            <td style="font-weight:700; color:var(--muted);">#{{ u.id }}</td>
+                            <td style="font-weight:700; color:var(--primary);">{{ u.display_name or '—' }}</td>
+                            <td>{{ u.email }}</td>
+                            <td style="font-family:monospace; font-weight:600;">{{ u.mobile_number or '—' }}</td>
+                            <td>{{ u.polytechnic_college or '—' }}</td>
+                            <td>
+                                <span class="branch-tag" style="background:#EEF2FF; color:#3730A3; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem;">
+                                    {{ u.diploma_branch or '—' }}
+                                </span>
+                            </td>
+                            <td style="font-weight:800; font-family:monospace; color:#E11D48;">{{ u.cgpa or '0.0' }}</td>
+                            <td>
+                                <span style="font-weight:700; color:#0EA5E9;">{{ u.category or 'UR' }}</span>
+                            </td>
+                            <td>
+                                {% if u.gender == 'F' %}
+                                <span class="gender-tag gender-f" style="background:#FCE7F3; color:#9D174D; padding:2px 8px; border-radius:10px; font-weight:700; font-size:0.72rem;">Female</span>
+                                {% else %}
+                                <span class="gender-tag gender-op" style="background:#D1FAE5; color:#065F46; padding:2px 8px; border-radius:10px; font-weight:700; font-size:0.72rem;">Male</span>
+                                {% endif %}
+                            </td>
+                            <td style="font-size:0.8rem; color:var(--muted);">{{ (u.created_at | to_ist).strftime('%d %b %Y, %I:%M %p') if u.created_at else '—' }}</td>
+                            <td>
+                                <div style="display:flex; justify-content:center; gap:6px; align-items:center;">
+                                    <button type="button" class="btn-primary-small" onclick="viewShortlist({{ u.id }}, '{{ u.display_name or 'Student' }}')" style="padding:5px 9px; font-size:0.75rem; background:#4F46E5; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                                        <i class="fas fa-list-ul"></i> Shortlist
+                                    </button>
+                                    <form method="POST" action="/admin/delete-user/{{ u.id }}" onsubmit="return confirm('Are you sure you want to delete this user ({{ u.display_name or u.email }})? All saved shortlists will also be deleted.')" style="margin:0;">
+                                        <button type="submit" style="padding:5px 9px; font-size:0.75rem; background:#EF4444; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div style="text-align:center; padding:40px; color:var(--muted);">
+                <i class="fas fa-user-slash" style="font-size:3rem; margin-bottom:12px; color:var(--border);"></i>
+                <p>No registered users found in the database yet.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- College Reviews Moderation Pane -->
+        <div id="tab-pane-reviews" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+                <div>
+                    <h2 style="color:var(--primary); margin:0;"><i class="fas fa-comments"></i> College Reviews Moderation</h2>
+                    <p class="subtitle" style="margin:4px 0 0 0;">Manage student feedback and ratings across colleges.</p>
+                </div>
+            </div>
+
+            <!-- Live Search and Filter Bar for Reviews -->
+            <div style="background:#F8FAFC; border:1px solid var(--border); padding:16px; border-radius:8px; margin-bottom:20px; display:flex; flex-wrap:wrap; gap:14px; align-items:center;">
+                <div style="flex:1; min-width:240px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Search College Name</label>
+                    <div style="position:relative;">
+                        <input type="text" id="admin-review-search-input" placeholder="Search by College Name..." style="width:100%; padding:10px 12px 10px 34px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                        <i class="fas fa-search" style="position:absolute; left:12px; top:13px; color:var(--muted);"></i>
+                    </div>
+                </div>
+                
+                <div style="width:180px;">
+                    <label style="display:block; font-size:0.8rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Filter Status</label>
+                    <select id="admin-review-status-filter" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; background:#fff;">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                    </select>
+                </div>
+            </div>
+            
+            {% if reviews %}
+            <div class="table-wrapper">
+                <table class="gov-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>College Name</th>
+                            <th>Student Name</th>
+                            <th>Branch</th>
+                            <th style="width:110px;">Rating</th>
+                            <th>Comment</th>
+                            <th>Status</th>
+                            <th style="text-align:center; min-width:160px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in reviews %}
+                        <tr class="review-row" data-college="{{ r.college_name or '' }}" data-status="{% if r.is_approved %}approved{% else %}pending{% endif %}" style="border-left: 4px solid {% if r.is_approved %}#10B981{% else %}#F59E0B{% endif %};">
+                            <td style="font-weight:700; color:var(--muted);">#{{ r.id }}</td>
+                            <td style="font-weight:700; color:var(--primary);">{{ r.college_name }}</td>
+                            <td style="font-weight:600;">{{ r.author_name }}</td>
+                            <td>
+                                <span class="branch-tag" style="background:#F3F4F6; color:#4B5563; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem;">
+                                    {{ r.branch or '—' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="color:#F59E0B; font-size:0.85rem; display:inline-flex; gap:2px; font-weight:bold;">
+                                    {% for i in range(r.rating) %}★{% endfor %}{% for i in range(5 - r.rating) %}☆{% endfor %}
+                                </div>
+                            </td>
+                            <td style="max-width:300px; word-wrap:break-word; font-size:0.9rem; color:#374151;">
+                                {{ r.comment }}
+                            </td>
+                            <td>
+                                {% if r.is_approved %}
+                                <span style="background:#D1FAE5; color:#065F46; padding:3px 8px; border-radius:12px; font-size:0.72rem; font-weight:800; text-transform:uppercase;">
+                                    <i class="fas fa-check-circle"></i> Approved
+                                </span>
+                                {% else %}
+                                <span style="background:#FEF3C7; color:#92400E; padding:3px 8px; border-radius:12px; font-size:0.72rem; font-weight:800; text-transform:uppercase;">
+                                    <i class="fas fa-hourglass-half"></i> Pending
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div style="display:flex; justify-content:center; gap:8px; align-items:center;">
+                                    {% if not r.is_approved %}
+                                    <form method="POST" action="/admin/approve-review/{{ r.id }}" style="margin:0;">
+                                        <button type="submit" style="padding:6px 12px; font-size:0.75rem; background:#10B981; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; transition: background 0.2s;">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    <form method="POST" action="/admin/delete-review/{{ r.id }}" onsubmit="return confirm('Are you sure you want to delete this review? This action cannot be undone.')" style="margin:0;">
+                                        <button type="submit" style="padding:6px 12px; font-size:0.75rem; background:#EF4444; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold; transition: background 0.2s;">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div style="text-align:center; padding:45px; background:#F8FAFC; border:1px dashed var(--border); border-radius:8px; color:var(--muted);">
+                <i class="far fa-comments" style="font-size:3rem; margin-bottom:12px; color:var(--border);"></i>
+                <p>No college reviews submitted in the database yet.</p>
+            </div>
+            {% endif %}
+        </div>
+</div>
+
+<!-- Student Shortlist Modal Popup Overlay -->
+<div id="shortlist-modal" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+    <div style="background:#fff; margin:auto; border-radius:10px; max-width:600px; width:90%; box-shadow:0 10px 25px rgba(0,0,0,0.15); overflow:hidden; border:1px solid var(--border);">
+        <div style="background:var(--primary); padding:16px 20px; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0; font-size:1.1rem; font-weight:bold;" id="modal-title"><i class="fas fa-user-graduate"></i> Student's Cloud Shortlist</h3>
+            <span style="font-size:1.6rem; font-weight:bold; cursor:pointer; line-height:1;" onclick="closeModal()">&times;</span>
+        </div>
+        <div style="padding:20px; max-height:450px; overflow-y:auto;" id="modal-body">
+            <!-- Fetch content loader -->
+        </div>
+    </div>
+</div>
+
+<script>
+// Modal Controls
+function viewShortlist(userId, studentName) {
+    const modal = document.getElementById('shortlist-modal');
+    const title = document.getElementById('modal-title');
+    const body = document.getElementById('modal-body');
+    
+    title.innerHTML = `<i class="fas fa-user-graduate"></i> ${studentName}'s Saved Shortlist`;
+    body.innerHTML = `
+        <div style="text-align:center; padding:30px;">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--primary); margin-bottom:12px;"></i>
+            <p>Fetching shortlist from cloud database...</p>
+        </div>
+    `;
+    modal.style.display = 'flex';
+    
+    fetch(`/api/v1/admin/user-shortlist/${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.items || data.items.length === 0) {
+                body.innerHTML = `
+                    <div style="text-align:center; padding:30px; color:var(--muted);">
+                        <i class="fas fa-folder-open" style="font-size:2.5rem; margin-bottom:12px; color:var(--border);"></i>
+                        <p>No colleges saved in shortlist yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div style="display:flex; flex-direction:column; gap:12px;">';
+            data.items.forEach((item, index) => {
+                const probColor = item.prob_type === 'Safe' ? '#10B981' : (item.prob_type === 'Moderate' ? '#F59E0B' : '#EF4444');
+                html += `
+                    <div style="border:1px solid var(--border); border-radius:6px; padding:12px; display:flex; justify-content:space-between; align-items:center; background:#F8FAFC;">
+                        <div>
+                            <strong style="color:var(--primary); font-size:0.95rem; display:block;">${index + 1}. ${item.college_name}</strong>
+                            <span style="font-size:0.8rem; color:var(--muted); font-weight:600;"><i class="fas fa-graduation-cap"></i> ${item.branch_name || 'All'}</span>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="background:${probColor}; color:#fff; padding:3px 8px; border-radius:12px; font-size:0.7rem; font-weight:800; text-transform:uppercase;">
+                                ${item.prob_type || 'N/A'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            body.innerHTML = html;
+        })
+        .catch(err => {
+            body.innerHTML = `
+                <div style="text-align:center; padding:20px; color:#EF4444;">
+                    <i class="fas fa-exclamation-triangle" style="font-size:2rem; margin-bottom:8px;"></i>
+                    <p>Failed to load shortlist. Please try again.</p>
+                </div>
+            `;
+        });
+}
+
+function closeModal() {
+    document.getElementById('shortlist-modal').style.display = 'none';
+}
+
+// Close modal on click outside content
+window.onclick = function(event) {
+    const modal = document.getElementById('shortlist-modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Live Search & Filter Logic
+const searchInput = document.getElementById('admin-search-input');
+const branchFilter = document.getElementById('admin-branch-filter');
+const categoryFilter = document.getElementById('admin-category-filter');
+const rows = document.querySelectorAll('.student-row');
+
+function filterTable() {
+    const query = searchInput.value.toLowerCase().trim();
+    const branch = branchFilter.value;
+    const category = categoryFilter.value;
+    
+    rows.forEach(row => {
+        const name = row.getAttribute('data-name').toLowerCase();
+        const email = row.getAttribute('data-email').toLowerCase();
+        const mobile = row.getAttribute('data-mobile');
+        const rowBranch = row.getAttribute('data-branch');
+        const rowCategory = row.getAttribute('data-category');
+        
+        const matchesQuery = name.includes(query) || email.includes(query) || mobile.includes(query);
+        const matchesBranch = !branch || rowBranch === branch;
+        const matchesCategory = !category || rowCategory === category;
+        
+        if (matchesQuery && matchesBranch && matchesCategory) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+if (searchInput) searchInput.addEventListener('input', filterTable);
+if (branchFilter) branchFilter.addEventListener('change', filterTable);
+if (categoryFilter) categoryFilter.addEventListener('change', filterTable);
+
+// Live Search & Filter Logic for Reviews
+const reviewSearchInput = document.getElementById('admin-review-search-input');
+const reviewStatusFilter = document.getElementById('admin-review-status-filter');
+const reviewRows = document.querySelectorAll('.review-row');
+
+function filterReviewsTable() {
+    const query = (reviewSearchInput ? reviewSearchInput.value : '').toLowerCase().trim();
+    const status = reviewStatusFilter ? reviewStatusFilter.value : '';
+    
+    reviewRows.forEach(row => {
+        const college = (row.getAttribute('data-college') || '').toLowerCase();
+        const rowStatus = row.getAttribute('data-status') || '';
+        
+        const matchesQuery = college.includes(query);
+        const matchesStatus = !status || rowStatus === status;
+        
+        if (matchesQuery && matchesStatus) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+if (reviewSearchInput) reviewSearchInput.addEventListener('input', filterReviewsTable);
+if (reviewStatusFilter) reviewStatusFilter.addEventListener('change', filterReviewsTable);
+
+// Tab Switching Logic
+function switchTab(tabName) {
+    const paneStudents = document.getElementById('tab-pane-students');
+    const paneReviews = document.getElementById('tab-pane-reviews');
+    const btnStudents = document.getElementById('tab-btn-students');
+    const btnReviews = document.getElementById('tab-btn-reviews');
+    
+    if (!paneStudents || !paneReviews) return;
+    
+    if (tabName === 'reviews') {
+        paneStudents.style.display = 'none';
+        paneReviews.style.display = 'block';
+        
+        if (btnReviews) {
+            btnReviews.classList.remove('inactive');
+            btnReviews.classList.add('active');
+        }
+        if (btnStudents) {
+            btnStudents.classList.remove('active');
+            btnStudents.classList.add('inactive');
+        }
+    } else {
+        paneStudents.style.display = 'block';
+        paneReviews.style.display = 'none';
+        
+        if (btnStudents) {
+            btnStudents.classList.remove('inactive');
+            btnStudents.classList.add('active');
+        }
+        if (btnReviews) {
+            btnReviews.classList.remove('active');
+            btnReviews.classList.add('inactive');
+        }
+    }
+    
+    localStorage.setItem('adminActiveTab', tabName);
+}
+
+// Restore Tab on Page Load
+document.addEventListener('DOMContentLoaded', () => {
+    let savedTab = localStorage.getItem('adminActiveTab') || 'students';
+    if (window.location.hash === '#reviews') {
+        savedTab = 'reviews';
+    }
+    switchTab(savedTab);
+});
+</script>
+{% endblock %}

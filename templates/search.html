@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %}Search Colleges — MP BTech Lateral Entry{% endblock %}
+{% block title %}Search MP Engineering Colleges — Cutoffs, Fees & Details{% endblock %}
+{% block meta_description %}Search all government and private engineering colleges in Madhya Pradesh. View lateral entry cutoffs, available seat counts, estimated fee structures, and campus reviews.{% endblock %}
+{% block meta_keywords %}search MP colleges, MP BTech lateral entry seats, MP engineering college fees, DTE college list{% endblock %}
+{% block og_title %}Search MP Engineering Colleges — Cutoffs, Fees & Details{% endblock %}
+{% block og_description %}Find details of all Madhya Pradesh engineering colleges. Filter and search by name, view cutoffs, fees, and seat availability.{% endblock %}
+{% block twitter_title %}Search MP Engineering Colleges{% endblock %}
+{% block twitter_description %}Search details, cutoffs, and fees of all government and private engineering colleges in MP.{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -8,7 +14,7 @@
     <!-- ===== SEARCH HERO ===== -->
     <div class="search-hero">
         <h1><i class="fas fa-university"></i> Find Your College</h1>
-        <p>Search through all engineering colleges in MP and see their past cutoffs, seats, and more.</p>
+        <p>Search colleges by name — view cutoffs, seats, and <strong>approximate fees</strong> (where available). Fee figures are estimates; verify on college website.</p>
     </div>
 
     <!-- ===== SEARCH FORM ===== -->
@@ -73,6 +79,14 @@
                     <option value="2024" {% if data and data.year=='2024' %}selected{% endif %}>2024</option>
                 </select>
 
+                <!-- Placement Package Filter -->
+                <select name="min_package" class="filter-select" style="border-color: var(--saffron);">
+                    <option value="0">Any Placement Package</option>
+                    <option value="4" {% if data and data.min_package == 4.0 %}selected{% endif %}>4+ LPA Average</option>
+                    <option value="6" {% if data and data.min_package == 6.0 %}selected{% endif %}>6+ LPA Average</option>
+                    <option value="8" {% if data and data.min_package == 8.0 %}selected{% endif %}>8+ LPA Average</option>
+                </select>
+
             </div>
         </form>
     </div>
@@ -80,11 +94,17 @@
     <!-- ===== RESULTS ===== -->
     {% if data %}
     <div id="results">
-        <div class="prediction-box">
-            <i class="fas fa-info-circle"></i>
-            We found <strong>{{ colleges|length }}</strong>
-            matching results for "<strong>{{ data.q }}</strong>"
-            {% if data.year %} for year {{ data.year }}{% endif %}
+        <div class="prediction-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+                <i class="fas fa-info-circle"></i>
+                We found <strong>{{ colleges|length }}</strong>
+                matching results for "<strong>{{ data.q or 'All Filters' }}</strong>"
+                {% if data.year %} for year {{ data.year }}{% endif %}
+                {% if data.min_package > 0 %} with avg package &ge; {{ data.min_package }} LPA{% endif %}
+            </div>
+            <span style="font-size:0.75rem; color:var(--muted); background:#fff; padding:4px 10px; border-radius:6px; border:1px solid var(--border);">
+                *CS/IT branches usually get 20-30% higher package.
+            </span>
         </div>
 
         <div class="table-wrapper">
@@ -100,6 +120,9 @@
                         <th>Gender</th>
                         <th>MP Resident?</th>
                         <th>Seats</th>
+                        <th>Avg Package</th>
+                        <th>Highest Package</th>
+                        <th>Fee (approx)</th>
                         <th>Year</th>
                     </tr>
                 </thead>
@@ -108,7 +131,18 @@
                     <tr>
                         <td style="color:var(--muted);font-weight:700;width:40px;">{{ loop.index }}</td>
                         <td style="font-weight:600;color:var(--primary);">
-                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank" style="color:var(--primary);text-decoration:none;">{{ college.college_name }}</a>
+                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank" style="color:var(--primary);text-decoration:none; display:flex; flex-direction:column; gap:2px;">
+                                <span>{{ college.college_name }}</span>
+                                {% if college.placement %}
+                                    <span style="font-size:0.7rem; display:inline-flex; align-items:center; gap:4px; font-weight:normal;">
+                                        {% if college.placement.is_predicted %}
+                                            <span style="color:#2563EB;"><i class="fas fa-brain"></i> Estimated Placements</span>
+                                        {% else %}
+                                            <span style="color:#059669;"><i class="fas fa-check-circle"></i> Verified Brochure</span>
+                                        {% endif %}
+                                    </span>
+                                {% endif %}
+                            </a>
                         </td>
                         <td><span class="type-tag">{{ college.college_type }}</span></td>
                         <td>{{ college.branch | branch_name }} ({{ college.branch }})</td>
@@ -125,15 +159,30 @@
                         <td>{{ college.gender }}</td>
                         <td>{{ 'Yes (MP)' if college.domicile == 'Y' else 'No' }}</td>
                         <td>{{ college.total_seats }}</td>
+                        <td style="font-weight:700; color:var(--primary); font-family:monospace;">
+                            {% if college.placement %}
+                                {{ college.placement.average_package_lpa }} LPA
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td style="font-weight:700; color:#E11D48; font-family:monospace;">
+                            {% if college.placement %}
+                                {{ college.placement.highest_package_lpa }} LPA
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td style="font-size:0.78rem;">{{ college.fee_display or '—' }}{% if college.fee_approximate %}*{% endif %}</td>
                         <td>{{ college.year }}</td>
                     </tr>
                     {% endfor %}
 
                     {% if colleges | length == 0 %}
                     <tr class="no-results-row">
-                        <td colspan="10">
+                        <td colspan="13">
                             <i class="fas fa-search" style="margin-right:6px;opacity:0.4;"></i>
-                            No colleges found. Try a different search term or filters.
+                            No colleges found matching the selected search criteria or minimum package criteria.
                         </td>
                     </tr>
                     {% endif %}

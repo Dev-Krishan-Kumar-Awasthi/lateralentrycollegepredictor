@@ -88,6 +88,52 @@ class CgpaRankRange(db.Model):
 
 
 
+class User(db.Model):
+    __tablename__ = "User"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    password_hash = db.Column(db.String(256), nullable=False)
+    display_name = db.Column(db.String(120), nullable=True)
+    mobile_number = db.Column(db.String(15), nullable=True)
+    polytechnic_college = db.Column(db.String(255), nullable=True)
+    diploma_branch = db.Column(db.String(100), nullable=True)
+    cgpa = db.Column(db.Float, nullable=True)
+    category = db.Column(db.String(10), nullable=True)
+    gender = db.Column(db.String(10), nullable=True)
+    notify_counselling = db.Column(db.Integer, default=1)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+
+    shortlists = db.relationship("CloudShortlist", backref="user", lazy=True)
+
+
+class CloudShortlist(db.Model):
+    __tablename__ = "CloudShortlist"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=False)
+    name = db.Column(db.String(120), default="My Shortlist")
+    items_json = db.Column(db.Text, nullable=False, default="[]")
+    updated_at = db.Column(db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
+
+
+class CollegeReview(db.Model):
+    __tablename__ = "CollegeReview"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    college_name = db.Column(db.Text, nullable=False, index=True)
+    author_name = db.Column(db.String(80), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)  # 1-5
+    comment = db.Column(db.Text, nullable=False)
+    branch = db.Column(db.String(32), nullable=True)
+    is_approved = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+
+    __table_args__ = (
+        db.CheckConstraint("rating >= 1 AND rating <= 5", name="check_rating"),
+    )
+
+
 def model_to_dict(model):
     return {
         column.name: getattr(model, column.name)

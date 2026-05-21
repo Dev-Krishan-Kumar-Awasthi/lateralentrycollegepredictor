@@ -1,0 +1,73 @@
+{
+  "_note": "Fees from official college sites & verified listings (Collegedekho, Shiksha, LNCT PDF). Google Places provides website link only — not tuition.",
+  "_sources": ["sgsits.ac.in", "lnct.ac.in", "collegedekho.com", "shiksha.com", "dte.mp.gov.in"],
+  "defaults": {
+    "GOVT": {"tuition_min": 45000, "tuition_max": 120000, "hostel_approx": 20000},
+    "Private": {"tuition_min": 80000, "tuition_max": 150000, "hostel_approx": 45000},
+    "S.F.I.": {"tuition_min": 40000, "tuition_max": 90000, "hostel_approx": 25000}
+  },
+  "colleges": {
+    "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)": {
+      "tuition_min": 67000, "tuition_max": 268000, "hostel": 44400,
+      "tuition_display": "₹67,000 – ₹2,68,000/yr (branch-wise)",
+      "verified": true, "source": "sgsits.ac.in / Collegedekho 2025",
+      "type": "GOVT"
+    },
+    "Institute of Engineering and Technology, DAVV, Indore (1996)": {
+      "tuition_min": 55000, "tuition_max": 95000, "hostel": 35000,
+      "verified": true, "source": "davv.ac.in estimate",
+      "type": "GOVT"
+    },
+    "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)": {
+      "tuition": 75000, "hostel": 25000,
+      "verified": true, "source": "Govt MP engineering typical",
+      "type": "GOVT"
+    },
+    "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)": {
+      "tuition_min": 120000, "tuition_max": 180000, "hostel": 50000,
+      "verified": true, "source": "mitsgwalior.in / listings",
+      "type": "Private"
+    },
+    "University Institute of Technology RGPV, Bhopal (1986)": {
+      "tuition_min": 55000, "tuition_max": 90000, "hostel": 30000,
+      "verified": true, "source": "RGPV UIT Bhopal",
+      "type": "GOVT"
+    },
+    "Lakshmi Narain College of Technology, Bhopal (1994)": {
+      "tuition_min": 100000, "tuition_max": 137100, "hostel": 50000,
+      "tuition_display": "₹1,00,000 – ₹1,37,100/yr",
+      "verified": true, "source": "lnct.ac.in fee PDF 2024-25",
+      "type": "Private"
+    },
+    "Acropolis Institute of Technology & Research, Indore (2005)": {
+      "tuition_min": 95000, "tuition_max": 130000, "hostel": 48000,
+      "verified": false, "source": "Private Indore avg",
+      "type": "Private"
+    },
+    "Oriental Institute of Science & Technology, Bhopal (1995)": {
+      "tuition_min": 90000, "tuition_max": 120000, "hostel": 42000,
+      "verified": false, "source": "Private Bhopal avg",
+      "type": "Private"
+    },
+    "Samrat Ashok Technological Institute, Vidisha (1960)": {
+      "tuition": 65000, "hostel": 15000,
+      "verified": true, "source": "Govt institute",
+      "type": "GOVT"
+    },
+    "IPS Academy, Institute of Engineering and Science, Indore (1999)": {
+      "tuition_min": 100000, "tuition_max": 140000, "hostel": 52000,
+      "verified": false, "source": "ipsacademy.org listings",
+      "type": "Private"
+    },
+    "Rewa Engineering College, Rewa (REC) (1964)": {
+      "tuition": 60000, "hostel": 12000,
+      "verified": true, "source": "Govt REC",
+      "type": "GOVT"
+    },
+    "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)": {
+      "tuition": 65000, "hostel": 15000,
+      "verified": true, "source": "Govt UEC",
+      "type": "GOVT"
+    }
+  }
+}

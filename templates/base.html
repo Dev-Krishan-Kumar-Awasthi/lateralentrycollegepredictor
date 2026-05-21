@@ -4,28 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="MP BTech Lateral Entry College Predictor — Predict colleges, estimate rank, and explore engineering colleges across Madhya Pradesh using official DTE counselling data.">
-    <meta name="keywords"
-        content="MP DTE Lateral Entry, BTech Lateral Entry, College Predictor, Diploma to BTech, MP Engineering Counselling">
-    <title>{% block title %}MP BTech Lateral Entry College Predictor{% endblock %}</title>
 
-    <!-- Open Graph / Social Media -->
+    <!-- ═══ Primary SEO Meta Tags ═══ -->
+    <title>{% block title %}MP BTech Lateral Entry College Predictor 2025 — DTE MP Counselling Guide{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}MP DTE BTech Lateral Entry College Predictor 2025-26. Predict your engineering college in Madhya Pradesh using official DTE cutoff data. Check admission chances, compare colleges, explore branch-wise cutoffs for Diploma holders. Best tools for LTBE college predictor, polytechnic to b.tech college, mp dte lateral entry college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree admission.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}MP DTE lateral entry, BTech lateral entry Madhya Pradesh, diploma to BTech MP, MP engineering college predictor 2025, DTE counselling MP, lateral entry college cutoff, MP polytechnic to BTech, LEET MP, engineering admission MP, LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling{% endblock %}">
+    <meta name="author" content="MP Polytechnic Lateral Entry Predictor">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+
+    <!-- ═══ Canonical URL (prevents duplicate content penalty) ═══ -->
+    <link rel="canonical" href="https://{{ request.host }}{{ request.path }}">
+
+    <!-- ═══ Open Graph / Facebook / WhatsApp ═══ -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://{{ request.host }}">
-    <meta property="og:title" content="MP BTech Lateral Entry College Predictor 2025">
-    <meta property="og:description" content="Predict your future engineering college in MP! Get accurate college estimations based on official DTE cutoff data.">
+    <meta property="og:site_name" content="MP Lateral Entry College Predictor">
+    <meta property="og:url" content="https://{{ request.host }}{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}MP BTech Lateral Entry College Predictor 2025 — DTE MP{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Predict your engineering college in MP! Get accurate college estimations based on official DTE MP cutoff data for Diploma holders.{% endblock %}">
     <meta property="og:image" content="{{ url_for('static', filename='favicon.png', _external=True) }}">
+    <meta property="og:locale" content="en_IN">
 
-    <!-- Twitter Meta -->
+    <!-- ═══ Twitter / X Card ═══ -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MP BTech Lateral Entry College Predictor">
-    <meta name="twitter:description" content="Find the best engineering colleges in Madhya Pradesh based on your rank.">
+    <meta name="twitter:title" content="{% block twitter_title %}MP BTech Lateral Entry College Predictor 2025{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Find the best engineering colleges in Madhya Pradesh for Diploma holders based on official DTE MP rank data.{% endblock %}">
     <meta name="twitter:image" content="{{ url_for('static', filename='favicon.png', _external=True) }}">
+
+    <!-- ═══ JSON-LD Structured Data (Rich Results in Google) ═══ -->
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "MP BTech Lateral Entry College Predictor",
+      "url": "https://{{ request.host }}",
+      "description": "Official DTE MP Lateral Entry College Predictor for Diploma holders seeking BTech admission in Madhya Pradesh.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://{{ request.host }}/predictor?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% endblock %}
 
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1.3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Lenis smooth scroll -->
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -34,21 +63,33 @@
 <body>
 
     <header class="gov-header">
-        <div class="header-content">
-            <div class="emblem-placeholder">
-                <div class="circle">🎓</div>
+        <a href="/" style="text-decoration: none; color: inherit; display: block;">
+            <div class="header-content">
+                <div class="emblem-placeholder">
+                    <div class="circle">🎓</div>
+                </div>
+                <div class="title-section">
+                    <h1>MP DTE Lateral Entry College Predictor</h1>
+                    <h2>Diploma to B.Tech Counselling | Madhya Pradesh 2025-26</h2>
+                </div>
             </div>
-            <div class="title-section">
-                <h1>MP DTE Lateral Entry College Predictor</h1>
-                <h2>Diploma to B.Tech Counselling | Madhya Pradesh 2025-26</h2>
-            </div>
-        </div>
+        </a>
         <div class="header-strip"></div>
+        <div class="data-freshness-bar">
+            <i class="fas fa-database"></i>
+            Official DTE data: <strong>{{ data_years | join(' & ') }}</strong>
+            &nbsp;|&nbsp; Last updated: <strong>{{ data_last_updated }}</strong>
+        </div>
     </header>
 
     <!-- ===== NAVBAR with active page highlight ===== -->
     <nav class="gov-nav">
         <div class="nav-inner">
+            <!-- Mobile Brand Logo & Title -->
+            <div class="nav-brand-mobile">
+                <span class="brand-emoji">🎓</span>
+                <span class="brand-text">MP DTE Predictor</span>
+            </div>
             <!-- Hamburger for mobile -->
             <button class="nav-hamburger" id="nav-toggle" aria-label="Open menu">
                 <span></span><span></span><span></span>
@@ -70,6 +111,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/choice-builder" class="{% if request.endpoint == 'choice_builder' %}nav-active{% endif %}">
+                        <i class="fas fa-magic"></i> Smart Choices
+                    </a>
+                </li>
+                <li>
                     <a href="/recommendation-list" class="{% if request.endpoint == 'recommendation_list' %}nav-active{% endif %}">
                         <i class="fas fa-list-ol"></i> Recommendation List
                     </a>
@@ -80,9 +126,8 @@
                     </a>
                 </li>
                 
-                <!-- GORGEOUS MORE UTILITIES DROPDOWN -->
                 <li class="nav-dropdown-item">
-                    <a href="javascript:void(0)" class="dropdown-trigger {% if request.endpoint in ['rank', 'about', 'how_it_works', 'faq', 'contact'] %}nav-active{% endif %}">
+                    <a href="javascript:void(0)" class="dropdown-trigger {% if request.endpoint in ['rank', 'about', 'how_it_works', 'faq', 'contact', 'account_page', 'api_docs'] %}nav-active{% endif %}">
                         <i class="fas fa-ellipsis-h"></i> More <i class="fas fa-chevron-down" style="margin-left: 4px; font-size: 0.75rem;"></i>
                     </a>
                     <ul class="nav-dropdown">
@@ -107,6 +152,18 @@
                             </a>
                         </li>
                         <li>
+                            <a href="/account" class="{% if request.endpoint == 'account_page' %}dropdown-active{% endif %}">
+                                <i class="fas fa-user-circle"></i> My Account
+                            </a>
+                        </li>
+                        {% if is_admin %}
+                        <li>
+                            <a href="/admin/users" class="{% if request.endpoint == 'admin_users' %}dropdown-active{% endif %}">
+                                <i class="fas fa-user-cog"></i> Admin Panel
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li>
                             <a href="/contact" class="{% if request.endpoint == 'contact' %}dropdown-active{% endif %}">
                                 <i class="fas fa-headset"></i> Contact
                             </a>
@@ -116,23 +173,6 @@
             </ul>
         </div>
     </nav>
-
-    <script>
-    // Hamburger toggle
-    document.getElementById('nav-toggle').addEventListener('click', function() {
-        var menu = document.getElementById('nav-menu');
-        var btn  = document.getElementById('nav-toggle');
-        menu.classList.toggle('nav-open');
-        btn.classList.toggle('nav-btn-open');
-    });
-    // Close menu when a link is clicked
-    document.querySelectorAll('#nav-menu a').forEach(function(link) {
-        link.addEventListener('click', function() {
-            document.getElementById('nav-menu').classList.remove('nav-open');
-            document.getElementById('nav-toggle').classList.remove('nav-btn-open');
-        });
-    });
-    </script>
 
     <!-- ===== PAGE CONTENT ===== -->
     <main>
@@ -174,11 +214,13 @@
         </p>
     </footer>
 
-    <!-- PRO POLISH: Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">
         <div class="loader-spinner"></div>
-        <div class="loading-text">Analyzing Colleges...</div>
+        <div class="loading-text">Please wait...</div>
     </div>
+
+    <!-- Toast Container for premium alert experience -->
+    <div id="mp-toast-container" class="toast-container"></div>
 
     <!-- Scroll to top button -->
     <button id="scroll-top-btn" aria-label="Scroll to top" title="Back to top">
@@ -186,6 +228,21 @@
     </button>
 
     <script>
+    // 0. Toast Notification Helper
+    window.showToast = function(message, type = 'success') {
+        const container = document.getElementById('mp-toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = `mp-toast toast-${type} animate-slide-in`;
+        const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+        toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('animate-fade-out');
+            setTimeout(() => toast.remove(), 450);
+        }, 3500);
+    };
+
     // ── Global App Logic ──────────────────────────────────────────
 
     // 1. Mobile Nav Toggle
@@ -197,6 +254,16 @@
                 e.stopPropagation();
                 toggle.classList.toggle('nav-btn-open');
                 menu.classList.toggle('nav-open');
+            });
+            document.querySelectorAll('.dropdown-trigger').forEach(function(el) {
+                el.addEventListener('click', function(e) { e.stopPropagation(); });
+            });
+            document.querySelectorAll('#nav-menu a[href]').forEach(function(link) {
+                if (link.getAttribute('href').indexOf('javascript') === 0) return;
+                link.addEventListener('click', function() {
+                    toggle.classList.remove('nav-btn-open');
+                    menu.classList.remove('nav-open');
+                });
             });
             document.addEventListener('click', function() {
                 toggle.classList.remove('nav-btn-open');
@@ -257,5 +324,9 @@
     // gtag('js', new Date());
     // gtag('config', 'G-XXXXXXXXXX');
     </script>
+    <script src="{{ url_for('static', filename='js/dte-export.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/share-utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

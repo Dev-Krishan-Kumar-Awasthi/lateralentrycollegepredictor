@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}DTE Counselling Document Checklist — MP DTE Predictor{% endblock %}
+{% block meta_description %}Your personalized dynamic document verification checklist for MP DTE BTech Lateral Entry counselling 2025. Track and verify mandatory, category, and gender-specific documents.{% endblock %}
+{% block meta_keywords %}DTE MP document checklist, polytechnic lateral entry verification documents, MP engineering admission checklist{% endblock %}
+{% block og_title %}DTE Counselling Document Checklist — MP DTE Predictor{% endblock %}
+{% block og_description %}Get your personalized document verification list. Track mandatory, caste, and income certificates using local state storage persistence.{% endblock %}
+{% block twitter_title %}DTE Counselling Document Checklist{% endblock %}
+{% block twitter_description %}Get your personalized document checklist for MP BTech Lateral Entry counselling.{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 30px auto;">
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 20px; font-size: 0.9rem;">
+        <a href="/account" style="color: var(--primary); text-decoration: none; font-weight: 600;"><i class="fas fa-chevron-left"></i> Back to Account Dashboard</a>
+    </div>
+
+    <!-- Header Section -->
+    <div class="gov-box" style="border-top: 4px solid var(--primary); margin-bottom: 24px; padding: 24px; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <h2 style="color: var(--primary); margin: 0 0 10px 0; font-size: 1.6rem; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-file-invoice" style="color: var(--saffron);"></i>
+            Personalized Document Checklist
+        </h2>
+        <p style="color: var(--muted); margin: 0; font-size: 0.95rem; line-height: 1.5;">
+            Below is the list of document verification requirements for DTE MP Lateral Entry admissions. Based on your profile (Category: <strong>{{ user.category }}</strong>, Gender: <strong>{{ user.gender }}</strong>), we have customized the documents you must keep ready.
+        </p>
+    </div>
+
+    <!-- Interactive Progress Bar -->
+    <div class="gov-box" style="margin-bottom: 24px; padding: 18px; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; color: #3730A3; font-size: 0.95rem;"><i class="fas fa-tasks"></i> Compilation Progress</span>
+            <span id="progress-text" style="font-weight: 800; color: #3730A3; font-size: 0.95rem;">0% Completed</span>
+        </div>
+        <div style="width: 100%; height: 8px; background: #E0E7FF; border-radius: 4px; overflow: hidden;">
+            <div id="progress-bar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.3s ease;"></div>
+        </div>
+    </div>
+
+    <!-- Documents List -->
+    <div class="gov-box" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <!-- Section 1: Mandatories -->
+        <h3 style="color: var(--primary); font-size: 1.15rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-top: 0; margin-bottom: 16px;">
+            <i class="fas fa-star" style="color: var(--saffron);"></i> Core Mandatory Documents (For All Students)
+        </h3>
+        
+        <div class="checklist-item-wrapper" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px;">
+            
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="10th_marksheet" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">10th Class Marksheet</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">For Proof of Date of Birth (DoB) and Father's/Mother's name verification.</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="diploma_marksheet" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">Diploma Semester Marksheets (All Semesters)</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">All marks sheets of 1st to 6th semesters (or till 5th semester if 6th semester result is currently awaited).</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="tc_migration" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">Transfer (TC) & Migration Certificate</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">Issued by your previous Polytechnic / Technical Board institution. Mandatory for college registration.</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="domicile" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">Madhya Pradesh Domicile Certificate (M.P. Mool Niwasi)</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">Crucial for securing state pool seats (90% quota) and claiming category benefits.</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="dte_slip" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">DTE Counselling Registration Slip & Lock Printout</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">The registration fee receipt and final locked choice filling form printout downloaded from the DTE portal.</span>
+                </div>
+            </label>
+        </div>
+
+        <!-- Section 2: Category Specific Check -->
+        {% if user.category in ["OBC", "SC", "ST"] %}
+        <h3 style="color: var(--primary); font-size: 1.15rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 16px;">
+            <i class="fas fa-id-card" style="color: #4F46E5;"></i> Category Specific Reservation Documents (OBC/SC/ST)
+        </h3>
+        
+        <div class="checklist-item-wrapper" style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px;">
+            
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #FFFBEB; border: 1px solid #FDE68A; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="caste_cert" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: #92400E; display: block; font-size: 0.95rem;">Digital Caste Certificate (OBC / SC / ST)</strong>
+                    <span style="color: #B45309; font-size: 0.85rem;">Digital Caste Certificate issued by competent M.P. Revenue Authorities containing verifiable Lok Seva Kendra details.</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #FFFBEB; border: 1px solid #FDE68A; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="income_cert" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: #92400E; display: block; font-size: 0.95rem;">Family Income Certificate</strong>
+                    <span style="color: #B45309; font-size: 0.85rem;">Mandatory to claim Post-Matric Scholarship or Fee Waiver benefits. OBC candidates must present this to verify Non-Creamy Layer (NCL) status.</span>
+                </div>
+            </label>
+        </div>
+        {% endif %}
+
+        <!-- Section 3: Recommended / Extra -->
+        <h3 style="color: var(--primary); font-size: 1.15rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; margin-bottom: 16px;">
+            <i class="fas fa-info-circle" style="color: var(--primary);"></i> Recommended Checklist Items
+        </h3>
+        
+        <div class="checklist-item-wrapper" style="display: flex; flex-direction: column; gap: 14px;">
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="aadhaar_samagra" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">Aadhaar Card & Samagra ID (M.P.)</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">For linking profile identity, bank details and claiming M.P. scholarship portal profiles.</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="passbook" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">Bank Passbook copy (linked with Aadhaar)</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">Bank account passbook copy in the student's name, used to receive direct tuition payouts or scholarship reimbursements.</span>
+                </div>
+            </label>
+
+            <label class="check-container" style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; padding: 10px; border-radius: 6px; background: #F8FAFC; border: 1px solid #F1F5F9; transition: background 0.2s;">
+                <input type="checkbox" class="doc-checkbox" data-id="photos" style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;">
+                <div>
+                    <strong style="color: var(--primary); display: block; font-size: 0.95rem;">Recent Passport-size Photos (4-6 copies)</strong>
+                    <span style="color: var(--muted); font-size: 0.85rem;">Keep printed physical photographs ready for student registration and hostel forms.</span>
+                </div>
+            </label>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll(".doc-checkbox");
+    const progressText = document.getElementById("progress-text");
+    const progressBar = document.getElementById("progress-bar");
+    const userEmail = "{{ user.email }}";
+    const storageKey = `mp_dte_checklist_${userEmail}`;
+
+    // Load saved checklist state from LocalStorage
+    let savedState = {};
+    try {
+        const stored = localStorage.getItem(storageKey);
+        if (stored) {
+            savedState = JSON.parse(stored);
+        }
+    } catch (e) {
+        console.error("Failed to load local storage checklist state", e);
+    }
+
+    // Apply saved state and add change listeners
+    checkboxes.forEach(function (cb) {
+        const docId = cb.getAttribute("data-id");
+        if (savedState[docId] === true) {
+            cb.checked = true;
+            cb.parentElement.style.background = "#F0FDF4"; // Highlight checked items in light green
+            cb.parentElement.style.borderColor = "#BBF7D0";
+        }
+
+        cb.addEventListener("change", function () {
+            const isChecked = cb.checked;
+            savedState[docId] = isChecked;
+            
+            // Save updated state to local storage
+            localStorage.setItem(storageKey, JSON.stringify(savedState));
+            
+            // Adjust item card background feedback dynamically
+            if (isChecked) {
+                cb.parentElement.style.background = "#F0FDF4";
+                cb.parentElement.style.borderColor = "#BBF7D0";
+            } else {
+                const defaultBg = cb.getAttribute("data-id") === "caste_cert" || cb.getAttribute("data-id") === "income_cert" ? "#FFFBEB" : "#F8FAFC";
+                const defaultBorder = cb.getAttribute("data-id") === "caste_cert" || cb.getAttribute("data-id") === "income_cert" ? "#FDE68A" : "#F1F5F9";
+                cb.parentElement.style.background = defaultBg;
+                cb.parentElement.style.borderColor = defaultBorder;
+            }
+            
+            updateProgress();
+        });
+    });
+
+    // Update progress calculator metrics
+    function updateProgress() {
+        const total = checkboxes.length;
+        if (total === 0) return;
+        
+        let checkedCount = 0;
+        checkboxes.forEach(function (cb) {
+            if (cb.checked) {
+                checkedCount++;
+            }
+        });
+
+        const percent = Math.round((checkedCount / total) * 100);
+        progressText.innerText = `${percent}% Completed (${checkedCount}/${total} Compiled)`;
+        progressBar.style.width = `${percent}%`;
+    }
+
+    // Initial progress computation
+    updateProgress();
+});
+</script>
+{% endblock %}

@@ -1,178 +1,352 @@
 {% extends 'base.html' %}
+{% block title %}FAQ — MP DTE B.Tech Lateral Entry 2025 | 40+ Questions Answered{% endblock %}
+{% block meta_description %}Get answers to 40+ frequently asked questions about MP DTE B.Tech lateral entry 2025 — CGPA requirements, top college cutoffs (SGSITS, JEC, IET DAVV, RGPV), domicile rules, OBC/SC/ST reservation, counselling process, documents, branch change, fees, and placement scope.{% endblock %}
+{% block meta_keywords %}MP DTE lateral entry FAQ 2025, BTech lateral entry questions MP, CGPA required lateral entry, SGSITS cutoff lateral entry, JEC Jabalpur lateral entry, lateral entry counselling MP, diploma to degree MP, polytechnic to BTech MP, OBC SC ST reservation lateral entry, lateral entry documents required, branch change lateral entry{% endblock %}
+{% block og_title %}FAQ — MP DTE B.Tech Lateral Entry 2025 | 40+ Questions Answered{% endblock %}
+{% block og_description %}Answers to 40+ common questions about MP DTE B.Tech Lateral Entry — CGPA requirements, top college cutoffs, domicile rules, reservation, counselling process and more.{% endblock %}
 
-{% block title %}Frequently Asked Questions — MP DTE College Predictor{% endblock %}
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for faq in all_faqs[:10] %}
+    {
+      "@type": "Question",
+      "name": {{ faq.question | tojson }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ faq.answer | striptags | truncate(300) | tojson }}
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
-<div class="container" style="max-width: 900px;">
-    <div class="gov-box">
-        <h1 style="color:var(--primary); font-size:1.8rem; margin-bottom:10px;">
-            <i class="fas fa-question-circle" style="margin-right:10px;"></i> Frequently Asked Questions (FAQ)
+<div class="container faq-dir-wrap">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="faq-dir-hero gov-box">
+    <div class="faq-hero-inner">
+      <div>
+        <h1 class="faq-dir-h1">
+          <i class="fas fa-question-circle" style="color:var(--saffron);"></i>
+          MP B.Tech Lateral Entry — FAQ
         </h1>
-        <p class="subtitle" style="margin-bottom:30px;">
-            Counselling aur admission se jude sabse aam sawaalon ke jawab yahan payein.
+        <p class="faq-dir-subtitle">
+          40+ questions answered about CGPA requirements, college cutoffs, domicile rules,
+          counselling process, documents, and placement scope.
         </p>
-
-        <div class="faq-container">
-            <!-- Category: Predictor Usage -->
-            <div class="faq-section">
-                <h3 class="faq-cat-title"><i class="fas fa-tools"></i> Predictor Tools</h3>
-                
-                <div class="faq-item">
-                    <button class="faq-question">Predictor Results kitne accurate hain?</button>
-                    <div class="faq-answer">
-                        <p>Hamaara predictor 2024 aur 2025 ke <strong>Official DTE MP Cutoff Data</strong> par aadharit hai. Halanki ye 95%+ accurate trends dikhata hai, lekin har saal cutoff thoda upar-neeche ho sakta hai. Isliye ise ek guideline ki tarah use karein.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">Multiple branches select karne ka kya fayda hai?</button>
-                    <div class="faq-answer">
-                        <p>Multiple branches select karne se aapko un sabhi branches mein milne wale colleges ki list ek saath mil jati hai. Isse aapko counselling choice filling list banane mein asani hoti hai.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Category: Counselling Rules -->
-            <div class="faq-section">
-                <h3 class="faq-cat-title"><i class="fas fa-gavel"></i> Counselling Rules</h3>
-                
-                <div class="faq-item">
-                    <button class="faq-question">TFW (Tuition Fee Waiver) seat kya hoti hai?</button>
-                    <div class="faq-answer">
-                        <p>TFW seats par tuition fee maaf hoti hai. Ye seats sirf un students ko milti hain jinki family income 8 Lakh se kam ho (Income Certificate zaroori hai). <strong>Note:</strong> Lateral Entry mein TFW seats ka rule alag ho sakta hai, kripya official notification check karein.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">Kya main Diploma ke baad branch badal sakta hoon?</button>
-                    <div class="faq-answer">
-                        <p>Haan! MP DTE Lateral Entry ke rules ke mutabik, Diploma holders <strong>kisi bhi branch</strong> mein Engineering kar sakte hain. Example: Civil Diploma ke baad Computer Science (CSE) liya ja sakta hai.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">EWS (Economically Weaker Section) quota kya hai?</button>
-                    <div class="faq-answer">
-                        <p>General category ke students jinki family income kam hai, unhe 10% seat reservation milta hai. Iske liye "EWS Certificate" hona anivarya hai.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Category: Results & Admission -->
-            <div class="faq-section">
-                <h3 class="faq-cat-title"><i class="fas fa-university"></i> Admission Process</h3>
-                
-                <div class="faq-item">
-                    <button class="faq-question">Round 1 aur Round 2 mein kya antar hai?</button>
-                    <div class="faq-answer">
-                        <p>Round 1 main round hota hai. Round 2 un bachi hui seats ke liye hota hai jo Round 1 ke baad khaali reh jati hain. Round 2 mein aksar cutoffs thode high ho jate hain kyunki seats kam bachti hain.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <button class="faq-question">CLC (College Level Counselling) kya hoti hai?</button>
-                    <div class="faq-answer">
-                        <p>Ye sabse aakhri round hota hai jo direct college mein jaakar hota hai. Ismein "First Come, First Served" ya Merit ke aadhar par spot admission milta hai.</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Search box -->
+        <div class="faq-search-wrap">
+          <i class="fas fa-search faq-search-icon"></i>
+          <input id="faqSearchInput" type="text" class="faq-search-input"
+                 placeholder="Search questions… e.g. SGSITS, CGPA, OBC, CLC, documents"
+                 autocomplete="off">
+          <button class="faq-search-clear" id="faqClearBtn" style="display:none"
+                  onclick="clearFaqSearch()">✕</button>
         </div>
-
-        <div class="faq-footer" style="margin-top:40px; text-align:center; padding-top:20px; border-top:1px solid var(--border);">
-            <p>Aapka sawaal yahan nahi mila? <a href="/contact" style="color:var(--secondary); font-weight:700;">Humein Contact Karein</a></p>
+      </div>
+      <div class="faq-hero-stats">
+        <div class="faq-stat-pill">
+          <span class="faq-stat-n">{{ all_faqs | length }}+</span>
+          <span class="faq-stat-l">Questions</span>
         </div>
+        <div class="faq-stat-pill">
+          <span class="faq-stat-n">{{ categories | length }}</span>
+          <span class="faq-stat-l">Topics</span>
+        </div>
+        <div class="faq-stat-pill">
+          <span class="faq-stat-n">2025</span>
+          <span class="faq-stat-l">Updated</span>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+
+  <!-- ── Category tabs ─────────────────────────────────────────────────── -->
+  <div class="faq-tabs-row" id="faqTabs">
+    <button class="faq-tab active" data-cat="all" onclick="filterCat(this,'all')">All Topics</button>
+    {% for cat in categories %}
+    <button class="faq-tab" data-cat="{{ cat }}" onclick="filterCat(this,'{{ cat }}')">{{ cat }}</button>
+    {% endfor %}
+  </div>
+
+  <!-- ── No results message ──────────────────────────────────────────── -->
+  <div id="faqNoResults" style="display:none; text-align:center; padding:40px 0; color:#94A3B8;">
+    <i class="fas fa-search" style="font-size:2rem; margin-bottom:12px; display:block;"></i>
+    No questions matched your search. Try different keywords.
+  </div>
+
+  <!-- ── FAQ Cards Grid ────────────────────────────────────────────────── -->
+  {% for cat in categories %}
+  <div class="faq-cat-section" id="{{ cat | replace(' ', '-') | lower }}" data-category="{{ cat }}">
+    <div class="faq-cat-header">
+      <span class="faq-cat-icon">
+        {% if cat == 'CGPA & Eligibility' %}<i class="fas fa-graduation-cap"></i>
+        {% elif cat == 'Top College Cutoffs' %}<i class="fas fa-university"></i>
+        {% elif cat == 'Domicile & Reservation' %}<i class="fas fa-id-card"></i>
+        {% elif cat == 'Counselling Process' %}<i class="fas fa-tasks"></i>
+        {% elif cat == 'Documents Required' %}<i class="fas fa-file-alt"></i>
+        {% elif cat == 'Branch Change' %}<i class="fas fa-code-branch"></i>
+        {% elif cat == 'College Comparison' %}<i class="fas fa-balance-scale"></i>
+        {% elif cat == 'Fees & Scholarships' %}<i class="fas fa-rupee-sign"></i>
+        {% elif cat == 'After Admission' %}<i class="fas fa-briefcase"></i>
+        {% else %}<i class="fas fa-question"></i>{% endif %}
+      </span>
+      <h2 class="faq-cat-title">{{ cat }}</h2>
+      <span class="faq-cat-count">{{ faqs_by_cat[cat] | length }} questions</span>
+    </div>
+
+    <div class="faq-cards-grid">
+      {% for faq in faqs_by_cat[cat] %}
+      <a class="faq-card" href="/faq/{{ faq.slug }}"
+         data-question="{{ faq.question | lower }}"
+         data-keywords="{{ faq.keywords | lower }}"
+         data-cat="{{ cat }}">
+        <div class="faq-card-inner">
+          <p class="faq-card-q">{{ faq.question }}</p>
+          <p class="faq-card-preview">{{ faq.description | truncate(110) }}</p>
+        </div>
+        <div class="faq-card-footer">
+          <span class="faq-card-tag">{{ cat }}</span>
+          <span class="faq-card-link">Read answer <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- ── CTA Banner ────────────────────────────────────────────────────── -->
+  <div class="faq-bottom-cta">
+    <div>
+      <strong>🎓 Still confused? Use our free tools!</strong>
+      <span style="display:block;font-size:0.88rem;opacity:0.9;margin-top:4px;">
+        Predict colleges, compare them, and build your choice list — all in one place.
+      </span>
+    </div>
+    <div class="faq-cta-btns">
+      <a href="/predictor" class="btn-cta-white"><i class="fas fa-search"></i> Predict Colleges</a>
+      <a href="/choice-builder" class="btn-cta-outline"><i class="fas fa-magic"></i> Build Choice List</a>
+    </div>
+  </div>
+
+</div><!-- /container -->
 
 <style>
-.faq-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+/* ── Layout ─────────────────────────────────────────────────────────── */
+.faq-dir-wrap { max-width: 1140px; padding-top: 10px; }
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+.faq-dir-hero { padding: 28px 32px; margin-bottom: 22px; }
+.faq-hero-inner {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 24px; flex-wrap: wrap;
+}
+.faq-dir-h1 {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem); font-weight: 800;
+  color: var(--primary); margin: 0 0 8px; display: flex; align-items: center; gap: 10px;
+}
+.faq-dir-subtitle {
+  font-size: 0.92rem; color: #475569; margin: 0 0 18px; max-width: 620px; line-height: 1.55;
+}
+
+/* Search box */
+.faq-search-wrap {
+  position: relative; max-width: 520px;
+}
+.faq-search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: #94A3B8; font-size: 0.9rem;
+}
+.faq-search-input {
+  width: 100%; padding: 12px 42px 12px 38px; border-radius: 10px;
+  border: 2px solid var(--border); font-size: 0.92rem; outline: none;
+  background: #F8FAFC; transition: border 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.faq-search-input:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  background: #fff;
+}
+.faq-search-clear {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; color: #94A3B8;
+  font-size: 1rem; padding: 4px;
+}
+
+/* Hero stats */
+.faq-hero-stats {
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-start;
+}
+.faq-stat-pill {
+  display: flex; flex-direction: column; align-items: center;
+  background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
+  border-radius: 12px; padding: 14px 20px; min-width: 72px; color: #fff;
+}
+.faq-stat-n { font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.faq-stat-l { font-size: 0.68rem; opacity: 0.8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Tabs ───────────────────────────────────────────────────────────── */
+.faq-tabs-row {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px;
+}
+.faq-tab {
+  padding: 7px 16px; border-radius: 20px; border: 2px solid var(--border);
+  background: #fff; font-size: 0.8rem; font-weight: 600; color: #475569;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.faq-tab:hover { border-color: var(--secondary); color: var(--secondary); }
+.faq-tab.active {
+  background: var(--secondary); border-color: var(--secondary);
+  color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+}
+
+/* ── Category section ──────────────────────────────────────────────── */
+.faq-cat-section { margin-bottom: 38px; }
+.faq-cat-header {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 2px solid var(--border);
+}
+.faq-cat-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), #F97316);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.95rem; flex-shrink: 0;
 }
 .faq-cat-title {
-    font-size: 1.1rem;
-    color: var(--text);
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  font-size: 1.1rem; font-weight: 800; color: var(--primary); margin: 0; flex: 1;
 }
-.faq-item {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 10px;
-    overflow: hidden;
-    background: #fff;
-    transition: all 0.3s ease;
+.faq-cat-count {
+  font-size: 0.75rem; font-weight: 700; background: #F1F5F9;
+  color: #64748B; border-radius: 12px; padding: 3px 10px;
 }
-.faq-item:hover {
-    border-color: var(--primary);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+/* ── Card grid ──────────────────────────────────────────────────────── */
+.faq-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 16px;
 }
-.faq-question {
-    width: 100%;
-    padding: 18px 20px;
-    background: none;
-    border: none;
-    text-align: left;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--primary);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.2s;
+.faq-card {
+  display: flex; flex-direction: column; justify-content: space-between;
+  background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 18px 20px; text-decoration: none; color: inherit;
+  transition: all 0.22s; box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  cursor: pointer;
 }
-.faq-question::after {
-    content: '\f078';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    font-size: 0.8rem;
-    transition: transform 0.3s;
+.faq-card:hover {
+  border-color: var(--secondary); box-shadow: 0 6px 20px rgba(37,99,235,0.1);
+  transform: translateY(-2px);
 }
-.faq-item.active .faq-question::after {
-    transform: rotate(180deg);
+.faq-card.hidden { display: none !important; }
+.faq-card-inner { flex: 1; }
+.faq-card-q {
+  font-size: 0.9rem; font-weight: 700; color: var(--primary);
+  line-height: 1.45; margin: 0 0 8px;
 }
-.faq-item.active .faq-question {
-    background: #f0f7ff;
+.faq-card-preview {
+  font-size: 0.8rem; color: #64748B; line-height: 1.5; margin: 0;
 }
-.faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out, padding 0.3s ease;
-    background: #fff;
+.faq-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 14px; padding-top: 10px; border-top: 1px solid #F1F5F9;
 }
-.faq-item.active .faq-answer {
-    max-height: 500px;
-    padding: 20px;
-    border-top: 1px solid var(--border);
+.faq-card-tag {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.4px; color: var(--saffron); background: #FFFBEB;
+  padding: 2px 8px; border-radius: 10px;
 }
-.faq-answer p {
-    margin: 0;
-    font-size: 0.92rem;
-    color: #475569;
-    line-height: 1.6;
+.faq-card-link {
+  font-size: 0.78rem; font-weight: 700; color: var(--secondary);
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* ── Bottom CTA ─────────────────────────────────────────────────────── */
+.faq-bottom-cta {
+  background: linear-gradient(135deg, var(--primary) 0%, #1E40AF 100%);
+  border-radius: 16px; padding: 28px 32px; margin-top: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 20px; flex-wrap: wrap; color: #fff;
+}
+.faq-cta-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-cta-white {
+  background: #fff; color: var(--primary); border-radius: 8px;
+  padding: 10px 20px; font-weight: 800; font-size: 0.87rem;
+  text-decoration: none; display: flex; align-items: center; gap: 7px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.btn-cta-white:hover { background: #F0F7FF; }
+.btn-cta-outline {
+  border: 2px solid rgba(255,255,255,0.5); color: #fff; border-radius: 8px;
+  padding: 10px 20px; font-weight: 800; font-size: 0.87rem;
+  text-decoration: none; display: flex; align-items: center; gap: 7px;
+  transition: all 0.2s; white-space: nowrap;
+}
+.btn-cta-outline:hover { background: rgba(255,255,255,0.12); border-color: #fff; }
+@media (max-width: 600px) {
+  .faq-bottom-cta { text-align: center; flex-direction: column; }
+  .faq-cta-btns { justify-content: center; }
+  .faq-dir-hero { padding: 20px 16px; }
 }
 </style>
 
 <script>
-document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const item = btn.parentElement;
-        const isActive = item.classList.contains('active');
-        
-        // Close all other items
-        document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
-        
-        // Toggle current item
-        if (!isActive) {
-            item.classList.add('active');
-        }
-    });
+const allCards = document.querySelectorAll('.faq-card');
+const allSections = document.querySelectorAll('.faq-cat-section');
+const noResults = document.getElementById('faqNoResults');
+const searchInput = document.getElementById('faqSearchInput');
+const clearBtn = document.getElementById('faqClearBtn');
+let currentCat = 'all';
+
+function filterCat(btn, cat) {
+  document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = cat;
+  applyFilters();
+}
+
+function clearFaqSearch() {
+  searchInput.value = '';
+  clearBtn.style.display = 'none';
+  applyFilters();
+}
+
+searchInput.addEventListener('input', () => {
+  clearBtn.style.display = searchInput.value ? 'block' : 'none';
+  applyFilters();
 });
+
+function applyFilters() {
+  const q = searchInput.value.toLowerCase().trim();
+  let anyVisible = false;
+
+  allCards.forEach(card => {
+    const question = card.dataset.question || '';
+    const keywords = card.dataset.keywords || '';
+    const cat = card.dataset.cat || '';
+    const matchesCat = (currentCat === 'all' || cat === currentCat);
+    const matchesQ = !q || question.includes(q) || keywords.includes(q);
+    const show = matchesCat && matchesQ;
+    card.classList.toggle('hidden', !show);
+    if (show) anyVisible = true;
+  });
+
+  // Hide/show sections based on whether they have visible cards
+  allSections.forEach(sec => {
+    const hasCat = (currentCat === 'all' || sec.dataset.category === currentCat);
+    const visibleInSection = Array.from(sec.querySelectorAll('.faq-card'))
+      .some(c => !c.classList.contains('hidden'));
+    sec.style.display = hasCat && visibleInSection ? '' : 'none';
+  });
+
+  noResults.style.display = anyVisible ? 'none' : 'block';
+}
 </script>
 {% endblock %}

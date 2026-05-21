@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}College Predictor — MP BTech Lateral Entry{% endblock %}
+{% block title %}College Predictor — MP BTech Lateral Entry 2025 | Check Admission Chances{% endblock %}
+{% block meta_description %}Use the MP DTE College Predictor to find engineering colleges matching your Diploma CGPA. Filter by branch, city, category (UR/OBC/SC/ST) and gender. Predict colleges with targeted options for LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, and top 10 govt colleges in mp based on official 2024 DTE MP cutoff data.{% endblock %}
+{% block meta_keywords %}MP DTE college predictor 2025, lateral entry college list MP, BTech lateral entry cutoff, DTE MP cutoff 2024, engineering college by CGPA MP, diploma BTech admission MP, lateral entry college filter MP, LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling{% endblock %}
+{% block og_title %}MP DTE College Predictor — Find Your Engineering College{% endblock %}
+{% block og_description %}Enter your CGPA, category and branch to find matching engineering colleges in MP. Official DTE 2024 cutoff-based predictions. Free tool for Diploma holders.{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -83,7 +87,7 @@
 
         {% if has_prefill %}
         <div id="share-banner" class="share-banner">
-            <span><i class="fas fa-link"></i> Form pre-filled from a shared link. Click <strong>Predict Colleges</strong> to see results.</span>
+            <span><i class="fas fa-link"></i> This form was opened from a shared link. Click <strong>Show My Best Colleges</strong> to see results.</span>
             <button class="share-banner-close" onclick="this.closest('.share-banner').remove()" title="Dismiss">✕</button>
         </div>
         {% endif %}
@@ -181,87 +185,9 @@
                     </select>
 
                     <div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">
-                        <i class="fas fa-info-circle"></i> Selecting multiple branches will show results for all of them.
+                        <i class="fas fa-info-circle"></i> Selecting multiple branches will show results.
                     </div>
                 </div>
-
-                <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const container = document.getElementById('branch-select-container');
-                    const display = document.getElementById('branch-display');
-                    const optionsContainer = document.getElementById('branch-options');
-                    const realSelect = document.getElementById('real-branch-select');
-                    
-                    function generateUI() {
-                        optionsContainer.innerHTML = '';
-                        Array.from(realSelect.querySelectorAll('optgroup, option')).forEach(el => {
-                            if (el.tagName === 'OPTGROUP') {
-                                const groupLabel = document.createElement('div');
-                                groupLabel.className = 'opt-group-label';
-                                groupLabel.textContent = el.label;
-                                optionsContainer.appendChild(groupLabel);
-                            } else if (el.tagName === 'OPTION') {
-                                const item = document.createElement('div');
-                                item.className = 'option-item';
-                                const checkbox = document.createElement('input');
-                                checkbox.type = 'checkbox';
-                                checkbox.value = el.value;
-                                checkbox.checked = el.selected;
-                                checkbox.id = 'cb-' + el.value.replace(/\s+/g, '-');
-                                const label = document.createElement('label');
-                                label.htmlFor = checkbox.id;
-                                label.textContent = el.textContent.trim();
-                                item.appendChild(checkbox);
-                                item.appendChild(label);
-                                optionsContainer.appendChild(item);
-                                checkbox.addEventListener('change', function() { handleCheckboxChange(this); });
-                            }
-                        });
-                    }
-
-                    function handleCheckboxChange(changedCb) {
-                        const allCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
-                        if (changedCb.value === 'All' && changedCb.checked) {
-                            allCheckboxes.forEach(cb => { if (cb.value !== 'All') cb.checked = false; });
-                        } else if (changedCb.value !== 'All' && changedCb.checked) {
-                            const allCb = Array.from(allCheckboxes).find(cb => cb.value === 'All');
-                            if (allCb) allCb.checked = false;
-                        }
-                        syncToRealSelect();
-                    }
-
-                    function syncToRealSelect() {
-                        const allCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
-                        const selectedLabels = [];
-                        allCheckboxes.forEach(cb => {
-                            const opt = Array.from(realSelect.options).find(o => o.value === cb.value);
-                            if (opt) {
-                                opt.selected = cb.checked;
-                                if (cb.checked) selectedLabels.push(cb.nextElementSibling.textContent);
-                            }
-                        });
-                        const allCb = Array.from(allCheckboxes).find(cb => cb.value === 'All');
-                        if (allCb && allCb.checked) {
-                            display.textContent = "🔍 All Branches";
-                        } else if (selectedLabels.length === 0) {
-                            display.textContent = "Select Branches";
-                        } else if (selectedLabels.length === 1) {
-                            display.textContent = selectedLabels[0];
-                        } else {
-                            display.textContent = selectedLabels.length + " Branches Selected";
-                        }
-                    }
-
-                    display.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        container.classList.toggle('active');
-                    });
-                    document.addEventListener('click', () => container.classList.remove('active'));
-                    optionsContainer.addEventListener('click', (e) => e.stopPropagation());
-                    generateUI();
-                    syncToRealSelect();
-                });
-                </script>
 
                 <!-- MP Domicile Filter -->
                 {% set domicile = data.domicile if data else (prefill.domicile if prefill else 'Y') %}
@@ -281,20 +207,51 @@
                 </div>
             </div>
 
-            <!-- Row 3: City Filter -->
+            <!-- Optional Collapsible Advanced Location & Distance Filters -->
+            <div style="margin: 20px 0 10px;">
+                <button type="button" class="btn-secondary" onclick="toggleAdvancedLocation()" style="padding: 6px 14px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border);">
+                    <i class="fas fa-map-marked-alt"></i> <span id="adv-loc-text">Show Location & Distance Filters (Optional)</span>
+                    <i class="fas fa-chevron-down" id="adv-loc-chevron" style="transition: transform 0.2s;"></i>
+                </button>
+            </div>
+
             {% set city = data.city if data else (prefill.city if prefill else 'All') %}
-            <div class="form-row">
+            {% set district = data.district if data else (prefill.district if prefill else 'All') %}
+            {% set home_city = data.home_city if data else (prefill.home_city if prefill else 'All') %}
+            {% set max_dist = data.max_distance_km if data else (prefill.max_distance_km if prefill else '') %}
+            
+            <div class="form-row" id="advanced-location-row" style="display: none; transition: all 0.3s ease;">
                 <div class="form-group">
-                    <label for="city">
-                        Preferred City (Optional)
-                        <span class="field-hint">Select a specific city or stay with Any City</span>
-                    </label>
+                    <label for="city">Preferred City</label>
                     <select id="city" name="city">
-                        <option value="All" {% if city == 'All' %}selected{% endif %}>🗺️ Any City (All MP)</option>
+                        <option value="All" {% if city == 'All' %}selected{% endif %}>Any City (All MP)</option>
                         {% for c in mp_cities %}
                         <option value="{{ c }}" {% if city == c %}selected{% endif %}>{{ c }}</option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="district">District Filter</label>
+                    <select id="district" name="district">
+                        <option value="All" {% if district == 'All' %}selected{% endif %}>Any District</option>
+                        {% for d in mp_districts %}
+                        <option value="{{ d }}" {% if district == d %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="home_city">Your Home City <span class="field-hint">For distance calc</span></label>
+                    <select id="home_city" name="home_city">
+                        <option value="All" {% if home_city == 'All' %}selected{% endif %}>Not specified</option>
+                        {% for c in mp_cities %}
+                        <option value="{{ c }}" {% if home_city == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="max_distance_km">Max Distance (km)</label>
+                    <input type="number" id="max_distance_km" name="max_distance_km" min="0" max="800" placeholder="e.g. 150"
+                        value="{{ max_dist }}">
                 </div>
             </div>
 
@@ -349,6 +306,12 @@
                     <button id="share-btn" class="btn-share" onclick="copyShareLink()">
                         <i class="fas fa-link"></i> Share Link
                     </button>
+                    <a id="share-wa-btn" class="btn-share btn-whatsapp-sm" href="#" target="_blank" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a id="share-tg-btn" class="btn-share btn-telegram-sm" href="#" target="_blank" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
                     <button class="btn-pdf" onclick="downloadPDF()">
                         <i class="fas fa-file-pdf"></i> Download All PDF
                     </button>
@@ -388,6 +351,8 @@
                                 <th>Quota</th>
                                 <th>Resident</th>
                                 <th>Seats</th>
+                                <th>Fee (approx)</th>
+                                <th>Dist.</th>
                                 <th>Chance</th>
                             </tr>
                         </thead>
@@ -413,8 +378,12 @@
                                 <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender }}</span></td>
                                 <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
                                 <td>{{ college.total_seats }}</td>
+                                <td style="font-size:0.78rem;">{{ item.fee_display or '—' }}</td>
+                                <td style="font-size:0.78rem;" title="{{ item.distance_source or '' }}">
+                                    {% if item.distance_text %}{{ item.distance_text }}{% elif item.distance_km %}{{ item.distance_km }} km{% else %}—{% endif %}
+                                </td>
                                 <td>
-                                    <span class="prob-badge prob-{{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{ prob }}%</span>
+                                    <span class="prob-glow {{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{ prob }}%</span>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -442,7 +411,10 @@
         <div class="sl-bar-inner">
             <span class="sl-bar-info"><i class="fas fa-bookmark"></i> <strong id="shortlist-count">0</strong> shortlisted</span>
             <div class="sl-bar-actions">
-                <button class="sl-btn-download" onclick="downloadShortlistedPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="sl-btn-download" onclick="exportShortlistCsv()"><i class="fas fa-file-csv"></i> DTE CSV</button>
+                <button class="sl-btn-download" onclick="exportShortlistCopy()"><i class="fas fa-copy"></i> Copy List</button>
+                <button class="sl-btn-download" onclick="downloadShortlistedPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="sl-btn-download" onclick="syncShortlistCloud()" id="cloud-sync-btn" title="Save to account"><i class="fas fa-cloud-upload-alt"></i> Cloud</button>
                 <button class="sl-btn-clear" onclick="clearShortlist()">Clear All</button>
             </div>
         </div>
@@ -469,10 +441,7 @@
 .gender-tag { display:inline-block; padding:2px 9px; border-radius:12px; font-size:0.76rem; font-weight:700; }
 .gender-f { background:#FCE7F3; color:#9D174D; }
 .gender-op { background:#D1FAE5; color:#065F46; }
-.prob-badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:0.78rem; font-weight:700; }
-.prob-high { background:#D1FAE5; color:#065F46; }
-.prob-med  { background:#FEF9C3; color:#713F12; }
-.prob-low  { background:#FEE2E2; color:#991B1B; }
+/* Using global .prob-glow classes for premium styling */
 
 /* Floating Bars */
 #shortlist-bar, #compare-tray { position:fixed; bottom:0; left:0; right:0; z-index:9999; animation: slideUp 0.25s ease; }
@@ -493,24 +462,6 @@
     .form-row { grid-template-columns: 1fr !important; }
     .gov-table { min-width: 800px; }
     .table-wrapper { overflow-x: auto; }
-}
-@media (max-width: 576px) {
-    .sl-bar-inner, .cmp-tray-inner {
-        flex-direction: column;
-        gap: 10px;
-        padding: 12px 16px;
-        text-align: center;
-    }
-    .sl-bar-actions, .cmp-tray-actions {
-        width: 100%;
-        justify-content: center;
-    }
-    .sl-btn-download, .sl-btn-clear, .cmp-go-btn, .cmp-clear-btn {
-        flex: 1;
-        text-align: center;
-        font-size: 0.82rem;
-        padding: 8px 10px;
-    }
 }
 </style>
 
@@ -551,7 +502,7 @@ let compareList = {};
 function addToCompare(btn, name) {
     if (compareList[name]) { delete compareList[name]; btn.classList.remove('added'); btn.innerHTML = '<i class="fas fa-balance-scale"></i> Compare'; }
     else {
-        if (Object.keys(compareList).length >= 3) { alert('Max 3 colleges!'); return; }
+        if (Object.keys(compareList).length >= 3) { showToast('You can compare a maximum of 3 colleges side-by-side.', 'warning'); return; }
         compareList[name] = name.substring(0,25); btn.classList.add('added'); btn.innerHTML = '<i class="fas fa-check"></i> Added';
     }
     updateCompareTray();
@@ -606,10 +557,155 @@ function downloadShortlistedPDF() {
     doc.save('My-Shortlist.pdf');
 }
 
+function getShortlistChoices() {
+    return DteExport.shortlistToChoices(
+        JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]')
+    );
+}
+function exportShortlistCsv() { DteExport.exportCsv(getShortlistChoices()); }
+function exportShortlistCopy() {
+    DteExport.copyToClipboard(getShortlistChoices()).then(function(ok) {
+        if (ok) showToast('Choice list copied! Paste it when filling on DTE portal.', 'success');
+    });
+}
+function syncShortlistCloud() {
+    const items = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
+    fetch('/api/v1/shortlist/cloud', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({items: items})
+    }).then(function(r) {
+        if (r.status === 401) { window.location = '/account?next=' + encodeURIComponent(location.pathname); return; }
+        return r.json();
+    }).then(function(d) {
+        if (d && d.success) showToast('Shortlist saved to cloud (' + d.count + ' items)!', 'success');
+    });
+}
+
+function toggleAdvancedLocation() {
+    const row = document.getElementById('advanced-location-row');
+    const chevron = document.getElementById('adv-loc-chevron');
+    const text = document.getElementById('adv-loc-text');
+    if (row.style.display === 'none') {
+        row.style.display = 'grid';
+        chevron.style.transform = 'rotate(180deg)';
+        text.textContent = 'Hide Location & Distance Filters';
+    } else {
+        row.style.display = 'none';
+        chevron.style.transform = 'rotate(0deg)';
+        text.textContent = 'Show Location & Distance Filters (Optional)';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Branch multi-select dropdown setup
+    const container = document.getElementById('branch-select-container');
+    const display = document.getElementById('branch-display');
+    const optionsContainer = document.getElementById('branch-options');
+    const realSelect = document.getElementById('real-branch-select');
+    
+    if (container && display && optionsContainer && realSelect) {
+        function generateUI() {
+            optionsContainer.innerHTML = '';
+            Array.from(realSelect.querySelectorAll('optgroup, option')).forEach(el => {
+                if (el.tagName === 'OPTGROUP') {
+                    const groupLabel = document.createElement('div');
+                    groupLabel.className = 'opt-group-label';
+                    groupLabel.textContent = el.label;
+                    optionsContainer.appendChild(groupLabel);
+                } else if (el.tagName === 'OPTION') {
+                    const item = document.createElement('div');
+                    item.className = 'option-item';
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = el.value;
+                    checkbox.checked = el.selected;
+                    checkbox.id = 'cb-' + el.value.replace(/\s+/g, '-');
+                    const label = document.createElement('label');
+                    label.htmlFor = checkbox.id;
+                    label.textContent = el.textContent.trim();
+                    item.appendChild(checkbox);
+                    item.appendChild(label);
+                    optionsContainer.appendChild(item);
+                    checkbox.addEventListener('change', function() { handleCheckboxChange(this); });
+                }
+            });
+        }
+
+        function handleCheckboxChange(changedCb) {
+            const allCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
+            if (changedCb.value === 'All' && changedCb.checked) {
+                allCheckboxes.forEach(cb => { if (cb.value !== 'All') cb.checked = false; });
+            } else if (changedCb.value !== 'All' && changedCb.checked) {
+                const allCb = Array.from(allCheckboxes).find(cb => cb.value === 'All');
+                if (allCb) allCb.checked = false;
+            }
+            syncToRealSelect();
+        }
+
+        function syncToRealSelect() {
+            const allCheckboxes = optionsContainer.querySelectorAll('input[type="checkbox"]');
+            const selectedLabels = [];
+            allCheckboxes.forEach(cb => {
+                const opt = Array.from(realSelect.options).find(o => o.value === cb.value);
+                if (opt) {
+                    opt.selected = cb.checked;
+                    if (cb.checked) selectedLabels.push(cb.nextElementSibling.textContent);
+                }
+            });
+            const allCb = Array.from(allCheckboxes).find(cb => cb.value === 'All');
+            if (allCb && allCb.checked) {
+                display.textContent = "🔍 All Branches";
+            } else if (selectedLabels.length === 0) {
+                display.textContent = "Select Branches";
+            } else if (selectedLabels.length === 1) {
+                display.textContent = selectedLabels[0];
+            } else {
+                display.textContent = selectedLabels.length + " Branches Selected";
+            }
+        }
+
+        display.addEventListener('click', (e) => {
+            e.stopPropagation();
+            container.classList.toggle('active');
+        });
+        document.addEventListener('click', () => container.classList.remove('active'));
+        optionsContainer.addEventListener('click', (e) => e.stopPropagation());
+        generateUI();
+        syncToRealSelect();
+    }
+
     const saved = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
     document.querySelectorAll('.shortlist-check').forEach(cb => { if (saved.includes(cb.dataset.id)) cb.checked = true; });
     updateShortlistBar();
+    
+    // Auto-expand advanced location filters if they contain non-default values
+    const cityVal = document.getElementById('city')?.value;
+    const distVal = document.getElementById('district')?.value;
+    const homeVal = document.getElementById('home_city')?.value;
+    const maxDistVal = document.getElementById('max_distance_km')?.value;
+    if ((cityVal && cityVal !== 'All') || (distVal && distVal !== 'All') || (homeVal && homeVal !== 'All') || (maxDistVal && maxDistVal !== '')) {
+        toggleAdvancedLocation();
+    }
+
+    const form = document.getElementById('predictor-form');
+    if (form && typeof ShareUtils !== 'undefined') {
+        const params = {
+            cgpa: form.querySelector('[name=cgpa]').value,
+            category: form.querySelector('[name=category]').value,
+            gender: form.querySelector('[name=gender]').value,
+            college_type: form.querySelector('[name=college_type]').value,
+            domicile: form.querySelector('[name=domicile]').value,
+            city: form.querySelector('[name=city]').value,
+        };
+        if (params.cgpa && params.category) {
+            const links = ShareUtils.sharePrediction(params);
+            const wa = document.getElementById('share-wa-btn');
+            const tg = document.getElementById('share-tg-btn');
+            if (wa) wa.href = links.whatsapp;
+            if (tg) tg.href = links.telegram;
+        }
+    }
 });
 </script>
 {% endblock %}

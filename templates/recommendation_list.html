@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}Recommendation Choice Filling List — MP DTE 2025{% endblock %}
+{% block meta_description %}Get your personalized MP DTE BTech Lateral Entry recommendation choice filling list. Organise your Dream, Target, and Safe colleges sequentially for optimal counselling allotment.{% endblock %}
+{% block meta_keywords %}MP DTE choice filling helper, DTE recommended college list, BTech lateral entry choice filling order, choice filling preference list{% endblock %}
+{% block og_title %}Recommendation Choice Filling List — MP DTE 2025{% endblock %}
+{% block og_description %}Unsure about choice filling order? View the recommended choice sequence for MP Diploma holders seeking CSE, IT, ECE, ME, or EE admissions.{% endblock %}
+{% block twitter_title %}MP DTE Recommended Choice Sequence{% endblock %}
+{% block twitter_description %}Get the optimal recommended choice list of colleges and branches for MP DTE BTech Lateral Entry counselling.{% endblock %}
 
 {% block content %}
 <div class="container animate-fade-in" style="max-width:960px; margin: 0 auto 50px;">
@@ -20,7 +26,7 @@
 
     <!-- Main List Container -->
     <div class="gov-box" style="padding: 30px; box-shadow: 0 10px 30px rgba(15,44,94,0.06);">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--border); padding-bottom:15px; margin-bottom:25px;">
+        <div class="rec-header-row" style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--border); padding-bottom:15px; margin-bottom:25px;">
             <h3 style="margin:0; font-size:1.4rem; color:var(--primary); display:flex; align-items:center; gap:10px;">
                 <i class="fas fa-list-ol" style="color:var(--primary);"></i>
                 <span>Best Choice Filling Order for MPDTE B.Tech Counselling</span>
@@ -36,7 +42,7 @@
         </div>
 
         <p class="subtitle" style="font-size:0.9rem; color:var(--muted); margin-bottom:20px; line-height:1.5;">
-            Below is the optimized priority list prepared by experts based on academic infrastructure, placement records, and brand recognition in MP. Click <strong>Shortlist</strong> on the colleges you like, then navigate to the <strong>Allotment Simulator</strong> to import them instantly!
+            This is a sample priority order for popular MP engineering colleges. You can use it as a starting point. Click <strong>Shortlist</strong> on colleges you like, then open the <strong>Allotment Simulator</strong> to load them into your list.
         </p>
 
         <!-- Search Filter inside the list -->
@@ -83,7 +89,7 @@
 
         <div id="no-rec-results" style="display:none; text-align:center; padding:30px; color:var(--muted);">
             <i class="fas fa-search" style="font-size:2rem; margin-bottom:10px;"></i>
-            <p>Koi matching college nahi mila. Apne filter terms check karein!</p>
+            <p>No colleges match your search. Try a different keyword.</p>
         </div>
 
     </div>

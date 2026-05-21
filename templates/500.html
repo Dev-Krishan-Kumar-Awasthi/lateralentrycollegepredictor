@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}500 Internal Error — MP DTE Predictor{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    <div class="gov-box" style="max-width: 550px; text-align: center; padding: 50px 30px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); border-radius: 16px;">
+        <div style="background-color: #fff1f2; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px auto; color: #e11d48; font-size: 2.2rem; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.1);">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1 style="color: #e11d48; font-size: 2.2rem; font-weight: 800; margin: 0 0 10px 0; letter-spacing: -0.5px;">Server Error (500)</h1>
+        <p class="subtitle" style="font-size: 1.1rem; color: var(--muted); margin: 0 0 30px 0; line-height: 1.6;">
+            We encountered an unexpected error while processing your request. Please try reloading the page, or return to the home screen.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <button onclick="window.location.reload();" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;">
+                <i class="fas fa-redo"></i> Reload Page
+            </button>
+            <a href="/" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: #fff;">
+                <i class="fas fa-home"></i> Go to Homepage
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
