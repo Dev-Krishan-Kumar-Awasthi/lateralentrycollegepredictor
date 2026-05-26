@@ -238,9 +238,21 @@ def about():
 @app.route('/predictor', methods=['GET', 'POST'])
 def predictor():
     if request.method == 'POST' and not current_user():
+        prefill = {
+            'cgpa': request.form.get('cgpa', ''),
+            'category': request.form.get('category', ''),
+            'gender': request.form.get('gender', ''),
+            'college_type': request.form.get('college_type', ''),
+            'branch': request.form.getlist('branch'),
+            'domicile': request.form.get('domicile', 'Y'),
+            'city': request.form.get('city', 'All'),
+            'district': request.form.get('district', 'All'),
+            'home_city': request.form.get('home_city', 'All'),
+            'max_distance_km': request.form.get('max_distance_km', ''),
+        }
         return render_template(
             'predictor.html', data=None, prediction=None,
-            needs_login=True, mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+            needs_login=True, mp_cities=MP_CITIES, prefill=prefill, has_prefill=False,
         )
 
     if request.method == 'GET':
@@ -320,10 +332,23 @@ def choice_builder():
 
     if request.method == 'POST':
         if not user:
+            try:
+                cgpa_val = float(request.form.get('cgpa', '').strip() or '0')
+            except ValueError:
+                cgpa_val = 0.0
+            form_data = {
+                'cgpa': cgpa_val,
+                'category': request.form.get('category'),
+                'gender': request.form.get('gender'),
+                'college_type': request.form.get('college_type', 'Any'),
+                'branch': request.form.getlist('branch') or ['All'],
+                'domicile': request.form.get('domicile', 'Y'),
+                'city': request.form.get('city', 'All'),
+            }
             return render_template(
-                'choice_builder.html', result=None, form_data=None,
+                'choice_builder.html', result=None, form_data=form_data,
                 needs_login=True, mp_cities=MP_CITIES,
-                cloud_shortlist=[], shortlisted_keys=set(),
+                cloud_shortlist=[], shortlisted_keys=[],
             )
         try:
             cgpa = float(request.form.get('cgpa', '').strip())
@@ -496,16 +521,16 @@ def search():
     if not has_filters:
         return render_template("search.html", data=None, colleges=None, mp_cities=MP_CITIES)
 
-    # Login required to view search results
-    if not current_user():
-        return render_template("search.html", data=data, colleges=None,
-                               mp_cities=MP_CITIES, needs_login=True)
-
     data = {
         "q": q, "category": category, "gender": gender,
         "college_type": college_type, "branch": branch, "city": city, "year": year,
         "min_package": min_package,
     }
+
+    # Login required to view search results
+    if not current_user():
+        return render_template("search.html", data=data, colleges=None,
+                               mp_cities=MP_CITIES, needs_login=True)
 
     colleges = search_colleges(
         q=q, category=category or None, gender=gender or None,
@@ -547,7 +572,8 @@ def search():
 @app.route('/rank_predictor', methods=['GET', 'POST'])
 def rank():
     if request.method == 'POST' and not current_user():
-        return render_template('rank.html', data=None, prediction=None, needs_login=True)
+        cgpa_str = request.form.get('cgpa', '').strip()
+        return render_template('rank.html', data={"cgpa": cgpa_str}, prediction=None, needs_login=True)
 
     if request.method == 'GET':
         return render_template('rank.html', data=None, prediction=None)
@@ -568,7 +594,34 @@ def rank():
 @app.route('/simulator', methods=['GET', 'POST'])
 def simulator():
     if request.method == 'POST' and not current_user():
-        return render_template('simulator.html', result=None, needs_login=True)
+        try:
+            cgpa = float(request.form.get('cgpa', '').strip() or '0')
+        except ValueError:
+            cgpa = 0.0
+        category = request.form.get('category')
+        gender = request.form.get('gender')
+        domicile = request.form.get('domicile', 'Y')
+        year = int(request.form.get('year', 2025))
+        rank_mode = request.form.get('rank_mode', 'average')
+        
+        raw_choices = request.form.get('choice_list_json', '[]')
+        try:
+            choices = json.loads(raw_choices)
+        except Exception:
+            choices = []
+            
+        mock_user = {
+            'cgpa': cgpa,
+            'category': category,
+            'gender': gender,
+            'domicile': domicile,
+            'year': year,
+            'rank_mode': rank_mode,
+        }
+        return render_template(
+            'simulator.html', result=None, user=mock_user,
+            choices=choices, needs_login=True,
+        )
 
     if request.method == 'GET':
         return render_template('simulator.html', result=None)
@@ -759,6 +812,16 @@ def account_page():
                 nxt = '/account'
             return redirect(nxt or '/account')
         if action == 'register':
+            import time
+            now = time.time()
+            reg_attempts = session.get("reg_otp_sends", [])
+            reg_attempts = [t for t in reg_attempts if now - t < 3600]
+            if len(reg_attempts) >= 5:
+                return render_template(
+                    'account.html',
+                    error="Too many registration attempts. Please wait an hour before trying again."
+                )
+
             try:
                 cgpa_val = float(request.form.get('cgpa', '0').strip())
             except ValueError:
@@ -778,7 +841,7 @@ def account_page():
             if err:
                 return render_template('account.html', error=err)
             
-            import random, time
+            import random
             otp = str(random.randint(100000, 999999))
             
             session["pending_registration"] = sanitized
@@ -788,6 +851,8 @@ def account_page():
             
             success, msg = send_otp_email(sanitized["email"], otp)
             if success:
+                reg_attempts.append(now)
+                session["reg_otp_sends"] = reg_attempts
                 return render_template('account.html', success=f"Verification OTP has been sent to {sanitized['email']}. Please check your inbox / spam folder. ({msg})")
             else:
                 return render_template('account.html', error=f"Could not send OTP: {msg}")
@@ -850,6 +915,16 @@ def account_page():
             return redirect('/account')
             
         elif action == 'forgot_password':
+            import time
+            now = time.time()
+            reset_attempts = session.get("reset_otp_sends", [])
+            reset_attempts = [t for t in reset_attempts if now - t < 3600]
+            if len(reset_attempts) >= 5:
+                return render_template(
+                    'account.html',
+                    error="Too many password reset requests. Please wait an hour before trying again."
+                )
+
             email = request.form.get('email', '').strip().lower()
             if not email:
                 return render_template('account.html', error="Please enter your registered email address.")
@@ -858,7 +933,7 @@ def account_page():
             if not existing_user:
                 return render_template('account.html', error="This email address is not registered with us.")
             
-            import random, time
+            import random
             otp = str(random.randint(100000, 999999))
             session["reset_email"] = email
             session["reset_otp"] = otp
@@ -867,6 +942,8 @@ def account_page():
             
             success, msg = send_otp_email(email, otp)
             if success:
+                reset_attempts.append(now)
+                session["reset_otp_sends"] = reset_attempts
                 return render_template('account.html', success=f"A password reset code has been sent to {email}. ({msg})")
             else:
                 return render_template('account.html', error=f"Could not send reset code: {msg}")
@@ -1182,9 +1259,13 @@ def api_reviews():
             "branch": r.branch,
         } for r in rows])
 
+    user = current_user()
+    if not user:
+        return jsonify({"error": "Login is required to submit a review."}), 401
+
     data = request.get_json(silent=True) or request.form
     name = (data.get('college_name') or '').strip()
-    author = (data.get('author_name') or 'Anonymous').strip()[:80]
+    author = (user.display_name or 'Anonymous').strip()[:80]
     comment = (data.get('comment') or '').strip()
     try:
         rating = int(data.get('rating', 0))
@@ -1196,6 +1277,7 @@ def api_reviews():
         college_name=name, author_name=author,
         rating=rating, comment=comment[:1000],
         branch=(data.get('branch') or '')[:32],
+        is_approved=False,
     )
     db.session.add(review)
     db.session.commit()

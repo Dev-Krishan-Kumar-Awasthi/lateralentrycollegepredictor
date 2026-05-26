@@ -126,7 +126,7 @@ class CollegeReview(db.Model):
     rating = db.Column(db.Integer, nullable=False)  # 1-5
     comment = db.Column(db.Text, nullable=False)
     branch = db.Column(db.String(32), nullable=True)
-    is_approved = db.Column(db.Boolean, default=True)
+    is_approved = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     __table_args__ = (

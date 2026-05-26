@@ -206,7 +206,7 @@
                 </p>
 
                 <!-- Login inline form -->
-                <form method="POST" action="/account" class="no-loader" id="modal-login-form">
+                <form method="POST" action="/account?next={{ request.full_path | urlencode_val }}" class="no-loader" id="modal-login-form">
                     <input type="hidden" name="action" value="login">
                     <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
                         <input type="email" name="email" required placeholder="📧  Email address"
@@ -228,9 +228,9 @@
 
                 <div style="text-align: center; margin-top: 14px; color: #64748B; font-size: 0.88rem;">
                     Abhi account nahi hai?
-                    <a href="/account" style="color: #2563eb; font-weight: 700; text-decoration: none;">Register karo — Free</a>
+                    <a href="/account?next={{ request.full_path | urlencode_val }}" style="color: #2563eb; font-weight: 700; text-decoration: none;">Register karo — Free</a>
                     &nbsp;|&nbsp;
-                    <a href="/account" style="color: #64748B; font-size: 0.82rem; text-decoration: underline;">Full account page</a>
+                    <a href="/account?next={{ request.full_path | urlencode_val }}" style="color: #64748B; font-size: 0.82rem; text-decoration: underline;">Full account page</a>
                 </div>
             </div>
         </div>
