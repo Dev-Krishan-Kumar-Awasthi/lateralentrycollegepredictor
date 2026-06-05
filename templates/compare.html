@@ -27,9 +27,172 @@
   </div>
 
   {% if colleges|length < 2 %}
-  <div class="gov-box" style="text-align:center;padding:40px;">
-    <p>Not enough data to compare. <a href="/predictor">Go back to Predictor</a>.</p>
+  <div class="gov-box selection-container animate-fade-in" style="padding: 40px; text-align: center; border-radius: 12px; border: 1px solid var(--border); background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 30px;">
+      <h3 style="color: var(--primary); font-size: 1.4rem; margin-top: 0; margin-bottom: 8px;">
+          <i class="fas fa-balance-scale" style="color: var(--secondary);"></i> Select Colleges to Compare
+      </h3>
+      <p style="color: var(--muted); font-size: 0.92rem; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto;">
+          Search and pick 2 or 3 colleges from Madhya Pradesh to compare their lateral entry cutoffs, tuition fees, and placements side-by-side.
+      </p>
+
+      <form action="/compare" method="GET" id="compare-selection-form">
+          <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px;">
+              {% for i in range(1, 4) %}
+              <div class="cmp-select-slot" style="flex: 1 1 250px; max-width: 320px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 20px; text-align: left; position: relative;">
+                  <h4 style="margin-top: 0; margin-bottom: 12px; color: var(--primary); font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                      <span>Slot #{{ i }}</span>
+                      <span class="slot-remove-btn" id="slot-remove-{{ i }}" style="display: none; cursor: pointer; color: #ef4444; font-size: 0.8rem;" onclick="clearSlot({{ i }})">
+                          <i class="fas fa-trash-alt"></i> Clear
+                      </span>
+                  </h4>
+                  
+                  <div class="slot-search-container" id="slot-search-wrap-{{ i }}">
+                      <input type="text" id="slot-search-{{ i }}" placeholder="Type college name (ex: sgsits, davv...)" 
+                             style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;" oninput="searchCompareColleges({{ i }})">
+                      <div class="slot-search-results" id="slot-results-{{ i }}" style="position: absolute; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; background: #fff; border: 1px solid #cbd5e1; border-radius: 0 0 6px 6px; z-index: 1000; box-shadow: 0 10px 15px rgba(0,0,0,0.1); display: none;"></div>
+                  </div>
+
+                  <div class="slot-chosen-badge" id="slot-chosen-{{ i }}" style="display: none;">
+                      <div style="font-weight: 700; color: var(--primary); font-size: 0.85rem; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;" id="slot-name-display-{{ i }}"></div>
+                      <input type="hidden" name="colleges" id="slot-input-{{ i }}">
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+
+          <button type="submit" class="btn-simulate" id="btn-compare-submit" style="opacity: 0.65; cursor: not-allowed; min-width: 200px;" disabled>
+              <i class="fas fa-balance-scale"></i> Compare Selected Colleges
+          </button>
+      </form>
   </div>
+
+  <script>
+      const selectedColleges = { 1: null, 2: null, 3: null };
+
+      function searchCompareColleges(slotNum) {
+          const q = document.getElementById(`slot-search-${slotNum}`).value.trim();
+          const resultsBox = document.getElementById(`slot-results-${slotNum}`);
+          
+          if (q.length < 3) {
+              resultsBox.style.display = 'none';
+              return;
+          }
+
+          fetch(`/search?q=${encodeURIComponent(q)}&json=1`)
+              .then(res => {
+                  if (res.status === 401) {
+                      resultsBox.innerHTML = `
+                          <div style="padding: 10px; color: #dc2626; font-size: 0.8rem; font-weight: 600; text-align: center;">
+                              Please login to search.
+                          </div>
+                      `;
+                      resultsBox.style.display = 'block';
+                      throw new Error("Login required");
+                  }
+                  return res.json();
+              })
+              .then(data => {
+                  resultsBox.innerHTML = '';
+                  if (!data || data.length === 0) {
+                      resultsBox.innerHTML = '<div style="padding: 10px; color: var(--muted); font-size: 0.8rem; text-align: center;">No matches found</div>';
+                      resultsBox.style.display = 'block';
+                      return;
+                  }
+
+                  // Group by unique college name to avoid duplicate listings
+                  const uniqueNames = Array.from(new Set(data.map(item => item.college_name)));
+
+                  uniqueNames.slice(0, 10).forEach(name => {
+                      const div = document.createElement('div');
+                      div.style.cssText = 'padding: 8px 12px; cursor: pointer; font-size: 0.82rem; border-bottom: 1px solid #f1f5f9;';
+                      div.className = 'search-item-hover-gray';
+                      div.innerHTML = `<strong>${name}</strong>`;
+                      div.onclick = () => selectCollegeForSlot(slotNum, name);
+                      resultsBox.appendChild(div);
+                  });
+                  resultsBox.style.display = 'block';
+              })
+              .catch(err => {
+                  console.warn(err.message);
+              });
+      }
+
+      // Close dropdowns on clicking outside
+      document.addEventListener('click', function(e) {
+          for(let i=1; i<=3; i++) {
+              const resultsBox = document.getElementById(`slot-results-${i}`);
+              const searchWrap = document.getElementById(`slot-search-wrap-${i}`);
+              if (resultsBox && searchWrap && !searchWrap.contains(e.target)) {
+                  resultsBox.style.display = 'none';
+              }
+          }
+      });
+
+      function selectCollegeForSlot(slotNum, collegeName) {
+          // Check if already selected in another slot
+          for (let s in selectedColleges) {
+              if (selectedColleges[s] === collegeName) {
+                  if (typeof showToast !== 'undefined') {
+                      showToast("This college is already selected in another slot!", "warning");
+                  } else {
+                      alert("This college is already selected in another slot!");
+                  }
+                  document.getElementById(`slot-results-${slotNum}`).style.display = 'none';
+                  document.getElementById(`slot-search-${slotNum}`).value = '';
+                  return;
+              }
+          }
+
+          selectedColleges[slotNum] = collegeName;
+          
+          document.getElementById(`slot-search-wrap-${slotNum}`).style.display = 'none';
+          document.getElementById(`slot-name-display-${slotNum}`).innerText = collegeName;
+          document.getElementById(`slot-input-${slotNum}`).value = collegeName;
+          document.getElementById(`slot-chosen-${slotNum}`).style.display = 'block';
+          document.getElementById(`slot-remove-${slotNum}`).style.display = 'inline';
+          
+          const slotCard = document.getElementById(`slot-search-${slotNum}`).closest('.cmp-select-slot');
+          slotCard.style.border = '2px solid var(--primary)';
+          slotCard.style.background = '#fff';
+
+          updateCompareButtonState();
+      }
+
+      function clearSlot(slotNum) {
+          selectedColleges[slotNum] = null;
+          
+          document.getElementById(`slot-chosen-${slotNum}`).style.display = 'none';
+          document.getElementById(`slot-input-${slotNum}`).value = '';
+          document.getElementById(`slot-search-${slotNum}`).value = '';
+          document.getElementById(`slot-search-wrap-${slotNum}`).style.display = 'block';
+          document.getElementById(`slot-remove-${slotNum}`).style.display = 'none';
+          
+          const slotCard = document.getElementById(`slot-search-${slotNum}`).closest('.cmp-select-slot');
+          slotCard.style.border = '2px dashed #cbd5e1';
+          slotCard.style.background = '#f8fafc';
+
+          updateCompareButtonState();
+      }
+
+      function updateCompareButtonState() {
+          const count = Object.values(selectedColleges).filter(val => val !== null).length;
+          const btn = document.getElementById('btn-compare-submit');
+          if (count >= 2) {
+              btn.disabled = false;
+              btn.style.opacity = '1';
+              btn.style.cursor = 'pointer';
+          } else {
+              btn.disabled = true;
+              btn.style.opacity = '0.65';
+              btn.style.cursor = 'not-allowed';
+          }
+      }
+  </script>
+  <style>
+      .search-item-hover-gray:hover {
+          background-color: #f1f5f9;
+      }
+  </style>
   {% else %}
 
   <!-- VS CARDS -->

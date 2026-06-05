@@ -461,11 +461,91 @@ def save_cloud_shortlist(user_id: int, items: list, name: str = "My Shortlist") 
 
 
 def load_cloud_shortlist(user_id: int, name: str = "My Shortlist") -> list:
+    from models import User, SeatInfo, CgpaRankRange
+    from predictor import estimate_rank_range, calc_probability, BRANCH_NAMES
+    from college_meta import infer_city_from_college_name
+
+    user = db.session.get(User, user_id)
     row = CloudShortlist.query.filter_by(user_id=user_id, name=name).first()
     if not row:
         return []
     try:
-        return json.loads(row.items_json)
+        items = json.loads(row.items_json)
+        if not isinstance(items, list):
+            return []
+        normalized = []
+        seen = set()
+        for item in items:
+            college_name = ""
+            branch_code = ""
+            year_val = 2025
+            
+            if isinstance(item, str):
+                parts = item.split('|')
+                if parts:
+                    college_name = parts[0]
+                    branch_code = parts[1] if len(parts) > 1 else ""
+                    if len(parts) == 3:
+                        try:
+                            year_val = int(parts[2])
+                        except ValueError:
+                            year_val = 2025
+                    elif len(parts) >= 4:
+                        try:
+                            year_val = int(parts[3])
+                        except ValueError:
+                            year_val = 2025
+            elif isinstance(item, dict):
+                college_name = item.get('college_name', '')
+                branch_code = item.get('branch', '') or item.get('branch_code', '')
+                try:
+                    year_val = int(item.get('year', 2025))
+                except (ValueError, TypeError):
+                    year_val = 2025
+            
+            if not college_name:
+                continue
+
+            key = (college_name.strip().lower(), branch_code.strip().lower())
+            if key in seen:
+                continue
+            seen.add(key)
+
+            branch_name = BRANCH_NAMES.get(branch_code.strip().upper(), branch_code)
+            city = infer_city_from_college_name(college_name)
+            
+            prob_type = "N/A"
+            prob_percent = None
+            if user and user.cgpa and user.category and user.gender:
+                cgpa_map = CgpaRankRange.query.filter_by(year=year_val).order_by(CgpaRankRange.cgpa.desc()).all()
+                if cgpa_map:
+                    min_rank, max_rank = estimate_rank_range(cgpa_map, user.cgpa)
+                    seat = SeatInfo.query.filter(
+                        SeatInfo.college_name == college_name,
+                        SeatInfo.branch == branch_code,
+                        SeatInfo.category == user.category,
+                        SeatInfo.gender.in_([user.gender, "OP"]),
+                        SeatInfo.year == year_val
+                    ).first()
+                    if seat:
+                        prob_percent = calc_probability(min_rank, max_rank, seat.opening_rank, seat.closing_rank)
+                        if prob_percent >= 75:
+                            prob_type = "Safe"
+                        elif prob_percent >= 40:
+                            prob_type = "Moderate"
+                        else:
+                            prob_type = "Borderline"
+            
+            normalized.append({
+                "college_name": college_name,
+                "branch": branch_code,
+                "branch_name": branch_name,
+                "city": city,
+                "year": year_val,
+                "prob_type": prob_type,
+                "prob_percent": prob_percent
+            })
+        return normalized
     except json.JSONDecodeError:
         return []
 

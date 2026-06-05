@@ -361,6 +361,62 @@ def test_otp_brute_force_limits():
     print("OTP brute-force limit tests passed successfully!")
 
 
+def test_search_template():
+    print("=== Testing Search Template Render ===")
+    with app.test_client() as client:
+        # 1. Unauthenticated search should render search page with login required/needs_login set
+        resp_unauth = client.get('/search?q=sgs')
+        print(f"GET /search (unauthenticated) status code: {resp_unauth.status_code}")
+        assert resp_unauth.status_code == 200, f"Expected 200, got {resp_unauth.status_code}"
+        html_unauth = resp_unauth.get_data(as_text=True)
+        assert 'login-required-modal' in html_unauth or 'needs_login' in html_unauth or 'Login Required' in html_unauth, \
+            "Should require login when searching unauthenticated"
+
+        # 1b. Unauthenticated search with json=1 should return 401
+        resp_json_unauth = client.get('/search?q=sgs&json=1')
+        print(f"GET /search?json=1 (unauthenticated) status code: {resp_json_unauth.status_code}")
+        assert resp_json_unauth.status_code == 401, f"Expected 401, got {resp_json_unauth.status_code}"
+        assert resp_json_unauth.mimetype == 'application/json'
+        json_data = resp_json_unauth.get_json()
+        assert json_data.get('needs_login') is True
+
+        # 1c. Unauthenticated directory (no parameters) should require login
+        resp_dir_unauth = client.get('/search')
+        print(f"GET /search directory (unauthenticated) status code: {resp_dir_unauth.status_code}")
+        assert resp_dir_unauth.status_code == 200
+        html_dir_unauth = resp_dir_unauth.get_data(as_text=True)
+        assert 'login-required-modal' in html_dir_unauth or 'needs_login' in html_dir_unauth or 'Login Required' in html_dir_unauth
+
+        # 2. Login, then search should work and return colleges
+        client.post('/account', data={
+            'action': 'login',
+            'email': 'krishnaawasthi701@gmail.com',
+            'password': 'kkawasthi@202956@kka'
+        }, follow_redirects=True)
+
+        resp_auth = client.get('/search?q=sgs')
+        print(f"GET /search (authenticated) status code: {resp_auth.status_code}")
+        assert resp_auth.status_code == 200, f"Expected 200, got {resp_auth.status_code}"
+        html_auth = resp_auth.get_data(as_text=True)
+        assert "We found" in html_auth, "Should find colleges"
+
+        # 2b. Authenticated directory (no parameters) should render directory mode
+        resp_dir_auth = client.get('/search')
+        print(f"GET /search directory (authenticated) status code: {resp_dir_auth.status_code}")
+        assert resp_dir_auth.status_code == 200
+        html_dir_auth = resp_dir_auth.get_data(as_text=True)
+        assert "directory-grid" in html_dir_auth or "colleges-grid-directory" in html_dir_auth, "Should render directory grid"
+        assert "college-card-directory" in html_dir_auth, "Should display college cards"
+
+        # 3. Search with json=1 parameter should return JSON response
+        resp_json = client.get('/search?q=sgs&json=1')
+        print(f"GET /search?json=1 status code: {resp_json.status_code}")
+        assert resp_json.status_code == 200
+        assert resp_json.mimetype == 'application/json'
+
+        print("Search template test passed successfully!")
+
+
 if __name__ == "__main__":
     test_predictor_template()
     test_mobile_navbar()
@@ -368,3 +424,4 @@ if __name__ == "__main__":
     test_account_registration_and_admin()
     test_seo_routes_and_choice_builder_recs()
     test_otp_brute_force_limits()
+    test_search_template()

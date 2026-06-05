@@ -92,8 +92,135 @@
     </div>
 
     <!-- ===== RESULTS ===== -->
-    {% if data %}
+    {% if colleges is not none %}
     <div id="results">
+        
+        {% if directory_mode %}
+        <style>
+            .colleges-grid-directory {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+                gap: 24px;
+                margin-top: 20px;
+            }
+            .college-card-directory {
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+            .college-card-directory:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08) !important;
+                border-color: var(--secondary) !important;
+            }
+            .type-tag.govt {
+                background: #e0f2fe;
+                color: #0369a1;
+                border: 1px solid #bae6fd;
+            }
+            .type-tag.private {
+                background: #fef3c7;
+                color: #b45309;
+                border: 1px solid #fde68a;
+            }
+            .type-tag.s.f.i. {
+                background: #f3e8ff;
+                color: #6b21a8;
+                border: 1px solid #e9d5ff;
+            }
+            @media (max-width: 480px) {
+                .colleges-grid-directory {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+
+        <!-- Directory Mode Header -->
+        <div class="prediction-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom: 20px;">
+            <div>
+                <i class="fas fa-university" style="color: var(--secondary);"></i>
+                Madhya Pradesh Lateral Entry College Directory — Showing <strong><span id="dir-count">{{ colleges|length }}</span></strong> Colleges
+            </div>
+            <span style="font-size:0.78rem; color:var(--muted); background:#fff; padding:4px 10px; border-radius:6px; border:1px solid var(--border);">
+                Type to filter in real-time or click Search to view branch cutoffs.
+            </span>
+        </div>
+
+        <!-- Directory Card Grid -->
+        <div class="colleges-grid-directory" id="directory-grid">
+            {% for college in colleges %}
+            <div class="college-card-directory gov-box animate-fade-in" 
+                 data-name="{{ college.college_name | lower }}" 
+                 data-city="{{ college.city | lower }}" 
+                 data-type="{{ college.college_type | lower }}"
+                 style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--primary); padding: 24px; background: #fff; margin-bottom: 0; min-height: 280px; position: relative;">
+                
+                <!-- Header -->
+                <div>
+                    <div style="display: flex; gap: 14px; align-items: flex-start; margin-bottom: 12px;">
+                        <div style="width: 42px; height: 42px; background: var(--light-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; border: 1.5px solid var(--border);">
+                            <i class="fas fa-university" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <h3 style="font-size: 1rem; font-weight: 700; color: var(--primary); margin: 0 0 6px 0; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                <a href="/college?name={{ college.college_name | urlencode_val }}" style="color: inherit; text-decoration: none;">{{ college.college_name }}</a>
+                            </h3>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                                <span class="type-tag {{ college.college_type | lower }}" style="font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase;">{{ college.college_type }}</span>
+                                <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-map-marker-alt" style="color: var(--saffron);"></i> {{ college.city or 'Madhya Pradesh' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placements Section -->
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid #e2e8f0;">
+                        <span style="font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Placement Statistics</span>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1; background: #fff; border: 1.5px solid #d1fae5; border-radius: 6px; padding: 6px; text-align: center;">
+                                <div style="font-size: 0.65rem; color: #047857; font-weight: 700;">Avg Package</div>
+                                <div style="font-size: 0.95rem; font-weight: 800; color: #065f46; font-family: monospace;">{{ college.placement.average_package_lpa }} LPA</div>
+                            </div>
+                            <div style="flex: 1; background: #fff; border: 1.5px solid #ffe4e6; border-radius: 6px; padding: 6px; text-align: center;">
+                                <div style="font-size: 0.65rem; color: #b91c1c; font-weight: 700;">Highest Package</div>
+                                <div style="font-size: 0.95rem; font-weight: 800; color: #991b1b; font-family: monospace;">{{ college.placement.highest_package_lpa }} LPA</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fees & CTA Actions -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-top: 4px; border-top: 1px solid #f1f5f9;">
+                        <span style="font-size: 0.78rem; color: var(--muted); font-weight: 600;">Tuition Fee (Approx):</span>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">{{ college.fee_display }}</span>
+                    </div>
+
+                    <div style="display: flex; gap: 8px;">
+                        <a href="/college?name={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.82rem; padding: 8px 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(11, 42, 92, 0.15);">
+                            <i class="fas fa-info-circle"></i> Info
+                        </a>
+                        <a href="/compare?colleges={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.82rem; padding: 8px 0; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.15);">
+                            <i class="fas fa-balance-scale"></i> Compare
+                        </a>
+                        <a href="/simulator" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.82rem; padding: 8px 0; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">
+                            <i class="fas fa-vial"></i> Simulator
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="dir-empty-state" class="sim-empty-state" style="display: none; margin-top: 30px;">
+            <i class="fas fa-search-minus"></i>
+            <h4>No Colleges Match Your Filters</h4>
+            <p>Try clearing your search input or changing the city filter to see more results.</p>
+        </div>
+
+        {% else %}
+        
         <div class="prediction-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
                 <i class="fas fa-info-circle"></i>
@@ -141,7 +268,7 @@
                                             <span style="color:#059669;"><i class="fas fa-check-circle"></i> Verified Brochure</span>
                                         {% endif %}
                                     </span>
-                                {% endif %}
+                                    {% endif %}
                             </a>
                         </td>
                         <td><span class="type-tag">{{ college.college_type }}</span></td>
@@ -189,8 +316,80 @@
                 </tbody>
             </table>
         </div>
+        {% endif %}
     </div>
     {% endif %}
 
 </div>
+
+{% block extra_scripts %}
+{% if directory_mode %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.querySelector('input[name="q"]');
+    const citySelect = document.querySelector('select[name="city"]');
+    const typeSelect = document.querySelector('select[name="college_type"]');
+    const cards = document.querySelectorAll('.college-card-directory');
+    const countSpan = document.getElementById('dir-count');
+    const emptyState = document.getElementById('dir-empty-state');
+    const grid = document.getElementById('directory-grid');
+
+    // Assign IDs for cleaner hooks
+    if (searchInput) searchInput.id = 'directory-search-input';
+    if (citySelect) citySelect.id = 'directory-city-select';
+    if (typeSelect) typeSelect.id = 'directory-type-select';
+
+    function filterDirectory() {
+        const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        const selectedCity = citySelect ? citySelect.value.trim().toLowerCase() : 'all';
+        const selectedType = typeSelect ? typeSelect.value.trim().toLowerCase() : '';
+
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name') || '';
+            const city = card.getAttribute('data-city') || '';
+            const type = card.getAttribute('data-type') || '';
+
+            const matchesQuery = query === '' || name.includes(query);
+            const matchesCity = selectedCity === 'all' || city === selectedCity || name.includes(selectedCity);
+            
+            let matchesType = true;
+            if (selectedType !== '') {
+                if (selectedType === 'govt+sfi') {
+                    matchesType = type === 'govt' || type === 's.f.i.';
+                } else {
+                    matchesType = type === selectedType;
+                }
+            }
+
+            if (matchesQuery && matchesCity && matchesType) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (countSpan) countSpan.textContent = visibleCount;
+
+        if (visibleCount === 0) {
+            emptyState.style.display = 'block';
+            grid.style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterDirectory);
+    if (citySelect) citySelect.addEventListener('change', filterDirectory);
+    if (typeSelect) typeSelect.addEventListener('change', filterDirectory);
+    
+    filterDirectory();
+});
+</script>
+{% endif %}
+{% endblock %}
+
 {% endblock %}

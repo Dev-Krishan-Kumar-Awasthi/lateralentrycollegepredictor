@@ -171,7 +171,21 @@
         <script>
         function loadCloudToLocal() {
             const items = {{ cloud_shortlist | tojson | safe }};
-            localStorage.setItem('mp_dte_shortlist', JSON.stringify(items));
+            const stringItems = [];
+            items.forEach(item => {
+                if (typeof item === 'string') {
+                    stringItems.push(item);
+                } else if (item && typeof item === 'object') {
+                    const col = item.college_name || '';
+                    const br = item.branch || '';
+                    const yr = item.year || 2025;
+                    if (col) {
+                        stringItems.push(`${col}|${br}|${yr}`);
+                        stringItems.push(`${col}|${br}||${yr}`);
+                    }
+                }
+            });
+            localStorage.setItem('mp_dte_shortlist', JSON.stringify(stringItems));
             if (window.showToast) {
                 window.showToast('Loaded ' + items.length + ' items to your browser. Redirecting to Predictor...', 'success');
                 setTimeout(() => { window.location = '/predictor'; }, 1500);

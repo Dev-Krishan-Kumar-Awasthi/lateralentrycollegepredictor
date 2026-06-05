@@ -495,8 +495,6 @@ def how_it_works():
 def compare():
     names = request.args.getlist('colleges')
     names = [n.strip() for n in names if n.strip()][:3]
-    if len(names) < 2:
-        return redirect('/predictor')
     data = get_compare_data(names)
     return render_template('compare.html', colleges=data, branch_names=BRANCH_NAMES)
 
@@ -518,19 +516,61 @@ def search():
 
     # Execute search if q or min_package or any filters are specified
     has_filters = bool(q or category or gender or college_type or branch or (city and city != 'All') or year or min_package > 0)
+    
+    # Login required to view search results or directory
+    if not current_user():
+        if request.args.get('json'):
+            return jsonify({"error": "Login required. Please login first.", "needs_login": True}), 401
+        data = {
+            "q": q, "category": category, "gender": gender,
+            "college_type": college_type, "branch": branch, "city": city, "year": year,
+            "min_package": min_package,
+        } if has_filters else None
+        return render_template("search.html", data=data, colleges=None,
+                               mp_cities=MP_CITIES, needs_login=True)
+
     if not has_filters:
-        return render_template("search.html", data=None, colleges=None, mp_cities=MP_CITIES)
+        if request.args.get('json'):
+            colleges_query = db.session.query(
+                SeatInfo.college_name, 
+                SeatInfo.college_type
+            ).distinct().order_by(SeatInfo.college_name).all()
+            deduped = [{"college_name": name, "college_type": ctype} for name, ctype in colleges_query]
+            return jsonify(deduped)
+
+        # Load all unique colleges as a directory list
+        colleges_query = db.session.query(
+            SeatInfo.college_name, 
+            SeatInfo.college_type
+        ).distinct().order_by(SeatInfo.college_name).all()
+        
+        colleges = []
+        for name, ctype in colleges_query:
+            fee = get_fee_info(name, ctype)
+            placement = get_placement_info(name, ctype)
+            city_val = infer_city_from_college_name(name)
+            colleges.append({
+                'college_name': name,
+                'college_type': ctype,
+                'city': city_val,
+                'fee_display': format_fee_display(fee),
+                'fee_approximate': fee.get('is_approximate', True),
+                'placement': placement
+            })
+            
+        return render_template(
+            "search.html", 
+            data=None, 
+            colleges=colleges, 
+            mp_cities=MP_CITIES,
+            directory_mode=True
+        )
 
     data = {
         "q": q, "category": category, "gender": gender,
         "college_type": college_type, "branch": branch, "city": city, "year": year,
         "min_package": min_package,
     }
-
-    # Login required to view search results
-    if not current_user():
-        return render_template("search.html", data=data, colleges=None,
-                               mp_cities=MP_CITIES, needs_login=True)
 
     colleges = search_colleges(
         q=q, category=category or None, gender=gender or None,
@@ -747,6 +787,11 @@ def faq():
         faqs_by_cat=faqs_by_cat,
         all_faqs=FAQ_LIST
     )
+
+
+@app.route('/dte-rules')
+def dte_rules():
+    return render_template('rules.html')
 
 
 @app.route('/faq/<string:slug>')
@@ -1148,17 +1193,8 @@ def admin_user_shortlist(user_id):
     if not admin or admin.email.strip().lower() != admin_email:
         return jsonify({"error": "Access Denied"}), 403
         
-    from models import CloudShortlist
-    row = CloudShortlist.query.filter_by(user_id=user_id).first()
-    if not row:
-        return jsonify({"items": []})
-        
-    try:
-        import json
-        items = json.loads(row.items_json)
-        return jsonify({"items": items if isinstance(items, list) else []})
-    except Exception:
-        return jsonify({"items": []})
+    items = load_cloud_shortlist(user_id)
+    return jsonify({"items": items})
 
 
 @app.route('/admin/broadcast', methods=['POST'])
