@@ -602,8 +602,42 @@ function downloadPDF() {
     
     let y = 80;
     document.querySelectorAll('[id^="results-table-"]').forEach(table => {
-        const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => Array.from(tr.querySelectorAll('td')).slice(1).map(td => td.innerText.trim()));
-        doc.autoTable({ startY: y, head: [['#','College','Branch','Type','Open','Close','Quota','Resident','Seats','Chance']], body: rows, theme:'striped', headStyles:{fillColor:[15,40,90]}, margin:{left:40,right:40} });
+        const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
+            return Array.from(tr.querySelectorAll('td')).slice(1).map((td, index) => {
+                let text = td.innerText.trim();
+                // Replace Rupee symbol with Rs. to prevent jsPDF font corruption
+                text = text.replace(/₹/g, 'Rs. ');
+                // Column specific cleanup
+                if (index === 1) { // College Name column
+                    text = text.replace(/\s*Compare\s*$/, '').trim();
+                }
+                return text;
+            });
+        });
+        
+        doc.autoTable({ 
+            startY: y, 
+            head: [['#', 'College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']], 
+            body: rows, 
+            theme: 'striped', 
+            headStyles: { fillColor: [15,40,90] }, 
+            margin: { left: 30, right: 30 },
+            styles: { fontSize: 8 }, // Smaller font size to fit all 12 columns beautifully!
+            columnStyles: {
+                0: { cellWidth: 25 }, // #
+                1: { cellWidth: 200 }, // College Name
+                2: { cellWidth: 100 }, // Branch
+                3: { cellWidth: 40 }, // Type
+                4: { cellWidth: 50 }, // Open Rank
+                5: { cellWidth: 50 }, // Close Rank
+                6: { cellWidth: 35 }, // Quota
+                7: { cellWidth: 45 }, // Resident
+                8: { cellWidth: 30 }, // Seats
+                9: { cellWidth: 90 }, // Fee
+                10: { cellWidth: 60 }, // Distance
+                11: { cellWidth: 45 } // Chance
+            }
+        });
         y = doc.lastAutoTable.finalY + 30;
     });
     doc.save('MP-DTE-Colleges.pdf');
@@ -611,9 +645,45 @@ function downloadPDF() {
 function downloadShortlistedPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation:'landscape', unit:'pt', format:'a4' });
-    doc.text('My Shortlisted Colleges', 40, 40);
-    const rows = Array.from(document.querySelectorAll('.shortlist-check:checked')).map(cb => Array.from(cb.closest('tr').querySelectorAll('td')).slice(2).map(td => td.innerText.trim()));
-    doc.autoTable({ startY: 60, head: [['College','Branch','Type','Open','Close','Quota','Resident','Seats','Chance']], body: rows, theme:'grid' });
+    doc.setFillColor(15,40,90); doc.rect(0,0,842,60,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255);
+    doc.text('My Shortlisted Colleges', 40, 38);
+    
+    const rows = Array.from(document.querySelectorAll('.shortlist-check:checked')).map(cb => {
+        return Array.from(cb.closest('tr').querySelectorAll('td')).slice(2).map((td, index) => {
+            let text = td.innerText.trim();
+            // Replace Rupee symbol with Rs. to prevent jsPDF font corruption
+            text = text.replace(/₹/g, 'Rs. ');
+            // Column specific cleanup
+            if (index === 0) { // College Name column (slice(2) means College is at index 0)
+                text = text.replace(/\s*Compare\s*$/, '').trim();
+            }
+            return text;
+        });
+    });
+    
+    doc.autoTable({ 
+        startY: 80, 
+        head: [['College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']], 
+        body: rows, 
+        theme: 'grid',
+        headStyles: { fillColor: [15,40,90] },
+        margin: { left: 30, right: 30 },
+        styles: { fontSize: 8 }, // Smaller font size to fit all 11 columns beautifully!
+        columnStyles: {
+            0: { cellWidth: 220 }, // College Name
+            1: { cellWidth: 100 }, // Branch
+            2: { cellWidth: 40 }, // Type
+            3: { cellWidth: 50 }, // Open Rank
+            4: { cellWidth: 50 }, // Close Rank
+            5: { cellWidth: 35 }, // Quota
+            6: { cellWidth: 45 }, // Resident
+            7: { cellWidth: 30 }, // Seats
+            8: { cellWidth: 95 }, // Fee
+            9: { cellWidth: 60 }, // Distance
+            10: { cellWidth: 45 } // Chance
+        }
+    });
     doc.save('My-Shortlist.pdf');
 }
 
