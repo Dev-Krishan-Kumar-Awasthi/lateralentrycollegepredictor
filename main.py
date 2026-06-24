@@ -18,10 +18,10 @@ from predictor import (
     get_seat_heatmap, get_cutoff_chart_data,
 )
 from college_meta import (
-    get_data_metadata, get_counselling_schedule,
+    get_data_metadata, get_counselling_schedule, save_counselling_schedule,
     MP_DISTRICTS, distance_from_home, get_fee_info, format_fee_display,
     infer_city_from_college_name, get_district_for_city, get_college_info_bundle,
-    get_city_coords, get_placement_info,
+    get_city_coords, get_placement_info, get_college_coordinates,
 )
 from google_college_service import api_key_configured
 from smart_choices import build_smart_choices
@@ -32,7 +32,7 @@ from auth_helpers import (
     pre_validate_registration, send_otp_email, reset_password_in_db,
     pre_validate_profile_update, send_broadcast_email,
 )
-from models import CollegeReview, User, SeatInfo
+from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount
 from faq_data import (
     FAQ_LIST, get_faq_by_slug, get_faqs_by_category, get_all_categories
 )
@@ -120,6 +120,7 @@ def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
                 'fee_display': format_fee_display(fee),
                 'fee': fee,
                 'district': get_district_for_city(infer_city_from_college_name(c.college_name) or city or ''),
+                'coords': get_college_coordinates(c.college_name),
             })
 
         college_data.sort(key=lambda x: (
@@ -161,6 +162,17 @@ def inject_globals():
     user = current_user()
     admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
     is_admin = user and user.email.strip().lower() == admin_email
+    
+    from flask import g
+    total_visits = getattr(g, 'total_visits', 0)
+    if total_visits == 0:
+        try:
+            counter = VisitorCount.query.get(1)
+            if counter:
+                total_visits = counter.count
+        except Exception:
+            pass
+            
     return {
         'data_last_updated': meta.get('last_updated', '2025'),
         'data_years': meta.get('years_available', YEARS),
@@ -168,7 +180,34 @@ def inject_globals():
         'mp_districts': MP_DISTRICTS,
         'google_api_enabled': api_key_configured(),
         'is_admin': bool(is_admin),
+        'total_visits': total_visits,
+        'city_coords': get_city_coords(),
+        'schedule': get_counselling_schedule(),
     }
+
+
+@app.before_request
+def count_visitor():
+    # Only count page requests (endpoints returning HTML, skip assets and api paths)
+    if request.endpoint and not request.endpoint.startswith('static') and not request.path.startswith('/api/'):
+        try:
+            from flask import g, session
+            counter = VisitorCount.query.get(1)
+            if not counter:
+                counter = VisitorCount(id=1, count=0)
+                db.session.add(counter)
+                db.session.commit()
+            
+            # Increment only once per session
+            if not session.get('has_visited'):
+                counter.count += 1
+                db.session.commit()
+                session['has_visited'] = True
+                
+            g.total_visits = counter.count
+        except Exception as e:
+            db.session.rollback()
+            print("Visitor count increment failed:", e)
 
 
 with app.app_context():
@@ -219,6 +258,49 @@ with app.app_context():
             db.session.commit()
     except Exception as e:
         print("Admin seeding failed:", e)
+
+    # Auto-seed initial choice vault slips
+    try:
+        if ChoiceVault.query.count() == 0:
+            initial_slips = [
+                ChoiceVault(
+                    name="Student #1",
+                    cgpa="8.48 (F)",
+                    roll_no="571136979331",
+                    image_url="choice_vault_1.jpg",
+                    focus="Govt/Univ CSE Focus",
+                    summary="11 preferences, strictly CSE/IT in Govt & University Owned Colleges in MP."
+                ),
+                ChoiceVault(
+                    name="Student #2",
+                    cgpa="8.88",
+                    roll_no="571142208900",
+                    image_url="choice_vault_3.jpg",
+                    focus="Govt/Private CSE/IT",
+                    summary="10 preferences, CSE/IT across premium Govt and top Private institutions (SGSITS, DAVV, RGPV, Acropolis)."
+                ),
+                ChoiceVault(
+                    name="Student #3",
+                    cgpa="8.33",
+                    roll_no="571126268801",
+                    image_url="choice_vault_2.jpg",
+                    focus="Govt/Private Mix",
+                    summary="17 preferences, mixing CSE, IT, AI & Data Science, EC, EE, EI in Govt Aided & Private colleges."
+                )
+            ]
+            db.session.bulk_save_objects(initial_slips)
+            db.session.commit()
+    except Exception as e:
+        print("ChoiceVault seeding failed:", e)
+
+    # Auto-seed visitor count if empty
+    try:
+        if VisitorCount.query.count() == 0:
+            initial_count = VisitorCount(id=1, count=0)
+            db.session.add(initial_count)
+            db.session.commit()
+    except Exception as e:
+        print("VisitorCount seeding failed:", e)
 
     fetch_rank_maps_cache()
 
@@ -794,6 +876,12 @@ def dte_rules():
     return render_template('rules.html')
 
 
+@app.route('/choice-vault')
+def choice_vault():
+    slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
+    return render_template('choice_vault.html', slips=slips)
+
+
 @app.route('/faq/<string:slug>')
 def faq_detail(slug):
     faq = get_faq_by_slug(slug)
@@ -1153,6 +1241,7 @@ def admin_users():
         
     stats = get_admin_dashboard_stats(users)
     reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
+    vault_slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
 
     return render_template(
         'admin_dashboard.html', 
@@ -1161,8 +1250,118 @@ def admin_users():
         avg_cgpa=stats['avg_cgpa'], 
         branch_stats=stats['branch_stats'], 
         category_stats=stats['category_stats'],
-        reviews=reviews
+        reviews=reviews,
+        vault_slips=vault_slips
     )
+
+
+@app.route('/admin/update-schedule', methods=['POST'])
+@login_required
+def admin_update_schedule():
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    academic_year = request.form.get('academic_year', '').strip()
+    portal_url = request.form.get('portal_url', '').strip()
+
+    events = []
+    idx = 0
+    while f"event_id_{idx}" in request.form:
+        ev_id = request.form.get(f"event_id_{idx}").strip()
+        ev_title = request.form.get(f"event_title_{idx}").strip()
+        ev_status = request.form.get(f"event_status_{idx}").strip()
+        ev_date = request.form.get(f"event_date_{idx}", "").strip() or None
+        
+        event = {
+            "id": ev_id,
+            "title": ev_title,
+            "status": ev_status
+        }
+        
+        if ev_date:
+            event["date"] = ev_date
+
+        if f"event_end_date_{idx}" in request.form:
+            end_date = request.form.get(f"event_end_date_{idx}").strip()
+            if end_date:
+                event["end_date"] = end_date
+
+        if f"event_reg_date_{idx}" in request.form:
+            reg_date = request.form.get(f"event_reg_date_{idx}").strip()
+            if reg_date:
+                event["reg_date"] = reg_date
+
+        if f"event_reg_end_date_{idx}" in request.form:
+            reg_end_date = request.form.get(f"event_reg_end_date_{idx}").strip()
+            if reg_end_date:
+                event["reg_end_date"] = reg_end_date
+
+        if f"event_time_desc_{idx}" in request.form:
+            time_desc = request.form.get(f"event_time_desc_{idx}").strip()
+            if time_desc:
+                event["time_desc"] = time_desc
+
+        if f"event_description_{idx}" in request.form:
+            desc = request.form.get(f"event_description_{idx}").strip()
+            if desc:
+                event["description"] = desc
+
+        events.append(event)
+        idx += 1
+
+    schedule_data = {
+        "academic_year": academic_year,
+        "portal_url": portal_url,
+        "events": events
+    }
+
+    save_counselling_schedule(schedule_data)
+    return redirect('/admin/users?success=schedule#schedule')
+
+
+@app.route('/admin/add-vault-slip', methods=['POST'])
+@login_required
+def add_vault_slip():
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    name = request.form.get('name', '').strip()
+    cgpa = request.form.get('cgpa', '').strip()
+    roll_no = request.form.get('roll_no', '').strip()
+    image_url = request.form.get('image_url', '').strip()
+    focus = request.form.get('focus', '').strip()
+    summary = request.form.get('summary', '').strip()
+
+    if name and cgpa and roll_no and image_url and focus and summary:
+        new_slip = ChoiceVault(
+            name=name,
+            cgpa=cgpa,
+            roll_no=roll_no,
+            image_url=image_url,
+            focus=focus,
+            summary=summary
+        )
+        db.session.add(new_slip)
+        db.session.commit()
+    return redirect('/admin/users?success=vault_added#choice-vault')
+
+
+@app.route('/admin/delete-vault-slip/<int:id>', methods=['POST'])
+@login_required
+def delete_vault_slip(id):
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    slip = ChoiceVault.query.get_or_404(id)
+    db.session.delete(slip)
+    db.session.commit()
+    return redirect('/admin/users?success=vault_deleted#choice-vault')
 
 
 @app.route('/admin/delete-user/<int:user_id>', methods=['POST'])
@@ -1207,31 +1406,58 @@ def admin_broadcast():
 
     subject = request.form.get('subject', '').strip()
     body = request.form.get('body', '').strip()
+    recipient_type = request.form.get('recipient_type', 'all').strip()
+    specific_user_id = request.form.get('specific_user_id', '').strip()
 
     users = User.query.order_by(User.created_at.desc()).all()
     stats = get_admin_dashboard_stats(users)
     reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
+    vault_slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
 
     if not subject or not body:
-        # Re-render admin panel with error
         return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
             avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-            reviews=reviews, broadcast_error="Subject and Message body cannot be empty.")
+            reviews=reviews, vault_slips=vault_slips, broadcast_error="Subject and Message body cannot be empty.")
 
-    # Only send to users who have alerts enabled
-    subscribed_users = User.query.filter_by(notify_counselling=1).all()
-    emails = [u.email for u in subscribed_users if u.email]
+    emails = []
+    recipient_display = ""
+
+    if recipient_type == 'single':
+        if not specific_user_id:
+            return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
+                avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
+                reviews=reviews, vault_slips=vault_slips, broadcast_error="Please select a specific student to send the message.")
+        
+        target_user = User.query.get(specific_user_id)
+        if not target_user:
+            return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
+                avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
+                reviews=reviews, vault_slips=vault_slips, broadcast_error="Selected student not found in database.")
+        
+        if not target_user.email:
+            return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
+                avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
+                reviews=reviews, vault_slips=vault_slips, broadcast_error="Selected student does not have a valid email address.")
+        
+        emails = [target_user.email]
+        recipient_display = target_user.display_name or target_user.email
+    else:
+        # Only send to users who have alerts enabled
+        subscribed_users = User.query.filter_by(notify_counselling=1).all()
+        emails = [u.email for u in subscribed_users if u.email]
+        recipient_display = f"{len(emails)} subscribed students"
 
     if not emails:
         return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
             avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-            reviews=reviews, broadcast_error="No subscribed users found. All students have alerts disabled.")
+            reviews=reviews, vault_slips=vault_slips, broadcast_error="No recipients found for this selection.")
 
     success_count, fail_count = send_broadcast_email(emails, subject, body)
 
     return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
         avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-        reviews=reviews, broadcast_success=f"Email sent to {success_count} students. ({fail_count} failed)")
+        reviews=reviews, vault_slips=vault_slips, 
+        broadcast_success=f"Email sent successfully to {recipient_display}. ({success_count} succeeded, {fail_count} failed)")
 
 
 @app.route('/admin/approve-review/<int:review_id>', methods=['POST'])

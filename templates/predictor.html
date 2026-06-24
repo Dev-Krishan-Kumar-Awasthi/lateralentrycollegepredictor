@@ -319,78 +319,138 @@
             </div>
 
             <div class="results-content">
-                <div class="rules-note-bar">
-                    <i class="fas fa-lightbulb"></i>
-                    <strong>OP</strong> = Open (all genders) &nbsp; <strong>F</strong> = Female only
-                    &nbsp;|&nbsp; Highlighted rows show high admission probability based on last year's trends.
+                <!-- Views Selector -->
+                <div style="display: flex; gap: 8px; border-bottom: 2px solid var(--border); margin-bottom: 20px; padding-bottom: 2px;">
+                    <button type="button" id="view-btn-list" onclick="switchResultsView('list')" style="
+                        padding: 10px 20px;
+                        font-weight: 700;
+                        font-size: 0.95rem;
+                        border: none;
+                        background: none;
+                        cursor: pointer;
+                        border-bottom: 3px solid var(--primary);
+                        color: var(--primary);
+                        transition: all 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <i class="fas fa-list"></i> Table List View
+                    </button>
+                    <button type="button" id="view-btn-map" onclick="switchResultsView('map')" style="
+                        padding: 10px 20px;
+                        font-weight: 700;
+                        font-size: 0.95rem;
+                        border: none;
+                        background: none;
+                        cursor: pointer;
+                        border-bottom: 3px solid transparent;
+                        color: var(--muted);
+                        transition: all 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <i class="fas fa-map-marked-alt"></i> College Map View
+                    </button>
                 </div>
 
-                {% for year, yr_data in prediction.items() %}
-                <h3 style="color:var(--primary);font-size:1.05rem;margin:20px 0 8px;">
-                    <i class="fas fa-calendar-alt"></i> Historical Data: Year {{ year }}
-                    <span style="font-size:0.82rem;font-weight:400;color:var(--muted);margin-left:8px;">
-                        ({{ yr_data.colleges | length }} colleges found)
-                    </span>
-                </h3>
+                <!-- 1. Table List View Container -->
+                <div id="results-list-container">
+                    <div class="rules-note-bar">
+                        <i class="fas fa-lightbulb"></i>
+                        <strong>OP</strong> = Open (all genders) &nbsp; <strong>F</strong> = Female only
+                        &nbsp;|&nbsp; Highlighted rows show high admission probability based on last year's trends.
+                    </div>
 
-                <div class="prediction-box">
-                    Estimated Merit Rank Range: <strong>{{ yr_data.min_rank }} – {{ yr_data.max_rank }}</strong>
+                    {% for year, yr_data in prediction.items() %}
+                    <h3 style="color:var(--primary);font-size:1.05rem;margin:20px 0 8px;">
+                        <i class="fas fa-calendar-alt"></i> Historical Data: Year {{ year }}
+                        <span style="font-size:0.82rem;font-weight:400;color:var(--muted);margin-left:8px;">
+                            ({{ yr_data.colleges | length }} colleges found)
+                        </span>
+                    </h3>
+
+                    <div class="prediction-box">
+                        Estimated Merit Rank Range: <strong>{{ yr_data.min_rank }} – {{ yr_data.max_rank }}</strong>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="gov-table" id="results-table-{{ year }}">
+                            <thead>
+                                <tr>
+                                    <th style="width:36px;"><input type="checkbox" class="select-all-check" data-table="results-table-{{ year }}" onchange="toggleSelectAll(this)"></th>
+                                    <th>#</th>
+                                    <th>College Name</th>
+                                    <th>Branch</th>
+                                    <th>Type</th>
+                                    <th>Opening</th>
+                                    <th>Closing</th>
+                                    <th>Quota</th>
+                                    <th>Resident</th>
+                                    <th>Seats</th>
+                                    <th>Fee (approx)</th>
+                                    <th>Dist.</th>
+                                    <th>Chance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in yr_data.colleges %}
+                                {% set college = item.college %}
+                                {% set prob = item.probability %}
+                                <tr class="result-row">
+                                    <td style="text-align:center;">
+                                        <input type="checkbox" class="shortlist-check" data-id="{{ college.college_name }}|{{ college.branch }}|{{ year }}" onchange="updateShortlistBar()">
+                                    </td>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank">{{ college.college_name }}</a>
+                                        <button class="cmp-add-btn" onclick="addToCompare(this, '{{ college.college_name | replace("'","\\'") }}')">
+                                            <i class="fas fa-balance-scale"></i> Compare
+                                        </button>
+                                    </td>
+                                    <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch }})</span></td>
+                                    <td><span class="type-tag">{{ college.college_type }}</span></td>
+                                    <td style="font-family:monospace;">{{ college.opening_rank }}</td>
+                                    <td style="font-family:monospace;font-weight:700;">{{ college.closing_rank }}</td>
+                                    <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender }}</span></td>
+                                    <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
+                                    <td>{{ college.total_seats }}</td>
+                                    <td style="font-size:0.78rem;">{{ item.fee_display or '—' }}</td>
+                                    <td style="font-size:0.78rem;" title="{{ item.distance_source or '' }}">
+                                        {% if item.distance_text %}{{ item.distance_text }}{% elif item.distance_km %}{{ item.distance_km }} km{% else %}—{% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="prob-glow {{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{ prob }}%</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endfor %}
                 </div>
 
-                <div class="table-wrapper">
-                    <table class="gov-table" id="results-table-{{ year }}">
-                        <thead>
-                            <tr>
-                                <th style="width:36px;"><input type="checkbox" class="select-all-check" data-table="results-table-{{ year }}" onchange="toggleSelectAll(this)"></th>
-                                <th>#</th>
-                                <th>College Name</th>
-                                <th>Branch</th>
-                                <th>Type</th>
-                                <th>Opening</th>
-                                <th>Closing</th>
-                                <th>Quota</th>
-                                <th>Resident</th>
-                                <th>Seats</th>
-                                <th>Fee (approx)</th>
-                                <th>Dist.</th>
-                                <th>Chance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in yr_data.colleges %}
-                            {% set college = item.college %}
-                            {% set prob = item.probability %}
-                            <tr class="result-row">
-                                <td style="text-align:center;">
-                                    <input type="checkbox" class="shortlist-check" data-id="{{ college.college_name }}|{{ college.branch }}|{{ year }}" onchange="updateShortlistBar()">
-                                </td>
-                                <td>{{ loop.index }}</td>
-                                <td>
-                                    <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank">{{ college.college_name }}</a>
-                                    <button class="cmp-add-btn" onclick="addToCompare(this, '{{ college.college_name | replace("'","\\'") }}')">
-                                        <i class="fas fa-balance-scale"></i> Compare
-                                    </button>
-                                </td>
-                                <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch }})</span></td>
-                                <td><span class="type-tag">{{ college.college_type }}</span></td>
-                                <td style="font-family:monospace;">{{ college.opening_rank }}</td>
-                                <td style="font-family:monospace;font-weight:700;">{{ college.closing_rank }}</td>
-                                <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender }}</span></td>
-                                <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
-                                <td>{{ college.total_seats }}</td>
-                                <td style="font-size:0.78rem;">{{ item.fee_display or '—' }}</td>
-                                <td style="font-size:0.78rem;" title="{{ item.distance_source or '' }}">
-                                    {% if item.distance_text %}{{ item.distance_text }}{% elif item.distance_km %}{{ item.distance_km }} km{% else %}—{% endif %}
-                                </td>
-                                <td>
-                                    <span class="prob-glow {{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{ prob }}%</span>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <!-- 2. College Map View Container -->
+                <div id="results-map-container" style="display: none; width: 100%; box-sizing: border-box;">
+                    <div class="rules-note-bar" style="background: #eff6ff; border-left-color: #2563eb; color: #1e40af; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-info-circle" style="font-size: 1.1rem;"></i>
+                        <span>Click on college markers to view available branches, fee details, and distance estimates.</span>
+                    </div>
+                    <!-- Leaflet CSS -->
+                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                    <!-- Map Canvas -->
+                    <div id="colleges-map" style="
+                        width: 100%;
+                        height: 550px;
+                        border-radius: 12px;
+                        border: 1px solid var(--border);
+                        box-shadow: var(--glass-shadow);
+                        position: relative;
+                        z-index: 1;
+                        background: #f8fafc;
+                    "></div>
                 </div>
-                {% endfor %}
             </div>
         </div>
     {% endif %}
@@ -707,5 +767,197 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+{% if prediction %}
+// 1. Colleges Coordinates payload for Map Explorer
+const mapColleges = [
+    {% for year, yr_data in prediction.items() %}
+        {% for item in yr_data.colleges %}
+            {% if item.coords %}
+            {
+                name: {{ item.college.college_name | tojson }},
+                branch: {{ (item.college.branch | branch_name) | tojson }},
+                branch_code: {{ item.college.branch | tojson }},
+                type: {{ item.college.college_type | tojson }},
+                opening: {{ item.college.opening_rank }},
+                closing: {{ item.college.closing_rank }},
+                chance: {{ item.probability }},
+                fee: {{ item.fee_display | tojson }},
+                distance: {{ item.distance_text | tojson }},
+                year: {{ year }},
+                lat: {{ item.coords[0] }},
+                lng: {{ item.coords[1] }}
+            },
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+];
+
+// 2. View Toggle
+let map = null;
+let mapInitialized = false;
+
+function switchResultsView(view) {
+    const listContainer = document.getElementById('results-list-container');
+    const mapContainer = document.getElementById('results-map-container');
+    const btnList = document.getElementById('view-btn-list');
+    const btnMap = document.getElementById('view-btn-map');
+
+    if (!listContainer || !mapContainer) return;
+
+    if (view === 'map') {
+        listContainer.style.display = 'none';
+        mapContainer.style.display = 'block';
+
+        if (btnList) {
+            btnList.style.color = 'var(--muted)';
+            btnList.style.borderBottomColor = 'transparent';
+        }
+        if (btnMap) {
+            btnMap.style.color = 'var(--primary)';
+            btnMap.style.borderBottomColor = 'var(--primary)';
+        }
+
+        // Initialize map
+        initCollegesMap();
+    } else {
+        listContainer.style.display = 'block';
+        mapContainer.style.display = 'none';
+
+        if (btnList) {
+            btnList.style.color = 'var(--primary)';
+            btnList.style.borderBottomColor = 'var(--primary)';
+        }
+        if (btnMap) {
+            btnMap.style.color = 'var(--muted)';
+            btnMap.style.borderBottomColor = 'transparent';
+        }
+    }
+}
+
+function initCollegesMap() {
+    if (!window.L) {
+        // Load Leaflet script dynamically if not loaded yet
+        const script = document.createElement('script');
+        script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+        script.onload = () => {
+            setupMapInstance();
+        };
+        document.head.appendChild(script);
+    } else {
+        setupMapInstance();
+    }
+}
+
+function setupMapInstance() {
+    if (mapInitialized) {
+        if (map) {
+            map.invalidateSize();
+        }
+        return;
+    }
+
+    // Centered around Madhya Pradesh center (Bhopal)
+    map = L.map('colleges-map').setView([23.2599, 77.4126], 7);
+
+    // Modern styled Tile Layer (CartoDB Voyager)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+    }).addTo(map);
+
+    // Grouping by college
+    const grouped = {};
+    mapColleges.forEach(item => {
+        if (!grouped[item.name]) {
+            grouped[item.name] = {
+                name: item.name,
+                lat: item.lat,
+                lng: item.lng,
+                type: item.type,
+                fee: item.fee,
+                distance: item.distance,
+                details: []
+            };
+        }
+        grouped[item.name].details.push(item);
+    });
+
+    const markerBounds = [];
+
+    // Custom Icon for college
+    const collegeIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: `<div style="background:var(--primary); color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); font-size: 0.8rem;"><i class="fas fa-university"></i></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
+
+    // Custom Icon for home
+    const homeIcon = L.divIcon({
+        className: 'custom-map-marker-home',
+        html: `<div style="background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); font-size: 0.8rem;"><i class="fas fa-home"></i></div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
+
+    // Plot home city if valid
+    const homeCity = "{{ data.home_city if data else 'All' }}";
+    const cityCoords = {{ city_coords | tojson | safe }} || {};
+
+    if (homeCity && homeCity !== 'All' && cityCoords[homeCity]) {
+        const homeLat = parseFloat(cityCoords[homeCity].lat);
+        const homeLng = parseFloat(cityCoords[homeCity].lng);
+        const homeMarker = L.marker([homeLat, homeLng], { icon: homeIcon })
+            .addTo(map)
+            .bindPopup(`<b>My Home City</b><br>${homeCity}`);
+        markerBounds.push([homeLat, homeLng]);
+    }
+
+    // Plot colleges
+    Object.values(grouped).forEach(col => {
+        const lat = parseFloat(col.lat);
+        const lng = parseFloat(col.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        let popupContent = `<div style="font-family:inherit; min-width: 220px; line-height:1.5;">
+            <strong style="color:var(--primary); font-size:0.95rem; display:block; margin-bottom:4px;">${col.name}</strong>
+            <span style="font-size:0.75rem; color:#475569; display:block; margin-bottom:8px;"><i class="fas fa-tags"></i> ${col.type} College</span>
+            
+            <div style="font-size:0.8rem; margin-bottom:8px; line-height:1.4;">
+                <b>Fee:</b> ${col.fee || '—'}<br>
+                <b>Distance:</b> ${col.distance || '—'}
+            </div>
+            
+            <div style="border-top:1px solid #e2e8f0; padding-top:6px; margin-top:6px;">
+                <strong style="font-size:0.78rem; display:block; margin-bottom:4px; color:#1e293b;">Matching Branches:</strong>`;
+        
+        col.details.forEach(d => {
+            const chanceColor = d.chance >= 75 ? '#10B981' : (d.chance >= 40 ? '#F59E0B' : '#EF4444');
+            popupContent += `
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; padding:3px 0; border-bottom:1px dashed #f1f5f9;">
+                    <span>${d.branch} (${d.year})</span>
+                    <strong style="color:${chanceColor}; font-weight:700;">${d.chance}% chance</strong>
+                </div>`;
+        });
+
+        popupContent += `</div>
+            <a href="/college?name=${encodeURIComponent(col.name)}" target="_blank" style="display:inline-block; margin-top:8px; background:var(--primary); color:#fff; text-decoration:none; padding:4px 8px; border-radius:4px; font-size:0.75rem; font-weight:700;"><i class="fas fa-external-link-alt"></i> College Info</a>
+        </div>`;
+
+        L.marker([lat, lng], { icon: collegeIcon })
+            .addTo(map)
+            .bindPopup(popupContent);
+
+        markerBounds.push([lat, lng]);
+    });
+
+    if (markerBounds.length > 0) {
+        map.fitBounds(markerBounds, { padding: [40, 40] });
+    }
+    mapInitialized = true;
+}
+{% endif %}
 </script>
 {% endblock %}

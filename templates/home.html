@@ -66,6 +66,95 @@
     </div>
 </section>
 
+{% set reg_event = none %}
+{% set choice_event = none %}
+{% set clc_event = none %}
+{% if schedule and schedule.events %}
+    {% for ev in schedule.events %}
+        {% if ev.id == 'registration' %}{% set reg_event = ev %}{% endif %}
+        {% if ev.id == 'choice_filling' %}{% set choice_event = ev %}{% endif %}
+        {% if ev.id == 'clc_r1' %}{% set clc_event = ev %}{% endif %}
+    {% endfor %}
+{% endif %}
+
+<!-- DTE COUNTER WIDGET -->
+<section class="dte-countdown-section" style="padding: 25px 0; background: #f8fafc; border-bottom: 1px solid var(--border); box-shadow: inset 0 -1px 3px rgba(0,0,0,0.02);">
+    <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 0 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <h2 style="font-size: 1.15rem; color: var(--primary); margin: 0; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-clock" style="color: var(--saffron);"></i>
+                Interactive DTE Counselling Countdown Tracker ({{ schedule.academic_year or '2026-27' }})
+            </h2>
+            <a href="/schedule" class="btn-primary" style="font-size: 0.8rem; padding: 6px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                View Full Schedule <i class="fas fa-calendar-alt"></i>
+            </a>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <!-- Registration Card -->
+            {% if reg_event %}
+            <div class="countdown-card" id="card-registration" data-start-date="{{ reg_event.date }}" data-end-date="{{ reg_event.end_date or reg_event.date }}" data-end-time="23:45:00" style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: var(--glass-shadow); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 0.82rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">Phase 1: Registration</span>
+                        <span class="status-badge" style="padding: 4px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; transition: all 0.2s;">Calculating...</span>
+                    </div>
+                    <div class="timer-display" style="font-size: 1.6rem; font-weight: 800; color: var(--primary); font-family: monospace; margin: 12px 0; letter-spacing: 0.5px;">--d --h --m --s</div>
+                    {% if reg_event.end_date %}
+                        <p style="font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.4;">
+                            Ends on: <strong>{{ reg_event.end_date.split('-')[2] }}/{{ reg_event.end_date.split('-')[1] }}/{{ reg_event.end_date.split('-')[0] }}</strong> ({{ reg_event.time_desc or '11:45 PM' }})
+                        </p>
+                    {% else %}
+                        <p style="font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.4;">
+                            Date: <strong>{{ reg_event.date.split('-')[2] }}/{{ reg_event.date.split('-')[1] }}/{{ reg_event.date.split('-')[0] }}</strong>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Choice Filling Card -->
+            {% if choice_event %}
+            <div class="countdown-card" id="card-choice-filling" data-start-date="{{ choice_event.date }}" data-end-date="{{ choice_event.end_date or choice_event.date }}" data-end-time="23:45:00" style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: var(--glass-shadow); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 0.82rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">Phase 2: Choice Filling</span>
+                        <span class="status-badge" style="padding: 4px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; transition: all 0.2s;">Calculating...</span>
+                    </div>
+                    <div class="timer-display" style="font-size: 1.6rem; font-weight: 800; color: var(--primary); font-family: monospace; margin: 12px 0; letter-spacing: 0.5px;">--d --h --m --s</div>
+                    {% if choice_event.end_date %}
+                        <p style="font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.4;">
+                            Ends on: <strong>{{ choice_event.end_date.split('-')[2] }}/{{ choice_event.end_date.split('-')[1] }}/{{ choice_event.end_date.split('-')[0] }}</strong> ({{ choice_event.time_desc or '11:45 PM' }})
+                        </p>
+                    {% else %}
+                        <p style="font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.4;">
+                            Date: <strong>{{ choice_event.date.split('-')[2] }}/{{ choice_event.date.split('-')[1] }}/{{ choice_event.date.split('-')[0] }}</strong>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- CLC Round 1 Card -->
+            {% if clc_event %}
+            <div class="countdown-card" id="card-clc" data-start-date="{{ clc_event.reg_date or clc_event.date }}" data-end-date="{{ clc_event.date }}" data-end-time="10:30:00" style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: var(--glass-shadow); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 0.82rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">Phase 3: CLC Round 1</span>
+                        <span class="status-badge" style="padding: 4px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; transition: all 0.2s;">Calculating...</span>
+                    </div>
+                    <div class="timer-display" style="font-size: 1.6rem; font-weight: 800; color: var(--primary); font-family: monospace; margin: 12px 0; letter-spacing: 0.5px;">--d --h --m --s</div>
+                    <p style="font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.4;">
+                        Starts on: <strong>{{ clc_event.date.split('-')[2] }}/{{ clc_event.date.split('-')[1] }}/{{ clc_event.date.split('-')[0] }}</strong> (10:30 AM)
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
 <!-- TOOLS -->
 <section class="section">
     <div class="section-inner">
@@ -465,6 +554,103 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof MpNotifications !== 'undefined') {
         MpNotifications.initSubscribeButton('enable-notifications-btn', '/api/v1/counselling-schedule');
     }
+
+    // Interactive Countdown Timer Logic
+    function updateTimers() {
+        const now = new Date();
+        
+        document.querySelectorAll('.countdown-card').forEach(card => {
+            const startDateStr = card.getAttribute('data-start-date');
+            const endDateStr = card.getAttribute('data-end-date');
+            const endTimeStr = card.getAttribute('data-end-time') || '23:59:59';
+            const displayEl = card.querySelector('.timer-display');
+            const badgeEl = card.querySelector('.status-badge');
+            
+            if (!startDateStr || !endDateStr || !displayEl || !badgeEl) return;
+            
+            // Safe parser for date & time in local timezone
+            const parseDate = (dStr, tStr) => {
+                const parts = dStr.split('-');
+                const timeParts = tStr.split(':');
+                return new Date(
+                    parseInt(parts[0], 10),
+                    parseInt(parts[1], 10) - 1,
+                    parseInt(parts[2], 10),
+                    parseInt(timeParts[0], 10),
+                    parseInt(timeParts[1], 10),
+                    parseInt(timeParts[2], 10)
+                );
+            };
+            
+            const startDate = parseDate(startDateStr, '00:00:00');
+            const endDate = parseDate(endDateStr, endTimeStr);
+            
+            let status = '';
+            let targetDate = null;
+            let showTimer = true;
+            
+            if (now < startDate) {
+                status = 'upcoming';
+                targetDate = startDate;
+            } else if (now >= startDate && now <= endDate) {
+                status = 'active';
+                targetDate = endDate;
+            } else {
+                status = 'closed';
+                showTimer = false;
+            }
+            
+            // Set styles and badge text dynamically
+            if (status === 'upcoming') {
+                badgeEl.textContent = 'Upcoming';
+                badgeEl.style.background = '#FEF3C7';
+                badgeEl.style.color = '#D97706';
+                card.style.borderColor = '#FED7AA';
+            } else if (status === 'active') {
+                badgeEl.textContent = 'Active';
+                badgeEl.style.background = '#DCFCE7';
+                badgeEl.style.color = '#16A34A';
+                card.style.borderColor = '#BBF7D0';
+                card.style.boxShadow = '0 6px 16px rgba(22, 163, 74, 0.08)';
+            } else {
+                badgeEl.textContent = 'Closed';
+                badgeEl.style.background = '#F1F5F9';
+                badgeEl.style.color = '#64748B';
+                card.style.borderColor = '#E2E8F0';
+                card.style.opacity = '0.75';
+            }
+            
+            if (showTimer && targetDate) {
+                const diffMs = targetDate - now;
+                const diffSecs = Math.floor(diffMs / 1000);
+                
+                const days = Math.floor(diffSecs / (3600 * 24));
+                const hours = Math.floor((diffSecs % (3600 * 24)) / 3600);
+                const mins = Math.floor((diffSecs % 3600) / 60);
+                const secs = diffSecs % 60;
+                
+                let timeStr = '';
+                if (days > 0) {
+                    timeStr += `<span style="color:var(--primary); font-size:1.6rem; font-weight:800;">${days}</span>d `;
+                }
+                timeStr += `<span style="color:var(--primary); font-size:1.6rem; font-weight:800;">${String(hours).padStart(2, '0')}</span>h `;
+                timeStr += `<span style="color:var(--primary); font-size:1.6rem; font-weight:800;">${String(mins).padStart(2, '0')}</span>m `;
+                timeStr += `<span style="color:var(--primary); font-size:1.6rem; font-weight:800;">${String(secs).padStart(2, '0')}</span>s`;
+                
+                if (status === 'upcoming') {
+                    displayEl.innerHTML = `<span style="font-size:0.8rem; font-weight: 600; color: var(--muted); display:block; margin-bottom: 4px;"><i class="fas fa-hourglass-start"></i> Starts in:</span>${timeStr}`;
+                } else {
+                    displayEl.innerHTML = `<span style="font-size:0.8rem; font-weight: 600; color: #16A34A; display:block; margin-bottom: 4px;"><i class="fas fa-hourglass-half"></i> Closes in:</span>${timeStr}`;
+                }
+            } else {
+                displayEl.innerHTML = `<span style="color:#EF4444; font-size:1.15rem; font-weight: 800; display:flex; align-items:center; gap:6px; margin: 10px 0;"><i class="fas fa-lock"></i> Phase Closed</span>`;
+            }
+        });
+    }
+
+    // Run timer immediately and then every second
+    updateTimers();
+    setInterval(updateTimers, 1000);
 });
 </script>
 {% endblock %}

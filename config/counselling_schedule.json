@@ -1,44 +1,70 @@
 {
-  "academic_year": "2025-26",
+  "academic_year": "2026-27",
+  "portal_url": "https://dte.mponline.gov.in",
   "events": [
     {
       "id": "registration",
-      "title": "Online Registration",
-      "date": "2025-06-01",
-      "end_date": "2025-06-15",
-      "status": "upcoming",
+      "title": "Online Registration / Cancel Registration",
+      "status": "closed",
+      "date": "2026-06-20",
+      "end_date": "2026-07-26",
+      "time_desc": "रात्रि 11:45 बजे तक",
       "description": "Register on dte.mponline.gov.in with required documents."
     },
     {
+      "id": "edit_registration",
+      "title": "Registration Correction (Edit)",
+      "status": "upcoming",
+      "date": "2026-07-27",
+      "end_date": "2026-07-28",
+      "time_desc": "सायं 5:30 बजे तक",
+      "description": "Correction window for verified registration details."
+    },
+    {
+      "id": "choice_filling",
+      "title": "Choice Filling & Locking",
+      "status": "upcoming",
+      "date": "2026-06-25",
+      "end_date": "2026-07-30",
+      "time_desc": "रात्रि 11:45 बजे तक",
+      "description": "Select and lock college/branch choices priority-wise."
+    },
+    {
       "id": "merit_list",
-      "title": "Provisional Merit List",
-      "date": "2025-06-20",
+      "title": "Common Merit List Publication",
       "status": "upcoming",
-      "description": "Merit list published on DTE MP portal."
+      "date": "2026-07-31",
+      "time_desc": "DTE Portal",
+      "description": "Common merit list generated for all applicants."
     },
     {
-      "id": "choice_filling_r1",
-      "title": "Choice Filling — Round 1",
-      "date": "2025-06-25",
-      "end_date": "2025-06-28",
+      "id": "allotment_reporting",
+      "title": "Seat Allotment & College Reporting",
       "status": "upcoming",
-      "description": "Lock your priority choice list on the official portal."
+      "date": "2026-08-03",
+      "end_date": "2026-08-08",
+      "time_desc": "सायं 6:30 बजे तक",
+      "description": "Generate allotment letter and report to college with original documents."
     },
     {
-      "id": "allotment_r1",
-      "title": "Round 1 Allotment Result",
-      "date": "2025-07-02",
+      "id": "clc_r1",
+      "title": "CLC Round 1 (College Level)",
       "status": "upcoming",
-      "description": "Check allotment and report to allotted institute if satisfied."
+      "date": "2026-08-11",
+      "reg_date": "2026-08-07",
+      "reg_end_date": "2026-08-10",
+      "time_desc": "प्रातः 10:30 से सायं 6:30",
+      "description": "Physical attendance and admission round at college level."
     },
     {
-      "id": "choice_filling_r2",
-      "title": "Choice Filling — Round 2",
-      "date": "2025-07-10",
-      "end_date": "2025-07-12",
+      "id": "clc_r2",
+      "title": "CLC Round 2 (College Level)",
       "status": "upcoming",
-      "description": "Upgrade or change choices for remaining seats."
+      "date": "2026-08-14",
+      "reg_date": "2026-08-12",
+      "reg_end_date": "2026-08-14",
+      "time_desc": "प्रातः 10:30 से सायं 6:30",
+      "description": "Final college level reporting round for remaining vacant seats."
     }
-  ],
-  "portal_url": "https://dte.mponline.gov.in"
+  ]
 }

@@ -134,10 +134,15 @@
                 </li>
                 
                 <li class="nav-dropdown-item">
-                    <a href="javascript:void(0)" class="dropdown-trigger {% if request.endpoint in ['choice_builder', 'recommendation_list', 'checklist', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
+                    <a href="javascript:void(0)" class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'recommendation_list', 'checklist', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
                         <i class="fas fa-ellipsis-h"></i> More Tools <i class="fas fa-chevron-down" style="margin-left: 4px; font-size: 0.75rem;"></i>
                     </a>
                     <ul class="nav-dropdown">
+                        <li>
+                            <a href="/choice-vault" class="{% if request.endpoint == 'choice_vault' %}dropdown-active{% endif %}">
+                                <i class="fas fa-vault"></i> Choice Vault
+                            </a>
+                        </li>
                         <li>
                             <a href="/checklist" class="{% if request.endpoint == 'checklist' %}dropdown-active{% endif %}">
                                 <i class="fas fa-check-double"></i> Document Checklist
@@ -303,7 +308,189 @@
             Note: This is an independent tool to help students. Final results depend on official DTE rules and seat availability. 
             Always cross-check on <a href="https://dte.mponline.gov.in" target="_blank" style="color:inherit;">dte.mponline.gov.in</a>.
         </p>
+
+        <!-- Page Visit Counter -->
+        <div style="margin-top: 18px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.15); padding: 6px 14px; border-radius: 50px; font-size: 0.82rem; font-weight: 700; color: #1e3a8a; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.04);">
+            <i class="fas fa-eye" style="color: #2563eb; font-size: 0.9rem;"></i>
+            <span>Total Visits:</span>
+            <span style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; padding: 2px 8px; border-radius: 30px; font-family: monospace; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.5px; box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);">
+                {{ "{:,}".format(total_visits) if total_visits is integer else total_visits }}
+            </span>
+        </div>
     </footer>
+
+    {% if request.path == '/' or request.endpoint == 'home' %}
+    <div id="rules-schedule-modal" data-lenis-prevent style="
+        position: fixed; inset: 0; z-index: 99999;
+        display: none; align-items: center; justify-content: center;
+        background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px);
+        padding: 20px;
+    ">
+        <div style="
+            background: #ffffff; border-radius: 24px; max-width: 950px; width: 100%;
+            box-shadow: 0 30px 70px rgba(15, 23, 42, 0.25); overflow: hidden;
+            animation: modalFadeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column;
+            max-height: 92vh; border: 1px solid rgba(255, 255, 255, 0.2);
+        ">
+            <!-- Highlighted Alert Banner (Lighter vibrant blue gradient with saffron warning elements) -->
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: #ffffff; padding: 22px 28px; text-align: center; border-bottom: 4px solid #f59e0b; position: relative;">
+                <div style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.15; font-size: 4rem; pointer-events: none;">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-graduation-cap" style="color: #f59e0b;"></i> Welcome to Lateral Entry College Predictor Tool
+                </div>
+                <p style="margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.6; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                    <span><i class="fas fa-exclamation-triangle" style="color: #f59e0b; animation: warningPulse 1.5s infinite;"></i> First must Read all DTE MP B.E./B.Tech Lateral Entry (Diploma/B.Sc. to Degree) Admission Rules, then do anything. Read rules, 100% all confusions will be cleared!</span>
+                    <a href="/dte-rules" style="background: linear-gradient(135deg, #f59e0b, #e05e00); color: #ffffff; padding: 8px 20px; border-radius: 50px; font-weight: 800; text-decoration: none; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(245,158,11,0.4); transition: all 0.2s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; animation: btnPulse 2s infinite;" id="popup-read-rules-btn">
+                        Read All Rules <i class="fas fa-chevron-right"></i>
+                    </a>
+                </p>
+            </div>
+
+            <!-- Schedule Title Header -->
+            <div style="padding: 24px 28px 14px; border-bottom: 1px solid #f1f5f9; text-align: center; background: #fafafa;">
+                <h2 style="margin: 0; font-size: 1.45rem; color: #1e3a8a; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="far fa-calendar-check" style="color: #3b82f6;"></i> DTE Lateral Entry Counselling Schedule {{ schedule.academic_year or '2026-27' }}
+                </h2>
+                <span style="font-size: 0.88rem; color: #64748b; font-weight: 600; display: block; margin-top: 5px; letter-spacing: 0.5px;">सत्र {{ schedule.academic_year or '2026-27' }} — Diploma & B.Sc. to B.E./B.Tech 2nd Year Admission</span>
+            </div>
+
+            <!-- Modal Body (Scrollable table and instruction details) -->
+            <div class="modal-scroll-area" data-lenis-prevent style="padding: 24px 28px; overflow-y: auto; flex-grow: 1; background: #ffffff;">
+                
+                <div style="overflow-x: auto; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+                        <thead>
+                            <tr style="background: linear-gradient(to right, #f8fafc, #f1f5f9); border-bottom: 2px solid #e2e8f0; color: #1e3a8a;">
+                                <th style="padding: 14px 20px; font-weight: 700; width: 60%;">काउंसलिंग गतिविधि (Counselling Activity)</th>
+                                <th style="padding: 14px 20px; font-weight: 700; white-space: nowrap;">दिनांक एवं समय (Date & Time)</th>
+                            </tr>
+                        </thead>
+                        <tbody style="color: #334155;">
+                            {% if schedule and schedule.events %}
+                                {% for ev in schedule.events %}
+                                    {% if ev.id == 'clc_r1' %}
+                                        <!-- CLC Title Row -->
+                                        <tr style="background: linear-gradient(to right, #eff6ff, #dbeafe); font-weight: bold; color: #1e3a8a; border-bottom: 1.5px solid #cbd5e1;">
+                                            <td colspan="2" style="padding: 10px 20px; text-align: center; font-size: 0.88rem; letter-spacing: 0.8px; text-transform: uppercase;">
+                                                <i class="fas fa-building" style="margin-right: 6px;"></i> संस्था स्तर की काउंसलिंग (College Level Counselling - CLC)
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr style="border-bottom: 1px solid #f1f5f9; {% if ev.id == 'edit_registration' %}background: #fffbeb;{% elif ev.id == 'allotment_reporting' %}background: #ecfdf5;{% endif %}">
+                                        <td style="padding: 14px 20px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; font-weight: 600; {% if ev.id == 'edit_registration' %}color: #b45309; font-weight: 700;{% elif ev.id == 'allotment_reporting' %}color: #047857; font-weight: 700;{% endif %}">
+                                                <span style="color: {% if ev.id == 'registration' %}#3b82f6{% elif ev.id == 'edit_registration' %}#b45309{% elif ev.id == 'choice_filling' %}#8b5cf6{% elif ev.id == 'merit_list' %}#10b981{% elif ev.id == 'allotment_reporting' %}#047857{% else %}#4f46e5{% endif %};">
+                                                    <i class="fas {% if ev.id == 'registration' %}fa-edit{% elif ev.id == 'edit_registration' %}fa-tools{% elif ev.id == 'choice_filling' %}fa-list-ul{% elif ev.id == 'merit_list' %}fa-trophy{% elif ev.id == 'allotment_reporting' %}fa-file-invoice{% else %}fa-sign-in-alt{% endif %}"></i>
+                                                </span>
+                                                <span>{{ ev.title }}</span>
+                                            </div>
+                                            {% if ev.description %}
+                                                <div style="font-size: 0.78rem; color: #64748b; margin-top: 3px; padding-left: 20px;">{{ ev.description }}</div>
+                                            {% endif %}
+                                            {% if ev.reg_date %}
+                                                {% if '-' in ev.reg_date %}{% set rs = ev.reg_date.split('-') %}{% set r_start = rs[2]~'/'~rs[1]~'/'~rs[0] %}{% else %}{% set r_start = ev.reg_date %}{% endif %}
+                                                {% if ev.reg_end_date %}
+                                                    {% if '-' in ev.reg_end_date %}{% set re = ev.reg_end_date.split('-') %}{% set r_end = re[2]~'/'~re[1]~'/'~re[0] %}{% else %}{% set r_end = ev.reg_end_date %}{% endif %}
+                                                    <div style="font-size: 0.78rem; color: #64748b; margin-top: 3px; padding-left: 20px;">रजिस्ट्रेशन: {{ r_start }} से {{ r_end }}{% if ev.id == 'clc_r2' %} <span style="color: #dc2626; font-weight: 600;">(दोपहर 12:30 तक)</span>{% endif %}</div>
+                                                {% else %}
+                                                    <div style="font-size: 0.78rem; color: #64748b; margin-top: 3px; padding-left: 20px;">रजिस्ट्रेशन: {{ r_start }}</div>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td style="padding: 14px 20px; font-weight: 700; color: {% if ev.id == 'edit_registration' %}#b45309{% elif ev.id == 'merit_list' %}#10b981{% elif ev.id == 'allotment_reporting' %}#047857{% else %}#1e40af{% endif %}; white-space: nowrap;">
+                                            {% if ev.date %}
+                                                {% if '-' in ev.date %}
+                                                    {% set parts = ev.date.split('-') %}
+                                                    {{ parts[2] }}/{{ parts[1] }}/{{ parts[0] }}
+                                                {% else %}
+                                                    {{ ev.date }}
+                                                {% endif %}
+                                                {% if ev.end_date %}
+                                                    {% if '-' in ev.end_date %}
+                                                        {% set e_parts = ev.end_date.split('-') %}
+                                                        से {{ e_parts[2] }}/{{ e_parts[1] }}/{{ e_parts[0] }}
+                                                    {% else %}
+                                                        से {{ ev.end_date }}
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if ev.time_desc %}
+                                                <span style="font-size:0.78rem; color:#64748b; font-weight: normal; display: block; margin-top: 2px;"><i class="far fa-clock"></i> {{ ev.time_desc }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2" style="padding: 20px; text-align: center; color: var(--muted);">No schedule events found.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Notes Section -->
+                <div style="background: #eff6ff; border-radius: 12px; padding: 16px 20px; font-size: 0.88rem; border-left: 5px solid #3b82f6; color: #1e3a8a; line-height: 1.6; box-shadow: 0 4px 10px rgba(59,130,246,0.03);">
+                    <p style="margin: 0 0 8px 0; font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;"><i class="fas fa-exclamation-circle" style="font-size: 1.05rem;"></i> CLC Round Instructions:</p>
+                    <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                        <li>CLC ke dauran college level merit ke aadhar par direct admission milta hai. candidates ko **subah 10:30 AM se dopehar 1:00 PM tak** reporting time ke andar attendance lagana mandatory hai.</li>
+                        <li>Sabi category conversions, tie-breaker rules aur verification parameters ko detail mein check karne ke liye upper diye link se DTE rules zaroor padhein.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Footer / Close Action -->
+            <div style="background: #f8fafc; padding: 18px 28px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 12px;">
+                <button id="close-rules-popup-btn" style="
+                    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+                    color: #ffffff; border: none; border-radius: 12px;
+                    padding: 12px 28px; font-weight: 700; font-size: 0.95rem;
+                    cursor: pointer; box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+                    transition: all 0.2s;
+                " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <i class="fas fa-check-circle" style="margin-right: 6px;"></i> I Have Read the Rules &amp; Schedule
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Custom Scrollbar inside the modal for premium appearance */
+        .modal-scroll-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .modal-scroll-area::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Pulsing animations for enhanced visibility */
+        @keyframes warningPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); opacity: 0.8; }
+            100% { transform: scale(1); }
+        }
+        @keyframes btnPulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+        @keyframes modalFadeIn {
+            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+    </style>
+    {% endif %}
 
     <div id="loading-overlay" class="loading-overlay">
         <div class="loader-spinner"></div>
@@ -319,6 +506,26 @@
     </button>
 
     <script>
+    // Rules & Schedule Modal Display Logic
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("rules-schedule-modal");
+        const closeBtn = document.getElementById("close-rules-popup-btn");
+        const readRulesBtn = document.getElementById("popup-read-rules-btn");
+
+        if (modal) {
+            // Always display modal on home page, even on refresh.
+            modal.style.display = "flex";
+
+            // Close logic (simple modal close)
+            const closeModal = function() {
+                modal.style.display = "none";
+            };
+
+            if (closeBtn) closeBtn.addEventListener("click", closeModal);
+            if (readRulesBtn) readRulesBtn.addEventListener("click", closeModal);
+        }
+    });
+
     // 0. Toast Notification Helper
     window.showToast = function(message, type = 'success') {
         const container = document.getElementById('mp-toast-container');

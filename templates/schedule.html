@@ -92,10 +92,12 @@
                     <div style="flex:1;">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
                             <h3 style="margin:0; font-size:1.15rem; color:var(--primary);">{{ ev.title }}</h3>
-                            {% if is_active %}
-                                <span style="background:#EFF6FF; color:#1E40AF; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:800; text-transform:uppercase;"><i class="fas fa-hourglass-half"></i> Upcoming Round</span>
+                            {% if ev.status == 'active' %}
+                                <span style="background:#DCFCE7; color:#15803D; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:800; text-transform:uppercase;"><i class="fas fa-play-circle"></i> Active Phase</span>
+                            {% elif ev.status == 'closed' %}
+                                <span style="background:#FEE2E2; color:#B91C1C; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:800; text-transform:uppercase;"><i class="fas fa-lock"></i> Closed</span>
                             {% else %}
-                                <span style="background:#F1F5F9; color:#475569; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:700; text-transform:uppercase;">Scheduled</span>
+                                <span style="background:#FEF3C7; color:#B45309; padding:4px 10px; border-radius:20px; font-size:0.7rem; font-weight:800; text-transform:uppercase;"><i class="fas fa-hourglass-start"></i> Upcoming</span>
                             {% endif %}
                         </div>
                         <p style="margin:0 0 12px 0; color:var(--muted); font-size:0.9rem; line-height:1.5;">{{ ev.description }}</p>

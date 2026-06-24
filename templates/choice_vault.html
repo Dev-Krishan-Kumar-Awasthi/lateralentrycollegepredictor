@@ -1,0 +1,578 @@
+{% extends "base.html" %}
+
+{% block title %}Choice Vault — DTE MP Lateral Entry Preference Slips{% endblock %}
+{% block meta_description %}View official DTE MP B.Tech Lateral Entry choice filling slips from past successful candidates.{% endblock %}
+
+{% block content %}
+<div class="mp-container" style="max-width: 1200px; margin: 30px auto; padding: 15px; box-sizing: border-box; width: 100%; overflow: hidden;">
+    
+    <!-- Hero Header -->
+    <div style="text-align: center; margin-bottom: 30px;">
+        <span style="background: rgba(37, 99, 235, 0.1); color: #2563eb; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">
+            <i class="fas fa-university"></i> Official Reference Slips
+        </span>
+        <h1 style="color: #1e3a8a; margin: 12px 0 8px; font-size: 2.2rem; font-weight: 800; tracking-spacing: -0.5px;">DTE Choice Vault</h1>
+        <p style="color: #475569; font-size: 1rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">
+            Past students ki actual choice filling slips dekhein aur preferences arrange karne ki strategy samjhein.
+        </p>
+    </div>
+
+    {% if not slips %}
+    <!-- Empty State View when no slips are configured -->
+    <div style="text-align: center; padding: 60px 20px; background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); width: 100%; box-sizing: border-box;">
+        <div style="background: rgba(37, 99, 235, 0.08); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #2563eb; font-size: 2.2rem;">
+            <i class="fas fa-vault"></i>
+        </div>
+        <h2 style="color: #0f172a; margin: 0 0 10px; font-size: 1.4rem; font-weight: 800;">Choice Vault is Empty</h2>
+        <p style="color: #64748b; font-size: 0.95rem; max-width: 480px; margin: 0 auto 20px; line-height: 1.5;">
+            Abhi koi choice filling reference slips add nahi ki gayi hain. Jald hi yahan successful candidates ki slips upload hongi.
+        </p>
+        {% if is_admin %}
+        <a href="/admin/users#choice-vault" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700; padding: 10px 20px; border-radius: 8px;">
+            <i class="fas fa-plus-circle"></i> Add First Slip
+        </a>
+        {% endif %}
+    </div>
+    {% else %}
+    <!-- Main Dashboard Grid Layout -->
+    <div class="dashboard-grid" style="display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start;">
+        
+        <!-- Sidebar Panel: Student Selection List (Desktop Only, Scalable for many students) -->
+        <div class="sidebar-panel" style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 750px; display: flex; flex-direction: column;">
+            
+            <!-- Sidebar Header & Search -->
+            <div style="margin-bottom: 15px;">
+                <h3 style="margin: 0 0 12px; font-size: 1.15rem; color: #0f172a; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-users" style="color: #2563eb;"></i> Students List
+                </h3>
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem;"></i>
+                    <input type="text" id="student-search" placeholder="Search by name, CGPA..." oninput="filterStudents(this.value)" style="
+                        width: 100%;
+                        padding: 10px 10px 10px 36px;
+                        border: 1.5px solid #e2e8f0;
+                        border-radius: 10px;
+                        font-size: 0.9rem;
+                        outline: none;
+                        transition: all 0.2s;
+                    " onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#e2e8f0';">
+                </div>
+            </div>
+
+            <!-- Scrollable Student Cards Container -->
+            <div id="student-cards-container" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
+                {% for slip in slips %}
+                <div class="student-card {% if loop.first %}active{% endif %}" onclick="selectStudent({{ slip.id }})" id="student-card-{{ slip.id }}" style="
+                    border: 1.5px solid #e2e8f0;
+                    border-radius: 12px;
+                    padding: 14px;
+                    background: #fff;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    position: relative;
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 10px;">
+                        <span class="student-name" style="font-weight: 700; color: #0f172a; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            {{ slip.name }}
+                        </span>
+                        <span style="background: #eff6ff; color: #2563eb; font-weight: 700; font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; border: 1px solid #dbeafe;">
+                            CGPA: {{ slip.cgpa }}
+                        </span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">
+                        <i class="fas fa-bullseye"></i> {{ slip.focus }}
+                    </div>
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-family: monospace;">
+                        Roll: {{ slip.roll_no }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Mobile-Only Carousel Panel (Unique horizontally scrollable capsules + dynamic search toggle) -->
+        <div class="mobile-carousel-panel" style="display: none; background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 15px; min-width: 0; overflow: hidden; width: 100%;">
+            
+            <!-- Mobile Selector Header Row -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.3px;">
+                    <i class="fas fa-hand-pointer" style="color: #2563eb;"></i> Swipe &amp; Select Student
+                </span>
+                <button onclick="toggleMobileSearch()" id="mobile-search-toggle" style="
+                    background: #f1f5f9;
+                    border: none;
+                    border-radius: 8px;
+                    width: 34px;
+                    height: 34px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    color: #475569;
+                    transition: all 0.2s;
+                ">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Search Bar (Collapsible) -->
+            <div id="mobile-search-wrapper" style="display: none; margin-bottom: 12px; position: relative;">
+                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.8rem;"></i>
+                <input type="text" id="mobile-student-search" placeholder="Search student name or CGPA..." oninput="filterStudents(this.value)" style="
+                    width: 100%;
+                    padding: 8px 10px 8px 34px;
+                    border: 1.5px solid #cbd5e1;
+                    border-radius: 8px;
+                    font-size: 0.88rem;
+                    outline: none;
+                ">
+            </div>
+
+            <!-- Horizontal Scrollable Row of Pill Capsules -->
+            <div class="mobile-pill-list" style="
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 8px;
+                padding-bottom: 6px;
+                -webkit-overflow-scrolling: touch;
+            ">
+                {% for slip in slips %}
+                <div class="mobile-pill-card {% if loop.first %}active{% endif %}" onclick="selectStudent({{ slip.id }})" id="mobile-pill-{{ slip.id }}" style="
+                    flex: 0 0 auto;
+                    scroll-snap-align: start;
+                    padding: 10px 18px;
+                    background: #fff;
+                    border: 1.5px solid #e2e8f0;
+                    border-radius: 50px;
+                    font-size: 0.88rem;
+                    font-weight: 700;
+                    color: #475569;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                ">
+                    <span class="pill-title">{{ slip.name }}</span>
+                    <span style="font-size: 0.75rem; opacity: 0.8; font-weight: 800; background: rgba(37,99,235,0.08); padding: 1px 6px; border-radius: 10px; color: #2563eb;">{{ slip.cgpa }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Right Panel: Scanned Slip Viewer -->
+        <div class="viewer-panel" style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 750px; min-width: 0; overflow: hidden; width: 100%;">
+            
+            <!-- Details Header -->
+            <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; flex-wrap: wrap;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <h2 id="active-name" style="margin: 0; color: #0f172a; font-size: 1.35rem; font-weight: 800;">Loading...</h2>
+                        <span id="active-cgpa-badge" style="background: #2563eb; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px;">
+                            CGPA: —
+                        </span>
+                        <span id="active-focus-badge" style="background: #f1f5f9; color: #475569; font-size: 0.75rem; font-weight: 700; padding: 2px 10px; border-radius: 6px;">
+                            —
+                        </span>
+                    </div>
+                    <div style="display: flex; gap: 15px; align-items: center; margin-top: 6px; font-size: 0.82rem; color: #64748b;">
+                        <span><i class="fas fa-fingerprint"></i> Roll No: <strong id="active-roll" style="font-family: monospace;">—</strong></span>
+                    </div>
+                </div>
+                <div style="font-size: 0.9rem; color: #475569; line-height: 1.4; max-width: 450px;">
+                    <i class="fas fa-info-circle" style="color:#2563eb;"></i> <strong>Strategy:</strong> <span id="active-summary">—</span>
+                </div>
+            </div>
+
+            <!-- Viewer controls toolbar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 10px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button onclick="zoomOut()" style="width: 34px; height: 34px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; color: #334155; display: flex; align-items: center; justify-content: center;" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
+                    <span id="zoom-level" style="font-family: monospace; font-weight: 700; font-size: 0.85rem; min-width: 46px; text-align: center;">100%</span>
+                    <button onclick="zoomIn()" style="width: 34px; height: 34px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; color: #334155; display: flex; align-items: center; justify-content: center;" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+                    <button onclick="resetZoom()" style="height: 34px; padding: 0 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; color: #334155; font-size: 0.8rem; font-weight: 600;" title="Reset View">Reset</button>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button onclick="openFullsize()" style="height: 34px; padding: 0 12px; border-radius: 6px; border: 1px solid #2563eb; background: #2563eb; color: #fff; cursor: pointer; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;" title="Open Image in New Tab"><i class="fas fa-external-link-alt"></i> Fullscreen</button>
+                </div>
+            </div>
+
+            <!-- Viewer Container Frame -->
+            <div id="image-viewer-frame" style="
+                flex-grow: 1;
+                border: 1px solid #f1f5f9;
+                background: #f8fafc;
+                border-radius: 12px;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: grab;
+                position: relative;
+            " onmousedown="startDrag(event)" onmousemove="drag(event)" onmouseup="endDrag()" onmouseleave="endDrag()">
+                
+                <!-- Floating Instructions (disappear on mobile) -->
+                <div class="drag-info-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(15, 23, 42, 0.75); color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; pointer-events: none; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 5px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); z-index: 10;">
+                    <i class="fas fa-arrows-alt"></i> Drag to pan | Wheel/Pinch to zoom
+                </div>
+
+                <!-- Slip Image Viewport -->
+                <img id="slip-image" src="" alt="Choice Slip" style="
+                    max-width: 95%;
+                    max-height: 95%;
+                    object-fit: contain;
+                    transform-origin: center center;
+                    transition: transform 0.1s ease-out;
+                    user-select: none;
+                    pointer-events: none;
+                    transform: scale(1) translate(0px, 0px);
+                    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+                ">
+            </div>
+
+        </div>
+
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Pass slips data directly to JS context for rapid, lag-free operations -->
+<script>
+    const slipsData = [
+        {% for slip in slips %}
+        {
+            id: {{ slip.id }},
+            name: {{ slip.name | tojson }},
+            cgpa: {{ slip.cgpa | tojson }},
+            roll_no: {{ slip.roll_no | tojson }},
+            image: {{ slip.image_url | tojson }},
+            focus: {{ slip.focus | tojson }},
+            summary: {{ slip.summary | tojson }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+</script>
+
+<style>
+    /* Styling student cards and responsive highlights */
+    .student-card:hover {
+        border-color: #cbd5e1 !important;
+        background: #f8fafc !important;
+        transform: translateY(-1px);
+    }
+    
+    .student-card.active {
+        border-color: #2563eb !important;
+        background: #eff6ff !important;
+        box-shadow: 0 4px 12px rgba(37,99,235,0.08);
+    }
+    
+    .student-card.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #2563eb;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+
+    /* Horizontal scroll list styles */
+    .mobile-pill-list::-webkit-scrollbar {
+        display: none; /* Hide standard scrollbar for native app look */
+    }
+    
+    .mobile-pill-card:hover {
+        border-color: #cbd5e1;
+    }
+    
+    .mobile-pill-card.active {
+        border-color: #2563eb;
+        background: #eff6ff;
+        color: #2563eb;
+        box-shadow: 0 4px 12px rgba(37,99,235,0.12);
+    }
+
+    /* Scrollbar Styling for Sidebar panel list */
+    #student-cards-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    #student-cards-container::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+    }
+    #student-cards-container::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+    #student-cards-container::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    /* ═══ RESPONSIVE CSS MEDIA QUERIES ═══ */
+    @media (max-width: 768px) {
+        .mp-container {
+            width: 100% !important;
+            padding: 10px !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+            margin: 10px auto !important;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr !important;
+            gap: 15px !important;
+            width: 100% !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+        }
+
+        .sidebar-panel {
+            display: none !important; /* Hide list panel on mobile */
+        }
+
+        .mobile-carousel-panel {
+            display: block !important; /* Reveal responsive horizontally scrollable capsules list */
+            width: 100% !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+        }
+
+        .viewer-panel {
+            width: 100% !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            height: auto !important;
+            min-height: 520px !important;
+            padding: 12px !important;
+            box-sizing: border-box !important;
+        }
+
+        .drag-info-badge {
+            display: none !important; /* Hide floating badge to save viewport area */
+        }
+    }
+</style>
+
+<script>
+    let currentSlipId = null;
+    let currentZoom = 1;
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let translateX = 0, translateY = 0;
+
+    const slipImage = document.getElementById('slip-image');
+    const zoomLevelEl = document.getElementById('zoom-level');
+    const viewerFrame = document.getElementById('image-viewer-frame');
+
+    // UI elements to update dynamically
+    const activeName = document.getElementById('active-name');
+    const activeCgpa = document.getElementById('active-cgpa-badge');
+    const activeFocus = document.getElementById('active-focus-badge');
+    const activeRoll = document.getElementById('active-roll');
+    const activeSummary = document.getElementById('active-summary');
+
+    // Image URL Resolver helper supporting hosted external urls or local static files
+    function getImageUrl(img) {
+        if (!img) return '';
+        if (img.startsWith('http://') || img.startsWith('https://')) {
+            return img;
+        }
+        return `/static/img/${img}`;
+    }
+
+    // Mobile Search State Toggle
+    function toggleMobileSearch() {
+        const wrapper = document.getElementById('mobile-search-wrapper');
+        const searchBtn = document.getElementById('mobile-search-toggle');
+        if (!wrapper || !searchBtn) return;
+        if (wrapper.style.display === 'none' || !wrapper.style.display) {
+            wrapper.style.display = 'block';
+            searchBtn.style.background = '#2563eb';
+            searchBtn.style.color = '#fff';
+            document.getElementById('mobile-student-search').focus();
+        } else {
+            wrapper.style.display = 'none';
+            searchBtn.style.background = '#f1f5f9';
+            searchBtn.style.color = '#475569';
+            document.getElementById('mobile-student-search').value = '';
+            filterStudents('');
+        }
+    }
+
+    // Search filtering for student cards (syncs desktop sidebar and mobile pills)
+    function filterStudents(val) {
+        const query = val.toLowerCase().trim();
+        
+        // Sync inputs
+        const desktopSearch = document.getElementById('student-search');
+        const mobileSearch = document.getElementById('mobile-student-search');
+        if (desktopSearch && desktopSearch.value !== val) desktopSearch.value = val;
+        if (mobileSearch && mobileSearch.value !== val) mobileSearch.value = val;
+
+        // 1. Filter Desktop cards
+        const cards = document.querySelectorAll('.student-card');
+        cards.forEach(card => {
+            const name = card.querySelector('.student-name').textContent.toLowerCase();
+            const textContent = card.textContent.toLowerCase();
+            if (name.includes(query) || textContent.includes(query)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // 2. Filter Mobile Pills
+        const pills = document.querySelectorAll('.mobile-pill-card');
+        pills.forEach(pill => {
+            const name = pill.querySelector('.pill-title').textContent.toLowerCase();
+            const textContent = pill.textContent.toLowerCase();
+            if (name.includes(query) || textContent.includes(query)) {
+                pill.style.display = 'flex';
+            } else {
+                pill.style.display = 'none';
+            }
+        });
+    }
+
+    // Select and load a student choice slip
+    function selectStudent(id) {
+        id = parseInt(id);
+        currentSlipId = id;
+        
+        // Find student slip object
+        const slip = slipsData.find(item => item.id === id);
+        if (!slip) return;
+
+        // 1. Update active card in desktop sidebar
+        document.querySelectorAll('.student-card').forEach(card => card.classList.remove('active'));
+        const activeCard = document.getElementById(`student-card-${id}`);
+        if (activeCard) activeCard.classList.add('active');
+
+        // 2. Update active pill in mobile carousel & center it
+        document.querySelectorAll('.mobile-pill-card').forEach(pill => pill.classList.remove('active'));
+        const activePill = document.getElementById(`mobile-pill-${id}`);
+        if (activePill) {
+            activePill.classList.add('active');
+            activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        // 3. Update details in right panel
+        if (activeName) activeName.textContent = slip.name;
+        if (activeCgpa) activeCgpa.textContent = `CGPA: ${slip.cgpa}`;
+        if (activeFocus) activeFocus.textContent = slip.focus;
+        if (activeRoll) activeRoll.textContent = slip.roll_no;
+        if (activeSummary) activeSummary.textContent = slip.summary;
+
+        // 4. Load corresponding image
+        if (slipImage) slipImage.src = getImageUrl(slip.image);
+
+        // 5. Reset zoom/pan parameters
+        resetZoom();
+    }
+
+    // Zoom & Pan Logics
+    function updateTransform() {
+        if (!slipImage) return;
+        slipImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
+        if (zoomLevelEl) zoomLevelEl.textContent = `${Math.round(currentZoom * 100)}%`;
+    }
+
+    function zoomIn() {
+        if (currentZoom < 4) {
+            currentZoom += 0.25;
+            updateTransform();
+        }
+    }
+
+    function zoomOut() {
+        if (currentZoom > 0.5) {
+            currentZoom -= 0.25;
+            updateTransform();
+        }
+    }
+
+    function resetZoom() {
+        currentZoom = 1;
+        translateX = 0;
+        translateY = 0;
+        updateTransform();
+    }
+
+    function openFullsize() {
+        const slip = slipsData.find(item => item.id === currentSlipId);
+        if (slip) {
+            window.open(getImageUrl(slip.image), '_blank');
+        }
+    }
+
+    // Drag-to-Pan Handlers
+    function startDrag(e) {
+        isDragging = true;
+        if (viewerFrame) viewerFrame.style.cursor = 'grabbing';
+        
+        // Compute position based on scale
+        startX = e.clientX - translateX * currentZoom;
+        startY = e.clientY - translateY * currentZoom;
+        
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+        
+        translateX = (e.clientX - startX) / currentZoom;
+        translateY = (e.clientY - startY) / currentZoom;
+        
+        updateTransform();
+    }
+
+    function endDrag() {
+        isDragging = false;
+        if (viewerFrame) viewerFrame.style.cursor = 'grab';
+    }
+
+    if (viewerFrame) {
+        // Wheel listener for easy desk zooming
+        viewerFrame.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                if (currentZoom < 4) {
+                    currentZoom += 0.1;
+                    updateTransform();
+                }
+            } else {
+                if (currentZoom > 0.5) {
+                    currentZoom -= 0.1;
+                    updateTransform();
+                }
+            }
+        }, { passive: false });
+
+        // Touch support (simple double tap to zoom reset)
+        let lastTap = 0;
+        viewerFrame.addEventListener('touchend', function(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                resetZoom();
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        });
+    }
+
+    // Auto-initialize first student on load
+    document.addEventListener('DOMContentLoaded', () => {
+        if (slipsData && slipsData.length > 0) {
+            selectStudent(slipsData[0].id);
+        }
+    });
+</script>
+{% endblock %}

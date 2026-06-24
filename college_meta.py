@@ -37,7 +37,20 @@ def get_data_metadata() -> dict:
 
 
 def get_counselling_schedule() -> dict:
-    return _load_json("counselling_schedule.json")
+    filepath = _CONFIG_DIR / "counselling_schedule.json"
+    try:
+        with open(filepath, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return _load_json("counselling_schedule.json")
+
+
+def save_counselling_schedule(data: dict) -> None:
+    filepath = _CONFIG_DIR / "counselling_schedule.json"
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    # Update cache dynamically as fallback
+    _cache["counselling_schedule.json"] = data
 
 
 def get_city_coords() -> dict:
