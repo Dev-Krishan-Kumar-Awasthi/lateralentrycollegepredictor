@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}Merit Insights — MP DTE Lateral Entry 2025 | Deep Analytics & Accuracy{% endblock %}
+{% block meta_description %}Get deep merit analytics for MP DTE BTech Lateral Entry 2025. See rank prediction accuracy, percentile position, branch-wise opportunity map, category stats, and year-over-year trends — all from official DTE data.{% endblock %}
+{% block meta_keywords %}MP DTE merit insights, lateral entry rank accuracy, DTE MP analytics, merit position calculator, branch opportunity map, CGPA rank accuracy{% endblock %}
+{% block og_title %}Merit Insights — Deep Analytics for MP DTE Lateral Entry{% endblock %}
+{% block og_description %}Know your exact merit position with accuracy data. See percentile, branch opportunities (Safe/Moderate/Reach), category stats, and year-over-year trends.{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- ===== INPUT FORM ===== -->
+    <div class="gov-box" id="merit-tool">
+        <h2><i class="fas fa-chart-pie"></i> Merit Insights</h2>
+        <p class="subtitle">
+            Enter your CGPA to get a deep analytics dashboard — rank accuracy, percentile position, branch opportunities, and personalized takeaways.
+        </p>
+
+        {% if error %}
+        <div style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/merit-insights" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cgpa">CGPA (10 Point Scale)</label>
+                    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10"
+                        placeholder="e.g. 8.50" required
+                        value="{{ data.cgpa if data else (current_user.cgpa if current_user and current_user.cgpa else '') }}">
+                </div>
+                <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;">
+                    <button type="submit" class="btn-primary" style="flex:1;">
+                        <i class="fas fa-microscope"></i> Analyze My Merit
+                    </button>
+                    <button type="reset" class="btn-secondary">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- ===== NEEDS LOGIN ===== -->
+    {% if needs_login %}
+    <div class="gov-box" style="text-align:center;">
+        <h3 style="margin-bottom:10px;"><i class="fas fa-lock" style="color:var(--saffron);"></i> Login Required</h3>
+        <p style="color:var(--muted);margin-bottom:18px;">Create a free account or login to access Merit Insights.</p>
+        <a href="/account" class="hero-btn primary"><i class="fas fa-sign-in-alt"></i> Login / Register</a>
+    </div>
+    {% endif %}
+
+    <!-- ===== RESULTS DASHBOARD ===== -->
+    {% if insights %}
+    
+    <!-- ── Top Stats Row: Accuracy + Percentile + Rank ── -->
+    <div class="insights-hero-grid">
+        
+        <!-- Accuracy Meter -->
+        {% if insights.accuracy %}
+        <div class="insight-hero-card accuracy-card">
+            <div class="accuracy-ring-wrap">
+                <svg class="accuracy-ring" viewBox="0 0 120 120">
+                    <circle class="ring-bg" cx="60" cy="60" r="52" />
+                    <circle class="ring-fill" cx="60" cy="60" r="52"
+                        stroke-dasharray="{{ (insights.accuracy / 100) * 326.7 }} 326.7"
+                        style="--ring-color: {{ '#10B981' if insights.accuracy >= 90 else ('#F59E0B' if insights.accuracy >= 75 else '#EF4444') }};" />
+                </svg>
+                <div class="accuracy-value">{{ insights.accuracy }}%</div>
+            </div>
+            <div class="accuracy-label">Prediction Accuracy</div>
+            <div class="accuracy-sub">Cross-year validation (2024 → 2025)</div>
+        </div>
+        {% endif %}
+
+        <!-- Percentile -->
+        {% if insights.percentile and insights.latest_year in insights.percentile %}
+        {% set pct = insights.percentile[insights.latest_year] %}
+        <div class="insight-hero-card percentile-card">
+            <div class="percentile-icon"><i class="fas fa-medal" style="font-size:2rem;color:var(--saffron);"></i></div>
+            <div class="percentile-value">{{ pct.label }}</div>
+            <div class="percentile-bar-wrap">
+                <div class="percentile-bar-fill" style="width: {{ pct.value }}%;"></div>
+            </div>
+            <div class="percentile-detail">
+                <span><strong>{{ pct.above_you }}</strong> above you</span>
+                <span><strong>{{ pct.below_you }}</strong> below you</span>
+            </div>
+            <div class="accuracy-sub">Out of {{ pct.total }} students ({{ insights.latest_year }})</div>
+        </div>
+        {% endif %}
+
+        <!-- Rank Cards -->
+        {% for year, rd in insights.rank_data.items() %}
+        <div class="insight-hero-card rank-card-mini">
+            <div class="rank-card-year">{{ year }}</div>
+            <div class="rank-card-value">{{ rd.min_rank }} – {{ rd.max_rank }}</div>
+            <div class="rank-card-label">Estimated Merit Rank</div>
+            <div class="accuracy-sub">Total: {{ rd.total_students }} students</div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- ── Branch Opportunity Map ── -->
+    {% if insights.branch_summary.safe + insights.branch_summary.moderate + insights.branch_summary.reach > 0 %}
+    <div class="gov-box" id="opportunity-map">
+        <h2><i class="fas fa-map-signs"></i> Branch Opportunity Map</h2>
+        <p class="subtitle">Your chances across college-branch combinations ({{ insights.latest_year }} data, UR/OP category).</p>
+
+        <div class="opportunity-summary-row">
+            <div class="opp-stat safe">
+                <div class="opp-stat-num">{{ insights.branch_summary.safe }}</div>
+                <div class="opp-stat-label">Safe</div>
+                <div class="opp-stat-detail">{{ insights.college_count.safe }} colleges · {{ insights.seat_summary.safe }} seats</div>
+            </div>
+            <div class="opp-stat moderate">
+                <div class="opp-stat-num">{{ insights.branch_summary.moderate }}</div>
+                <div class="opp-stat-label">Moderate</div>
+                <div class="opp-stat-detail">{{ insights.college_count.moderate }} colleges · {{ insights.seat_summary.moderate }} seats</div>
+            </div>
+            <div class="opp-stat reach">
+                <div class="opp-stat-num">{{ insights.branch_summary.reach }}</div>
+                <div class="opp-stat-label">Reach</div>
+                <div class="opp-stat-detail">{{ insights.college_count.reach }} colleges · {{ insights.seat_summary.reach }} seats</div>
+            </div>
+        </div>
+
+        <!-- Expandable lists -->
+        {% for bucket_name, bucket_label, bucket_icon, bucket_class in [
+            ('safe', 'Safe Choices (75%+ chance)', 'fa-shield-alt', 'safe'),
+            ('moderate', 'Moderate Choices (40-74% chance)', 'fa-crosshairs', 'moderate'),
+            ('reach', 'Reach Choices (<40% chance)', 'fa-mountain', 'reach')
+        ] %}
+        {% if insights.opportunities[bucket_name] %}
+        <details class="opp-details {{ bucket_class }}" {% if bucket_name == 'safe' %}open{% endif %}>
+            <summary>
+                <i class="fas {{ bucket_icon }}"></i> {{ bucket_label }}
+                <span class="opp-count-badge">{{ insights.opportunities[bucket_name] | length }}</span>
+            </summary>
+            <div class="opp-table-wrap">
+                <table class="gov-table opp-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>College</th>
+                            <th>Branch</th>
+                            <th>Type</th>
+                            <th>Closing Rank</th>
+                            <th>Seats</th>
+                            <th>Chance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in insights.opportunities[bucket_name][:15] %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><a href="/college?name={{ item.college | urlencode_val }}" target="_blank" class="college-detail-link">{{ item.college }}</a></td>
+                            <td><span class="branch-tag">{{ item.branch_name }} ({{ item.branch }})</span></td>
+                            <td><span class="type-tag">{{ item.college_type }}</span></td>
+                            <td style="font-family:monospace;font-weight:700;">{{ item.closing_rank }}</td>
+                            <td>{{ item.seats }}</td>
+                            <td><span class="prob-glow {{ 'high' if item.prob >= 75 else ('med' if item.prob >= 40 else 'low') }}">{{ item.prob }}%</span></td>
+                        </tr>
+                        {% endfor %}
+                        {% if insights.opportunities[bucket_name] | length > 15 %}
+                        <tr>
+                            <td colspan="7" style="text-align:center;color:var(--muted);font-style:italic;padding:12px;">
+                                ... and {{ insights.opportunities[bucket_name] | length - 15 }} more. Use the <a href="/predictor">College Predictor</a> for full results.
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </details>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <!-- ── Year-over-Year Trend ── -->
+    {% if insights.trend %}
+    <div class="gov-box" id="trend-section">
+        <h2><i class="fas fa-chart-line"></i> Year-over-Year Trend</h2>
+        <p class="subtitle">How your merit position changed from 2024 to 2025.</p>
+
+        <div class="trend-hero">
+            <div class="trend-arrow {{ insights.trend.label }}">
+                <span class="trend-icon">{{ insights.trend.icon }}</span>
+            </div>
+            <div class="trend-text">
+                <div class="trend-main">{{ insights.trend.detail }}</div>
+                <div class="trend-sub">
+                    2024 avg rank: <strong>{{ insights.trend.avg_rank_2024 }}</strong> (of {{ insights.trend.total_students_2024 }})
+                    &nbsp;→&nbsp;
+                    2025 avg rank: <strong>{{ insights.trend.avg_rank_2025 }}</strong> (of {{ insights.trend.total_students_2025 }})
+                </div>
+            </div>
+        </div>
+
+        <div class="trend-stats-row">
+            <div class="trend-stat">
+                <div class="trend-stat-label">Accessible Seats (2024)</div>
+                <div class="trend-stat-value">{{ insights.trend.seats_2024 }}</div>
+            </div>
+            <div class="trend-stat">
+                <div class="trend-stat-label">Accessible Seats (2025)</div>
+                <div class="trend-stat-value">{{ insights.trend.seats_2025 }}</div>
+            </div>
+            <div class="trend-stat">
+                <div class="trend-stat-label">Seat Change</div>
+                {% set seat_diff = insights.trend.seats_2025 - insights.trend.seats_2024 %}
+                <div class="trend-stat-value" style="color: {{ '#10B981' if seat_diff >= 0 else '#EF4444' }};">
+                    {{ '+' if seat_diff >= 0 else '' }}{{ seat_diff }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ── Category Stats ── -->
+    {% if insights.category_stats %}
+    <div class="gov-box" id="category-stats">
+        <h2><i class="fas fa-layer-group"></i> Category-wise Seat Availability</h2>
+        <p class="subtitle">Seats accessible for your rank range across all categories ({{ insights.latest_year }}).</p>
+
+        <div class="category-cards-grid">
+            {% for cat, stats in insights.category_stats.items() %}
+            <div class="category-stat-card cat-{{ cat | lower }}">
+                <div class="cat-label">{{ cat }}</div>
+                <div class="cat-seats">{{ stats.total_seats }}</div>
+                <div class="cat-detail-label">Total Seats</div>
+                <div class="cat-detail-row">
+                    <span><i class="fas fa-university"></i> {{ stats.college_count }} colleges</span>
+                    <span><i class="fas fa-code-branch"></i> {{ stats.branch_count }} branches</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ── Key Takeaways ── -->
+    {% if insights.takeaways %}
+    <div class="gov-box" id="takeaways">
+        <h2><i class="fas fa-lightbulb"></i> Key Takeaways</h2>
+        <p class="subtitle">Auto-generated insights based on your CGPA analysis.</p>
+
+        <div class="takeaway-list">
+            {% for t in insights.takeaways %}
+            <div class="takeaway-item {{ t.type }}">
+                <span class="takeaway-icon">{{ t.icon }}</span>
+                <span class="takeaway-text">{{ t.text }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- ── CTA ── -->
+    <div style="text-align:center;margin:28px 0;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+        <a href="/predictor" class="hero-btn primary" style="display:inline-block;">
+            <i class="fas fa-bullseye"></i> Predict Colleges
+        </a>
+        <a href="/rank_predictor" class="hero-btn secondary" style="display:inline-block;">
+            <i class="fas fa-chart-line"></i> Check Rank
+        </a>
+        <a href="/choice-builder" class="hero-btn secondary" style="display:inline-block;">
+            <i class="fas fa-magic"></i> Smart Choices
+        </a>
+    </div>
+
+    {% endif %}
+
+    <!-- ===== HOW WE CALCULATE ===== -->
+    <div class="gov-box">
+        <h2><i class="fas fa-info-circle"></i> How is accuracy calculated?</h2>
+        <div class="faq-grid" style="margin-top:14px;">
+            <div>
+                <div class="faq-q">What does accuracy mean here?</div>
+                <div class="faq-a">We predict your rank using 2024 data and compare it with 2025 data. The closer the percentile positions match, the higher the accuracy — showing our model is consistent and reliable.</div>
+            </div>
+            <div>
+                <div class="faq-q">What is the Opportunity Map?</div>
+                <div class="faq-a"><strong>Safe</strong> = 75%+ admission chance. <strong>Moderate</strong> = 40-74% chance. <strong>Reach</strong> = under 40% but still possible. Based on UR/OP category cutoffs from official DTE data.</div>
+            </div>
+            <div>
+                <div class="faq-q">Is this personalized?</div>
+                <div class="faq-a">Yes — all numbers are computed live from your CGPA. The opportunity map uses your estimated rank to calculate admission probability for every college-branch combination.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

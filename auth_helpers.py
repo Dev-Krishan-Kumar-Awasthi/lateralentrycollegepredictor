@@ -1,6 +1,9 @@
 """Optional user accounts — session-based auth with cloud shortlist."""
 import json
 import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from functools import wraps
 
 from flask import session, redirect, url_for, request, jsonify
@@ -62,16 +65,8 @@ def login_required(f):
 import re
 
 def validate_password_strength(password: str) -> tuple:
-    if len(password) < 8:
-        return False, "Password must be at least 8 characters long"
-    if not re.search(r"[A-Z]", password):
-        return False, "Password must contain at least one uppercase letter"
-    if not re.search(r"[a-z]", password):
-        return False, "Password must contain at least one lowercase letter"
-    if not re.search(r"\d", password):
-        return False, "Password must contain at least one digit"
-    if not re.search(r"[@$!%*?&_#^-]", password):
-        return False, "Password must contain at least one special character (@$!%*?&_#^-)"
+    if len(password) < 6:
+        return False, "Password must be at least 6 characters long"
     return True, None
 
 
@@ -370,7 +365,8 @@ def pre_validate_registration(email: str, password: str, display_name: str = "",
 def register_user(email: str, password: str, display_name: str = "",
                   mobile_number: str = "", polytechnic_college: str = "",
                   diploma_branch: str = "", cgpa: float = 0.0,
-                  category: str = "UR", gender: str = "M") -> tuple:
+                  category: str = "UR", gender: str = "M",
+                  coupon_used: str = None, referred_by_id: int = None) -> tuple:
     
     sanitized, err = pre_validate_registration(
         email=email, password=password, display_name=display_name,
@@ -406,6 +402,8 @@ def register_user(email: str, password: str, display_name: str = "",
         cgpa=data["cgpa"],
         category=data["category"],
         gender=data["gender"],
+        coupon_used=coupon_used,
+        referred_by_id=referred_by_id
     )
     db.session.add(user)
     db.session.commit()
@@ -635,8 +633,8 @@ def pre_validate_profile_update(current_user_id: int, display_name: str, mobile_
     return sanitized, None
 
 
-def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tuple:
-    """Sends a custom broadcast notification email to all target emails. Returns (success_count, fail_count)."""
+def send_broadcast_email(recipients: list, subject: str, body_content: str, template_type: str = 'general') -> tuple:
+    """Sends a custom broadcast notification email with HTML templates and student dynamic placeholders. Returns (success_count, fail_count)."""
     smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
     smtp_port_str = os.environ.get("SMTP_PORT", "587")
     smtp_username = os.environ.get("SMTP_USERNAME")
@@ -650,16 +648,49 @@ def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tu
     except Exception:
         pass
 
-    if not smtp_username or not smtp_password or is_testing or any(e.endswith('@example.com') for e in to_emails):
+    def check_is_mock(rec):
+        if isinstance(rec, str):
+            return rec.endswith('@example.com')
+        elif isinstance(rec, dict):
+            return rec.get('email', '').endswith('@example.com')
+        return False
+
+    if not smtp_username or not smtp_password or is_testing or any(check_is_mock(r) for r in recipients):
         print(f"\n=======================================================")
-        print(f"[SMTP SIMULATOR] Broadcast email to {len(to_emails)} users.")
+        print(f"[SMTP SIMULATOR] Broadcast email to {len(recipients)} users. (Template: {template_type})")
         print(f"Subject: {subject}")
         print(f"Body:\n{body_content}")
         print(f"=======================================================\n")
-        return len(to_emails), 0
+        return len(recipients), 0
     
     success_count = 0
     fail_count = 0
+    
+    TEMPLATES = {
+        'general': {
+            'strip_color': '#ff9933', # Saffron
+            'icon': '🎓',
+            'banner_bg': '#1e3a8a', # Navy
+            'header_title': 'MP DTE Lateral Entry Predictor',
+            'sub_title': 'Official Counselling Alerts & Updates'
+        },
+        'critical': {
+            'strip_color': '#dc2626', # Red
+            'icon': '⚠️',
+            'banner_bg': '#dc2626', # Red
+            'header_title': 'CRITICAL ALERTS & TIMELINES',
+            'sub_title': 'Urgent Counselling Notification'
+        },
+        'choice_alert': {
+            'strip_color': '#7c3aed', # Purple
+            'icon': '⚡',
+            'banner_bg': '#7c3aed', # Purple
+            'header_title': 'CHOICE FILLING ALERT & STRATEGY',
+            'sub_title': 'Smart Choice List Recommendation'
+        }
+    }
+    
+    cfg = TEMPLATES.get(template_type, TEMPLATES['general'])
     
     try:
         smtp_port = int(smtp_port_str)
@@ -671,20 +702,40 @@ def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tu
             
         server.login(smtp_username, smtp_password)
         
-        for email in to_emails:
+        for item in recipients:
+            if isinstance(item, str):
+                email = item
+                r_name = "Student"
+                r_cgpa = "N/A"
+                r_category = "UR"
+                r_branch = "N/A"
+            elif isinstance(item, dict):
+                email = item.get("email")
+                r_name = item.get("name") or "Student"
+                r_cgpa = str(item.get("cgpa") or "N/A")
+                r_category = item.get("category") or "UR"
+                r_branch = item.get("branch") or "N/A"
+            else:
+                continue
+
+            if not email:
+                continue
+
             try:
+                p_subject = subject.replace("{name}", r_name).replace("{cgpa}", r_cgpa).replace("{category}", r_category).replace("{branch}", r_branch)
+                p_body = body_content.replace("{name}", r_name).replace("{cgpa}", r_cgpa).replace("{category}", r_category).replace("{branch}", r_branch)
+
                 msg = MIMEMultipart("alternative")
-                msg["Subject"] = subject
+                msg["Subject"] = p_subject
                 msg["From"] = f"MP Polytechnic Predictor Alert <{smtp_username}>"
                 msg["To"] = email
                 
-                # HTML template for beautiful email styling
                 html = f"""
                 <!DOCTYPE html>
                 <html>
                 <head>
                   <meta charset="utf-8">
-                  <title>{subject}</title>
+                  <title>{p_subject}</title>
                 </head>
                 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased;">
                   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
@@ -693,9 +744,9 @@ def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tu
                         <!-- Main Wrapper -->
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
                           
-                          <!-- Saffron Header Strip -->
+                          <!-- Dynamic Header Strip -->
                           <tr>
-                            <td style="background-color: #ff9933; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
+                            <td style="background-color: {cfg['strip_color']}; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
                           </tr>
                           
                           <!-- Logo & Brand Header -->
@@ -703,13 +754,13 @@ def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tu
                             <td align="center" style="padding: 32px 24px 20px 24px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);">
                               <table border="0" cellpadding="0" cellspacing="0">
                                 <tr>
-                                  <td align="center" style="background-color: #1e3a8a; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
-                                    <span style="font-size: 32px; line-height: 64px; display: block;">🎓</span>
+                                  <td align="center" style="background-color: {cfg['banner_bg']}; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
+                                    <span style="font-size: 32px; line-height: 64px; display: block;">{cfg['icon']}</span>
                                   </td>
                                 </tr>
                               </table>
-                              <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">MP DTE Lateral Entry Predictor</h1>
-                              <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Official Counselling Alerts &amp; Updates</p>
+                              <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">{cfg['header_title']}</h1>
+                              <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">{cfg['sub_title']}</p>
                             </td>
                           </tr>
                           
@@ -719,9 +770,9 @@ def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tu
                               <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                   <td style="padding-top: 10px; border-top: 1px solid #f1f5f9;">
-                                    <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0; text-align: center;">{subject}</h2>
+                                    <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0; text-align: center;">{p_subject}</h2>
                                     <div style="font-size: 15px; line-height: 1.6; color: #334155; margin: 0 0 24px 0; white-space: pre-line;">
-                                        {body_content}
+                                        {p_body}
                                     </div>
                                   </td>
                                 </tr>
@@ -765,4 +816,4 @@ def send_broadcast_email(to_emails: list, subject: str, body_content: str) -> tu
         return success_count, fail_count
     except Exception as e:
         print(f"[SMTP BROADCAST CONNECTION ERROR]: {e}")
-        return 0, len(to_emails)
+        return 0, len(recipients)

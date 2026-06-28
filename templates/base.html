@@ -54,7 +54,7 @@
 
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='2.1') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Lenis smooth scroll -->
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -97,11 +97,10 @@
                 <span class="brand-emoji">🎓</span>
                 <span class="brand-text">MP DTE Predictor</span>
             </div>
-            <!-- Hamburger for mobile -->
             <button class="nav-hamburger" id="nav-toggle" aria-label="Open menu">
                 <span></span><span></span><span></span>
             </button>
-            <ul class="nav-links" id="nav-menu">
+            <ul class="nav-links" id="nav-menu" data-lenis-prevent>
                 <li>
                     <a href="/" class="{% if request.endpoint == 'home' %}nav-active{% endif %}">
                         <i class="fas fa-home"></i> Home
@@ -134,7 +133,7 @@
                 </li>
                 
                 <li class="nav-dropdown-item">
-                    <a href="javascript:void(0)" class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'recommendation_list', 'checklist', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
+                    <a href="javascript:void(0)" class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'merit_insights', 'recommendation_list', 'checklist', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
                         <i class="fas fa-ellipsis-h"></i> More Tools <i class="fas fa-chevron-down" style="margin-left: 4px; font-size: 0.75rem;"></i>
                     </a>
                     <ul class="nav-dropdown">
@@ -154,6 +153,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="/merit-insights" class="{% if request.endpoint == 'merit_insights' %}dropdown-active{% endif %}">
+                                <i class="fas fa-chart-pie"></i> Merit Insights
+                            </a>
+                        </li>
+                        <li>
                             <a href="/recommendation-list" class="{% if request.endpoint == 'recommendation_list' %}dropdown-active{% endif %}">
                                 <i class="fas fa-list-ol"></i> Recommendation List
                             </a>
@@ -166,6 +170,11 @@
                         <li>
                             <a href="/dte-rules" class="{% if request.endpoint == 'dte_rules' %}dropdown-active{% endif %}">
                                 <i class="fas fa-gavel"></i> Official DTE Rules
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/choice-filling-rules" class="{% if request.endpoint == 'choice_filling_rules' %}dropdown-active{% endif %}">
+                                <i class="fas fa-clipboard-check"></i> Choice Filling Rules
                             </a>
                         </li>
                         <li>
@@ -320,44 +329,35 @@
     </footer>
 
     {% if request.path == '/' or request.endpoint == 'home' %}
-    <div id="rules-schedule-modal" data-lenis-prevent style="
-        position: fixed; inset: 0; z-index: 99999;
-        display: none; align-items: center; justify-content: center;
-        background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px);
-        padding: 20px;
-    ">
-        <div style="
-            background: #ffffff; border-radius: 24px; max-width: 950px; width: 100%;
-            box-shadow: 0 30px 70px rgba(15, 23, 42, 0.25); overflow: hidden;
-            animation: modalFadeIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column;
-            max-height: 92vh; border: 1px solid rgba(255, 255, 255, 0.2);
-        ">
+    <div id="rules-schedule-modal" class="rules-modal-overlay" data-lenis-prevent>
+        <div class="rules-modal-card">
             <!-- Highlighted Alert Banner (Lighter vibrant blue gradient with saffron warning elements) -->
-            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: #ffffff; padding: 22px 28px; text-align: center; border-bottom: 4px solid #f59e0b; position: relative;">
-                <div style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); opacity: 0.15; font-size: 4rem; pointer-events: none;">
+            <div class="rules-modal-banner">
+                <div class="rules-modal-banner-bg-icon">
                     <i class="fas fa-handshake"></i>
                 </div>
-                <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                    <i class="fas fa-graduation-cap" style="color: #f59e0b;"></i> Welcome to Lateral Entry College Predictor Tool
+                <div class="rules-modal-banner-title">
+                    <i class="fas fa-graduation-cap welcome-icon-animated"></i>
+                    <span class="shine-text">WELCOME TO LATERAL ENTRY COLLEGE PREDICTOR TOOL</span>
                 </div>
-                <p style="margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.6; display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                <p class="rules-modal-banner-desc">
                     <span><i class="fas fa-exclamation-triangle" style="color: #f59e0b; animation: warningPulse 1.5s infinite;"></i> First must Read all DTE MP B.E./B.Tech Lateral Entry (Diploma/B.Sc. to Degree) Admission Rules, then do anything. Read rules, 100% all confusions will be cleared!</span>
-                    <a href="/dte-rules" style="background: linear-gradient(135deg, #f59e0b, #e05e00); color: #ffffff; padding: 8px 20px; border-radius: 50px; font-weight: 800; text-decoration: none; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(245,158,11,0.4); transition: all 0.2s; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; animation: btnPulse 2s infinite;" id="popup-read-rules-btn">
+                    <a href="/dte-rules" id="popup-read-rules-btn" class="rules-modal-banner-btn">
                         Read All Rules <i class="fas fa-chevron-right"></i>
                     </a>
                 </p>
             </div>
 
             <!-- Schedule Title Header -->
-            <div style="padding: 24px 28px 14px; border-bottom: 1px solid #f1f5f9; text-align: center; background: #fafafa;">
-                <h2 style="margin: 0; font-size: 1.45rem; color: #1e3a8a; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <div class="rules-modal-header">
+                <h2 class="rules-modal-header-title">
                     <i class="far fa-calendar-check" style="color: #3b82f6;"></i> DTE Lateral Entry Counselling Schedule {{ schedule.academic_year or '2026-27' }}
                 </h2>
-                <span style="font-size: 0.88rem; color: #64748b; font-weight: 600; display: block; margin-top: 5px; letter-spacing: 0.5px;">सत्र {{ schedule.academic_year or '2026-27' }} — Diploma & B.Sc. to B.E./B.Tech 2nd Year Admission</span>
+                <span class="rules-modal-header-subtitle">सत्र {{ schedule.academic_year or '2026-27' }} — Diploma & B.Sc. to B.E./B.Tech 2nd Year Admission</span>
             </div>
 
             <!-- Modal Body (Scrollable table and instruction details) -->
-            <div class="modal-scroll-area" data-lenis-prevent style="padding: 24px 28px; overflow-y: auto; flex-grow: 1; background: #ffffff;">
+            <div class="modal-scroll-area" data-lenis-prevent style="padding: 24px 28px; overflow-y: auto; flex-grow: 1; background: #ffffff; min-height: 0;">
                 
                 <div style="overflow-x: auto; border-radius: 16px; border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
                     <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
@@ -432,8 +432,8 @@
                 </div>
 
                 <!-- Notes Section -->
-                <div style="background: #eff6ff; border-radius: 12px; padding: 16px 20px; font-size: 0.88rem; border-left: 5px solid #3b82f6; color: #1e3a8a; line-height: 1.6; box-shadow: 0 4px 10px rgba(59,130,246,0.03);">
-                    <p style="margin: 0 0 8px 0; font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;"><i class="fas fa-exclamation-circle" style="font-size: 1.05rem;"></i> CLC Round Instructions:</p>
+                <div class="rules-modal-notes" style="background: #eff6ff; border-radius: 12px; border-left: 5px solid #3b82f6; color: #1e3a8a; box-shadow: 0 4px 10px rgba(59,130,246,0.03);">
+                    <p class="rules-modal-notes-title"><i class="fas fa-exclamation-circle"></i> CLC Round Instructions:</p>
                     <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
                         <li>CLC ke dauran college level merit ke aadhar par direct admission milta hai. candidates ko **subah 10:30 AM se dopehar 1:00 PM tak** reporting time ke andar attendance lagana mandatory hai.</li>
                         <li>Sabi category conversions, tie-breaker rules aur verification parameters ko detail mein check karne ke liye upper diye link se DTE rules zaroor padhein.</li>
@@ -443,14 +443,20 @@
             </div>
 
             <!-- Footer / Close Action -->
-            <div style="background: #f8fafc; padding: 18px 28px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 12px;">
-                <button id="close-rules-popup-btn" style="
-                    background: linear-gradient(135deg, #1e3a8a, #2563eb);
-                    color: #ffffff; border: none; border-radius: 12px;
-                    padding: 12px 28px; font-weight: 700; font-size: 0.95rem;
-                    cursor: pointer; box-shadow: 0 4px 15px rgba(37,99,235,0.3);
-                    transition: all 0.2s;
-                " onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div class="rules-modal-footer">
+                <div class="rules-modal-footer-left">
+                    <a href="/dte-rules" class="rules-btn-outline-blue">
+                        <i class="fas fa-gavel"></i>
+                        <span class="btn-text-desktop">Official MP DTE Counselling Rules</span>
+                        <span class="btn-text-mobile">DTE Rules</span>
+                    </a>
+                    <a href="/choice-filling-rules" class="rules-btn-outline-purple">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span class="btn-text-desktop">Choice Filling Rules</span>
+                        <span class="btn-text-mobile">Choice Filling</span>
+                    </a>
+                </div>
+                <button id="close-rules-popup-btn" class="rules-btn-primary">
                     <i class="fas fa-check-circle" style="margin-right: 6px;"></i> I Have Read the Rules &amp; Schedule
                 </button>
             </div>
@@ -458,26 +464,346 @@
     </div>
 
     <style>
-        /* Custom Scrollbar inside the modal for premium appearance */
-        .modal-scroll-area::-webkit-scrollbar {
-            width: 8px;
-        }
-        .modal-scroll-area::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-        .modal-scroll-area::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .modal-scroll-area::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        /* Overlay Fade-In Transition (No-lag performance optimization) */
+        .rules-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(6px);
+            padding: 20px;
+            animation: overlayFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Pulsing animations for enhanced visibility */
+        /* Rules modal card and banner styles */
+        .rules-modal-card {
+            background: #ffffff;
+            border-radius: 24px;
+            max-width: 840px; /* Reduced from 950px for laptop/desktop compactness */
+            width: 100%;
+            box-shadow: 0 30px 70px rgba(15, 23, 42, 0.25);
+            overflow: hidden;
+            animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Smooth cubic easeOutExpo */
+            display: flex;
+            flex-direction: column;
+            max-height: 88vh; /* Slightly reduced height to fit perfectly on laptops */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .rules-modal-banner {
+            background: linear-gradient(-45deg, #1e3a8a, #2563eb, #3b82f6, #1d4ed8);
+            background-size: 300% 300%;
+            animation: bannerGradient 8s ease infinite;
+            color: #ffffff;
+            padding: 16px 20px; /* Compact padding */
+            text-align: center;
+            border-bottom: 4px solid #f59e0b;
+            position: relative;
+        }
+        .rules-modal-banner-bg-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.15;
+            font-size: 3.5rem;
+            pointer-events: none;
+        }
+        .rules-modal-banner-title {
+            font-size: 1.05rem; /* Reduced font size */
+            font-weight: 800;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Shimmer text effect */
+        .shine-text {
+            background: linear-gradient(90deg, #ffb300 0%, #ffffff 25%, #ffb300 50%, #ffffff 75%, #ffb300 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 2s linear infinite, welcomePulse 2.5s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(255, 179, 0, 0.4);
+            display: inline-block;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+        }
+        
+        .welcome-icon-animated {
+            color: #f59e0b;
+            font-size: 1.25rem;
+            margin-right: 6px;
+            animation: iconPulse 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .rules-modal-banner-desc {
+            margin: 0;
+            font-size: 0.88rem; /* Compact description font */
+            font-weight: 700;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .rules-modal-banner-btn {
+            background: linear-gradient(135deg, #f59e0b, #e05e00);
+            color: #ffffff;
+            padding: 6px 16px; /* Compact banner button padding */
+            border-radius: 50px;
+            font-weight: 800;
+            text-decoration: none;
+            font-size: 0.78rem; /* Compact font size */
+            box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: btnPulse 2s infinite;
+        }
+        .rules-modal-header {
+            padding: 16px 20px 10px; /* Compact padding */
+            border-bottom: 1px solid #f1f5f9;
+            text-align: center;
+            background: #fafafa;
+        }
+        .rules-modal-header-title {
+            margin: 0;
+            font-size: 1.25rem; /* Reduced from 1.45rem */
+            color: #1e3a8a;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .rules-modal-header-subtitle {
+            font-size: 0.82rem; /* Reduced from 0.88rem */
+            color: #64748b;
+            font-weight: 600;
+            display: block;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal Body Scroll area adjustments */
+        .modal-scroll-area {
+            padding: 16px 20px; /* Compact body padding */
+            overflow-y: auto;
+            flex-grow: 1;
+            background: #ffffff;
+            min-height: 0;
+        }
+        .modal-scroll-area table {
+            font-size: 0.88rem !important; /* Compact table text size */
+        }
+        .modal-scroll-area table th,
+        .modal-scroll-area table td {
+            padding: 10px 14px !important; /* Highly compact cell paddings */
+        }
+        .rules-modal-notes {
+            padding: 12px 16px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+        .rules-modal-notes-title {
+            margin: 0 0 6px 0;
+            font-weight: 800;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Rules modal footer styles */
+        .rules-modal-footer {
+            background: #f8fafc;
+            padding: 12px 20px; /* Compact footer padding */
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .rules-modal-footer-left {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .rules-btn-outline-blue {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+            padding: 10px 16px; /* Compact button padding */
+            font-weight: 700;
+            font-size: 0.85rem; /* Compact font size */
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            animation: blueBtnPulse 2s infinite;
+        }
+        .rules-btn-outline-blue:hover {
+            background: #dbeafe;
+            border-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .rules-btn-outline-purple {
+            background: #faf5ff;
+            color: #7c3aed;
+            border: 2px solid #9333ea;
+            border-radius: 12px;
+            padding: 10px 16px; /* Compact button padding */
+            font-weight: 700;
+            font-size: 0.85rem; /* Compact font size */
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            animation: purpleBtnPulse 2s infinite;
+        }
+        .rules-btn-outline-purple:hover {
+            background: #f3e8ff;
+            border-color: #d8b4fe;
+            transform: translateY(-1px);
+        }
+        .rules-btn-primary {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 22px; /* Compact primary button padding */
+            font-weight: 700;
+            font-size: 0.88rem; /* Compact font size */
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .rules-btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Desktop and mobile button text helpers */
+        .btn-text-mobile {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .rules-modal-overlay {
+                padding: 8px;
+                background: rgba(15, 23, 42, 0.55); /* Lighter translucency for performance */
+                backdrop-filter: blur(4px); /* Very lightweight blur to eliminate scroll lag */
+            }
+            .rules-modal-card {
+                max-height: 94vh; /* Responsive height fit */
+                border-radius: 16px;
+            }
+            .rules-modal-banner {
+                padding: 10px 14px; /* Highly compact alert banner on mobile */
+            }
+            .rules-modal-banner-title {
+                font-size: 0.85rem;
+                margin-bottom: 4px;
+            }
+            .rules-modal-banner-desc {
+                font-size: 0.76rem;
+                gap: 6px;
+                line-height: 1.35;
+            }
+            .rules-modal-banner-btn {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+            .rules-modal-header {
+                padding: 10px 12px 6px; /* Highly compact header space */
+            }
+            .rules-modal-header-title {
+                font-size: 1.0rem;
+            }
+            .rules-modal-header-subtitle {
+                font-size: 0.72rem;
+                margin-top: 2px;
+            }
+            .modal-scroll-area {
+                padding: 10px 12px !important; /* Compact scrolls */
+            }
+            .modal-scroll-area table {
+                font-size: 0.75rem !important; /* Zoomed out table contents */
+            }
+            .modal-scroll-area table th,
+            .modal-scroll-area table td {
+                padding: 6px 8px !important; /* Shrink table row sizes */
+            }
+            .rules-modal-notes {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+            .rules-modal-notes-title {
+                font-size: 0.78rem;
+            }
+            
+            .rules-modal-footer {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 8px 12px;
+                gap: 8px;
+            }
+            .rules-modal-footer-left {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                gap: 8px;
+            }
+            .rules-btn-outline-blue,
+            .rules-btn-outline-purple {
+                flex: 1;
+                padding: 8px 6px; /* Highly compact mobile buttons padding */
+                font-size: 0.75rem; /* Zoomed out fonts */
+                text-align: center;
+                justify-content: center;
+                white-space: nowrap;
+            }
+            .rules-btn-primary {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px 12px;
+                text-align: center;
+                justify-content: center;
+                font-size: 0.82rem;
+            }
+            
+            .btn-text-desktop {
+                display: none;
+            }
+            .btn-text-mobile {
+                display: inline;
+            }
+        }
+
+        /* Animations for enhanced visibility */
         @keyframes warningPulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.15); opacity: 0.8; }
+            50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
         @keyframes btnPulse {
@@ -485,9 +811,52 @@
             70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
             100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
         }
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         @keyframes modalFadeIn {
-            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            from { transform: translateY(40px) scale(0.96); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes welcomePulse {
+            0% {
+                text-shadow: 0 0 8px rgba(255, 179, 0, 0.4), 0 0 15px rgba(255, 179, 0, 0.2);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 179, 0, 0.9), 0 0 35px rgba(255, 179, 0, 0.6);
+                transform: scale(1.03);
+            }
+            100% {
+                text-shadow: 0 0 8px rgba(255, 179, 0, 0.4), 0 0 15px rgba(255, 179, 0, 0.2);
+                transform: scale(1);
+            }
+        }
+        @keyframes iconPulse {
+            0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245,158,11,0.5)); }
+            50% { transform: scale(1.2) rotate(5deg); filter: drop-shadow(0 0 8px rgba(245,158,11,0.9)); }
+            100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245,158,11,0.5)); }
+        }
+        @keyframes blueBtnPulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+        @keyframes purpleBtnPulse {
+            0% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(147, 51, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+        @keyframes bannerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
         }
     </style>
     {% endif %}
@@ -547,26 +916,41 @@
     (function() {
         const toggle = document.getElementById('nav-toggle');
         const menu   = document.getElementById('nav-menu');
+        const nav    = document.querySelector('.gov-nav');
         if (toggle && menu) {
+            const closeMenu = function() {
+                toggle.classList.remove('nav-btn-open');
+                menu.classList.remove('nav-open');
+                document.body.classList.remove('mobile-nav-lock');
+                if (nav) nav.classList.remove('nav-fixed-open');
+                if (typeof lenis !== 'undefined') lenis.start();
+            };
+
             toggle.addEventListener('click', function(e) {
                 e.stopPropagation();
                 toggle.classList.toggle('nav-btn-open');
-                menu.classList.toggle('nav-open');
+                const isOpen = menu.classList.toggle('nav-open');
+                if (isOpen) {
+                    document.body.classList.add('mobile-nav-lock');
+                    if (nav) nav.classList.add('nav-fixed-open');
+                    if (typeof lenis !== 'undefined') lenis.stop();
+                } else {
+                    document.body.classList.remove('mobile-nav-lock');
+                    if (nav) nav.classList.remove('nav-fixed-open');
+                    if (typeof lenis !== 'undefined') lenis.start();
+                }
             });
+
             document.querySelectorAll('.dropdown-trigger').forEach(function(el) {
                 el.addEventListener('click', function(e) { e.stopPropagation(); });
             });
+
             document.querySelectorAll('#nav-menu a[href]').forEach(function(link) {
                 if (link.getAttribute('href').indexOf('javascript') === 0) return;
-                link.addEventListener('click', function() {
-                    toggle.classList.remove('nav-btn-open');
-                    menu.classList.remove('nav-open');
-                });
+                link.addEventListener('click', closeMenu);
             });
-            document.addEventListener('click', function() {
-                toggle.classList.remove('nav-btn-open');
-                menu.classList.remove('nav-open');
-            });
+
+            document.addEventListener('click', closeMenu);
         }
     })();
 
@@ -580,32 +964,55 @@
         }
     });
 
-    // 3. Lenis Smooth Scroll
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-    });
-    function raf(time) {
-        lenis.raf(time);
+    // 3. Lenis Smooth Scroll (Disable on mobile devices to allow native sticky positioning)
+    let lenis;
+    if (window.innerWidth > 768) {
+        lenis = new Lenis({
+            duration: 1.1,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            smoothTouch: false, 
+            touchMultiplier: 1.5,
+            wheelMultiplier: 1.0
+        });
+        function raf(time) {
+            if (lenis) lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
         requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
 
-    // 4. Scroll-to-Top (Sync with Lenis)
+    // 4. Scroll-to-Top (Sync with Lenis or use Native Scroll fallback)
     const scrollTopBtn = document.getElementById('scroll-top-btn');
     if (scrollTopBtn) {
-        lenis.on('scroll', (e) => {
-            if (e.scroll > 500) {
-                scrollTopBtn.style.display = 'flex';
-                setTimeout(() => scrollTopBtn.style.opacity = '1', 10);
-            } else {
-                scrollTopBtn.style.opacity = '0';
-                setTimeout(() => { if(e.scroll <= 500) scrollTopBtn.style.display = 'none' }, 300);
-            }
-        });
-        scrollTopBtn.addEventListener('click', () => {
-            lenis.scrollTo(0, { duration: 1.5 });
-        });
+        if (lenis) {
+            lenis.on('scroll', (e) => {
+                if (e.scroll > 500) {
+                    scrollTopBtn.style.display = 'flex';
+                    setTimeout(() => scrollTopBtn.style.opacity = '1', 10);
+                } else {
+                    scrollTopBtn.style.opacity = '0';
+                    setTimeout(() => { if(e.scroll <= 500) scrollTopBtn.style.display = 'none' }, 300);
+                }
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                lenis.scrollTo(0, { duration: 1.5 });
+            });
+        } else {
+            // Native fallback for mobile devices
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    scrollTopBtn.style.display = 'flex';
+                    scrollTopBtn.style.opacity = '1';
+                } else {
+                    scrollTopBtn.style.opacity = '0';
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
     }
     // 5. PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
@@ -622,9 +1029,121 @@
     // gtag('js', new Date());
     // gtag('config', 'G-XXXXXXXXXX');
     </script>
+    <!-- ==========================================
+         Physical Reporting Route Planner & Checklist Modal
+         ========================================== -->
+    <div id="route-planner-modal" class="modal-overlay" style="display:none;" data-lenis-prevent>
+        <div class="modal-card route-modal-card">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-marked-alt" style="color: #38bdf8; margin-right: 8px;"></i> <span id="route-modal-title">Route Planner & Checklist</span></h3>
+                <button type="button" class="close-modal-btn" onclick="closeRoutePlanner()">&times;</button>
+            </div>
+            <div class="modal-body route-modal-body">
+                <!-- Dropdowns row to recalculate dynamically -->
+                <div class="modal-controls-row">
+                    <div class="modal-control-group">
+                        <label for="modal_home_city">Your Home City</label>
+                        <select id="modal_home_city" onchange="recalculateRoute()">
+                            <option value="All">Not specified</option>
+                            {% for c in mp_cities %}
+                            <option value="{{ c }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-control-group">
+                        <label for="modal_category">Category</label>
+                        <select id="modal_category" onchange="recalculateRoute()">
+                            <option value="UR">UR (General)</option>
+                            <option value="OBC">OBC (BC)</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="EWS">EWS</option>
+                        </select>
+                    </div>
+                    <div class="modal-control-group">
+                        <label for="modal_tfw">TFW Seat?</label>
+                        <select id="modal_tfw" onchange="recalculateRoute()">
+                            <option value="N">No (Regular)</option>
+                            <option value="Y">Yes (Tuition Fee Waiver)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tabs header -->
+                <div class="modal-tabs">
+                    <button type="button" id="tab-btn-route" class="modal-tab-btn active" onclick="switchModalTab('route')">
+                        <i class="fas fa-route"></i> Travel Route
+                    </button>
+                    <button type="button" id="tab-btn-checklist" class="modal-tab-btn" onclick="switchModalTab('checklist')">
+                        <i class="fas fa-clipboard-list"></i> Required Documents
+                    </button>
+                    <button type="button" id="tab-btn-contact" class="modal-tab-btn" onclick="switchModalTab('contact')">
+                        <i class="fas fa-phone-alt"></i> Admission Desk
+                    </button>
+                </div>
+
+                <!-- Tab: Route -->
+                <div id="tab-pane-route" class="modal-tab-pane active">
+                    <div class="route-distance-summary">
+                        <span><i class="fas fa-road"></i> Distance: <strong id="route-distance-val">—</strong></span>
+                        <span><i class="fas fa-city"></i> City: <strong id="route-dest-val">—</strong></span>
+                    </div>
+                    <div id="route-steps-container" class="route-timeline">
+                        <!-- Dynamically filled timeline -->
+                    </div>
+                </div>
+
+                <!-- Tab: Checklist -->
+                <div id="tab-pane-checklist" class="modal-tab-pane">
+                    <div class="checklist-help-bar">
+                        <i class="fas fa-info-circle"></i> Mark required documents below. Your checklist progress is saved automatically.
+                    </div>
+                    <div id="checklist-docs-container" class="checklist-docs-list">
+                        <!-- Dynamically filled checkboxes -->
+                    </div>
+                </div>
+
+                <!-- Tab: Contact -->
+                <div id="tab-pane-contact" class="modal-tab-pane">
+                    <div class="contact-details-grid">
+                        <div class="contact-card-item">
+                            <i class="fas fa-university"></i>
+                            <div>
+                                <strong>Physical Address</strong>
+                                <p id="contact-address-val">—</p>
+                            </div>
+                        </div>
+                        <div class="contact-card-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <div>
+                                <strong>Admission Desk Phone</strong>
+                                <p id="contact-phone-val">—</p>
+                            </div>
+                        </div>
+                        <div class="contact-card-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Admission Help Email</strong>
+                                <p id="contact-email-val">—</p>
+                            </div>
+                        </div>
+                        <div class="contact-card-item">
+                            <i class="fas fa-globe"></i>
+                            <div>
+                                <strong>Official Website</strong>
+                                <p><a href="#" id="contact-website-val" target="_blank">Visit official website <i class="fas fa-external-link-alt"></i></a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/dte-export.js') }}"></script>
     <script src="{{ url_for('static', filename='js/share-utils.js') }}"></script>
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/route-planner.js') }}"></script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -37,7 +37,7 @@ class SeatInfo(db.Model):
 
     year = db.Column(db.Integer, nullable=False)
 
-    # Database-level CHECK constraints
+    # Database-level CHECK constraints and Performance Indexes
     __table_args__ = (
         db.CheckConstraint(
             "college_type IN ('GOVT', 'Private', 'S.F.I.')",
@@ -55,6 +55,9 @@ class SeatInfo(db.Model):
             "domicile IN ('Y', 'N')",
             name="check_domicile"
         ),
+        db.Index('idx_seatinfo_search', 'year', 'category', 'domicile', 'closing_rank', 'gender'),
+        db.Index('idx_seatinfo_college', 'college_name'),
+        db.Index('idx_seatinfo_branch', 'branch'),
     )
 
     def __repr__(self):
@@ -79,6 +82,10 @@ class CgpaRankRange(db.Model):
 
     year = db.Column(db.Integer, nullable=False)
 
+    __table_args__ = (
+        db.Index('idx_cgparank_year_cgpa', 'year', 'cgpa'),
+    )
+
     def __repr__(self):
         return (
             f"<CgpaRankRange CGPA={self.cgpa}, "
@@ -102,9 +109,21 @@ class User(db.Model):
     category = db.Column(db.String(10), nullable=True)
     gender = db.Column(db.String(10), nullable=True)
     notify_counselling = db.Column(db.Integer, default=1)
+    coupon_used = db.Column(db.String(50), nullable=True)
+    referred_by_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=True)
+    predictions_today = db.Column(db.Integer, default=0)
+    last_prediction_date = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     shortlists = db.relationship("CloudShortlist", backref="user", lazy=True)
+    referred_by = db.relationship("User", remote_side=[id], backref="referred_students")
+
+    @property
+    def coupon_details(self):
+        if self.coupon_used and not self.referred_by_id:
+            from models import Coupon
+            return Coupon.query.filter_by(code=self.coupon_used).first()
+        return None
 
 
 class CloudShortlist(db.Model):
@@ -152,6 +171,20 @@ class VisitorCount(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     count = db.Column(db.Integer, nullable=False, default=0)
+
+
+class Coupon(db.Model):
+    __tablename__ = "Coupon"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    code = db.Column(db.String(50), unique=True, nullable=False, index=True)
+    created_by = db.Column(db.String(100), default="admin")  # "admin" or referrer user ID
+    for_whom = db.Column(db.String(100), nullable=True)  # Name/Description for whom/what code was made
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+
+    def __repr__(self):
+        return f"<Coupon {self.code} (Active={self.is_active})>"
 
 
 def model_to_dict(model):

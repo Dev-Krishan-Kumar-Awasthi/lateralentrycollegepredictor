@@ -1,5 +1,6 @@
 import json
 import os
+import re
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -15,13 +16,14 @@ from predictor import (
     fetch_colleges_from_rank, search_colleges,
     calc_probability, MP_CITIES, get_college_detail,
     BRANCH_NAMES, get_compare_data, run_counselling_simulation,
-    get_seat_heatmap, get_cutoff_chart_data,
+    get_seat_heatmap, get_cutoff_chart_data, get_merit_insights,
 )
 from college_meta import (
     get_data_metadata, get_counselling_schedule, save_counselling_schedule,
     MP_DISTRICTS, distance_from_home, get_fee_info, format_fee_display,
     infer_city_from_college_name, get_district_for_city, get_college_info_bundle,
     get_city_coords, get_placement_info, get_college_coordinates,
+    get_college_profile,
 )
 from google_college_service import api_key_configured
 from smart_choices import build_smart_choices
@@ -32,7 +34,7 @@ from auth_helpers import (
     pre_validate_registration, send_otp_email, reset_password_in_db,
     pre_validate_profile_update, send_broadcast_email,
 )
-from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount
+from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount, Coupon
 from faq_data import (
     FAQ_LIST, get_faq_by_slug, get_faqs_by_category, get_all_categories
 )
@@ -51,8 +53,11 @@ def set_security_headers(response):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    # Cache static assets aggressively for 1 year
+    if request.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     # Block admin paths from being cached by browser
-    if request.path.startswith("/admin"):
+    elif request.path.startswith("/admin"):
         response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
         response.headers["Pragma"] = "no-cache"
     return response
@@ -167,7 +172,7 @@ def inject_globals():
     total_visits = getattr(g, 'total_visits', 0)
     if total_visits == 0:
         try:
-            counter = VisitorCount.query.get(1)
+            counter = db.session.get(VisitorCount, 1)
             if counter:
                 total_visits = counter.count
         except Exception:
@@ -178,11 +183,15 @@ def inject_globals():
         'data_years': meta.get('years_available', YEARS),
         'current_user': user,
         'mp_districts': MP_DISTRICTS,
+        'mp_cities': MP_CITIES,
         'google_api_enabled': api_key_configured(),
         'is_admin': bool(is_admin),
         'total_visits': total_visits,
         'city_coords': get_city_coords(),
         'schedule': get_counselling_schedule(),
+        'prefill_reg': None,
+        'congrats_coupon_for': None,
+        'congrats_referral_by': None,
     }
 
 
@@ -192,7 +201,7 @@ def count_visitor():
     if request.endpoint and not request.endpoint.startswith('static') and not request.path.startswith('/api/'):
         try:
             from flask import g, session
-            counter = VisitorCount.query.get(1)
+            counter = db.session.get(VisitorCount, 1)
             if not counter:
                 counter = VisitorCount(id=1, count=0)
                 db.session.add(counter)
@@ -212,7 +221,7 @@ def count_visitor():
 
 with app.app_context():
     db.create_all()
-    # Dynamic SQLite migration for User table columns
+    # Dynamic SQLite migration for User table columns and Performance Indexes
     try:
         from sqlalchemy import text
         for col, col_type in [
@@ -222,15 +231,33 @@ with app.app_context():
             ("cgpa", "REAL"),
             ("category", "TEXT"),
             ("gender", "TEXT"),
-            ("notify_counselling", "INTEGER DEFAULT 1")
+            ("notify_counselling", "INTEGER DEFAULT 1"),
+            ("coupon_used", "TEXT"),
+            ("referred_by_id", "INTEGER"),
+            ("predictions_today", "INTEGER DEFAULT 0"),
+            ("last_prediction_date", "TEXT")
         ]:
             try:
                 db.session.execute(text(f"ALTER TABLE User ADD COLUMN {col} {col_type}"))
                 db.session.commit()
             except Exception:
                 db.session.rollback()
-    except Exception:
-        pass
+                
+        # Dynamic SQLite migration for Coupon table
+        try:
+            db.session.execute(text("ALTER TABLE Coupon ADD COLUMN for_whom TEXT"))
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+                
+        # Create performance-critical indexes dynamically if they don't exist
+        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_seatinfo_search ON SeatInfo (year, category, domicile, closing_rank, gender)"))
+        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_seatinfo_college ON SeatInfo (college_name)"))
+        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_seatinfo_branch ON SeatInfo (branch)"))
+        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_cgparank_year_cgpa ON CgpaRankRange (year, cgpa)"))
+        db.session.commit()
+    except Exception as e:
+        print("Dynamic schema migration or index creation failed:", e)
 
     # Auto-seed the admin user
     try:
@@ -367,6 +394,40 @@ def predictor():
             error="Invalid CGPA. Please enter a number between 0 and 10.",
             mp_cities=MP_CITIES, prefill=None, has_prefill=False,
         )
+
+    # ── Daily Prediction Limit Check ──
+    user = current_user()
+    if user:
+        admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+        is_admin = (user.email.strip().lower() == admin_email)
+        
+        has_referred_others = User.query.filter_by(referred_by_id=user.id).first() is not None
+        
+        # Verify coupon is still active/exists (if it is an admin coupon, not a student referral)
+        coupon_valid = True
+        if user.coupon_used and not user.referred_by_id:
+            from models import Coupon
+            coupon_valid = Coupon.query.filter_by(code=user.coupon_used, is_active=True).first() is not None
+            
+        has_unlimited_access = is_admin or (user.coupon_used is not None and coupon_valid) or has_referred_others
+        
+        if not has_unlimited_access:
+            from datetime import date
+            today_str = date.today().isoformat()
+            
+            if user.last_prediction_date != today_str:
+                user.last_prediction_date = today_str
+                user.predictions_today = 0
+                
+            if user.predictions_today >= 5:
+                return render_template(
+                    'predictor.html', data=None, prediction=None,
+                    error="You have reached your daily limit of 5 predictions. Register/use a coupon or invite friends to get unlimited access!",
+                    mp_cities=MP_CITIES, prefill=None, has_prefill=False
+                )
+            
+            user.predictions_today += 1
+            db.session.commit()
 
     category = request.form.get('category')
     gender = request.form.get('gender')
@@ -713,6 +774,29 @@ def rank():
     return render_template('rank.html', data={"cgpa": cgpa}, prediction=get_rank(cgpa))
 
 
+@app.route('/merit-insights', methods=['GET', 'POST'])
+def merit_insights():
+    if request.method == 'POST' and not current_user():
+        cgpa_str = request.form.get('cgpa', '').strip()
+        return render_template('merit_insights.html', data={'cgpa': cgpa_str}, insights=None, needs_login=True)
+
+    if request.method == 'GET':
+        return render_template('merit_insights.html', data=None, insights=None)
+
+    try:
+        cgpa = float(request.form.get('cgpa', '').strip())
+        if not (0.0 <= cgpa <= 10.0):
+            raise ValueError()
+    except ValueError:
+        return render_template(
+            'merit_insights.html', data=None, insights=None,
+            error="Invalid CGPA. Please enter a number between 0 and 10.",
+        )
+
+    insights = get_merit_insights(cgpa, RANK_MAPS_CACHE, YEARS)
+    return render_template('merit_insights.html', data={'cgpa': cgpa}, insights=insights)
+
+
 @app.route('/simulator', methods=['GET', 'POST'])
 def simulator():
     if request.method == 'POST' and not current_user():
@@ -876,6 +960,11 @@ def dte_rules():
     return render_template('rules.html')
 
 
+@app.route('/choice-filling-rules')
+def choice_filling_rules():
+    return render_template('choice_filling_rules.html')
+
+
 @app.route('/choice-vault')
 def choice_vault():
     slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
@@ -972,7 +1061,40 @@ def account_page():
                 gender=request.form.get('gender', 'M'),
             )
             if err:
-                return render_template('account.html', error=err)
+                return render_template('account.html', error=err, prefill_reg=request.form)
+
+            coupon_code = request.form.get('coupon_code', '').strip().upper()
+            coupon_used = None
+            referred_by_id = None
+            coupon_for_whom = None
+            referred_by_name = None
+
+            if coupon_code:
+                # 1. Check Coupon Table
+                coupon = Coupon.query.filter_by(code=coupon_code, is_active=True).first()
+                if coupon:
+                    coupon_used = coupon_code
+                    coupon_for_whom = coupon.for_whom.strip() if (coupon.for_whom and coupon.for_whom.strip()) else coupon.code
+                else:
+                    # 2. Check User Table for mobile or email
+                    referrer = User.query.filter(
+                        (User.mobile_number == coupon_code) | (User.email == coupon_code.lower())
+                    ).first()
+                    if referrer:
+                        coupon_used = coupon_code
+                        referred_by_id = referrer.id
+                        referred_by_name = referrer.display_name or referrer.email
+                    else:
+                        return render_template(
+                            'account.html',
+                            error="Invalid coupon or referral code. Please check the code or leave it blank.",
+                            prefill_reg=request.form
+                        )
+
+            sanitized["coupon_used"] = coupon_used
+            sanitized["referred_by_id"] = referred_by_id
+            sanitized["coupon_for_whom"] = coupon_for_whom
+            sanitized["referred_by_name"] = referred_by_name
             
             import random
             otp = str(random.randint(100000, 999999))
@@ -1027,10 +1149,17 @@ def account_page():
                 diploma_branch=pending_data["diploma_branch"],
                 cgpa=pending_data["cgpa"],
                 category=pending_data["category"],
-                gender=pending_data["gender"]
+                gender=pending_data["gender"],
+                coupon_used=pending_data.get("coupon_used"),
+                referred_by_id=pending_data.get("referred_by_id")
             )
             if err:
                 return render_template('account.html', error=err)
+            
+            if pending_data.get("coupon_for_whom"):
+                session["registered_with_coupon_for"] = pending_data.get("coupon_for_whom")
+            elif pending_data.get("referred_by_name"):
+                session["registered_with_referral_by"] = pending_data.get("referred_by_name")
             
             session.pop("pending_registration", None)
             session.pop("registration_otp", None)
@@ -1173,7 +1302,17 @@ def account_page():
 
     user = current_user()
     shortlist = load_cloud_shortlist(user.id) if user else []
-    return render_template('account.html', user=user, cloud_shortlist=shortlist)
+    
+    congrats_coupon_for = session.pop("registered_with_coupon_for", None)
+    congrats_referral_by = session.pop("registered_with_referral_by", None)
+    
+    return render_template(
+        'account.html', 
+        user=user, 
+        cloud_shortlist=shortlist,
+        congrats_coupon_for=congrats_coupon_for,
+        congrats_referral_by=congrats_referral_by
+    )
 
 
 def get_admin_dashboard_stats(users):
@@ -1203,6 +1342,37 @@ def get_admin_dashboard_stats(users):
     }
 
 
+def get_shortlist_analytics_stats():
+    from collections import Counter
+    from models import CloudShortlist
+    all_shortlists = CloudShortlist.query.all()
+    college_counts = Counter()
+    branch_counts = Counter()
+    combo_counts = Counter()
+
+    for s in all_shortlists:
+        try:
+            items = json.loads(s.items_json) if s.items_json else []
+            for item in items:
+                cname = item.get('college_name', '').strip()
+                br = item.get('branch', '').strip()
+                if cname:
+                    college_counts[cname] += 1
+                    if br:
+                        branch_counts[br] += 1
+                        combo_counts[f"{cname} ({br})"] += 1
+        except Exception:
+            continue
+
+    return {
+        'top_colleges': college_counts.most_common(10),
+        'top_branches': branch_counts.most_common(5),
+        'top_combos': combo_counts.most_common(10),
+        'total_shortlisted': sum(college_counts.values()),
+        'total_lists_count': len(all_shortlists)
+    }
+
+
 @app.route('/admin/users')
 @login_required
 def admin_users():
@@ -1219,8 +1389,13 @@ def admin_users():
         from flask import Response
         output = io.StringIO()
         writer = csv.writer(output)
-        writer.writerow(['ID', 'Name', 'Email', 'Mobile', 'Polytechnic College', 'Diploma Branch', 'CGPA', 'Category', 'Gender', 'Registered At'])
+        writer.writerow(['ID', 'Name', 'Email', 'Mobile', 'Polytechnic College', 'Diploma Branch', 'CGPA', 'Category', 'Gender', 'Registered At', 'Coupon Used', 'Referred By'])
         for u in users:
+            referred_by_name = ''
+            if u.referred_by:
+                referred_by_name = f"Student: {u.referred_by.display_name or u.referred_by.email}"
+            elif u.coupon_details:
+                referred_by_name = f"Coupon: {u.coupon_details.for_whom or u.coupon_details.code}"
             writer.writerow([
                 u.id, 
                 u.display_name or '', 
@@ -1231,7 +1406,9 @@ def admin_users():
                 u.cgpa or 0.0, 
                 u.category or 'UR', 
                 u.gender or 'M', 
-                to_ist(u.created_at).strftime('%d %b %Y, %I:%M %p') if u.created_at else '—'
+                to_ist(u.created_at).strftime('%d %b %Y, %I:%M %p') if u.created_at else '—',
+                u.coupon_used or '',
+                referred_by_name
             ])
         return Response(
             output.getvalue(),
@@ -1242,6 +1419,8 @@ def admin_users():
     stats = get_admin_dashboard_stats(users)
     reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
     vault_slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
+    analytics = get_shortlist_analytics_stats()
+    coupons = Coupon.query.order_by(Coupon.created_at.desc()).all()
 
     return render_template(
         'admin_dashboard.html', 
@@ -1251,7 +1430,9 @@ def admin_users():
         branch_stats=stats['branch_stats'], 
         category_stats=stats['category_stats'],
         reviews=reviews,
-        vault_slips=vault_slips
+        vault_slips=vault_slips,
+        analytics=analytics,
+        coupons=coupons
     )
 
 
@@ -1376,12 +1557,52 @@ def admin_delete_user(user_id):
     from models import CloudShortlist
     CloudShortlist.query.filter_by(user_id=user_id).delete()
     
-    user_to_delete = User.query.get(user_id)
+    user_to_delete = db.session.get(User, user_id)
     if user_to_delete:
         db.session.delete(user_to_delete)
         db.session.commit()
         
     return redirect('/admin/users')
+
+
+@app.route('/admin/coupons/add', methods=['POST'])
+@login_required
+def admin_add_coupon():
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    code = request.form.get('code', '').strip().upper()
+    for_whom = request.form.get('for_whom', '').strip()
+    if not code:
+        return redirect('/admin/users?error=coupon_code_empty#coupons')
+        
+    # Check if coupon already exists
+    existing = Coupon.query.filter_by(code=code).first()
+    if existing:
+        return redirect('/admin/users?error=coupon_exists#coupons')
+        
+    coupon = Coupon(code=code, for_whom=for_whom, created_by="admin", is_active=True)
+    db.session.add(coupon)
+    db.session.commit()
+    return redirect('/admin/users?success=coupon_added#coupons')
+
+
+@app.route('/admin/coupons/delete/<int:id>', methods=['POST'])
+@login_required
+def admin_delete_coupon(id):
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+        
+    coupon = db.session.get(Coupon, id)
+    if coupon:
+        db.session.delete(coupon)
+        db.session.commit()
+        return redirect('/admin/users?success=coupon_deleted#coupons')
+    return redirect('/admin/users?error=coupon_not_found#coupons')
 
 
 @app.route('/api/v1/admin/user-shortlist/<int:user_id>')
@@ -1413,11 +1634,12 @@ def admin_broadcast():
     stats = get_admin_dashboard_stats(users)
     reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
     vault_slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
+    analytics = get_shortlist_analytics_stats()
 
     if not subject or not body:
         return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
             avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-            reviews=reviews, vault_slips=vault_slips, broadcast_error="Subject and Message body cannot be empty.")
+            reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Subject and Message body cannot be empty.")
 
     emails = []
     recipient_display = ""
@@ -1426,18 +1648,18 @@ def admin_broadcast():
         if not specific_user_id:
             return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
                 avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-                reviews=reviews, vault_slips=vault_slips, broadcast_error="Please select a specific student to send the message.")
+                reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Please select a specific student to send the message.")
         
-        target_user = User.query.get(specific_user_id)
+        target_user = db.session.get(User, specific_user_id)
         if not target_user:
             return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
                 avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-                reviews=reviews, vault_slips=vault_slips, broadcast_error="Selected student not found in database.")
+                reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Selected student not found in database.")
         
         if not target_user.email:
             return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
                 avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-                reviews=reviews, vault_slips=vault_slips, broadcast_error="Selected student does not have a valid email address.")
+                reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Selected student does not have a valid email address.")
         
         emails = [target_user.email]
         recipient_display = target_user.display_name or target_user.email
@@ -1450,13 +1672,13 @@ def admin_broadcast():
     if not emails:
         return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
             avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-            reviews=reviews, vault_slips=vault_slips, broadcast_error="No recipients found for this selection.")
+            reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="No recipients found for this selection.")
 
     success_count, fail_count = send_broadcast_email(emails, subject, body)
 
     return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
         avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-        reviews=reviews, vault_slips=vault_slips, 
+        reviews=reviews, vault_slips=vault_slips, analytics=analytics,
         broadcast_success=f"Email sent successfully to {recipient_display}. ({success_count} succeeded, {fail_count} failed)")
 
 
@@ -1468,7 +1690,7 @@ def admin_approve_review(review_id):
     if not admin or admin.email.strip().lower() != admin_email:
         return "Access Denied: Admin privileges required.", 403
     
-    review = CollegeReview.query.get(review_id)
+    review = db.session.get(CollegeReview, review_id)
     if review:
         review.is_approved = True
         db.session.commit()
@@ -1483,7 +1705,7 @@ def admin_delete_review(review_id):
     if not admin or admin.email.strip().lower() != admin_email:
         return "Access Denied: Admin privileges required.", 403
     
-    review = CollegeReview.query.get(review_id)
+    review = db.session.get(CollegeReview, review_id)
     if review:
         db.session.delete(review)
         db.session.commit()
@@ -1503,6 +1725,462 @@ def shortlist_print():
 @app.route('/api/v1/counselling-schedule')
 def api_schedule():
     return jsonify(get_counselling_schedule())
+
+
+@app.route('/api/v1/college/route-info')
+def api_college_route_info():
+    home_city = request.args.get('home_city', 'All').strip()
+    college_name = request.args.get('college_name', '').strip()
+    category = request.args.get('category', 'UR').strip()
+    
+    if not college_name:
+        return jsonify({"error": "college_name required"}), 400
+        
+    dest_city = infer_city_from_college_name(college_name) or "Unknown"
+    
+    distance_km = 0
+    distance_text = "—"
+    if home_city and home_city != 'All':
+        dist = distance_from_home(home_city, college_name)
+        if dist:
+            distance_km = dist.get('distance_km', 0)
+            distance_text = dist.get('distance_text', '—')
+            
+    route_steps = []
+    if home_city == 'All':
+        route_steps.append("Please specify your Home City to generate customized travel instructions.")
+        route_steps.append(f"Once you reach {dest_city}, take local transport (Auto/E-rickshaw) to the {college_name} campus.")
+    elif home_city == dest_city:
+        route_steps.append(f"Since you are in {home_city}, you can use local city transport (Auto-rickshaw, E-rickshaw, or City Bus).")
+        route_steps.append(f"Head directly towards the administrative block of {college_name}.")
+        route_steps.append("Ask for the 'Admission Reporting Cell' inside the campus.")
+    else:
+        route_steps.append(f"Start from your residence in {home_city} and go to the nearest railway station or major bus stand.")
+        
+        has_train = True
+        duration = "4-6 hours"
+        if distance_km > 0:
+            hrs = max(1, round(distance_km / 55))
+            duration = f"~{hrs} to {hrs + 2} hours"
+            
+        route_steps.append(f"Board a direct Express/Superfast train or an AC/Charter sleeper bus towards {dest_city} (Travel duration: {duration}).")
+        
+        cost_est = max(100, int(distance_km * 2.2)) if distance_km > 0 else 250
+        route_steps.append(f"Estimated transit ticket cost: ₹{cost_est} - ₹{cost_est + 200} (Sleeper/AC Bus).")
+        
+        route_steps.append(f"After arriving at {dest_city} Railway Station / Bus Stand, take a local auto-rickshaw or e-rickshaw directly to the {college_name} campus.")
+        route_steps.append("Report to the 'Admission Reporting Cell' inside the administrative block.")
+
+    profile = get_college_profile(college_name) or {}
+    
+    import urllib.parse
+    AUTHENTIC_CONTACTS = [
+        {
+            "keys": ["sgsits", "g.s. institute of technology"],
+            "website": "https://www.sgsits.ac.in",
+            "phone": "0731-2582100",
+            "email": "director@sgsits.ac.in",
+            "address": "23 Sir M. Visvesvaraya Marg, Vallabh Nagar, Indore, Madhya Pradesh 452003"
+        },
+        {
+            "keys": ["jabalpur engineering", "jec"],
+            "website": "https://www.jecjabalpur.ac.in",
+            "phone": "0761-2673114",
+            "email": "principal@jecjabalpur.ac.in",
+            "address": "Gokalpur, Ranjhi, Jabalpur, Madhya Pradesh 482011"
+        },
+        {
+            "keys": ["iet davv", "institute of engineering and technology davv", "institute of engineering & technology davv"],
+            "website": "https://www.ietdavv.edu.in",
+            "phone": "0731-2361116",
+            "email": "director@ietdavv.edu.in",
+            "address": "Khandwa Road, Indore, Madhya Pradesh 452001"
+        },
+        {
+            "keys": ["madhav institute", "mits"],
+            "website": "https://www.mitsgwalior.in",
+            "phone": "0751-2403095",
+            "email": "director@mitsgwalior.in",
+            "address": "Gola ka Mandir, Gwalior, Madhya Pradesh 474005"
+        },
+        {
+            "keys": ["uit rgpv bhopal", "university institute of technology rgpv", "university institute of technology repv"],
+            "website": "https://www.uitrgpv.ac.in",
+            "phone": "0755-2678812",
+            "email": "uit_director@rgtu.net",
+            "address": "Airport Bypass Road, Gandhi Nagar, Bhopal, Madhya Pradesh 462033"
+        },
+        {
+            "keys": ["ujjain engineering", "uec"],
+            "website": "http://www.uecu.ac.in",
+            "phone": "0734-2511912",
+            "email": "principal@uecu.ac.in",
+            "address": "Sanwer Road, Ujjain, Madhya Pradesh 456010"
+        },
+        {
+            "keys": ["rewa engineering", "rec"],
+            "website": "http://www.recrewamp.ac.in",
+            "phone": "07662-220065",
+            "email": "principalrec@rediffmail.com",
+            "address": "Rewa, Madhya Pradesh 486001"
+        },
+        {
+            "keys": ["samrat ashok", "sati"],
+            "website": "https://www.satiengg.in",
+            "phone": "07592-250121",
+            "email": "director@satiengg.in",
+            "address": "Civil Lines, Vidisha, Madhya Pradesh 464001"
+        },
+        {
+            "keys": ["indira gandhi", "igec"],
+            "website": "http://www.igecsagar.ac.in",
+            "phone": "07582-263850",
+            "email": "principaligec@gmail.com",
+            "address": "Baheriya, Sagar, Madhya Pradesh 470021"
+        },
+        {
+            "keys": ["rustamji", "rjit"],
+            "website": "https://www.rjit.ac.in",
+            "phone": "07524-274319",
+            "email": "rjit_bsf@yahoo.com",
+            "address": "BSF Academy, Tekanpur, Gwalior, Madhya Pradesh 475005"
+        },
+        {
+            "keys": ["lakshmi narain college of technology jabalpur", "lnct jabalpur"],
+            "website": "http://www.lnctjabalpur.ac.in",
+            "phone": "0761-4261100",
+            "email": "admission@lnctjabalpur.ac.in",
+            "address": "Andhua, Near Medical College, Jabalpur, Madhya Pradesh 482003"
+        },
+        {
+            "keys": ["lakshmi narain college of technology indore", "lnct indore"],
+            "website": "http://www.lnctindore.ac.in",
+            "phone": "0731-4253100",
+            "email": "admission@lnctindore.ac.in",
+            "address": "Sector-D, Sanwer Road, Indore, Madhya Pradesh 452015"
+        },
+        {
+            "keys": ["lakshmi narain", "lnct"],
+            "website": "https://www.lnct.ac.in",
+            "phone": "0755-6185300",
+            "email": "admission@lnct.ac.in",
+            "address": "Kalchuri Nagar, Raisen Road, Bhopal, Madhya Pradesh 462022"
+        },
+        {
+            "keys": ["oriental institute of science & technology, jabalpur", "oriental institute of science and technology, jabalpur"],
+            "website": "http://www.oistjabalpur.org",
+            "phone": "0761-2441334",
+            "email": "oistjabalpur@oriental.ac.in",
+            "address": "Katni Bypass Road, Jabalpur, Madhya Pradesh 482003"
+        },
+        {
+            "keys": ["oriental college of technology"],
+            "website": "https://www.oriental.ac.in",
+            "phone": "0755-2529026",
+            "email": "admissions@oriental.ac.in",
+            "address": "Thakral Nagar, Raisen Road, Bhopal, Madhya Pradesh 462021"
+        },
+        {
+            "keys": ["oriental institute", "oist"],
+            "website": "https://www.oriental.ac.in",
+            "phone": "0755-2529026",
+            "email": "admissions@oriental.ac.in",
+            "address": "Thakral Nagar, Raisen Road, Bhopal, Madhya Pradesh 462021"
+        },
+        {
+            "keys": ["acropolis"],
+            "website": "https://www.acropolis.in",
+            "phone": "0731-4730000",
+            "email": "admission@acropolis.in",
+            "address": "Bypass Road, Manglia, Indore, Madhya Pradesh 453771"
+        },
+        {
+            "keys": ["ips academy"],
+            "website": "https://ies.ipsacademy.org",
+            "phone": "0731-4014601",
+            "email": "admission.ies@ipsacademy.org",
+            "address": "Knowledge Village, Rajendra Nagar, A.B. Road, Indore, Madhya Pradesh 452012"
+        },
+        {
+            "keys": ["rgpv shivpuri"],
+            "website": "http://www.uitrgpvshivpuri.ac.in",
+            "phone": "07492-223657",
+            "email": "uitrgpvshivpuri@gmail.com",
+            "address": "Satanwada, Shivpuri, Madhya Pradesh 473551"
+        },
+        {
+            "keys": ["rgpv shahdol"],
+            "website": "http://www.uitrgpvshahdol.ac.in",
+            "phone": "07652-242045",
+            "email": "principaluitshahdol@gmail.com",
+            "address": "Near Jail Building, Shahdol, Madhya Pradesh 484001"
+        },
+        {
+            "keys": ["uit jhabua", "rgpv jhabua"],
+            "website": "http://www.uitrgpvjhabua.ac.in",
+            "phone": "07392-244312",
+            "email": "uitrgpvjhabua@gmail.com",
+            "address": "Near Gadwada, Jhabua, Madhya Pradesh 457661"
+        },
+        {
+            "keys": ["barkatullah", "buit"],
+            "website": "http://www.buit.ac.in",
+            "phone": "0755-2677329",
+            "email": "director@buit.ac.in",
+            "address": "Barkatullah University Campus, Hoshangabad Road, Bhopal, Madhya Pradesh 462026"
+        },
+        {
+            "keys": ["gyan ganga college of technology"],
+            "website": "https://www.ggct.co.in",
+            "phone": "0761-2203001",
+            "email": "admission@gyanganga.org",
+            "address": "P.O. Tilwara Ghat, Near Bargi Hills, Jabalpur, Madhya Pradesh 482003"
+        },
+        {
+            "keys": ["gyan ganga", "ggits"],
+            "website": "https://www.gyanganga.org",
+            "phone": "0761-2203001",
+            "email": "admission@gyanganga.org",
+            "address": "P.O. Tilwara Ghat, Near Bargi Hills, Jabalpur, Madhya Pradesh 482003"
+        },
+        {
+            "keys": ["shri ram institute of technology", "srit"],
+            "website": "https://www.sritgroup.org",
+            "phone": "0761-4001933",
+            "email": "info@sritgroup.org",
+            "address": "Shri Ram Group Campus, Near ITI, Madhotal, Jabalpur, Madhya Pradesh 482002"
+        },
+        {
+            "keys": ["prestige institute"],
+            "website": "https://www.piemr.edu.in",
+            "phone": "0731-4013000",
+            "email": "info@piemr.edu.in",
+            "address": "Sector-D, Scheme No 74, Opp. Vijay Nagar, Indore, Madhya Pradesh 452010"
+        },
+        {
+            "keys": ["sagar institute of research", "sirt"],
+            "website": "https://www.sirtbhopal.ac.in",
+            "phone": "0755-4983100",
+            "email": "sirtbhopal@sagar.ac.in",
+            "address": "Ayodhya Bypass Road, Bhopal, Madhya Pradesh 462041"
+        },
+        {
+            "keys": ["sistec"],
+            "website": "https://www.sistec.ac.in",
+            "phone": "0755-4206035",
+            "email": "admissions@sistec.ac.in",
+            "address": "Opp. International Airport, Gandhi Nagar, Bhopal, Madhya Pradesh 462036"
+        },
+        {
+            "keys": ["bansal institute of science"],
+            "website": "https://bistbhopal.ac.in",
+            "phone": "0755-6681100",
+            "email": "bist@bansal.ac.in",
+            "address": "Kokta, Anand Nagar, Raisen Road, Bhopal, Madhya Pradesh 462021"
+        },
+        {
+            "keys": ["truba"],
+            "website": "https://www.trubainstitute.ac.in",
+            "phone": "0755-2734691",
+            "email": "info@trubainstitute.ac.in",
+            "address": "Karond-Gandhi Nagar Bypass Road, Bhopal, Madhya Pradesh 462038"
+        },
+        {
+            "keys": ["nowgong engineering", "nec"],
+            "website": "https://www.necnowgong.ac.in",
+            "phone": "07685-257525",
+            "email": "principalnecnowgong@gmail.com",
+            "address": "Nowgong, Chhatarpur, Madhya Pradesh 471111"
+        },
+        {
+            "keys": ["jiwaji"],
+            "website": "http://www.jiwaji.edu",
+            "phone": "0751-2442701",
+            "email": "director@jiwaji.edu",
+            "address": "Jiwaji University Campus, Sachin Tendulkar Road, Gwalior, Madhya Pradesh 47411"
+        },
+        {
+            "keys": ["vikram university"],
+            "website": "http://www.vikramuniv.ac.in",
+            "phone": "0734-2514270",
+            "email": "director.soet.vu@gmail.com",
+            "address": "Vikram University, Dewas Road, Ujjain, Madhya Pradesh 456010"
+        }
+    ]
+
+    name_norm = re.sub(r'[^a-z0-9]', '', college_name.lower())
+    matched_info = None
+    for item in AUTHENTIC_CONTACTS:
+        for k in item["keys"]:
+            k_norm = re.sub(r'[^a-z0-9]', '', k.lower())
+            if k_norm in name_norm:
+                matched_info = item
+                break
+        if matched_info:
+            break
+
+    if matched_info:
+        contact = {
+            "address": matched_info["address"],
+            "phone": matched_info["phone"],
+            "email": matched_info["email"],
+            "website": matched_info["website"]
+        }
+    else:
+        q = urllib.parse.quote_plus(f"{college_name} official website")
+        website = f"https://www.google.com/search?q={q}"
+        phone = "0755-6720200 (DTE Support Helpline)"
+        address = profile.get("address") or f"{college_name}, {dest_city}, Madhya Pradesh, India"
+        email = "Refer to Official Website"
+        contact = {
+            "address": address,
+            "phone": phone,
+            "email": email,
+            "website": website
+        }
+
+    docs = [
+        {"name": "DTE Seat Allotment Letter", "desc": "Original copy + 3 photocopies. Print from DTE candidate login portal."},
+        {"name": "DTE Verification Slip", "desc": "Original copy + 3 photocopies. Issued after online document verification."},
+        {"name": "Diploma Marksheets (All Semesters)", "desc": "Original marksheets of all semesters (1st to 6th sem)."},
+        {"name": "High School (10th) Marksheet", "desc": "Original certificate for candidate date of birth verification."},
+        {"name": "Transfer Certificate (TC) & Character Certificate", "desc": "Original certificates issued by your last attended Polytechnic institute."},
+        {"name": "Migration Certificate", "desc": "Original certificate (required if you completed Diploma from outside MP or a different board than RGPV)."},
+        {"name": "Aadhaar Card", "desc": "Photocopy of candidate's Aadhaar Card for identification."},
+        {"name": "Passport Size Photographs", "desc": "4-6 recent colored passport size photographs."}
+    ]
+    
+    if category in ['OBC', 'SC', 'ST']:
+        docs.append({"name": f"{category} Category Caste Certificate", "desc": "Digital Caste Certificate issued by SDM / competent authority of Govt. of Madhya Pradesh."})
+        docs.append({"name": "Income Certificate", "desc": "Valid Family Income Certificate issued recently for scholarship verification."})
+    elif category == 'EWS':
+        docs.append({"name": "Economically Weaker Section (EWS) Certificate", "desc": "Valid certificate issued by competent authority for the current financial year."})
+        docs.append({"name": "Income Certificate", "desc": "Family Income Certificate to support EWS status."})
+        
+    if request.args.get('tfw') == 'Y':
+        docs.append({"name": "TFW Income Certificate", "desc": "Original Income Certificate showing family income < 8 LPA (mandatory for Tuition Fee Waiver seats)."})
+
+    docs.append({"name": "Gap Certificate (if applicable)", "desc": "Notarized affidavit on ₹50 Stamp Paper if there was any gap year in your studies after completing Diploma."})
+
+    return jsonify({
+        "college_name": college_name,
+        "home_city": home_city,
+        "dest_city": dest_city,
+        "distance_text": distance_text,
+        "route_steps": route_steps,
+        "contact": contact,
+        "documents": docs
+    })
+
+
+@app.route('/api/v1/choices/optimize', methods=['POST'])
+def api_optimize_choices():
+    data = request.get_json(silent=True) or {}
+    cgpa_str = data.get('cgpa')
+    category = data.get('category', 'UR').strip()
+    gender = data.get('gender', 'M').strip()
+    domicile = data.get('domicile', 'Y').strip()
+    year_str = data.get('year', '2025')
+    choices = data.get('choices', [])
+
+    if not cgpa_str:
+        return jsonify({"error": "Missing CGPA for optimization"}), 400
+
+    try:
+        cgpa = float(cgpa_str)
+    except (TypeError, ValueError):
+        return jsonify({"error": "Invalid CGPA value"}), 400
+
+    try:
+        year = int(year_str)
+    except (TypeError, ValueError):
+        year = 2025
+
+    cgpa_map = fetch_cgpa_to_rank_map(year)
+    if not cgpa_map:
+        return jsonify({"error": f"No rank mapping data found for year {year}"}), 400
+
+    min_rank, max_rank = estimate_rank_range(cgpa_map, cgpa)
+
+    optimized = []
+    for index, choice in enumerate(choices):
+        col_name = choice.get('college_name', '').strip()
+        branch = choice.get('branch', '').strip()
+        if not col_name or not branch:
+            continue
+
+        # Look up SeatInfo for this specific college/branch/category
+        seat = SeatInfo.query.filter_by(
+            college_name=col_name,
+            branch=branch,
+            year=year,
+            category=category,
+            domicile=domicile
+        ).filter(SeatInfo.gender.in_([gender, 'OP'])).first()
+
+        if not seat:
+            # Fallback 1: category only
+            seat = SeatInfo.query.filter_by(
+                college_name=col_name,
+                branch=branch,
+                year=year,
+                category=category
+            ).first()
+
+        if not seat:
+            # Fallback 2: general UR/OP seat
+            seat = SeatInfo.query.filter_by(
+                college_name=col_name,
+                branch=branch,
+                year=year
+            ).first()
+
+        if seat:
+            prob = calc_probability(min_rank, max_rank, seat.opening_rank, seat.closing_rank)
+            closing_rank = seat.closing_rank
+        else:
+            prob = 50
+            closing_rank = 99999
+
+        optimized.append({
+            "college_name": col_name,
+            "branch": branch,
+            "branch_name": BRANCH_NAMES.get(branch, branch),
+            "probability": prob,
+            "closing_rank": closing_rank,
+            "original_index": index
+        })
+
+    # Sort the entire list strictly by closing_rank (cutoff) ascending
+    # Harder to get colleges (smaller closing_rank) go to the top.
+    optimized.sort(key=lambda x: x["closing_rank"])
+
+    # Dynamic bucket labels and count calculation
+    dream_count = 0
+    target_count = 0
+    safe_count = 0
+    for item in optimized:
+        prob = item["probability"]
+        if item["closing_rank"] == 99999: # Default fallback rank (data missing)
+            item["bucket"] = "safe"
+            safe_count += 1
+        elif prob < 40:
+            item["bucket"] = "dream"
+            dream_count += 1
+        elif prob < 75:
+            item["bucket"] = "target"
+            target_count += 1
+        else:
+            item["bucket"] = "safe"
+            safe_count += 1
+
+    return jsonify({
+        "success": True,
+        "choices": optimized,
+        "dream_count": dream_count,
+        "target_count": target_count,
+        "safe_count": safe_count
+    })
 
 
 @app.route('/api/v1/reviews', methods=['GET', 'POST'])
@@ -1569,6 +2247,7 @@ def sitemap():
         'about',
         'predictor',
         'choice-builder',
+        'merit-insights',
         'schedule',
         'how-it-works',
         'compare',

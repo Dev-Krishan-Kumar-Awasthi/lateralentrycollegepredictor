@@ -380,7 +380,7 @@
                             <thead>
                                 <tr>
                                     <th style="width:36px;"><input type="checkbox" class="select-all-check" data-table="results-table-{{ year }}" onchange="toggleSelectAll(this)"></th>
-                                    <th>#</th>
+                                    <th style="width:105px;">#</th>
                                     <th>College Name</th>
                                     <th>Branch</th>
                                     <th>Type</th>
@@ -402,11 +402,19 @@
                                     <td style="text-align:center;">
                                         <input type="checkbox" class="shortlist-check" data-id="{{ college.college_name }}|{{ college.branch }}|{{ year }}" onchange="updateShortlistBar()">
                                     </td>
-                                    <td>{{ loop.index }}</td>
+                                    <td class="serial-cell">
+                                        <div class="serial-number">{{ loop.index }}</div>
+                                        <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-details-sublink" target="_blank">
+                                            click here to see college details
+                                        </a>
+                                    </td>
                                     <td>
                                         <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank">{{ college.college_name }}</a>
                                         <button class="cmp-add-btn" onclick="addToCompare(this, '{{ college.college_name | replace("'","\\'") }}')">
                                             <i class="fas fa-balance-scale"></i> Compare
+                                        </button>
+                                        <button class="cmp-add-btn route-planner-btn" style="margin-left: 6px; background: #0f172a; color: #fff; border-color: #334155;" onclick="openRoutePlanner('{{ college.college_name | replace('\'', '\\\'') }}', '{{ category }}', '{{ home_city }}')">
+                                            <i class="fas fa-map-marked-alt" style="color: #38bdf8;"></i> Route
                                         </button>
                                     </td>
                                     <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch }})</span></td>
@@ -484,6 +492,31 @@
 </div>
 
 <style>
+/* Serial Cell & Sublink */
+.serial-cell {
+    padding: 11px 10px !important;
+    vertical-align: top;
+    text-align: left;
+}
+.serial-number {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+.college-details-sublink {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--secondary);
+    text-decoration: underline;
+    line-height: 1.25;
+    transition: color 0.15s ease-in-out;
+}
+.college-details-sublink:hover {
+    color: var(--primary);
+}
+
 /* Eligibility & Forms */
 .eligibility-box { cursor:default; }
 .elig-header { display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
@@ -600,7 +633,7 @@ function downloadPDF() {
     doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255);
     doc.text('MP DTE LATERAL ENTRY — CHOICE LIST', 40, 38);
     
-    let y = 80;
+    let y = 95; // Pushed down to clear the page 1 header copyright box
     document.querySelectorAll('[id^="results-table-"]').forEach(table => {
         const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
             return Array.from(tr.querySelectorAll('td')).slice(1).map((td, index) => {
@@ -608,6 +641,9 @@ function downloadPDF() {
                 // Replace Rupee symbol with Rs. to prevent jsPDF font corruption
                 text = text.replace(/₹/g, 'Rs. ');
                 // Column specific cleanup
+                if (index === 0) { // Serial number column
+                    text = text.replace(/[\r\n\s]*click here to see college details/gi, '').trim();
+                }
                 if (index === 1) { // College Name column
                     text = text.replace(/\s*Compare\s*$/, '').trim();
                 }
@@ -621,7 +657,7 @@ function downloadPDF() {
             body: rows, 
             theme: 'striped', 
             headStyles: { fillColor: [15,40,90] }, 
-            margin: { left: 30, right: 30 },
+            margin: { top: 40, bottom: 42, left: 30, right: 30 },
             styles: { fontSize: 8 }, // Smaller font size to fit all 12 columns beautifully!
             columnStyles: {
                 0: { cellWidth: 25 }, // #
@@ -636,11 +672,57 @@ function downloadPDF() {
                 9: { cellWidth: 90 }, // Fee
                 10: { cellWidth: 60 }, // Distance
                 11: { cellWidth: 45 } // Chance
+            },
+            didDrawPage: function(data) {
+                const pageSize = doc.internal.pageSize;
+                const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+                
+                const copyrightText = "Copyright © KRISHAN Kumar Awasthi | Website: lateralentrycollegepredictor.vercel.app";
+                const absolutePage = doc.internal.getNumberOfPages();
+                
+                // --- 1. HEADER COPYRIGHT BOX (Vibrant Amber/Saffron Highlight) ---
+                let headerY = 10;
+                if (absolutePage === 1) {
+                    headerY = 66; // Position below the first page banner
+                }
+                
+                doc.setFillColor(255, 251, 235); // Light amber
+                doc.rect(30, headerY, pageWidth - 60, 18, 'F');
+                doc.setDrawColor(253, 230, 138); // Amber border
+                doc.setLineWidth(0.5);
+                doc.rect(30, headerY, pageWidth - 60, 18, 'D');
+                
+                // Left amber accent bar
+                doc.setFillColor(245, 158, 11);
+                doc.rect(30, headerY, 4, 18, 'F');
+                
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(8);
+                doc.setTextColor(120, 53, 4); // Dark brown/amber text
+                doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, headerY + 12);
+                
+                // --- 2. FOOTER COPYRIGHT BOX (Vibrant Blue Highlight) ---
+                const footerY = pageHeight - 32;
+                doc.setFillColor(240, 249, 255); // Light blue
+                doc.rect(30, footerY, pageWidth - 60, 18, 'F');
+                doc.setDrawColor(186, 230, 253); // Blue border
+                doc.setLineWidth(0.5);
+                doc.rect(30, footerY, pageWidth - 60, 18, 'D');
+                
+                // Left blue accent bar
+                doc.setFillColor(14, 165, 233);
+                doc.rect(30, footerY, 4, 18, 'F');
+                
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(8);
+                doc.setTextColor(3, 105, 161); // Dark blue text
+                doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, footerY + 12);
             }
         });
         y = doc.lastAutoTable.finalY + 30;
     });
-    doc.save('MP-DTE-Colleges.pdf');
+    doc.save('choice-list-by-krishan-kumar-awasthi.pdf');
 }
 function downloadShortlistedPDF() {
     const { jsPDF } = window.jspdf;
@@ -663,12 +745,12 @@ function downloadShortlistedPDF() {
     });
     
     doc.autoTable({ 
-        startY: 80, 
+        startY: 95, // Pushed down to clear the page 1 header copyright box
         head: [['College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']], 
         body: rows, 
         theme: 'grid',
         headStyles: { fillColor: [15,40,90] },
-        margin: { left: 30, right: 30 },
+        margin: { top: 40, bottom: 42, left: 30, right: 30 },
         styles: { fontSize: 8 }, // Smaller font size to fit all 11 columns beautifully!
         columnStyles: {
             0: { cellWidth: 220 }, // College Name
@@ -682,9 +764,55 @@ function downloadShortlistedPDF() {
             8: { cellWidth: 95 }, // Fee
             9: { cellWidth: 60 }, // Distance
             10: { cellWidth: 45 } // Chance
+        },
+        didDrawPage: function(data) {
+            const pageSize = doc.internal.pageSize;
+            const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+            const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+            
+            const copyrightText = "Copyright © KRISHAN Kumar Awasthi | Website: lateralentrycollegepredictor.vercel.app";
+            const absolutePage = doc.internal.getNumberOfPages();
+            
+            // --- 1. HEADER COPYRIGHT BOX (Vibrant Amber/Saffron Highlight) ---
+            let headerY = 10;
+            if (absolutePage === 1) {
+                headerY = 66; // Position below the first page banner
+            }
+            
+            doc.setFillColor(255, 251, 235); // Light amber
+            doc.rect(30, headerY, pageWidth - 60, 18, 'F');
+            doc.setDrawColor(253, 230, 138); // Amber border
+            doc.setLineWidth(0.5);
+            doc.rect(30, headerY, pageWidth - 60, 18, 'D');
+            
+            // Left amber accent bar
+            doc.setFillColor(245, 158, 11);
+            doc.rect(30, headerY, 4, 18, 'F');
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(120, 53, 4); // Dark brown/amber text
+            doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, headerY + 12);
+            
+            // --- 2. FOOTER COPYRIGHT BOX (Vibrant Blue Highlight) ---
+            const footerY = pageHeight - 32;
+            doc.setFillColor(240, 249, 255); // Light blue
+            doc.rect(30, footerY, pageWidth - 60, 18, 'F');
+            doc.setDrawColor(186, 230, 253); // Blue border
+            doc.setLineWidth(0.5);
+            doc.rect(30, footerY, pageWidth - 60, 18, 'D');
+            
+            // Left blue accent bar
+            doc.setFillColor(14, 165, 233);
+            doc.rect(30, footerY, 4, 18, 'F');
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(3, 105, 161); // Dark blue text
+            doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, footerY + 12);
         }
     });
-    doc.save('My-Shortlist.pdf');
+    doc.save('shortlist-by-krishan-kumar-awasthi.pdf');
 }
 
 function getShortlistChoices() {

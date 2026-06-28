@@ -47,6 +47,12 @@
                         <p style="margin-top:20px; font-size:0.85rem; color:#64748B;">
                             This is only a practice result. Your real allotment will appear on the official DTE MP website after you fill and lock your choices there.
                         </p>
+                        <!-- Route Planner & Checklist Action -->
+                        <div style="margin-top:20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                            <button type="button" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:24px; font-weight:700; font-size:0.9rem; background: linear-gradient(135deg, #0F2C5E, #1D4ED8); border: none; cursor: pointer; color: #fff; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);" onclick="openRoutePlanner('{{ result.college | replace('\'', '\\\'') }}', '{{ result.allotted_category }}', 'All')">
+                                <i class="fas fa-map-marked-alt"></i> Route Planner &amp; Checklist
+                            </button>
+                        </div>
                         <!-- WhatsApp Share Action -->
                         <div style="margin-top:20px;">
                             <div class="share-result-btns" data-share-result>
@@ -181,6 +187,9 @@
                         </button>
                         <button type="button" class="btn-secondary-small" style="background:#dc2626; color:#fff; border-color:#dc2626;" onclick="clearAllChoices()">
                             <i class="fas fa-trash-alt"></i> Clear All
+                        </button>
+                        <button type="button" class="btn-primary-small" style="background:#8b5cf6; color:#fff; border-color:#8b5cf6;" onclick="optimizeChoices()">
+                            <i class="fas fa-magic"></i> AI Optimize Order
                         </button>
                         <button type="button" class="btn-primary-small" onclick="showQuickAdd()">
                             <i class="fas fa-plus"></i> Add College
@@ -644,6 +653,72 @@ function addRecommendation(college_name, branch, btn) {
         btn.style.borderColor = '#22C55E';
         btn.disabled = true;
     }
+}
+
+function optimizeChoices() {
+    if (choices.length === 0) {
+        showToast("Your choice list is empty. Please add colleges first.", "warning");
+        return;
+    }
+
+    const cgpa = document.querySelector('input[name="cgpa"]')?.value;
+    const category = document.querySelector('select[name="category"]')?.value || 'UR';
+    const gender = document.querySelector('select[name="gender"]')?.value || 'M';
+    const domicile = document.querySelector('select[name="domicile"]')?.value || 'Y';
+    const year = document.querySelector('select[name="year"]')?.value || '2025';
+
+    if (!cgpa) {
+        showToast("Please enter your CGPA first to optimize choices.", "warning");
+        return;
+    }
+
+    showLoading();
+
+    fetch('/api/v1/choices/optimize', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            cgpa: cgpa,
+            category: category,
+            gender: gender,
+            domicile: domicile,
+            year: year,
+            choices: choices
+        })
+    })
+    .then(res => {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) overlay.style.display = 'none';
+
+        if (!res.ok) {
+            return res.json().then(data => {
+                throw new Error(data.error || 'Optimization failed');
+            });
+        }
+        return res.json();
+    })
+    .then(data => {
+        if (data.success && data.choices) {
+            choices = data.choices.map(item => ({
+                college_name: item.college_name,
+                branch: item.branch,
+                branch_name: item.branch_name
+            }));
+            
+            renderChoices();
+            showToast(`AI Optimizer: Choices optimized! (Dream: ${data.dream_count} | Target: ${data.target_count} | Safe: ${data.safe_count})`, "success");
+        } else {
+            showToast("Failed to optimize choices. Please try again.", "error");
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) overlay.style.display = 'none';
+        showToast(err.message || "An unexpected error occurred during optimization.", "error");
+    });
 }
 
 function prepareSimulation() {
