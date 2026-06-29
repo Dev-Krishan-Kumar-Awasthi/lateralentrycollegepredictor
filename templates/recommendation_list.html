@@ -185,7 +185,7 @@ function downloadRecommendationsPDF() {
 // Toggle College Shortlist state in localStorage
 function toggleShortlist(db_name, branch, btn) {
     let shortlist = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
-    const key = `${db_name}|${branch}||2025`; // Matches standard shortlist formatting
+    const key = `${db_name}|${branch}||{{ years_list[0] if years_list else 2025 }}`; // Matches standard shortlist formatting
     
     if (shortlist.includes(key)) {
         // Remove from list
@@ -207,7 +207,7 @@ function toggleShortlist(db_name, branch, btn) {
 document.addEventListener('DOMContentLoaded', () => {
     const shortlist = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
     document.querySelectorAll('.btn-shortlist-action').forEach(btn => {
-        const key = `${btn.dataset.college}|${btn.dataset.branch}||2025`;
+        const key = `${btn.dataset.college}|${btn.dataset.branch}||{{ years_list[0] if years_list else 2025 }}`;
         if (shortlist.includes(key)) {
             btn.innerHTML = '<i class="fas fa-check"></i> Shortlisted';
             btn.style.background = '#22C55E';

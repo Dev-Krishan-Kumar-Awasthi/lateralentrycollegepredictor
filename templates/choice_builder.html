@@ -72,6 +72,7 @@
             <p style="margin:0;">Estimated rank: <strong>{{ result.min_rank }} – {{ result.max_rank }}</strong> ({{ result.year }})</p>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
                 <button type="button" class="btn-secondary-small" onclick="exportSmartCsv()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                <button type="button" class="btn-secondary-small" onclick="exportSmartPdf()"><i class="fas fa-file-pdf"></i> Export PDF</button>
                 <button type="button" class="btn-secondary-small" onclick="exportSmartCopy()"><i class="fas fa-copy"></i> Copy List</button>
                 <a href="/simulator" class="btn-primary-small" onclick="sendToSimulator(); return false;"><i class="fas fa-vial"></i> Open in Simulator</a>
             </div>
@@ -176,6 +177,17 @@
     <script>
     const smartMerged = {{ result.merged | tojson | safe }};
     function exportSmartCsv() { DteExport.exportCsv(smartMerged); }
+    function exportSmartPdf() {
+        const profile = {
+            name: "{{ current_user.display_name if current_user else 'Student' }}",
+            cgpa: "{{ form_data.cgpa if form_data else '' }}",
+            category: "{{ form_data.category if form_data else 'UR' }}",
+            gender: "{{ 'Female' if form_data and form_data.gender == 'F' else 'Male' }}",
+            domicile: "{{ 'Non-MP' if form_data and form_data.domicile == 'N' else 'MP Resident' }}",
+            branch: "{{ form_data.branch | join(', ') if form_data and form_data.branch else 'All' }}"
+        };
+        DteExport.exportPdf(smartMerged, profile);
+    }
     function exportSmartCopy() {
         DteExport.copyToClipboard(smartMerged).then(function(ok) {
             if (ok) {

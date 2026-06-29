@@ -187,6 +187,19 @@ class Coupon(db.Model):
         return f"<Coupon {self.code} (Active={self.is_active})>"
 
 
+class RecommendationChoice(db.Model):
+    __tablename__ = "RecommendationChoice"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sn = db.Column(db.Integer, nullable=False)
+    db_name = db.Column(db.Text, nullable=False)
+    branch = db.Column(db.Text, nullable=False)
+    display_name = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f"<RecommendationChoice SN={self.sn} {self.display_name}>"
+
+
 def model_to_dict(model):
     return {
         column.name: getattr(model, column.name)

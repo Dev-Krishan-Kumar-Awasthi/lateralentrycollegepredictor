@@ -9,6 +9,8 @@ except ImportError:
 
 from flask import Flask, render_template, request, redirect, jsonify, session, url_for
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from urllib.parse import quote as url_quote
 from db import db
 from predictor import (
@@ -34,7 +36,7 @@ from auth_helpers import (
     pre_validate_registration, send_otp_email, reset_password_in_db,
     pre_validate_profile_update, send_broadcast_email,
 )
-from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount, Coupon
+from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount, Coupon, CgpaRankRange, RecommendationChoice
 from faq_data import (
     FAQ_LIST, get_faq_by_slug, get_faqs_by_category, get_all_categories
 )
@@ -45,6 +47,19 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 init_auth(app)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    if request.path.startswith('/api/'):
+        return jsonify(error="Too many requests. Please try again later.", description=str(e.description)), 429
+    return render_template('429.html'), 429
 
 # ── Security Headers (injected on every response) ───────────────────────────
 @app.after_request
@@ -72,16 +87,37 @@ from datetime import timezone, timedelta
 def to_ist(dt):
     if not dt:
         return dt
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
     return dt.astimezone(timezone(timedelta(hours=5, minutes=30)))
 
 app.jinja_env.filters['to_ist'] = to_ist
+
+
+@app.context_processor
+def inject_years():
+    return dict(years_list=YEARS)
 
 
 RANK_MAPS_CACHE = {}
 YEARS = [2025, 2024]
 
 
+def refresh_years_list():
+    global YEARS
+    try:
+        years_seats = [y[0] for y in db.session.query(SeatInfo.year).distinct().all() if y[0]]
+        years_ranks = [y[0] for y in db.session.query(CgpaRankRange.year).distinct().all() if y[0]]
+        all_years = set(years_seats + years_ranks)
+        if all_years:
+            YEARS.clear()
+            YEARS.extend(sorted(list(all_years), reverse=True))
+    except Exception as e:
+        print("Failed to refresh years list:", e)
+
+
 def fetch_rank_maps_cache():
+    refresh_years_list()
     for year in YEARS:
         RANK_MAPS_CACHE[year] = fetch_cgpa_to_rank_map(year)
 
@@ -108,6 +144,26 @@ def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
                     district.lower() in (infer_city_from_college_name(c.college_name) or '').lower())
             ]
 
+        # Build previous year closing ranks lookup for current year colleges
+        lookup_prev = {}
+        prev_year = year - 1
+        if raw_colleges:
+            names = list(set(c.college_name for c in raw_colleges))
+            branches = list(set(c.branch for c in raw_colleges))
+            if names and branches:
+                rows_prev = SeatInfo.query.filter(
+                    SeatInfo.year == prev_year,
+                    SeatInfo.college_name.in_(names),
+                    SeatInfo.branch.in_(branches),
+                    SeatInfo.category == category,
+                    SeatInfo.gender == gender,
+                    SeatInfo.domicile == domicile
+                ).all()
+                lookup_prev = {
+                    (r.college_name, r.branch): r.closing_rank
+                    for r in rows_prev
+                }
+
         college_data = []
         for c in raw_colleges:
             prob = calc_probability(min_rank, max_rank, c.opening_rank, c.closing_rank)
@@ -116,6 +172,19 @@ def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
             if max_distance_km and dist_km is not None and dist_km > int(max_distance_km):
                 continue
             fee = get_fee_info(c.college_name, c.college_type)
+            
+            trend_val = None
+            trend_diff = None
+            closing_prev = lookup_prev.get((c.college_name, c.branch))
+            if closing_prev is not None:
+                trend_diff = closing_prev - c.closing_rank
+                if trend_diff > 0:
+                    trend_val = 'up'  # Harder (closing rank dropped, competition went up)
+                elif trend_diff < 0:
+                    trend_val = 'down'  # Easier (closing rank rose, competition went down)
+                else:
+                    trend_val = 'stable'
+                        
             college_data.append({
                 'college': c,
                 'probability': prob,
@@ -126,6 +195,8 @@ def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
                 'fee': fee,
                 'district': get_district_for_city(infer_city_from_college_name(c.college_name) or city or ''),
                 'coords': get_college_coordinates(c.college_name),
+                'trend_val': trend_val,
+                'trend_diff': trend_diff,
             })
 
         college_data.sort(key=lambda x: (
@@ -219,8 +290,64 @@ def count_visitor():
             print("Visitor count increment failed:", e)
 
 
+DEFAULT_RECOMMENDED_CHOICES = [
+    {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE", "display_name": "SGSITS Indore: CS"},
+    {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT", "display_name": "SGSITS Indore: IT"},
+    {"sn": 3, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CSE", "display_name": "IET DAVV Indore: CS"},
+    {"sn": 4, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "IT", "display_name": "IET DAVV Indore: IT"},
+    {"sn": 5, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "ET", "display_name": "SGSITS Indore: ETC"},
+    {"sn": 6, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "ET", "display_name": "IET DAVV Indore: ETC"},
+    {"sn": 7, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "CSE", "display_name": "JEC Jabalpur: CS"},
+    {"sn": 8, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "IT", "display_name": "JEC Jabalpur: IT"},
+    {"sn": 9, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EE", "display_name": "SGSITS Indore: EE"},
+    {"sn": 10, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EI", "display_name": "SGSITS Indore: E&I"},
+    {"sn": 11, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "MECH", "display_name": "SGSITS Indore: Mech."},
+    {"sn": 12, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "EI", "display_name": "IET DAVV Indore: E&I"},
+    {"sn": 13, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "CSE", "display_name": "MITS Gwalior: CS"},
+    {"sn": 14, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "IT", "display_name": "MITS Gwalior: IT"},
+    {"sn": 15, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "CSE", "display_name": "UIT RGPV Bhopal: CS"},
+    {"sn": 16, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "IT", "display_name": "UIT RGPV Bhopal: IT"},
+    {"sn": 17, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "CSE", "display_name": "LNCT Bhopal [Main]: CS"},
+    {"sn": 18, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "CSE", "display_name": "Acropolis Indore: CS"},
+    {"sn": 19, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "IT", "display_name": "Acropolis Indore: IT"},
+    {"sn": 20, "db_name": "Oriental Institute of Science & Technology, Bhopal (1995)", "branch": "CSE", "display_name": "Oriental Bhopal: CS/IT"},
+    {"sn": 21, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "ET", "display_name": "JEC Jabalpur: ETC"},
+    {"sn": 22, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "EE", "display_name": "JEC Jabalpur: EE"},
+    {"sn": 23, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "ET", "display_name": "MITS Gwalior: EC"},
+    {"sn": 24, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "EE", "display_name": "MITS Gwalior: EE"},
+    {"sn": 25, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "ET", "display_name": "RGPV Bhopal: EC"},
+    {"sn": 26, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "EE", "display_name": "RGPV Bhopal: EE"},
+    {"sn": 27, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CIVIL", "display_name": "SGSITS Indore: Civil"},
+    {"sn": 28, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CIVIL", "display_name": "IET DAVV Indore: Civil"},
+    {"sn": 29, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "CSE", "display_name": "SATI Vidisha: CS"},
+    {"sn": 30, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "IT", "display_name": "SATI Vidisha: IT"},
+    {"sn": 31, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "CSE", "display_name": "IPS Indore: CS"},
+    {"sn": 32, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "IT", "display_name": "IPS Indore: IT"},
+    {"sn": 33, "db_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)", "branch": "CSE", "display_name": "LNCT Science: CS"},
+    {"sn": 34, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "AIML", "display_name": "LNCT Main: CS SP."},
+    {"sn": 35, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "AIML", "display_name": "Acropolis: CS SP."},
+    {"sn": 36, "db_name": "Rewa Engineering College, Rewa (REC) (1964)", "branch": "CSE", "display_name": "Rewa Engineering: CS"},
+    {"sn": 37, "db_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)", "branch": "CSE", "display_name": "UGC: CS"},
+]
+
+
 with app.app_context():
     db.create_all()
+    # Seed default recommended choice list if empty
+    try:
+        if RecommendationChoice.query.count() == 0:
+            for item in DEFAULT_RECOMMENDED_CHOICES:
+                db.session.add(RecommendationChoice(
+                    sn=item["sn"],
+                    db_name=item["db_name"],
+                    branch=item["branch"],
+                    display_name=item["display_name"]
+                ))
+            db.session.commit()
+            print("Successfully seeded default recommendations.")
+    except Exception as e:
+        db.session.rollback()
+        print("Failed to seed default recommendations:", e)
     # Dynamic SQLite migration for User table columns and Performance Indexes
     try:
         from sqlalchemy import text
@@ -345,6 +472,7 @@ def about():
 
 
 @app.route('/predictor', methods=['GET', 'POST'])
+@limiter.limit("20 per minute", methods=["POST"])
 def predictor():
     if request.method == 'POST' and not current_user():
         prefill = {
@@ -440,6 +568,29 @@ def predictor():
     max_dist = request.form.get('max_distance_km', '').strip()
     max_distance_km = int(max_dist) if max_dist.isdigit() else None
 
+    # ── Input Validation ─────────────────────────────────────────────────────
+    VALID_CATEGORIES = {'UR', 'OBC', 'SC', 'ST'}
+    VALID_GENDERS    = {'M', 'F', 'OP'}
+    VALID_DOMICILES  = {'Y', 'N'}
+    VALID_TYPES      = {'GOVT', 'Private', 'S.F.I.', 'GOVT+SFI', 'Any', '', None}
+
+    if category not in VALID_CATEGORIES:
+        return render_template(
+            'predictor.html', data=None, prediction=None,
+            error="Invalid category selected. Please choose a valid option.",
+            mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+        )
+    if gender not in VALID_GENDERS:
+        return render_template(
+            'predictor.html', data=None, prediction=None,
+            error="Invalid gender selected. Please choose a valid option.",
+            mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+        )
+    if domicile not in VALID_DOMICILES:
+        domicile = 'Y'   # silently default to MP domicile
+    if college_type not in VALID_TYPES:
+        college_type = 'Any'   # silently reset to all types
+
     form_data = {
         'cgpa': cgpa, 'category': category, 'gender': gender,
         'college_type': college_type, 'branch': branch_list,
@@ -508,51 +659,13 @@ def choice_builder():
                 cgpa, form_data['branch'], form_data['category'],
                 form_data['gender'], form_data['college_type'],
                 form_data['domicile'], form_data['city'],
-                year=2025, rank_maps_cache=RANK_MAPS_CACHE,
+                year=YEARS[0] if YEARS else 2025, rank_maps_cache=RANK_MAPS_CACHE,
                 max_per_bucket=9999
             )
             # Annotate and sort: official recommendation list first, then shortlisted colleges
-            best_choices_list = [
-                {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE"},
-                {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT"},
-                {"sn": 3, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CSE"},
-                {"sn": 4, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "IT"},
-                {"sn": 5, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "ET"},
-                {"sn": 6, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "ET"},
-                {"sn": 7, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "CSE"},
-                {"sn": 8, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "IT"},
-                {"sn": 9, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EE"},
-                {"sn": 10, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EI"},
-                {"sn": 11, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "MECH"},
-                {"sn": 12, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "EI"},
-                {"sn": 13, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "CSE"},
-                {"sn": 14, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "IT"},
-                {"sn": 15, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "CSE"},
-                {"sn": 16, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "IT"},
-                {"sn": 17, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "CSE"},
-                {"sn": 18, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "CSE"},
-                {"sn": 19, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "IT"},
-                {"sn": 20, "db_name": "Oriental Institute of Science & Technology, Bhopal (1995)", "branch": "CSE"},
-                {"sn": 21, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "ET"},
-                {"sn": 22, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "EE"},
-                {"sn": 23, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "ET"},
-                {"sn": 24, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "EE"},
-                {"sn": 25, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "ET"},
-                {"sn": 26, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "EE"},
-                {"sn": 27, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CIVIL"},
-                {"sn": 28, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CIVIL"},
-                {"sn": 29, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "CSE"},
-                {"sn": 30, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "IT"},
-                {"sn": 31, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "CSE"},
-                {"sn": 32, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "IT"},
-                {"sn": 33, "db_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)", "branch": "CSE"},
-                {"sn": 34, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "AIML"},
-                {"sn": 35, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "AIML"},
-                {"sn": 36, "db_name": "Rewa Engineering College, Rewa (REC) (1964)", "branch": "CSE"},
-                {"sn": 37, "db_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)", "branch": "CSE"}
-            ]
+            best_choices_list = RecommendationChoice.query.all()
             recommendation_map = {
-                (normalize(item["db_name"]), item["branch"].strip().lower()): item["sn"]
+                (normalize(item.db_name), item.branch.strip().lower()): item.sn
                 for item in best_choices_list
             }
 
@@ -612,7 +725,9 @@ def college_detail_page():
         return render_template('college_detail.html', detail=None, college_name=name)
     home_city = request.args.get('home_city', 'All')
     bundle = get_college_info_bundle(name, detail['college_type'], home_city)
-    heatmap = get_seat_heatmap(name, 2025)
+    latest_year = YEARS[0] if YEARS else 2025
+    prev_year = YEARS[1] if (YEARS and len(YEARS) > 1) else (latest_year - 1)
+    heatmap = get_seat_heatmap(name, latest_year)
     chart_data = get_cutoff_chart_data(name)
     reviews = CollegeReview.query.filter_by(
         college_name=name, is_approved=True
@@ -625,7 +740,9 @@ def college_detail_page():
         profile=bundle['profile'], distance=bundle['distance'],
         home_city=home_city, reviews=reviews,
         mp_cities=MP_CITIES, placement=bundle['placement'],
-        coords=bundle['coords'], city_coords=get_city_coords()
+        coords=bundle['coords'], city_coords=get_city_coords(),
+        roi_index=bundle['roi_index'],
+        latest_year=latest_year, prev_year=prev_year
     )
 
 
@@ -639,7 +756,9 @@ def compare():
     names = request.args.getlist('colleges')
     names = [n.strip() for n in names if n.strip()][:3]
     data = get_compare_data(names)
-    return render_template('compare.html', colleges=data, branch_names=BRANCH_NAMES)
+    latest_year = YEARS[0] if YEARS else 2025
+    prev_year = YEARS[1] if (YEARS and len(YEARS) > 1) else (latest_year - 1)
+    return render_template('compare.html', colleges=data, branch_names=BRANCH_NAMES, latest_year=latest_year, prev_year=prev_year)
 
 
 @app.route('/search')
@@ -807,7 +926,7 @@ def simulator():
         category = request.form.get('category')
         gender = request.form.get('gender')
         domicile = request.form.get('domicile', 'Y')
-        year = int(request.form.get('year', 2025))
+        year = int(request.form.get('year', YEARS[0] if YEARS else 2025))
         rank_mode = request.form.get('rank_mode', 'average')
         
         raw_choices = request.form.get('choice_list_json', '[]')
@@ -837,7 +956,7 @@ def simulator():
         category = request.form.get('category')
         gender = request.form.get('gender')
         domicile = request.form.get('domicile', 'Y')
-        year = int(request.form.get('year', 2025))
+        year = int(request.form.get('year', YEARS[0] if YEARS else 2025))
         rank_mode = request.form.get('rank_mode', 'average')
 
         raw_choices = request.form.get('choice_list_json', '[]')
@@ -896,45 +1015,7 @@ def simulator():
 def recommendation_list():
     if not current_user():
         return redirect(url_for('account_page', next=request.url))
-    best_choices = [
-        {"sn": 1, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CSE", "display_name": "SGSITS Indore: CS"},
-        {"sn": 2, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "IT", "display_name": "SGSITS Indore: IT"},
-        {"sn": 3, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CSE", "display_name": "IET DAVV Indore: CS"},
-        {"sn": 4, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "IT", "display_name": "IET DAVV Indore: IT"},
-        {"sn": 5, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "ET", "display_name": "SGSITS Indore: ETC"},
-        {"sn": 6, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "ET", "display_name": "IET DAVV Indore: ETC"},
-        {"sn": 7, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "CSE", "display_name": "JEC Jabalpur: CS"},
-        {"sn": 8, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "IT", "display_name": "JEC Jabalpur: IT"},
-        {"sn": 9, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EE", "display_name": "SGSITS Indore: EE"},
-        {"sn": 10, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "EI", "display_name": "SGSITS Indore: E&I"},
-        {"sn": 11, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "MECH", "display_name": "SGSITS Indore: Mech."},
-        {"sn": 12, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "EI", "display_name": "IET DAVV Indore: E&I"},
-        {"sn": 13, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "CSE", "display_name": "MITS Gwalior: CS"},
-        {"sn": 14, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "IT", "display_name": "MITS Gwalior: IT"},
-        {"sn": 15, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "CSE", "display_name": "UIT RGPV Bhopal: CS"},
-        {"sn": 16, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "IT", "display_name": "UIT RGPV Bhopal: IT"},
-        {"sn": 17, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "CSE", "display_name": "LNCT Bhopal [Main]: CS"},
-        {"sn": 18, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "CSE", "display_name": "Acropolis Indore: CS"},
-        {"sn": 19, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "IT", "display_name": "Acropolis Indore: IT"},
-        {"sn": 20, "db_name": "Oriental Institute of Science & Technology, Bhopal (1995)", "branch": "CSE", "display_name": "Oriental Bhopal: CS/IT"},
-        {"sn": 21, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "ET", "display_name": "JEC Jabalpur: ETC"},
-        {"sn": 22, "db_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)", "branch": "EE", "display_name": "JEC Jabalpur: EE"},
-        {"sn": 23, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "ET", "display_name": "MITS Gwalior: EC"},
-        {"sn": 24, "db_name": "Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)", "branch": "EE", "display_name": "MITS Gwalior: EE"},
-        {"sn": 25, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "ET", "display_name": "RGPV Bhopal: EC"},
-        {"sn": 26, "db_name": "University Institute of Technology RGPV, Bhopal (1986)", "branch": "EE", "display_name": "RGPV Bhopal: EE"},
-        {"sn": 27, "db_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)", "branch": "CIVIL", "display_name": "SGSITS Indore: Civil"},
-        {"sn": 28, "db_name": "Institute of Engineering and Technology, DAVV, Indore (1996)", "branch": "CIVIL", "display_name": "IET DAVV Indore: Civil"},
-        {"sn": 29, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "CSE", "display_name": "SATI Vidisha: CS"},
-        {"sn": 30, "db_name": "Samrat Ashok Technological Institute, Vidisha (1960)", "branch": "IT", "display_name": "SATI Vidisha: IT"},
-        {"sn": 31, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "CSE", "display_name": "IPS Indore: CS"},
-        {"sn": 32, "db_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)", "branch": "IT", "display_name": "IPS Indore: IT"},
-        {"sn": 33, "db_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)", "branch": "CSE", "display_name": "LNCT Science: CS"},
-        {"sn": 34, "db_name": "Lakshmi Narain College of Technology, Bhopal (1994)", "branch": "AIML", "display_name": "LNCT Main: CS SP."},
-        {"sn": 35, "db_name": "Acropolis Institute of Technology & Research, Indore (2005)", "branch": "AIML", "display_name": "Acropolis: CS SP."},
-        {"sn": 36, "db_name": "Rewa Engineering College, Rewa (REC) (1964)", "branch": "CSE", "display_name": "Rewa Engineering: CS"},
-        {"sn": 37, "db_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)", "branch": "CSE", "display_name": "UGC: CS"},
-    ]
+    best_choices = RecommendationChoice.query.order_by(RecommendationChoice.sn.asc()).all()
     return render_template('recommendation_list.html', choices=best_choices)
 
 
@@ -998,6 +1079,7 @@ def faq_detail(slug):
 
 
 @app.route('/account', methods=['GET', 'POST'])
+@limiter.limit("15 per minute")
 def account_page():
     if request.method == 'POST':
         action = request.form.get('action')
@@ -1421,6 +1503,7 @@ def admin_users():
     vault_slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
     analytics = get_shortlist_analytics_stats()
     coupons = Coupon.query.order_by(Coupon.created_at.desc()).all()
+    recommendations = RecommendationChoice.query.order_by(RecommendationChoice.sn.asc()).all()
 
     return render_template(
         'admin_dashboard.html', 
@@ -1432,7 +1515,8 @@ def admin_users():
         reviews=reviews,
         vault_slips=vault_slips,
         analytics=analytics,
-        coupons=coupons
+        coupons=coupons,
+        recommendations=recommendations
     )
 
 
@@ -1446,6 +1530,13 @@ def admin_update_schedule():
 
     academic_year = request.form.get('academic_year', '').strip()
     portal_url = request.form.get('portal_url', '').strip()
+    welcome_title = request.form.get('welcome_title', '').strip()
+    banner_warning = request.form.get('banner_warning', '').strip()
+    banner_btn_text = request.form.get('banner_btn_text', '').strip()
+    banner_btn_url = request.form.get('banner_btn_url', '').strip()
+    
+    clc_instructions_raw = request.form.get('clc_instructions', '').strip()
+    clc_instructions = [line.strip() for line in clc_instructions_raw.split('\n') if line.strip()]
 
     events = []
     idx = 0
@@ -1495,6 +1586,11 @@ def admin_update_schedule():
     schedule_data = {
         "academic_year": academic_year,
         "portal_url": portal_url,
+        "welcome_title": welcome_title,
+        "banner_warning": banner_warning,
+        "banner_btn_text": banner_btn_text,
+        "banner_btn_url": banner_btn_url,
+        "clc_instructions": clc_instructions,
         "events": events
     }
 
@@ -1605,6 +1701,201 @@ def admin_delete_coupon(id):
     return redirect('/admin/users?error=coupon_not_found#coupons')
 
 
+@app.route('/admin/upload-csv', methods=['POST'])
+@login_required
+def admin_upload_csv():
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    csv_type = request.form.get('csv_type', '').strip()
+    try:
+        year = int(request.form.get('year', '').strip())
+    except ValueError:
+        return redirect('/admin/users?error=invalid_year#db')
+
+    file = request.files.get('csv_file')
+    if not file or not file.filename.endswith('.csv'):
+        return redirect('/admin/users?error=invalid_file_type#db')
+
+    import csv
+    import io
+
+    try:
+        content = file.stream.read().decode("utf-8")
+        stream = io.StringIO(content, newline=None)
+        reader = csv.reader(stream)
+        rows = list(reader)
+    except Exception as e:
+        return redirect(f"/admin/users?error=Failed to read CSV: {url_quote(str(e))}#db")
+
+    if not rows:
+        return redirect('/admin/users?error=empty_file#db')
+
+    # Auto-detect header
+    first_row = [c.strip().lower() for c in rows[0]]
+    has_header = False
+    header_map = {}
+    if 'college_name' in first_row or 'college name' in first_row or 'college' in first_row or 'cgpa' in first_row:
+        has_header = True
+        for idx, col in enumerate(first_row):
+            col_clean = col.replace(" ", "_").replace(".", "")
+            header_map[col_clean] = idx
+        rows = rows[1:]
+
+    # Delete existing data for selected year to prevent duplicates (do not commit yet)
+    try:
+        if csv_type == 'cutoff':
+            SeatInfo.query.filter_by(year=year).delete()
+        elif csv_type == 'rank':
+            CgpaRankRange.query.filter_by(year=year).delete()
+        else:
+            return redirect('/admin/users?error=invalid_csv_type#db')
+    except Exception as e:
+        db.session.rollback()
+        return redirect(f"/admin/users?error=Database reset failed: {url_quote(str(e))}#db")
+
+    inserted_count = 0
+    errors = []
+
+    for line_num, row in enumerate(rows, start=1 if not has_header else 2):
+        if not row or not any(x.strip() for x in row):
+            continue  # Skip empty lines
+        try:
+            if csv_type == 'cutoff':
+                if has_header:
+                    college_name = row[header_map.get('college_name', header_map.get('college', 1))].strip()
+                    college_type = row[header_map.get('college_type', 2)].strip()
+                    branch = row[header_map.get('branch', 3)].strip()
+                    opening_rank = int(row[header_map.get('opening_rank', header_map.get('opening', 4))].strip())
+                    closing_rank = int(row[header_map.get('closing_rank', header_map.get('closing', 5))].strip())
+                    
+                    if 'category' in header_map and 'gender' in header_map:
+                        category = row[header_map['category']].strip()
+                        gender = row[header_map['gender']].strip()
+                    elif 'category_field' in header_map:
+                        cat_field = row[header_map['category_field']].strip()
+                        if '/' in cat_field:
+                            parts = cat_field.split('/')
+                            category = parts[0].strip()
+                            gender = parts[2].strip() if len(parts) >= 3 else (parts[1].strip() if len(parts) == 2 else 'OP')
+                        else:
+                            category = cat_field
+                            gender = 'OP'
+                    else:
+                        category = 'UR'
+                        gender = 'OP'
+
+                    domicile = row[header_map.get('domicile', 7)].strip().upper()
+                    total_seats = int(row[header_map.get('total_seats', header_map.get('seats', 8))].strip())
+                    year_val = int(row[header_map.get('year', 9)].strip())
+                else:
+                    if len(row) >= 11:
+                        _sno, college_name, college_type, branch, _quota, opening_rank, closing_rank, category_field, domicile, total_seats, year_val = [c.strip() for c in row[:11]]
+                        if '/' in category_field:
+                            parts = category_field.split('/')
+                            category = parts[0].strip()
+                            gender = parts[2].strip() if len(parts) >= 3 else (parts[1].strip() if len(parts) == 2 else 'OP')
+                        else:
+                            category = category_field
+                            gender = 'OP'
+                        opening_rank = int(opening_rank)
+                        closing_rank = int(closing_rank)
+                        total_seats = int(total_seats)
+                        year_val = int(year_val)
+                    elif len(row) >= 10:
+                        college_name, college_type, branch, opening_rank, closing_rank, category, gender, domicile, total_seats, year_val = [c.strip() for c in row[:10]]
+                        opening_rank = int(opening_rank)
+                        closing_rank = int(closing_rank)
+                        total_seats = int(total_seats)
+                        year_val = int(year_val)
+                    else:
+                        raise ValueError(f"Expected at least 10 columns, got {len(row)}")
+
+                # Validate Domicile, Gender, Type and Category
+                college_type_upper = college_type.upper()
+                if college_type_upper == 'GOVERNMENT':
+                    college_type = 'GOVT'
+                elif college_type_upper == 'GOVT':
+                    college_type = 'GOVT'
+                elif college_type_upper == 'PRIVATE':
+                    college_type = 'Private'
+                elif college_type_upper == 'SFI' or college_type_upper == 'S.F.I.':
+                    college_type = 'S.F.I.'
+
+                category = category.strip().upper()
+                gender = gender.strip().upper()
+                domicile = domicile.strip().upper()
+
+                if college_type not in {'GOVT', 'Private', 'S.F.I.'}:
+                    raise ValueError(f"Invalid college type: {college_type}")
+                if category not in {'UR', 'OBC', 'SC', 'ST'}:
+                    raise ValueError(f"Invalid category: {category}")
+                if gender not in {'M', 'F', 'OP'}:
+                    raise ValueError(f"Invalid gender: {gender}")
+                if domicile not in {'Y', 'N'}:
+                    raise ValueError(f"Invalid domicile: {domicile}")
+
+                new_record = SeatInfo(
+                    college_name=college_name,
+                    college_type=college_type,
+                    branch=branch,
+                    opening_rank=opening_rank,
+                    closing_rank=closing_rank,
+                    category=category,
+                    gender=gender,
+                    domicile=domicile,
+                    total_seats=total_seats,
+                    year=year
+                )
+                db.session.add(new_record)
+
+            elif csv_type == 'rank':
+                if has_header:
+                    cgpa = float(row[header_map.get('cgpa', 0)].strip())
+                    min_rank = int(row[header_map.get('min_rank', header_map.get('min', 1))].strip())
+                    max_rank = int(row[header_map.get('max_rank', header_map.get('max', 2))].strip())
+                    year_val = int(row[header_map.get('year', 3)].strip())
+                else:
+                    if len(row) < 4:
+                        raise ValueError(f"Expected 4 columns, got {len(row)}")
+                    cgpa, min_rank, max_rank, year_val = [c.strip() for c in row[:4]]
+                    cgpa = float(cgpa)
+                    min_rank = int(min_rank)
+                    max_rank = int(max_rank)
+                    year_val = int(year_val)
+
+                new_record = CgpaRankRange(
+                    cgpa=cgpa,
+                    min_rank=min_rank,
+                    max_rank=max_rank,
+                    year=year
+                )
+                db.session.add(new_record)
+
+            inserted_count += 1
+
+        except Exception as e:
+            errors.append(f"Line {line_num}: {str(e)}")
+
+    if errors:
+        db.session.rollback()
+        err_str = f"Upload aborted: {len(errors)} validation errors encountered. No database changes were saved. Sample errors: " + "; ".join(errors[:4])
+        return redirect(f"/admin/users?error={url_quote(err_str)}#db")
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return redirect(f"/admin/users?error=Commit failed: {url_quote(str(e))}#db")
+
+    fetch_rank_maps_cache()
+
+    success_msg = f"Successfully uploaded CSV! Inserted {inserted_count} rows for the year {year}."
+    return redirect(f"/admin/users?success={url_quote(success_msg)}#db")
+
+
 @app.route('/api/v1/admin/user-shortlist/<int:user_id>')
 @login_required
 def admin_user_shortlist(user_id):
@@ -1635,11 +1926,14 @@ def admin_broadcast():
     reviews = CollegeReview.query.order_by(CollegeReview.created_at.desc()).all()
     vault_slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
     analytics = get_shortlist_analytics_stats()
+    coupons = Coupon.query.order_by(Coupon.created_at.desc()).all()
+    recommendations = RecommendationChoice.query.order_by(RecommendationChoice.sn.asc()).all()
 
     if not subject or not body:
         return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
             avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-            reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Subject and Message body cannot be empty.")
+            reviews=reviews, vault_slips=vault_slips, analytics=analytics, coupons=coupons, recommendations=recommendations,
+            broadcast_error="Subject and Message body cannot be empty.")
 
     emails = []
     recipient_display = ""
@@ -1648,18 +1942,21 @@ def admin_broadcast():
         if not specific_user_id:
             return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
                 avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-                reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Please select a specific student to send the message.")
+                reviews=reviews, vault_slips=vault_slips, analytics=analytics, coupons=coupons, recommendations=recommendations,
+                broadcast_error="Please select a specific student to send the message.")
         
         target_user = db.session.get(User, specific_user_id)
         if not target_user:
             return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
                 avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-                reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Selected student not found in database.")
+                reviews=reviews, vault_slips=vault_slips, analytics=analytics, coupons=coupons, recommendations=recommendations,
+                broadcast_error="Selected student not found in database.")
         
         if not target_user.email:
             return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
                 avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-                reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="Selected student does not have a valid email address.")
+                reviews=reviews, vault_slips=vault_slips, analytics=analytics, coupons=coupons, recommendations=recommendations,
+                broadcast_error="Selected student does not have a valid email address.")
         
         emails = [target_user.email]
         recipient_display = target_user.display_name or target_user.email
@@ -1672,13 +1969,14 @@ def admin_broadcast():
     if not emails:
         return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
             avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-            reviews=reviews, vault_slips=vault_slips, analytics=analytics, broadcast_error="No recipients found for this selection.")
+            reviews=reviews, vault_slips=vault_slips, analytics=analytics, coupons=coupons, recommendations=recommendations,
+            broadcast_error="No recipients found for this selection.")
 
     success_count, fail_count = send_broadcast_email(emails, subject, body)
 
     return render_template('admin_dashboard.html', users=users, total_users=stats['total_users'],
         avg_cgpa=stats['avg_cgpa'], branch_stats=stats['branch_stats'], category_stats=stats['category_stats'],
-        reviews=reviews, vault_slips=vault_slips, analytics=analytics,
+        reviews=reviews, vault_slips=vault_slips, analytics=analytics, coupons=coupons, recommendations=recommendations,
         broadcast_success=f"Email sent successfully to {recipient_display}. ({success_count} succeeded, {fail_count} failed)")
 
 
@@ -1712,12 +2010,128 @@ def admin_delete_review(review_id):
     return redirect('/admin/users#reviews')
 
 
+@app.route('/admin/recommendation/save', methods=['POST'])
+@login_required
+def admin_save_recommendation():
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    choice_id = request.form.get('choice_id', '').strip()
+    sn_val = request.form.get('sn', '').strip()
+    db_name = request.form.get('db_name', '').strip()
+    branch = request.form.get('branch', '').strip()
+    display_name = request.form.get('display_name', '').strip()
+
+    if not sn_val or not db_name or not branch or not display_name:
+        return redirect('/admin/users?error=All+fields+are+required#recommendations')
+
+    try:
+        sn = int(sn_val)
+    except ValueError:
+        return redirect('/admin/users?error=Serial+number+must+be+an+integer#recommendations')
+
+    if choice_id:
+        choice = db.session.get(RecommendationChoice, int(choice_id))
+        if not choice:
+            return redirect('/admin/users?error=Recommendation+not+found#recommendations')
+        choice.sn = sn
+        choice.db_name = db_name
+        choice.branch = branch
+        choice.display_name = display_name
+    else:
+        choice = RecommendationChoice(
+            sn=sn,
+            db_name=db_name,
+            branch=branch,
+            display_name=display_name
+        )
+        db.session.add(choice)
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return redirect(f"/admin/users?error=Database+error:+{url_quote(str(e))}#recommendations")
+
+    return redirect('/admin/users?success=Recommendation+saved+successfully#recommendations')
+
+
+@app.route('/admin/recommendation/delete/<int:choice_id>', methods=['POST'])
+@login_required
+def admin_delete_recommendation(choice_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+
+    choice = db.session.get(RecommendationChoice, choice_id)
+    if choice:
+        db.session.delete(choice)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return redirect(f"/admin/users?error=Failed+to+delete:+{url_quote(str(e))}#recommendations")
+
+    return redirect('/admin/users?success=Recommendation+deleted+successfully#recommendations')
+
+
 @app.route('/shortlist/print')
 @login_required
 def shortlist_print():
     user = current_user()
     shortlist = load_cloud_shortlist(user.id) if user else []
     return render_template('shortlist_print.html', user=user, shortlist=shortlist)
+
+
+@app.route('/shortlist/export/csv')
+@login_required
+def shortlist_export_csv():
+    import csv
+    import io
+    from flask import Response
+    user = current_user()
+    shortlist = load_cloud_shortlist(user.id) if user else []
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Write CSV Header
+    writer.writerow([
+        "S.No.",
+        "College Name",
+        "Branch Name",
+        "Branch Code",
+        "Admission Chance (Probability)",
+        "City",
+        "Counselling Year"
+    ])
+    
+    # Write CSV rows
+    for index, item in enumerate(shortlist, start=1):
+        writer.writerow([
+            index,
+            item.get('college_name', ''),
+            item.get('branch_name', ''),
+            item.get('branch', ''),
+            item.get('prob_type', 'N/A'),
+            item.get('city', ''),
+            item.get('year', '')
+        ])
+    
+    output.seek(0)
+    
+    # Clean user name for filename compatibility
+    safe_name = "".join(c for c in (user.display_name or "student") if c.isalnum() or c in (' ', '_', '-')).strip()
+    safe_name = safe_name.replace(" ", "_")
+    
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-disposition": f"attachment; filename=MP_DTE_Shortlist_{safe_name}.csv"}
+    )
 
 
 # ── API v1 ───────────────────────────────────────────────────────────────────
@@ -2080,7 +2494,7 @@ def api_optimize_choices():
     category = data.get('category', 'UR').strip()
     gender = data.get('gender', 'M').strip()
     domicile = data.get('domicile', 'Y').strip()
-    year_str = data.get('year', '2025')
+    year_str = data.get('year', '')
     choices = data.get('choices', [])
 
     if not cgpa_str:
@@ -2092,9 +2506,9 @@ def api_optimize_choices():
         return jsonify({"error": "Invalid CGPA value"}), 400
 
     try:
-        year = int(year_str)
+        year = int(year_str) if year_str else (YEARS[0] if YEARS else 2025)
     except (TypeError, ValueError):
-        year = 2025
+        year = YEARS[0] if YEARS else 2025
 
     cgpa_map = fetch_cgpa_to_rank_map(year)
     if not cgpa_map:
@@ -2226,6 +2640,7 @@ def api_reviews():
 
 @app.route('/api/v1/shortlist/cloud', methods=['GET', 'POST'])
 @login_required
+@limiter.limit("60 per minute")
 def api_cloud_shortlist():
     user = current_user()
     if request.method == 'GET':

@@ -120,8 +120,11 @@
                     <i class="fas fa-file-download"></i> Load into Browser
                 </button>
                 <a href="/shortlist/print" target="_blank" class="btn-primary-small" style="text-decoration:none; background:#1E3A8A; color:#fff; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:4px; font-weight:700; font-size:0.8rem;">
-                    <i class="fas fa-print"></i> Print / Save PDF
+                    <i class="fas fa-print"></i> Print View
                 </a>
+                <button type="button" class="btn-primary-small" onclick="downloadCloudShortlistPdf()" style="background:#2563EB; color:#fff; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:4px; font-weight:700; cursor:pointer; padding:6px 12px; font-size:0.8rem;">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
                 <button type="button" class="btn-primary-small" onclick="shareShortlistWhatsApp()" style="background:#16A34A; color:#fff; display:inline-flex; align-items:center; gap:6px; border:none; border-radius:4px; font-weight:700; cursor:pointer; padding:6px 12px; font-size:0.8rem;">
                     <i class="fab fa-whatsapp"></i> Share on WhatsApp
                 </button>
@@ -271,6 +274,32 @@
             text += "━━━━━━━━━━━━━━━━━━━━\n";
             text += "Powered by MP Polytechnic Lateral Entry Predictor";
             window.open("https://wa.me/?text=" + encodeURIComponent(text), '_blank');
+        }
+        function downloadCloudShortlistPdf() {
+            const items = {{ cloud_shortlist | tojson | safe }};
+            if (!items || items.length === 0) {
+                if (window.showToast) window.showToast('Your shortlist is empty!', 'error');
+                else alert('Your shortlist is empty!');
+                return;
+            }
+            const profile = {
+                name: "{{ user.display_name or 'Student' }}",
+                cgpa: "{{ user.cgpa or '0.0' }}",
+                category: "{{ user.category or 'UR' }}",
+                gender: "{{ user.gender or 'M' }}",
+                domicile: "MP Resident", // cloud list is only for logged in MP students by default
+                branch: "{{ user.diploma_branch or 'All' }}"
+            };
+            // Format probability field for choices mapping
+            const choices = items.map(item => {
+                return {
+                    college_name: item.college_name,
+                    branch: item.branch,
+                    prob_type: item.prob_type,
+                    closing_rank: item.closing_rank
+                };
+            });
+            DteExport.exportPdf(choices, profile, 'MP-DTE-Shortlist.pdf');
         }
         </script>
 

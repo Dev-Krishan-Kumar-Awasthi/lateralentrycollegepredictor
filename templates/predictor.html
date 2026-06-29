@@ -286,7 +286,13 @@
         <strong>Domicile:</strong> {{ 'MP Resident' if data.domicile == 'Y' else 'Non-MP' }}
     </div>
 
-    {% if not prediction[2024] and not prediction[2025] %}
+    {% set ns_results = namespace(empty=true) %}
+    {% for yr, colleges in prediction.items() %}
+        {% if colleges %}
+            {% set ns_results.empty = false %}
+        {% endif %}
+    {% endfor %}
+    {% if ns_results.empty %}
         <div class="no-results">
             <div class="no-results-icon"><i class="fas fa-search-location"></i></div>
             <h3>No colleges found for this profile</h3>
@@ -420,7 +426,24 @@
                                     <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch }})</span></td>
                                     <td><span class="type-tag">{{ college.college_type }}</span></td>
                                     <td style="font-family:monospace;">{{ college.opening_rank }}</td>
-                                    <td style="font-family:monospace;font-weight:700;">{{ college.closing_rank }}</td>
+                                    <td style="font-family:monospace;font-weight:700;white-space:nowrap;">
+                                        {{ college.closing_rank }}
+                                        {% if item.trend_val %}
+                                            {% if item.trend_val == 'up' %}
+                                                <span class="trend-badge trend-up" title="Cutoff became harder in 2025 compared to 2024 (Closing rank decreased by {{ item.trend_diff }})">
+                                                    <i class="fas fa-arrow-trend-up"></i> Harder
+                                                </span>
+                                            {% elif item.trend_val == 'down' %}
+                                                <span class="trend-badge trend-down" title="Cutoff became easier in 2025 compared to 2024 (Closing rank increased by {{ item.trend_diff | abs }})">
+                                                    <i class="fas fa-arrow-trend-down"></i> Easier
+                                                </span>
+                                            {% else %}
+                                                <span class="trend-badge trend-stable" title="Cutoff remained stable compared to 2024">
+                                                    <i class="fas fa-equals"></i> Stable
+                                                </span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
                                     <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender }}</span></td>
                                     <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
                                     <td>{{ college.total_seats }}</td>
@@ -492,6 +515,40 @@
 </div>
 
 <style>
+/* Trend Badges styling */
+.trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-family: 'Inter', sans-serif;
+}
+.trend-badge i {
+    font-size: 0.72rem;
+}
+.trend-badge.trend-up {
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FCA5A5;
+}
+.trend-badge.trend-down {
+    background: #ECFDF5;
+    color: #059669;
+    border: 1px solid #6EE7B7;
+}
+.trend-badge.trend-stable {
+    background: #F8FAFC;
+    color: #64748B;
+    border: 1px solid #E2E8F0;
+}
+
 /* Serial Cell & Sublink */
 .serial-cell {
     padding: 11px 10px !important;

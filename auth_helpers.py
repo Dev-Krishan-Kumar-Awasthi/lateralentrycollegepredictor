@@ -525,7 +525,9 @@ def load_cloud_shortlist(user_id: int, name: str = "My Shortlist") -> list:
                         SeatInfo.gender.in_([user.gender, "OP"]),
                         SeatInfo.year == year_val
                     ).first()
+                    closing_rank = None
                     if seat:
+                        closing_rank = seat.closing_rank
                         prob_percent = calc_probability(min_rank, max_rank, seat.opening_rank, seat.closing_rank)
                         if prob_percent >= 75:
                             prob_type = "Safe"
@@ -541,7 +543,8 @@ def load_cloud_shortlist(user_id: int, name: str = "My Shortlist") -> list:
                 "city": city,
                 "year": year_val,
                 "prob_type": prob_type,
-                "prob_percent": prob_percent
+                "prob_percent": prob_percent,
+                "closing_rank": closing_rank
             })
         return normalized
     except json.JSONDecodeError:

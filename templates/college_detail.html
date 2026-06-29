@@ -175,6 +175,30 @@
                         {% endfor %}
                     </div>
                 </div>
+
+                <!-- ROI Section -->
+                {% if roi_index and roi_index > 0 %}
+                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.82rem; font-weight:700; color:#475569;"><i class="fas fa-chart-line" style="color:#059669;"></i> Return on Investment (ROI):</span>
+                        <div style="display:inline-flex; align-items:center; gap:6px;">
+                            <span style="font-size:1.15rem; font-weight:850; color:#059669; font-family:monospace;">{{ roi_index }}x</span>
+                            {% if roi_index >= 3.0 %}
+                            <span style="background:#ECFDF5; color:#047857; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; border:1px solid #A7F3D0;">Excellent</span>
+                            {% elif roi_index >= 1.5 %}
+                            <span style="background:#EFF6FF; color:#1D4ED8; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; border:1px solid #BFDBFE;">Good</span>
+                            {% elif roi_index >= 0.8 %}
+                            <span style="background:#FFF7ED; color:#C2410C; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; border:1px solid #FFEDD5;">Moderate</span>
+                            {% else %}
+                            <span style="background:#FEF2F2; color:#991B1B; font-size:0.68rem; font-weight:800; padding:2px 7px; border-radius:4px; border:1px solid #FCA5A5;">Low</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div style="font-size:0.7rem; color:var(--muted); margin-top:3px; line-height:1.3;">
+                        ROI Index represents average salary package divided by estimated annual tuition fees. Higher multiplier indicates better financial return.
+                    </div>
+                </div>
+                {% endif %}
             </div>
             
             <div style="background:#F8FAFC; border:1px solid var(--border); padding:10px 12px; border-radius:6px; font-size:0.76rem; color:var(--muted); line-height:1.4; display:flex; gap:8px; align-items:flex-start; margin-top:10px;">
@@ -209,7 +233,7 @@
     <!-- Chart.js Cutoff Trend -->
     {% if chart_data and chart_data.labels %}
     <div class="gov-box" style="margin-bottom:24px;">
-        <h3 style="color:var(--primary);margin-top:0;"><i class="fas fa-chart-bar"></i> Cutoff Trend Chart (2024 vs 2025)</h3>
+        <h3 style="color:var(--primary);margin-top:0;"><i class="fas fa-chart-bar"></i> Cutoff Trend Chart ({{ prev_year }} vs {{ latest_year }})</h3>
         <canvas id="cutoff-chart" height="120"></canvas>
     </div>
     {% endif %}
@@ -306,41 +330,41 @@
         {% endif %}
     </div>
 
-    <!-- Cutoff Trend Analytics Dashboard (2024 vs 2025) -->
+    <!-- Cutoff Trend Analytics Dashboard ({{ prev_year }} vs {{ latest_year }}) -->
     {% if detail.by_year.keys() | list | length >= 2 %}
     <div class="gov-box trend-analytics-card" style="margin-bottom: 28px; border-top: 4px solid var(--primary); background: #FAFBFD; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
         <h3 style="color:var(--primary); font-size:1.1rem; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
             <i class="fas fa-chart-line" style="color:var(--saffron);"></i> 
-            <strong>Year-on-Year Cutoff Trend Analysis (2024 vs 2025)</strong>
+            <strong>Year-on-Year Cutoff Trend Analysis ({{ prev_year }} vs {{ latest_year }})</strong>
         </h3>
         <p style="font-size:0.82rem; margin-bottom:18px; color:var(--muted); line-height:1.4;">
-            This dashboard compares the average closing ranks between 2024 and 2025 across all engineering branches to help you understand which direction the cutoffs are moving.
+            This dashboard compares the average closing ranks between {{ prev_year }} and {{ latest_year }} across all engineering branches to help you understand which direction the cutoffs are moving.
         </p>
         
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
             {% for b in detail.branches %}
-                {% set ns = namespace(avg_2024=0, count_2024=0, avg_2025=0, count_2025=0) %}
-                {% if 2024 in detail.by_year %}
-                    {% for r in detail.by_year[2024] %}
+                {% set ns = namespace(avg_prev=0, count_prev=0, avg_latest=0, count_latest=0) %}
+                {% if prev_year in detail.by_year %}
+                    {% for r in detail.by_year[prev_year] %}
                         {% if r.branch == b %}
-                            {% set ns.avg_2024 = ns.avg_2024 + r.closing_rank %}
-                            {% set ns.count_2024 = ns.count_2024 + 1 %}
+                            {% set ns.avg_prev = ns.avg_prev + r.closing_rank %}
+                            {% set ns.count_prev = ns.count_prev + 1 %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
-                {% if 2025 in detail.by_year %}
-                    {% for r in detail.by_year[2025] %}
+                {% if latest_year in detail.by_year %}
+                    {% for r in detail.by_year[latest_year] %}
                         {% if r.branch == b %}
-                            {% set ns.avg_2025 = ns.avg_2025 + r.closing_rank %}
-                            {% set ns.count_2025 = ns.count_2025 + 1 %}
+                            {% set ns.avg_latest = ns.avg_latest + r.closing_rank %}
+                            {% set ns.count_latest = ns.count_latest + 1 %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
                 
-                {% if ns.count_2024 > 0 and ns.count_2025 > 0 %}
-                    {% set avg_val_2024 = (ns.avg_2024 / ns.count_2024) | round | int %}
-                    {% set avg_val_2025 = (ns.avg_2025 / ns.count_2025) | round | int %}
-                    {% set diff = avg_val_2025 - avg_val_2024 %}
+                {% if ns.count_prev > 0 and ns.count_latest > 0 %}
+                    {% set avg_val_prev = (ns.avg_prev / ns.count_prev) | round | int %}
+                    {% set avg_val_latest = (ns.avg_latest / ns.count_latest) | round | int %}
+                    {% set diff = avg_val_latest - avg_val_prev %}
                     
                     <div class="trend-card" style="background:#fff; border:1px solid var(--border); padding:16px; border-radius:8px; display:flex; flex-direction:column; gap:10px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: 0.2s;">
                         <div style="font-weight:700; font-size:0.88rem; color:var(--primary); text-align: left;">
@@ -349,8 +373,8 @@
                         
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:5px;">
                             <div style="text-align:left;">
-                                <div style="font-size:0.75rem; color:var(--muted);">2024 Avg Cutoff</div>
-                                <div style="font-weight:700; font-size:1.1rem; color:#475569; font-family:monospace;">{{ avg_val_2024 }}</div>
+                                <div style="font-size:0.75rem; color:var(--muted);">{{ prev_year }} Avg Cutoff</div>
+                                <div style="font-weight:700; font-size:1.1rem; color:#475569; font-family:monospace;">{{ avg_val_prev }}</div>
                             </div>
                             
                             <div style="font-size:1.2rem; color:#94A3B8;">
@@ -358,18 +382,18 @@
                             </div>
                             
                             <div style="text-align:right;">
-                                <div style="font-size:0.75rem; color:var(--muted);">2025 Avg Cutoff</div>
-                                <div style="font-weight:700; font-size:1.1rem; color:var(--primary); font-family:monospace;">{{ avg_val_2025 }}</div>
+                                <div style="font-size:0.75rem; color:var(--muted);">{{ latest_year }} Avg Cutoff</div>
+                                <div style="font-weight:700; font-size:1.1rem; color:var(--primary); font-family:monospace;">{{ avg_val_latest }}</div>
                             </div>
                         </div>
                         
                         <!-- Visual share bar to show relatively larger or smaller closing ranks -->
                         <div style="margin-top:5px; height:8px; background:#F1F5F9; border-radius:4px; overflow:hidden; display:flex;">
-                            {% set total_avg = avg_val_2024 + avg_val_2025 %}
-                            {% set pct_2024 = (avg_val_2024 / total_avg * 100) | round | int %}
-                            {% set pct_2025 = 100 - pct_2024 %}
-                            <div style="width:{{ pct_2024 }}%; background:#94A3B8; height:100%;" title="2024 Average: {{ avg_val_2024 }}"></div>
-                            <div style="width:{{ pct_2025 }}%; background:var(--primary); height:100%;" title="2025 Average: {{ avg_val_2025 }}"></div>
+                            {% set total_avg = avg_val_prev + avg_val_latest %}
+                            {% set pct_prev = (avg_val_prev / total_avg * 100) | round | int %}
+                            {% set pct_latest = 100 - pct_prev %}
+                            <div style="width:{{ pct_prev }}%; background:#94A3B8; height:100%;" title="{{ prev_year }} Average: {{ avg_val_prev }}"></div>
+                            <div style="width:{{ pct_latest }}%; background:var(--primary); height:100%;" title="{{ latest_year }} Average: {{ avg_val_latest }}"></div>
                         </div>
                         
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:3px;">
@@ -652,10 +676,20 @@
         stroke-dashoffset: -20;
     }
 }
-.animated-route-line {
+.animated-route-line-dashed {
     stroke-dasharray: 8, 8;
     animation: routePulse 1.2s linear infinite;
-    filter: drop-shadow(0px 2px 4px rgba(29, 78, 216, 0.4));
+    filter: drop-shadow(0px 2px 4px rgba(234, 88, 12, 0.4));
+}
+.animated-route-line-solid {
+    stroke-dasharray: none;
+    filter: drop-shadow(0px 2.5px 5px rgba(29, 78, 216, 0.5));
+}
+.transit-marker-pin .marker-icon-wrapper {
+    background: #EA580C;
+}
+.transit-marker-pin .marker-pulse {
+    background: rgba(234, 88, 12, 0.4);
 }
 </style>
 
@@ -724,6 +758,21 @@ document.addEventListener('DOMContentLoaded', function() {
         iconAnchor: [20, 40],
         popupAnchor: [0, -40]
     });
+
+    const transitHubIcon = L.divIcon({
+        html: `
+            <div class="custom-map-marker transit-marker-pin">
+                <div class="marker-pulse" style="background:rgba(234, 88, 12, 0.4);"></div>
+                <div class="marker-icon-wrapper" style="background:#ea580c; border-color:#ffedd5;">
+                    <i class="fas fa-train" style="font-size:0.9rem;"></i>
+                </div>
+            </div>
+        `,
+        className: 'custom-marker-container',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+        popupAnchor: [0, -40]
+    });
     
     // Add College Marker
     const collegeMarker = L.marker(finalCollegeCoords, { icon: collegeIcon })
@@ -772,18 +821,42 @@ document.addEventListener('DOMContentLoaded', function() {
             return points;
         }
         
-        const routePoints = getBezierPoints(homeCoords, finalCollegeCoords);
+        // Resolve transit hub in destination city
+        const collegeCity = "{{ college_city }}";
+        const destCityCoords = cityCoords[collegeCity] ? [parseFloat(cityCoords[collegeCity].lat), parseFloat(cityCoords[collegeCity].lng)] : null;
         
-        // Draw elegant glowing path line
-        L.polyline(routePoints, {
+        // Offset slightly if it's identical to college coordinates
+        let hubCoords = destCityCoords || [finalCollegeCoords[0] + 0.008, finalCollegeCoords[1] - 0.01];
+        if (Math.abs(hubCoords[0] - finalCollegeCoords[0]) < 0.001 && Math.abs(hubCoords[1] - finalCollegeCoords[1]) < 0.001) {
+            hubCoords = [finalCollegeCoords[0] + 0.005, finalCollegeCoords[1] - 0.007];
+        }
+
+        // Add Transit Hub Marker
+        const transitMarker = L.marker(hubCoords, { icon: transitHubIcon })
+            .addTo(map)
+            .bindPopup(`<strong>🚉 ${collegeCity || 'Destination'} Transit Hub</strong><br><span style="color:var(--muted);font-size:0.8rem;">Railway Station / Bus Stand (Arrival point)</span>`);
+        
+        // Multi-stage routing paths
+        // Stage 1: Home City to Transit Hub (Dashed Saffron Line)
+        const stage1Points = getBezierPoints(homeCoords, hubCoords);
+        L.polyline(stage1Points, {
+            color: '#ea580c',
+            weight: 3.5,
+            opacity: 0.75,
+            dashArray: '8, 8',
+            className: 'animated-route-line-dashed'
+        }).addTo(map);
+
+        // Stage 2: Transit Hub to Campus (Solid Blue Line)
+        L.polyline([hubCoords, finalCollegeCoords], {
             color: '#1D4ED8',
-            weight: 4,
-            opacity: 0.8,
-            className: 'animated-route-line'
+            weight: 4.5,
+            opacity: 0.9,
+            className: 'animated-route-line-solid'
         }).addTo(map);
         
-        // Set view to include both markers with decent padding
-        const bounds = L.latLngBounds([homeCoords, finalCollegeCoords]);
+        // Set view to include all markers with decent padding
+        const bounds = L.latLngBounds([homeCoords, hubCoords, finalCollegeCoords]);
         map.fitBounds(bounds, { padding: [50, 50] });
         
         // Open college popup
@@ -808,8 +881,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: {{ chart_data.labels | tojson | safe }},
             datasets: [
-                { label: '2024 Avg Closing', data: {{ chart_data.data_2024 | tojson | safe }}, backgroundColor: '#94A3B8' },
-                { label: '2025 Avg Closing', data: {{ chart_data.data_2025 | tojson | safe }}, backgroundColor: '#1D4ED8' }
+                { label: '{{ prev_year }} Avg Closing', data: {{ chart_data.data_prev | tojson | safe }}, backgroundColor: '#94A3B8' },
+                { label: '{{ latest_year }} Avg Closing', data: {{ chart_data.data_latest | tojson | safe }}, backgroundColor: '#1D4ED8' }
             ]
         },
         options: {

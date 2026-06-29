@@ -295,6 +295,14 @@ def get_college_info_bundle(college_name: str, college_type: str | None = None,
     fee = get_fee_info(college_name, college_type)
     city = infer_city_from_college_name(college_name)
     dist = distance_from_home(home_city, college_name) if home_city else None
+    placement = get_placement_info(college_name, college_type)
+    
+    # Calculate ROI Index: Placement LPA / Tuition Fee LPA
+    tuition_val = fee.get('tuition') or ((fee.get('tuition_min', 0) + fee.get('tuition_max', 0)) / 2)
+    tuition_lpa = tuition_val / 100000.0 if tuition_val else 0.0
+    avg_pkg = placement.get('average_package_lpa', 0.0)
+    roi_index = round(avg_pkg / tuition_lpa, 2) if tuition_lpa > 0 else 0.0
+
     return {
         "profile": profile,
         "fee": fee,
@@ -303,5 +311,6 @@ def get_college_info_bundle(college_name: str, college_type: str | None = None,
         "district": get_district_for_city(city) if city else None,
         "distance": dist,
         "coords": get_college_coordinates(college_name),
-        "placement": get_placement_info(college_name, college_type),
+        "placement": placement,
+        "roi_index": roi_index,
     }

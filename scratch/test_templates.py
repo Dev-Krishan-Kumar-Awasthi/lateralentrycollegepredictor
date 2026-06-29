@@ -3,7 +3,10 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from main import app
+from main import app, limiter
+
+app.config['RATELIMIT_ENABLED'] = False
+limiter.enabled = False
 
 def test_predictor_template():
     print("=== Testing Predictor Template Render ===")
@@ -296,7 +299,11 @@ def test_otp_brute_force_limits():
 
         # Try entering wrong OTP 3rd time (should fail and delete session details)
         resp_w3 = client.post('/account', data={'action': 'verify_otp', 'otp': '000000'}, follow_redirects=True)
-        assert "Too many failed attempts. Please register again." in resp_w3.get_data(as_text=True)
+        w3_html = resp_w3.get_data(as_text=True)
+        if "Too many failed attempts. Please register again." not in w3_html:
+            with open("C:/Users/HP/.gemini/antigravity-ide/brain/8e6f9887-8442-4b8b-8388-e7631c474156/scratch/failed_w3.html", "w", encoding="utf-8") as f:
+                f.write(w3_html)
+        assert "Too many failed attempts. Please register again." in w3_html
 
         # Verify session is cleaned up
         with client.session_transaction() as sess:

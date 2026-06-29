@@ -338,12 +338,12 @@
                 </div>
                 <div class="rules-modal-banner-title">
                     <i class="fas fa-graduation-cap welcome-icon-animated"></i>
-                    <span class="shine-text">WELCOME TO LATERAL ENTRY COLLEGE PREDICTOR TOOL</span>
+                    <span class="shine-text">{{ schedule.welcome_title or 'WELCOME TO LATERAL ENTRY COLLEGE PREDICTOR TOOL' }}</span>
                 </div>
                 <p class="rules-modal-banner-desc">
-                    <span><i class="fas fa-exclamation-triangle" style="color: #f59e0b; animation: warningPulse 1.5s infinite;"></i> First must Read all DTE MP B.E./B.Tech Lateral Entry (Diploma/B.Sc. to Degree) Admission Rules, then do anything. Read rules, 100% all confusions will be cleared!</span>
-                    <a href="/dte-rules" id="popup-read-rules-btn" class="rules-modal-banner-btn">
-                        Read All Rules <i class="fas fa-chevron-right"></i>
+                    <span><i class="fas fa-exclamation-triangle" style="color: #f59e0b; animation: warningPulse 1.5s infinite;"></i> {{ schedule.banner_warning or 'First must Read all DTE MP B.E./B.Tech Lateral Entry (Diploma/B.Sc. to Degree) Admission Rules, then do anything. Read rules, 100% all confusions will be cleared!' }}</span>
+                    <a href="{{ schedule.banner_btn_url or '/dte-rules' }}" id="popup-read-rules-btn" class="rules-modal-banner-btn">
+                        {{ schedule.banner_btn_text or 'Read All Rules' }} <i class="fas fa-chevron-right"></i>
                     </a>
                 </p>
             </div>
@@ -435,8 +435,14 @@
                 <div class="rules-modal-notes" style="background: #eff6ff; border-radius: 12px; border-left: 5px solid #3b82f6; color: #1e3a8a; box-shadow: 0 4px 10px rgba(59,130,246,0.03);">
                     <p class="rules-modal-notes-title"><i class="fas fa-exclamation-circle"></i> CLC Round Instructions:</p>
                     <ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
-                        <li>CLC ke dauran college level merit ke aadhar par direct admission milta hai. candidates ko **subah 10:30 AM se dopehar 1:00 PM tak** reporting time ke andar attendance lagana mandatory hai.</li>
-                        <li>Sabi category conversions, tie-breaker rules aur verification parameters ko detail mein check karne ke liye upper diye link se DTE rules zaroor padhein.</li>
+                        {% if schedule.clc_instructions %}
+                            {% for line in schedule.clc_instructions %}
+                                <li>{{ line }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>CLC ke dauran college level merit ke aadhar par direct admission milta hai. candidates ko **subah 10:30 AM se dopehar 1:00 PM tak** reporting time ke andar attendance lagana mandatory hai.</li>
+                            <li>Sabi category conversions, tie-breaker rules aur verification parameters ko detail mein check karne ke liye upper diye link se DTE rules zaroor padhein.</li>
+                        {% endif %}
                     </ul>
                 </div>
 

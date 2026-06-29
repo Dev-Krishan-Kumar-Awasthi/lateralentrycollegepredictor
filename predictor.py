@@ -426,22 +426,27 @@ def get_seat_heatmap(college_name: str, year: int = 2025) -> dict:
 
 
 def get_cutoff_chart_data(college_name: str) -> dict:
-    """Per-branch average closing ranks for 2024 vs 2025 line chart."""
+    """Per-branch average closing ranks for latest vs previous year line chart."""
     detail = get_college_detail(college_name)
+    from db import db
+    from models import SeatInfo
+    latest_year = db.session.query(db.func.max(SeatInfo.year)).scalar() or 2025
+    prev_year = latest_year - 1
+
     if not detail:
-        return {"labels": [], "data_2024": [], "data_2025": []}
+        return {"labels": [], "data_prev": [], "data_latest": []}
     labels = detail["branches"]
-    data_2024, data_2025 = [], []
+    data_prev, data_latest = [], []
     for branch in labels:
-        for year, bucket in ((2024, data_2024), (2025, data_2025)):
+        for year, bucket in ((prev_year, data_prev), (latest_year, data_latest)):
             rows = detail["by_year"].get(year, [])
             closings = [r.closing_rank for r in rows if r.branch == branch]
             bucket.append(round(sum(closings) / len(closings)) if closings else None)
     return {
         "labels": [BRANCH_NAMES.get(b, b) for b in labels],
         "branch_codes": labels,
-        "data_2024": data_2024,
-        "data_2025": data_2025,
+        "data_prev": data_prev,
+        "data_latest": data_latest,
     }
 
 
@@ -453,31 +458,35 @@ def get_compare_data(college_names: list) -> list:
     Returns list of dicts with key metrics per college.
     """
     result = []
+    from db import db
+    from models import SeatInfo
+    latest_year = db.session.query(db.func.max(SeatInfo.year)).scalar() or 2025
+    prev_year = latest_year - 1
 
     for name in college_names[:3]:
-        rows_2025 = (db.session.query(SeatInfo)
-                     .filter_by(college_name=name, year=2025).all())
-        rows_2024 = (db.session.query(SeatInfo)
-                     .filter_by(college_name=name, year=2024).all())
+        rows_latest = (db.session.query(SeatInfo)
+                     .filter_by(college_name=name, year=latest_year).all())
+        rows_prev = (db.session.query(SeatInfo)
+                     .filter_by(college_name=name, year=prev_year).all())
 
-        # Use whichever year has data; prefer 2025
-        rows_latest = rows_2025 if rows_2025 else rows_2024
-        if not rows_latest:
+        # Use whichever year has data; prefer latest
+        rows_display = rows_latest if rows_latest else rows_prev
+        if not rows_display:
             continue
 
-        branches_2025 = sorted({r.branch for r in rows_2025}) if rows_2025 else []
-        branches_2024 = sorted({r.branch for r in rows_2024}) if rows_2024 else []
-        all_branches  = sorted({r.branch for r in rows_latest})
+        branches_latest = sorted({r.branch for r in rows_latest}) if rows_latest else []
+        branches_prev = sorted({r.branch for r in rows_prev}) if rows_prev else []
+        all_branches  = sorted({r.branch for r in rows_display})
 
-        closing_2025 = [r.closing_rank for r in rows_2025] if rows_2025 else []
-        closing_2024 = [r.closing_rank for r in rows_2024] if rows_2024 else []
+        closing_latest = [r.closing_rank for r in rows_latest] if rows_latest else []
+        closing_prev = [r.closing_rank for r in rows_prev] if rows_prev else []
 
-        avg_2025 = round(sum(closing_2025) / len(closing_2025)) if closing_2025 else None
-        avg_2024 = round(sum(closing_2024) / len(closing_2024)) if closing_2024 else None
+        avg_latest = round(sum(closing_latest) / len(closing_latest)) if closing_latest else None
+        avg_prev = round(sum(closing_prev) / len(closing_prev)) if closing_prev else None
 
         # Trend: higher closing rank = easier to get in
-        if avg_2025 and avg_2024:
-            diff = avg_2025 - avg_2024
+        if avg_latest and avg_prev:
+            diff = avg_latest - avg_prev
             if diff < -50:
                 trend = 'tighter'    # cutoff got harder
             elif diff > 50:
@@ -487,39 +496,47 @@ def get_compare_data(college_names: list) -> list:
         else:
             trend = 'no_data'
 
-        total_seats_2025 = sum(r.total_seats for r in rows_2025) if rows_2025 else 0
+        total_seats_latest = sum(r.total_seats for r in rows_latest) if rows_latest else 0
 
         # Best closing rank = highest number = easiest branch to get
         # Worst closing rank = lowest number = hardest branch to get
-        easiest_cutoff  = max(closing_2025) if closing_2025 else None
-        hardest_cutoff  = min(closing_2025) if closing_2025 else None
+        easiest_cutoff  = max(closing_latest) if closing_latest else None
+        hardest_cutoff  = min(closing_latest) if closing_latest else None
 
         from college_meta import get_fee_info, format_fee_display, infer_city_from_college_name, get_district_for_city, get_placement_info
-        fee = get_fee_info(name, rows_latest[0].college_type)
+        fee = get_fee_info(name, rows_display[0].college_type)
         city = infer_city_from_college_name(name)
-        placement = get_placement_info(name, rows_latest[0].college_type)
+        placement = get_placement_info(name, rows_display[0].college_type)
+        
+        # Calculate ROI Index: Placement LPA / Tuition Fee LPA
+        tuition_val = fee.get('tuition') or ((fee.get('tuition_min', 0) + fee.get('tuition_max', 0)) / 2)
+        tuition_lpa = tuition_val / 100000.0 if tuition_val else 0.0
+        avg_pkg = placement.get('average_package_lpa', 0.0)
+        roi_index = round(avg_pkg / tuition_lpa, 2) if tuition_lpa > 0 else 0.0
+        
         result.append({
             'college_name':     name,
-            'college_type':     rows_latest[0].college_type,
+            'college_type':     rows_display[0].college_type,
             'branches':         all_branches,
-            'branches_2025':    branches_2025,
-            'branches_2024':    branches_2024,
+            'branches_latest':  branches_latest,
+            'branches_prev':    branches_prev,
             'branch_count':     len(all_branches),
-            'total_seats':      total_seats_2025,
-            'domicile_required': any(r.domicile == 'Y' for r in rows_latest),
+            'total_seats':      total_seats_latest,
+            'domicile_required': any(r.domicile == 'Y' for r in rows_display),
             'easiest_cutoff':   easiest_cutoff,
             'hardest_cutoff':   hardest_cutoff,
-            'avg_cutoff_2025':  avg_2025,
-            'avg_cutoff_2024':  avg_2024,
+            'avg_cutoff_latest': avg_latest,
+            'avg_cutoff_prev':  avg_prev,
             'trend':            trend,
-            'has_2025':         bool(rows_2025),
-            'has_2024':         bool(rows_2024),
+            'has_latest':       bool(rows_latest),
+            'has_prev':         bool(rows_prev),
             'fee_display':      format_fee_display(fee),
             'fee_approximate':  fee.get('is_approximate', True),
             'fee':              fee,
             'city':             city,
             'district':         get_district_for_city(city) if city else None,
             'placement':        placement,
+            'roi_index':        roi_index,
         })
 
     return result

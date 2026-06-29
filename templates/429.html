@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}429 Too Many Requests — MP DTE Predictor{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    <div class="gov-box" style="max-width: 550px; text-align: center; padding: 50px 30px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid var(--border); border-radius: 16px;">
+        <div style="background-color: #fffbeb; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px auto; color: #d97706; font-size: 2.2rem; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.1);">
+            <i class="fas fa-hand-paper"></i>
+        </div>
+        <h1 style="color: #d97706; font-size: 2.2rem; font-weight: 800; margin: 0 0 10px 0; letter-spacing: -0.5px;">Slow Down (429)</h1>
+        <p class="subtitle" style="font-size: 1.1rem; color: var(--muted); margin: 0 0 30px 0; line-height: 1.6;">
+            You have sent too many requests in a short period. Please slow down, wait a bit, and try again later.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="/" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-home"></i> Go to Homepage
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
