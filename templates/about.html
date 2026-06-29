@@ -32,25 +32,120 @@
         </p>
     </div>
 
-    <!-- ===== TECH STACK ===== -->
+<style>
+    .dev-profile-container {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+    .dev-avatar-wrapper {
+        flex: 0 0 auto;
+        text-align: center;
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid var(--secondary);
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+        transition: transform 0.3s ease;
+    }
+    .dev-avatar-wrapper:hover {
+        transform: scale(1.05);
+    }
+    .dev-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .dev-details {
+        flex: 1 1 300px;
+    }
+    .dev-name {
+        margin: 0 0 2px 0;
+        color: var(--primary);
+        font-size: 1.35rem;
+        font-weight: 700;
+    }
+    .dev-role {
+        margin: 0 0 10px 0;
+        font-weight: 600;
+        color: var(--secondary);
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .dev-bio {
+        margin: 0 0 12px 0;
+        font-size: 0.9rem;
+        color: var(--text);
+        line-height: 1.5;
+    }
+    .dev-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 8px;
+        font-size: 0.84rem;
+        color: var(--muted);
+    }
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .meta-item i {
+        color: var(--secondary);
+        width: 14px;
+        text-align: center;
+    }
+    .meta-item a {
+        color: var(--secondary);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .meta-item a:hover {
+        text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+        .dev-profile-container {
+            flex-direction: column;
+            text-align: center;
+            gap: 14px;
+        }
+        .dev-avatar-wrapper {
+            width: 95px;
+            height: 95px;
+        }
+        .dev-meta {
+            grid-template-columns: 1fr;
+            text-align: left;
+            margin-top: 5px;
+            padding-left: 10px;
+        }
+    }
+</style>
+
+    <!-- ===== DEVELOPER INFO ===== -->
     <div class="gov-box">
-        <h2><i class="fas fa-code"></i> Technology Stack</h2>
-        <div class="cards-grid">
-            <div class="info-card">
-                <h3><i class="fab fa-python" style="color:#3B7EBB;margin-right:6px;"></i>Backend</h3>
-                <p>Python 3, Flask, SQLAlchemy ORM</p>
+        <h2><i class="fas fa-user-cog"></i> About the Developer</h2>
+        <div class="dev-profile-container">
+            <div class="dev-avatar-wrapper">
+                <img src="{{ url_for('static', filename='img/krishan1.jpeg') }}" alt="Krishan Kumar Awasthi" class="dev-avatar">
             </div>
-            <div class="info-card">
-                <h3><i class="fab fa-html5" style="color:#E44D26;margin-right:6px;"></i>Frontend</h3>
-                <p>HTML5, CSS3, Jinja2 Templates</p>
-            </div>
-            <div class="info-card">
-                <h3><i class="fas fa-database" style="color:var(--secondary);margin-right:6px;"></i>Database</h3>
-                <p>SQLite (via SQLAlchemy)</p>
-            </div>
-            <div class="info-card">
-                <h3><i class="fas fa-table" style="color:var(--green);margin-right:6px;"></i>Data Processing</h3>
-                <p>Pandas, CSV parsing, binary search & linear interpolation</p>
+            <div class="dev-details">
+                <div class="dev-name">Krishan Kumar Awasthi</div>
+                <div class="dev-role"><i class="fas fa-laptop-code"></i> Full-Stack &amp; Mobile Developer</div>
+                <p class="dev-bio">
+                    A passionate developer currently pursuing a <strong>Computer Science Polytechnic Diploma</strong> at <strong>Shivpuri Polytechnic College</strong>. Specializing in building pixel-perfect, performant digital experiences.
+                </p>
+                <div class="dev-meta">
+                    <div class="meta-item"><i class="fas fa-graduation-cap"></i> Polytechnic Diploma (CS)</div>
+                    <div class="meta-item"><i class="fas fa-map-marker-alt"></i> Shivpuri, M.P., India</div>
+                    <div class="meta-item"><i class="fas fa-envelope"></i> <a href="mailto:awasthikrishnaa92@gmail.com">awasthikrishnaa92@gmail.com</a></div>
+                    <div class="meta-item"><i class="fas fa-phone-alt"></i> <a href="tel:+917089881219">+91 7089881219</a></div>
+                </div>
             </div>
         </div>
     </div>
@@ -196,12 +291,12 @@
             Have questions or feedback? Feel free to reach out or follow me on social media.
         </p>
         <div class="cards-grid">
-            <a href="https://github.com/Dev-Krishan-Kumar-Awasthi-" target="_blank" class="social-card">
+            <a href="https://github.com/Dev-Krishan-Kumar-Awasthi" target="_blank" class="social-card">
                 <div class="social-icon" style="color:#24292e;"><i class="fab fa-github"></i></div>
                 <h3>GitHub</h3>
                 <p>Check my projects</p>
             </a>
-            <a href="https://www.instagram.com/krishan_kumar_awasthi_kka/?__pwa=1" target="_blank" class="social-card">
+            <a href="https://www.instagram.com/krishna_awasth_" target="_blank" class="social-card">
                 <div class="social-icon" style="color:#e4405f;"><i class="fab fa-instagram"></i></div>
                 <h3>Instagram</h3>
                 <p>Stay updated</p>
