@@ -2572,9 +2572,9 @@ def api_optimize_choices():
             "original_index": index
         })
 
-    # Sort the entire list strictly by closing_rank (cutoff) ascending
-    # Harder to get colleges (smaller closing_rank) go to the top.
-    optimized.sort(key=lambda x: x["closing_rank"])
+    # Sort by probability ascending first, then by closing_rank ascending as a tie-breaker
+    # This places Dream choices (lowest probability) at the top, and Safe choices at the bottom.
+    optimized.sort(key=lambda x: (x["probability"], x["closing_rank"]))
 
     # Dynamic bucket labels and count calculation
     dream_count = 0
