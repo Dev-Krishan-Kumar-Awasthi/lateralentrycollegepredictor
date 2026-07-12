@@ -80,7 +80,7 @@
 
         {% set shortlisted_count = namespace(n=0) %}
         {% set recommended_count = namespace(n=0) %}
-        {% for bucket, label, color in [('dream', 'Dream (25–49% chance)', '#7C3AED'), ('target', 'Target (50–79%)', '#D97706'), ('safe', 'Safe (80%+)', '#059669')] %}
+        {% for bucket, label, color in [('dream', 'Dream (25–39% chance)', '#7C3AED'), ('target', 'Target (40–74%)', '#D97706'), ('safe', 'Safe (75%+)', '#059669')] %}
         {% set items = result[bucket] %}
         {% if items %}
 

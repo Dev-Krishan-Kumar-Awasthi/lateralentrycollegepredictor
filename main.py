@@ -2530,13 +2530,14 @@ def api_optimize_choices():
             continue
 
         # Look up SeatInfo for this specific college/branch/category
+        allowed_genders = ["F", "M", "OP"] if gender == "F" else ["M", "OP"]
         seat = SeatInfo.query.filter_by(
             college_name=col_name,
             branch=branch,
             year=year,
             category=category,
             domicile=domicile
-        ).filter(SeatInfo.gender.in_([gender, 'OP'])).first()
+        ).filter(SeatInfo.gender.in_(allowed_genders)).order_by(SeatInfo.closing_rank.desc()).first()
 
         if not seat:
             # Fallback 1: category only

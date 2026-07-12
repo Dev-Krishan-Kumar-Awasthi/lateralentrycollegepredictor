@@ -518,13 +518,14 @@ def load_cloud_shortlist(user_id: int, name: str = "My Shortlist") -> list:
                 cgpa_map = CgpaRankRange.query.filter_by(year=year_val).order_by(CgpaRankRange.cgpa.desc()).all()
                 if cgpa_map:
                     min_rank, max_rank = estimate_rank_range(cgpa_map, user.cgpa)
+                    allowed_genders = ["F", "M", "OP"] if user.gender == "F" else ["M", "OP"]
                     seat = SeatInfo.query.filter(
                         SeatInfo.college_name == college_name,
                         SeatInfo.branch == branch_code,
                         SeatInfo.category == user.category,
-                        SeatInfo.gender.in_([user.gender, "OP"]),
+                        SeatInfo.gender.in_(allowed_genders),
                         SeatInfo.year == year_val
-                    ).first()
+                    ).order_by(SeatInfo.closing_rank.desc()).first()
                     closing_rank = None
                     if seat:
                         closing_rank = seat.closing_rank

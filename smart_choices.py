@@ -31,6 +31,9 @@ def build_smart_choices(cgpa: float, branch, category: str, gender: str,
         if city and city != "All":
             raw = [c for c in raw if city.lower() in c.college_name.lower()]
 
+        # Sort by closing_rank DESC so that the easiest cutoff (highest closing rank) is processed first
+        raw.sort(key=lambda x: x.closing_rank, reverse=True)
+
         for col in raw:
             key = (col.college_name, col.branch)
             if key in seen:
@@ -47,9 +50,9 @@ def build_smart_choices(cgpa: float, branch, category: str, gender: str,
                 "closing_rank": col.closing_rank,
                 "opening_rank": col.opening_rank,
             }
-            if prob >= 80:
+            if prob >= 75:
                 safe.append(item)
-            elif prob >= 50:
+            elif prob >= 40:
                 target.append(item)
             elif prob >= 25:
                 dream.append(item)

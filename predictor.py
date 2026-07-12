@@ -209,11 +209,12 @@ def fetch_colleges_from_rank(rank_min, rank_max, branch, category, gender, colle
     branch == 'All' skips branch filter (show all branches).
     branch can be a string or a list of strings.
     """
+    allowed_genders = ["F", "M", "OP"] if gender == "F" else ["M", "OP"]
     query = SeatInfo.query.filter(
         SeatInfo.year         == year,
         SeatInfo.closing_rank >= rank_min,
         SeatInfo.category     == category,
-        SeatInfo.gender.in_([gender, "OP"])
+        SeatInfo.gender.in_(allowed_genders)
     )
 
     # Branch filter: handle single string, list, or 'All'
