@@ -1249,14 +1249,20 @@ def account_page():
             session.pop("registration_otp_attempts", None)
             
             login_user(user)
-            return redirect('/account')
+            nxt = request.args.get('next') or ''
+            if nxt and (nxt.startswith('http') or nxt.startswith('//') or not nxt.startswith('/')):
+                nxt = '/account'
+            return redirect(nxt or '/account')
 
         elif action == 'cancel_registration':
             session.pop("pending_registration", None)
             session.pop("registration_otp", None)
             session.pop("registration_otp_expiry", None)
             session.pop("registration_otp_attempts", None)
-            return redirect('/account')
+            nxt = request.args.get('next') or ''
+            if nxt and (nxt.startswith('http') or nxt.startswith('//') or not nxt.startswith('/')):
+                nxt = '/account'
+            return redirect(nxt or '/account')
             
         elif action == 'forgot_password':
             import time

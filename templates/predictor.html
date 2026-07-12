@@ -919,6 +919,74 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsContainer = document.getElementById('branch-options');
     const realSelect = document.getElementById('real-branch-select');
     
+    // Save draft on form submit
+    const predictorFormSubmit = document.getElementById('predictor-form');
+    if (predictorFormSubmit) {
+        predictorFormSubmit.addEventListener('submit', () => {
+            let branches = [];
+            if (realSelect) {
+                branches = Array.from(realSelect.options)
+                    .filter(opt => opt.selected)
+                    .map(opt => opt.value);
+            }
+            const formData = {
+                timestamp: Date.now(),
+                cgpa: document.getElementById('cgpa')?.value || '',
+                category: document.getElementById('category')?.value || '',
+                gender: document.getElementById('gender')?.value || '',
+                college_type: document.getElementById('college_type')?.value || '',
+                domicile: document.getElementById('domicile')?.value || '',
+                city: document.getElementById('city')?.value || 'All',
+                district: document.getElementById('district')?.value || 'All',
+                home_city: document.getElementById('home_city')?.value || 'All',
+                max_distance_km: document.getElementById('max_distance_km')?.value || '',
+                branches: branches
+            };
+            sessionStorage.setItem('predictor_draft', JSON.stringify(formData));
+        });
+    }
+
+    // Restore draft if user is logged in, draft exists, and no results are shown yet
+    const draftStr = sessionStorage.getItem('predictor_draft');
+    const isLoggedIn = {{ 'true' if current_user else 'false' }};
+    const hasResults = document.getElementById('results-area') !== null || document.querySelector('.no-results') !== null;
+
+    if (draftStr && isLoggedIn && !hasResults) {
+        try {
+            const draft = JSON.parse(draftStr);
+            const age = Date.now() - (draft.timestamp || 0);
+            if (age < 600000) { // 10 minutes
+                if (draft.cgpa) document.getElementById('cgpa').value = draft.cgpa;
+                if (draft.category) document.getElementById('category').value = draft.category;
+                if (draft.gender) document.getElementById('gender').value = draft.gender;
+                if (draft.college_type) document.getElementById('college_type').value = draft.college_type;
+                if (draft.domicile) document.getElementById('domicile').value = draft.domicile;
+                if (draft.city) document.getElementById('city').value = draft.city;
+                if (draft.district) document.getElementById('district').value = draft.district;
+                if (draft.home_city) document.getElementById('home_city').value = draft.home_city;
+                if (draft.max_distance_km) document.getElementById('max_distance_km').value = draft.max_distance_km;
+                
+                if (draft.branches && draft.branches.length > 0 && realSelect) {
+                    Array.from(realSelect.options).forEach(opt => {
+                        opt.selected = draft.branches.includes(opt.value);
+                    });
+                }
+                
+                // Clear draft so we don't submit infinitely
+                sessionStorage.removeItem('predictor_draft');
+                
+                // Auto submit form
+                setTimeout(() => {
+                    document.getElementById('predictor-form')?.submit();
+                }, 100);
+            } else {
+                sessionStorage.removeItem('predictor_draft');
+            }
+        } catch (e) {
+            console.error("Error restoring predictor draft:", e);
+        }
+    }
+
     if (container && display && optionsContainer && realSelect) {
         function generateUI() {
             optionsContainer.innerHTML = '';

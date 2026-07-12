@@ -58,6 +58,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Lenis smooth scroll -->
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <style>
+        .header-logo-main {
+            height: 68px;
+            width: auto;
+            object-fit: contain;
+            margin-right: 18px;
+            flex-shrink: 0;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .header-logo-main {
+                height: 48px;
+                margin-right: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -65,9 +81,7 @@
     <header class="gov-header">
         <a href="/" style="text-decoration: none; color: inherit; display: block;">
             <div class="header-content">
-                <div class="emblem-placeholder">
-                    <div class="circle">🎓</div>
-                </div>
+                <img src="{{ url_for('static', filename='img/logo_header.png') }}" alt="LTBE College Predictor Logo" class="header-logo-main">
                 <div class="title-section">
                     <h1>MP DTE Lateral Entry College Predictor</h1>
                     <h2>Diploma to B.Tech Counselling | Madhya Pradesh 2025-26</h2>
@@ -94,7 +108,7 @@
         <div class="nav-inner">
             <!-- Mobile Brand Logo & Title -->
             <div class="nav-brand-mobile">
-                <span class="brand-emoji">🎓</span>
+                <img src="{{ url_for('static', filename='img/logo_mobile.png') }}" alt="LTBE Logo" style="height: 32px; width: auto; object-fit: contain; margin-right: 8px;">
                 <span class="brand-text">MP DTE Predictor</span>
             </div>
             <button class="nav-hamburger" id="nav-toggle" aria-label="Open menu">
