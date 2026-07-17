@@ -1,10 +1,40 @@
 {% extends 'base.html' %}
 
 {% block title %}College Predictor — MP BTech Lateral Entry 2025 | Check Admission Chances{% endblock %}
-{% block meta_description %}Use the MP DTE College Predictor to find engineering colleges matching your Diploma CGPA. Filter by branch, city, category (UR/OBC/SC/ST) and gender. Predict colleges with targeted options for LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, and top 10 govt colleges in mp based on official 2024 DTE MP cutoff data.{% endblock %}
-{% block meta_keywords %}MP DTE college predictor 2025, lateral entry college list MP, BTech lateral entry cutoff, DTE MP cutoff 2024, engineering college by CGPA MP, diploma BTech admission MP, lateral entry college filter MP, LTBE college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling{% endblock %}
+{% block meta_description %}Use the MP DTE College Predictor to find engineering colleges matching your Diploma CGPA.
+Filter by branch, city, category (UR/OBC/SC/ST) and gender. Predict colleges with targeted options for LTBE college
+predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry b.tech,
+and top 10 govt colleges in mp based on official 2024 DTE MP cutoff data.{% endblock %}
+{% block meta_keywords %}MP DTE college predictor 2025, lateral entry college list MP, BTech lateral entry cutoff, DTE
+MP cutoff 2024, engineering college by CGPA MP, diploma BTech admission MP, lateral entry college filter MP, LTBE
+college predictor, polytechnic to b.tech college, mp dte, lateral entry college, b.tech college predictor, lateral entry
+b.tech, top 10 govt colleges in mp, diploma to degree, diploma to degree college predictor, b.tech lateral entry
+predictor, DTE MP lateral entry choice filling, MP BTech lateral entry counseling, MP lateral entry admission, diploma
+to degree engineering MP, polytechnic to engineering colleges in MP, MP DTE lateral entry merit list, MP B.Tech lateral
+entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp dte choice filling, b.tech lateral, b.tech lateral college, ltbe, ltbe predictor, b.tech lateral entry list, btech lateral admission, polytechnic to btech colleges, lateral entry b.tech college predictor, b.tech lateral entry college predictor, dte lateral entry{% endblock %}
 {% block og_title %}MP DTE College Predictor — Find Your Engineering College{% endblock %}
-{% block og_description %}Enter your CGPA, category and branch to find matching engineering colleges in MP. Official DTE 2024 cutoff-based predictions. Free tool for Diploma holders.{% endblock %}
+{% block og_description %}Enter your CGPA, category and branch to find matching engineering colleges in MP. Official DTE
+2024 cutoff-based predictions. Free tool for Diploma holders.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "MP B.Tech Lateral Entry College Predictor",
+  "url": "https://{{ request.host }}/predictor",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires HTML5 compatible browser",
+  "description": "Predict B.Tech admission chances in top Madhya Pradesh engineering colleges based on diploma CGPA using official DTE cutoffs.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0.00",
+    "priceCurrency": "INR"
+  }
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -21,26 +51,31 @@
             <div class="elig-grid">
                 <!-- Route 1 -->
                 <div class="elig-card">
-                    <div class="elig-title"><i class="fas fa-graduation-cap" style="color:var(--primary);"></i> Route 1 — Diploma Holders</div>
+                    <div class="elig-title"><i class="fas fa-graduation-cap" style="color:var(--primary);"></i> Route 1
+                        — Diploma Holders</div>
                     <ul class="elig-list">
                         <li>3-year or 2-year Engineering Diploma <strong>in ANY branch</strong></li>
                         <li>From AICTE/UGC recognized institute</li>
-                        <li>Min <strong>45%</strong> marks (UR) &nbsp;|&nbsp; Min <strong>40%</strong> (SC/ST/OBC-MP)</li>
+                        <li>Min <strong>45%</strong> marks (UR) &nbsp;|&nbsp; Min <strong>40%</strong> (SC/ST/OBC-MP)
+                        </li>
                         <li>Grace marks holders eligible — but grace marks excluded from % calc</li>
                     </ul>
                 </div>
                 <!-- Route 2 -->
                 <div class="elig-card">
-                    <div class="elig-title"><i class="fas fa-flask" style="color:var(--secondary);"></i> Route 2 — B.Sc. Graduates</div>
+                    <div class="elig-title"><i class="fas fa-flask" style="color:var(--secondary);"></i> Route 2 — B.Sc.
+                        Graduates</div>
                     <ul class="elig-list">
                         <li>B.Sc. Degree from UGC recognized university</li>
                         <li><strong>10+2 with Mathematics</strong> as a subject required</li>
-                        <li>Min <strong>45%</strong> marks (UR) &nbsp;|&nbsp; Min <strong>40%</strong> (SC/ST/OBC-MP)</li>
+                        <li>Min <strong>45%</strong> marks (UR) &nbsp;|&nbsp; Min <strong>40%</strong> (SC/ST/OBC-MP)
+                        </li>
                     </ul>
                 </div>
                 <!-- Domicile & Seats -->
                 <div class="elig-card">
-                    <div class="elig-title"><i class="fas fa-map-marker-alt" style="color:var(--saffron);"></i> Domicile & Seat Info</div>
+                    <div class="elig-title"><i class="fas fa-map-marker-alt" style="color:var(--saffron);"></i> Domicile
+                        & Seat Info</div>
                     <ul class="elig-list">
                         <li>MP Domicile certificate mandatory for Govt. seats</li>
                         <li>Certificate issued by <strong>Naib Tehsildar / Tehsildar</strong></li>
@@ -50,7 +85,8 @@
                 </div>
                 <!-- Reservation -->
                 <div class="elig-card">
-                    <div class="elig-title"><i class="fas fa-percentage" style="color:var(--green);"></i> Seat Reservation (MP Quota)</div>
+                    <div class="elig-title"><i class="fas fa-percentage" style="color:var(--green);"></i> Seat
+                        Reservation (MP Quota)</div>
                     <ul class="elig-list">
                         <li><strong>SC</strong> — 16% of MP Quota</li>
                         <li><strong>ST</strong> — 20% of MP Quota</li>
@@ -63,9 +99,11 @@
             <div class="elig-note">
                 <i class="fas fa-info-circle"></i>
                 <strong>Reserved category candidates:</strong> If your merit qualifies for UR (General) category,
-                you will be allotted a <strong>UR seat first</strong>. Reserved seat is allotted only if no UR seat is available as per your preference.
+                you will be allotted a <strong>UR seat first</strong>. Reserved seat is allotted only if no UR seat is
+                available as per your preference.
                 &nbsp;|&nbsp;
-                <strong>Transfer:</strong> Once admitted, transfer to another institution is <strong>NOT permitted</strong>.
+                <strong>Transfer:</strong> Once admitted, transfer to another institution is <strong>NOT
+                    permitted</strong>.
                 &nbsp;|&nbsp;
                 <strong>TFW/EWS:</strong> Not available for lateral entry as per DTE MP rules.
             </div>
@@ -76,40 +114,48 @@
     <div class="gov-box" id="predictor">
         <h2><i class="fas fa-bullseye"></i> College Predictor Tool</h2>
         <p class="subtitle">
-            Enter your academic details to get a list of eligible colleges based on historical DTE MP cutoff data (2024 & 2025).
+            Enter your academic details to get a list of eligible colleges based on historical DTE MP cutoff data (2024
+            & 2025).
         </p>
 
         {% if current_user %}
         <div class="predictions-badge-container" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
             {% if current_user.has_unlimited_access %}
-                <span style="background: linear-gradient(135deg, #10B981, #059669); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
-                    <i class="fas fa-infinity"></i> Premium (Unlimited Predictions)
-                </span>
+            <span
+                style="background: linear-gradient(135deg, #10B981, #059669); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                <i class="fas fa-infinity"></i> Premium (Unlimited Predictions)
+            </span>
             {% else %}
-                {% set left = current_user.remaining_predictions %}
-                {% if left <= 0 %}
-                    <span style="background: linear-gradient(135deg, #EF4444, #DC2626); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
-                        <i class="fas fa-exclamation-triangle"></i> 0/{{ current_user.daily_prediction_limit }} predictions left today
-                    </span>
+            {% set left = current_user.remaining_predictions %}
+            {% if left <= 0 %} <span
+                style="background: linear-gradient(135deg, #EF4444, #DC2626); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+                <i class="fas fa-exclamation-triangle"></i> 0/{{ current_user.daily_prediction_limit }} predictions left
+                today
+                </span>
                 {% else %}
-                    <span style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);">
-                        <i class="fas fa-chart-bar"></i> {{ left }}/{{ current_user.daily_prediction_limit }} predictions left today
-                    </span>
+                <span
+                    style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);">
+                    <i class="fas fa-chart-bar"></i> {{ left }}/{{ current_user.daily_prediction_limit }} predictions
+                    left today
+                </span>
                 {% endif %}
-            {% endif %}
+                {% endif %}
         </div>
         {% endif %}
 
         {% if error %}
-        <div style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
+        <div
+            style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
             <i class="fas fa-exclamation-circle"></i> {{ error }}
         </div>
         {% endif %}
 
         {% if has_prefill %}
         <div id="share-banner" class="share-banner">
-            <span><i class="fas fa-link"></i> This form was opened from a shared link. Click <strong>Show My Best Colleges</strong> to see results.</span>
-            <button class="share-banner-close" onclick="this.closest('.share-banner').remove()" title="Dismiss">✕</button>
+            <span><i class="fas fa-link"></i> This form was opened from a shared link. Click <strong>Show My Best
+                    Colleges</strong> to see results.</span>
+            <button class="share-banner-close" onclick="this.closest('.share-banner').remove()"
+                title="Dismiss">✕</button>
         </div>
         {% endif %}
 
@@ -122,9 +168,8 @@
                         CGPA (10 Point Scale)
                         <span class="field-hint">UR: min 45% &nbsp;|&nbsp; SC/ST/OBC: min 40%</span>
                     </label>
-                    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10"
-                        placeholder="e.g. 9.00" required
-                        value="{{ data.cgpa if data else (prefill.cgpa if prefill else '') }}">
+                    <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10" placeholder="e.g. 9.00"
+                        required value="{{ data.cgpa if data else (prefill.cgpa if prefill else '') }}">
                 </div>
 
                 <!-- Category -->
@@ -136,10 +181,13 @@
                     </label>
                     <select id="category" name="category" required>
                         <option value="" disabled {% if not category %}selected{% endif %}>Select Category</option>
-                        <option value="UR"  {% if category=='UR'  %}selected{% endif %}>Unreserved (UR) — 45% min</option>
-                        <option value="OBC" {% if category=='OBC' %}selected{% endif %}>OBC (excl. Creamy Layer) — 40% min</option>
-                        <option value="SC"  {% if category=='SC'  %}selected{% endif %}>Scheduled Caste (SC) — 40% min</option>
-                        <option value="ST"  {% if category=='ST'  %}selected{% endif %}>Scheduled Tribe (ST) — 40% min</option>
+                        <option value="UR" {% if category=='UR' %}selected{% endif %}>Unreserved (UR) — 45% min</option>
+                        <option value="OBC" {% if category=='OBC' %}selected{% endif %}>OBC (excl. Creamy Layer) — 40%
+                            min</option>
+                        <option value="SC" {% if category=='SC' %}selected{% endif %}>Scheduled Caste (SC) — 40% min
+                        </option>
+                        <option value="ST" {% if category=='ST' %}selected{% endif %}>Scheduled Tribe (ST) — 40% min
+                        </option>
                     </select>
                 </div>
 
@@ -168,11 +216,15 @@
                     </label>
                     <select id="college_type" name="college_type" required>
                         <option value="" disabled {% if not college_type %}selected{% endif %}>Select Type</option>
-                        <option value="GOVT"     {% if college_type=='GOVT'     %}selected{% endif %}>Government / Aided</option>
-                        <option value="S.F.I."   {% if college_type=='S.F.I.'   %}selected{% endif %}>Semi-Govt (SFI / Self Finance)</option>
-                        <option value="GOVT+SFI" {% if college_type=='GOVT+SFI' %}selected{% endif %}>Govt + Semi-Govt (Both)</option>
-                        <option value="Private"  {% if college_type=='Private'  %}selected{% endif %}>Private Institutes</option>
-                        <option value="Any"      {% if college_type=='Any'      %}selected{% endif %}>Any Type (All)</option>
+                        <option value="GOVT" {% if college_type=='GOVT' %}selected{% endif %}>Government / Aided
+                        </option>
+                        <option value="S.F.I." {% if college_type=='S.F.I.' %}selected{% endif %}>Semi-Govt (SFI / Self
+                            Finance)</option>
+                        <option value="GOVT+SFI" {% if college_type=='GOVT+SFI' %}selected{% endif %}>Govt + Semi-Govt
+                            (Both)</option>
+                        <option value="Private" {% if college_type=='Private' %}selected{% endif %}>Private Institutes
+                        </option>
+                        <option value="Any" {% if college_type=='Any' %}selected{% endif %}>Any Type (All)</option>
                     </select>
                 </div>
 
@@ -183,15 +235,15 @@
                         Preferred Branch(es)
                         <span class="field-hint">Click to select one or more branches</span>
                     </label>
-                    
+
                     <div class="custom-multi-select" id="branch-select-container">
                         <div class="select-display" id="branch-display">
                             {% if not branch or 'All' in branch or (branch is string and branch == 'All') %}
-                                🔍 All Branches
+                            🔍 All Branches
                             {% elif branch is string %}
-                                {{ branch }}
+                            {{ branch }}
                             {% else %}
-                                {{ branch | length }} Branches Selected
+                            {{ branch | length }} Branches Selected
                             {% endif %}
                         </div>
                         <div class="options-dropdown" id="branch-options">
@@ -201,7 +253,8 @@
 
                     <!-- Hidden real select for form submission -->
                     <select name="branch" id="real-branch-select" multiple style="display:none;" required>
-                        <option value="All" {% if 'All' in branch or (branch is string and branch == 'All') %}selected{% endif %}>🔍 All Branches</option>
+                        <option value="All" {% if 'All' in branch or (branch is string and branch=='All' ) %}selected{%
+                            endif %}>🔍 All Branches</option>
                         {% include 'components/branch_options.html' %}
                     </select>
 
@@ -218,10 +271,10 @@
                         <span class="field-hint">MP Domicile is needed for Govt seats</span>
                     </label>
                     <select id="domicile" name="domicile" required>
-                        <option value="Y" {% if domicile == 'Y' %}selected{% endif %}>
+                        <option value="Y" {% if domicile=='Y' %}selected{% endif %}>
                             Yes (MP Resident) — All Seats
                         </option>
-                        <option value="N" {% if domicile == 'N' %}selected{% endif %}>
+                        <option value="N" {% if domicile=='N' %}selected{% endif %}>
                             No (Other State) — Open Seats Only
                         </option>
                     </select>
@@ -230,8 +283,10 @@
 
             <!-- Optional Collapsible Advanced Location & Distance Filters -->
             <div style="margin: 20px 0 10px;">
-                <button type="button" class="btn-secondary" onclick="toggleAdvancedLocation()" style="padding: 6px 14px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border);">
-                    <i class="fas fa-map-marked-alt"></i> <span id="adv-loc-text">Show Location & Distance Filters (Optional)</span>
+                <button type="button" class="btn-secondary" onclick="toggleAdvancedLocation()"
+                    style="padding: 6px 14px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border);">
+                    <i class="fas fa-map-marked-alt"></i> <span id="adv-loc-text">Show Location & Distance Filters
+                        (Optional)</span>
                     <i class="fas fa-chevron-down" id="adv-loc-chevron" style="transition: transform 0.2s;"></i>
                 </button>
             </div>
@@ -240,39 +295,39 @@
             {% set district = data.district if data else (prefill.district if prefill else 'All') %}
             {% set home_city = data.home_city if data else (prefill.home_city if prefill else 'All') %}
             {% set max_dist = data.max_distance_km if data else (prefill.max_distance_km if prefill else '') %}
-            
+
             <div class="form-row" id="advanced-location-row" style="display: none; transition: all 0.3s ease;">
                 <div class="form-group">
                     <label for="city">Preferred City</label>
                     <select id="city" name="city">
-                        <option value="All" {% if city == 'All' %}selected{% endif %}>Any City (All MP)</option>
+                        <option value="All" {% if city=='All' %}selected{% endif %}>Any City (All MP)</option>
                         {% for c in mp_cities %}
-                        <option value="{{ c }}" {% if city == c %}selected{% endif %}>{{ c }}</option>
+                        <option value="{{ c }}" {% if city==c %}selected{% endif %}>{{ c }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="district">District Filter</label>
                     <select id="district" name="district">
-                        <option value="All" {% if district == 'All' %}selected{% endif %}>Any District</option>
+                        <option value="All" {% if district=='All' %}selected{% endif %}>Any District</option>
                         {% for d in mp_districts %}
-                        <option value="{{ d }}" {% if district == d %}selected{% endif %}>{{ d }}</option>
+                        <option value="{{ d }}" {% if district==d %}selected{% endif %}>{{ d }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="home_city">Your Home City <span class="field-hint">For distance calc</span></label>
                     <select id="home_city" name="home_city">
-                        <option value="All" {% if home_city == 'All' %}selected{% endif %}>Not specified</option>
+                        <option value="All" {% if home_city=='All' %}selected{% endif %}>Not specified</option>
                         {% for c in mp_cities %}
-                        <option value="{{ c }}" {% if home_city == c %}selected{% endif %}>{{ c }}</option>
+                        <option value="{{ c }}" {% if home_city==c %}selected{% endif %}>{{ c }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="max_distance_km">Max Distance (km)</label>
-                    <input type="number" id="max_distance_km" name="max_distance_km" min="0" max="800" placeholder="e.g. 150"
-                        value="{{ max_dist }}">
+                    <input type="number" id="max_distance_km" name="max_distance_km" min="0" max="800"
+                        placeholder="e.g. 150" value="{{ max_dist }}">
                 </div>
             </div>
 
@@ -295,13 +350,13 @@
         <strong>Category:</strong> {{ data.category }} &nbsp;|&nbsp;
         <strong>Gender:</strong> {{ 'Female' if data.gender == 'F' else 'Male' }} &nbsp;|&nbsp;
         <strong>Type:</strong> {{ data.college_type }} &nbsp;|&nbsp;
-        <strong>Branch:</strong> 
+        <strong>Branch:</strong>
         {% if 'All' in data.branch %}
-            All Branches
+        All Branches
         {% elif data.branch is string %}
-            {{ data.branch | branch_name }} ({{ data.branch }})
+        {{ data.branch | branch_name }} ({{ data.branch }})
         {% else %}
-            {% for b in data.branch %}{{ b | branch_name }} ({{ b }}){% if not loop.last %}, {% endif %}{% endfor %}
+        {% for b in data.branch %}{{ b | branch_name }} ({{ b }}){% if not loop.last %}, {% endif %}{% endfor %}
         {% endif %}
         &nbsp;|&nbsp;
         <strong>Domicile:</strong> {{ 'MP Resident' if data.domicile == 'Y' else 'Non-MP' }}
@@ -309,46 +364,48 @@
 
     {% set ns_results = namespace(empty=true) %}
     {% for yr, colleges in prediction.items() %}
-        {% if colleges %}
-            {% set ns_results.empty = false %}
-        {% endif %}
+    {% if colleges %}
+    {% set ns_results.empty = false %}
+    {% endif %}
     {% endfor %}
     {% if ns_results.empty %}
-        <div class="no-results">
-            <div class="no-results-icon"><i class="fas fa-search-location"></i></div>
-            <h3>No colleges found for this profile</h3>
-            <p>Don't worry! Try these tips to find a seat:</p>
-            <ul style="display:inline-block; text-align:left; margin-top:10px; color:var(--muted); font-size:0.9rem; line-height:1.6;">
-                <li>Change <strong>College Type</strong> to Govt Aided + S.F.I</li>
-                <li>Select <strong>All Branches</strong> to see more options</li>
-                <li>Verify your <strong>Category</strong> and <strong>Gender</strong> filters</li>
-                <li>Waiting for <strong>Round 2 or CLC</strong> often opens more seats</li>
-            </ul>
-        </div>
+    <div class="no-results">
+        <div class="no-results-icon"><i class="fas fa-search-location"></i></div>
+        <h3>No colleges found for this profile</h3>
+        <p>Don't worry! Try these tips to find a seat:</p>
+        <ul
+            style="display:inline-block; text-align:left; margin-top:10px; color:var(--muted); font-size:0.9rem; line-height:1.6;">
+            <li>Change <strong>College Type</strong> to Govt Aided + S.F.I</li>
+            <li>Select <strong>All Branches</strong> to see more options</li>
+            <li>Verify your <strong>Category</strong> and <strong>Gender</strong> filters</li>
+            <li>Waiting for <strong>Round 2 or CLC</strong> often opens more seats</li>
+        </ul>
+    </div>
     {% else %}
-        <div id="results-area">
-            <div class="results-header">
-                <h3><i class="fas fa-list-check"></i> Analysis of Available Colleges</h3>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <button id="share-btn" class="btn-share" onclick="copyShareLink()">
-                        <i class="fas fa-link"></i> Share Link
-                    </button>
-                    <a id="share-wa-btn" class="btn-share btn-whatsapp-sm" href="#" target="_blank" title="WhatsApp">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a id="share-tg-btn" class="btn-share btn-telegram-sm" href="#" target="_blank" title="Telegram">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                    <button class="btn-pdf" onclick="downloadPDF()">
-                        <i class="fas fa-file-pdf"></i> Download All PDF
-                    </button>
-                </div>
+    <div id="results-area">
+        <div class="results-header">
+            <h3><i class="fas fa-list-check"></i> Analysis of Available Colleges</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button id="share-btn" class="btn-share" onclick="copyShareLink()">
+                    <i class="fas fa-link"></i> Share Link
+                </button>
+                <a id="share-wa-btn" class="btn-share btn-whatsapp-sm" href="#" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a id="share-tg-btn" class="btn-share btn-telegram-sm" href="#" target="_blank" title="Telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <button class="btn-pdf" onclick="downloadPDF()">
+                    <i class="fas fa-file-pdf"></i> Download All PDF
+                </button>
             </div>
+        </div>
 
-            <div class="results-content">
-                <!-- Views Selector -->
-                <div style="display: flex; gap: 8px; border-bottom: 2px solid var(--border); margin-bottom: 20px; padding-bottom: 2px;">
-                    <button type="button" id="view-btn-list" onclick="switchResultsView('list')" style="
+        <div class="results-content">
+            <!-- Views Selector -->
+            <div
+                style="display: flex; gap: 8px; border-bottom: 2px solid var(--border); margin-bottom: 20px; padding-bottom: 2px;">
+                <button type="button" id="view-btn-list" onclick="switchResultsView('list')" style="
                         padding: 10px 20px;
                         font-weight: 700;
                         font-size: 0.95rem;
@@ -362,9 +419,9 @@
                         align-items: center;
                         gap: 8px;
                     ">
-                        <i class="fas fa-list"></i> Table List View
-                    </button>
-                    <button type="button" id="view-btn-map" onclick="switchResultsView('map')" style="
+                    <i class="fas fa-list"></i> Table List View
+                </button>
+                <button type="button" id="view-btn-map" onclick="switchResultsView('map')" style="
                         padding: 10px 20px;
                         font-weight: 700;
                         font-size: 0.95rem;
@@ -378,121 +435,139 @@
                         align-items: center;
                         gap: 8px;
                     ">
-                        <i class="fas fa-map-marked-alt"></i> College Map View
-                    </button>
+                    <i class="fas fa-map-marked-alt"></i> College Map View
+                </button>
+            </div>
+
+            <!-- 1. Table List View Container -->
+            <div id="results-list-container">
+                <div class="rules-note-bar">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>OP</strong> = Open (all genders) &nbsp; <strong>F</strong> = Female only
+                    &nbsp;|&nbsp; Highlighted rows show high admission probability based on last year's trends.
                 </div>
 
-                <!-- 1. Table List View Container -->
-                <div id="results-list-container">
-                    <div class="rules-note-bar">
-                        <i class="fas fa-lightbulb"></i>
-                        <strong>OP</strong> = Open (all genders) &nbsp; <strong>F</strong> = Female only
-                        &nbsp;|&nbsp; Highlighted rows show high admission probability based on last year's trends.
-                    </div>
+                {% for year, yr_data in prediction.items() %}
+                <h3 style="color:var(--primary);font-size:1.05rem;margin:20px 0 8px;">
+                    <i class="fas fa-calendar-alt"></i> Historical Data: Year {{ year }}
+                    <span style="font-size:0.82rem;font-weight:400;color:var(--muted);margin-left:8px;">
+                        ({{ yr_data.colleges | length }} colleges found)
+                    </span>
+                </h3>
 
-                    {% for year, yr_data in prediction.items() %}
-                    <h3 style="color:var(--primary);font-size:1.05rem;margin:20px 0 8px;">
-                        <i class="fas fa-calendar-alt"></i> Historical Data: Year {{ year }}
-                        <span style="font-size:0.82rem;font-weight:400;color:var(--muted);margin-left:8px;">
-                            ({{ yr_data.colleges | length }} colleges found)
-                        </span>
-                    </h3>
-
-                    <div class="prediction-box">
-                        Estimated Merit Rank Range: <strong>{{ yr_data.min_rank }} – {{ yr_data.max_rank }}</strong>
-                    </div>
-
-                    <div class="table-wrapper">
-                        <table class="gov-table" id="results-table-{{ year }}">
-                            <thead>
-                                <tr>
-                                    <th style="width:36px;"><input type="checkbox" class="select-all-check" data-table="results-table-{{ year }}" onchange="toggleSelectAll(this)"></th>
-                                    <th style="width:105px;">#</th>
-                                    <th>College Name</th>
-                                    <th>Branch</th>
-                                    <th>Type</th>
-                                    <th>Opening</th>
-                                    <th>Closing</th>
-                                    <th>Quota</th>
-                                    <th>Resident</th>
-                                    <th>Seats</th>
-                                    <th>Fee (approx)</th>
-                                    <th>Dist.</th>
-                                    <th>Chance</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in yr_data.colleges %}
-                                {% set college = item.college %}
-                                {% set prob = item.probability %}
-                                <tr class="result-row">
-                                    <td style="text-align:center;">
-                                        <input type="checkbox" class="shortlist-check" data-id="{{ college.college_name }}|{{ college.branch }}|{{ year }}" onchange="updateShortlistBar()">
-                                    </td>
-                                    <td class="serial-cell">
-                                        <div class="serial-number">{{ loop.index }}</div>
-                                        <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-details-sublink" target="_blank">
-                                            click here to see college details
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank">{{ college.college_name }}</a>
-                                        <button class="cmp-add-btn" onclick="addToCompare(this, '{{ college.college_name | replace("'","\\'") }}')">
-                                            <i class="fas fa-balance-scale"></i> Compare
-                                        </button>
-                                        <button class="cmp-add-btn route-planner-btn" style="margin-left: 6px; background: #0f172a; color: #fff; border-color: #334155;" onclick="openRoutePlanner('{{ college.college_name | replace('\'', '\\\'') }}', '{{ category }}', '{{ home_city }}')">
-                                            <i class="fas fa-map-marked-alt" style="color: #38bdf8;"></i> Route
-                                        </button>
-                                    </td>
-                                    <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch }})</span></td>
-                                    <td><span class="type-tag">{{ college.college_type }}</span></td>
-                                    <td style="font-family:monospace;">{{ college.opening_rank }}</td>
-                                    <td style="font-family:monospace;font-weight:700;white-space:nowrap;">
-                                        {{ college.closing_rank }}
-                                        {% if item.trend_val %}
-                                            {% if item.trend_val == 'up' %}
-                                                <span class="trend-badge trend-up" title="Cutoff became harder in 2025 compared to 2024 (Closing rank decreased by {{ item.trend_diff }})">
-                                                    <i class="fas fa-arrow-trend-up"></i> Harder
-                                                </span>
-                                            {% elif item.trend_val == 'down' %}
-                                                <span class="trend-badge trend-down" title="Cutoff became easier in 2025 compared to 2024 (Closing rank increased by {{ item.trend_diff | abs }})">
-                                                    <i class="fas fa-arrow-trend-down"></i> Easier
-                                                </span>
-                                            {% else %}
-                                                <span class="trend-badge trend-stable" title="Cutoff remained stable compared to 2024">
-                                                    <i class="fas fa-equals"></i> Stable
-                                                </span>
-                                            {% endif %}
-                                        {% endif %}
-                                    </td>
-                                    <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender }}</span></td>
-                                    <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
-                                    <td>{{ college.total_seats }}</td>
-                                    <td style="font-size:0.78rem;">{{ item.fee_display or '—' }}</td>
-                                    <td style="font-size:0.78rem;" title="{{ item.distance_source or '' }}">
-                                        {% if item.distance_text %}{{ item.distance_text }}{% elif item.distance_km %}{{ item.distance_km }} km{% else %}—{% endif %}
-                                    </td>
-                                    <td>
-                                        <span class="prob-glow {{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{ prob }}%</span>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% endfor %}
+                <div class="prediction-box">
+                    Estimated Merit Rank Range: <strong>{{ yr_data.min_rank }} – {{ yr_data.max_rank }}</strong>
                 </div>
 
-                <!-- 2. College Map View Container -->
-                <div id="results-map-container" style="display: none; width: 100%; box-sizing: border-box;">
-                    <div class="rules-note-bar" style="background: #eff6ff; border-left-color: #2563eb; color: #1e40af; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-info-circle" style="font-size: 1.1rem;"></i>
-                        <span>Click on college markers to view available branches, fee details, and distance estimates.</span>
-                    </div>
-                    <!-- Leaflet CSS -->
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-                    <!-- Map Canvas -->
-                    <div id="colleges-map" style="
+                <div class="table-wrapper">
+                    <table class="gov-table" id="results-table-{{ year }}">
+                        <thead>
+                            <tr>
+                                <th style="width:36px;"><input type="checkbox" class="select-all-check"
+                                        data-table="results-table-{{ year }}" onchange="toggleSelectAll(this)"></th>
+                                <th style="width:105px;">#</th>
+                                <th>College Name</th>
+                                <th>Branch</th>
+                                <th>Type</th>
+                                <th>Opening</th>
+                                <th>Closing</th>
+                                <th>Quota</th>
+                                <th>Resident</th>
+                                <th>Seats</th>
+                                <th>Fee (approx)</th>
+                                <th>Dist.</th>
+                                <th>Chance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in yr_data.colleges %}
+                            {% set college = item.college %}
+                            {% set prob = item.probability %}
+                            <tr class="result-row">
+                                <td style="text-align:center;">
+                                    <input type="checkbox" class="shortlist-check"
+                                        data-id="{{ college.college_name }}|{{ college.branch }}|{{ year }}"
+                                        onchange="updateShortlistBar()">
+                                </td>
+                                <td class="serial-cell">
+                                    <div class="serial-number">{{ loop.index }}</div>
+                                    <a href="/college?name={{ college.college_name | urlencode_val }}"
+                                        class="college-details-sublink" target="_blank">
+                                        click here to see college details
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="/college?name={{ college.college_name | urlencode_val }}"
+                                        class="college-detail-link" target="_blank">{{ college.college_name }}</a>
+                                    <button class="cmp-add-btn"
+                                        onclick="addToCompare(this, '{{ college.college_name | replace("'","\\'") }}')">
+                                        <i class="fas fa-balance-scale"></i> Compare
+                                    </button>
+                                    <button class="cmp-add-btn route-planner-btn"
+                                        style="margin-left: 6px; background: #0f172a; color: #fff; border-color: #334155;"
+                                        onclick="openRoutePlanner('{{ college.college_name | replace('\'', '\\\'') }}', '{{ category }}', '{{ home_city }}')">
+                                        <i class="fas fa-map-marked-alt" style="color: #38bdf8;"></i> Route
+                                    </button>
+                                </td>
+                                <td><span class="branch-tag">{{ college.branch | branch_name }} ({{ college.branch
+                                        }})</span></td>
+                                <td><span class="type-tag">{{ college.college_type }}</span></td>
+                                <td style="font-family:monospace;">{{ college.opening_rank }}</td>
+                                <td style="font-family:monospace;font-weight:700;white-space:nowrap;">
+                                    {{ college.closing_rank }}
+                                    {% if item.trend_val %}
+                                    {% if item.trend_val == 'up' %}
+                                    <span class="trend-badge trend-up"
+                                        title="Cutoff became harder in 2025 compared to 2024 (Closing rank decreased by {{ item.trend_diff }})">
+                                        <i class="fas fa-arrow-trend-up"></i> Harder
+                                    </span>
+                                    {% elif item.trend_val == 'down' %}
+                                    <span class="trend-badge trend-down"
+                                        title="Cutoff became easier in 2025 compared to 2024 (Closing rank increased by {{ item.trend_diff | abs }})">
+                                        <i class="fas fa-arrow-trend-down"></i> Easier
+                                    </span>
+                                    {% else %}
+                                    <span class="trend-badge trend-stable"
+                                        title="Cutoff remained stable compared to 2024">
+                                        <i class="fas fa-equals"></i> Stable
+                                    </span>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td><span class="gender-tag gender-{{ college.gender | lower }}">{{ college.gender
+                                        }}</span></td>
+                                <td>{{ 'MP' if college.domicile == 'Y' else 'All' }}</td>
+                                <td>{{ college.total_seats }}</td>
+                                <td style="font-size:0.78rem;">{{ item.fee_display or '—' }}</td>
+                                <td style="font-size:0.78rem;" title="{{ item.distance_source or '' }}">
+                                    {% if item.distance_text %}{{ item.distance_text }}{% elif item.distance_km %}{{
+                                    item.distance_km }} km{% else %}—{% endif %}
+                                </td>
+                                <td>
+                                    <span
+                                        class="prob-glow {{ 'high' if prob >= 75 else ('med' if prob >= 40 else 'low') }}">{{
+                                        prob }}%</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- 2. College Map View Container -->
+            <div id="results-map-container" style="display: none; width: 100%; box-sizing: border-box;">
+                <div class="rules-note-bar"
+                    style="background: #eff6ff; border-left-color: #2563eb; color: #1e40af; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-info-circle" style="font-size: 1.1rem;"></i>
+                    <span>Click on college markers to view available branches, fee details, and distance
+                        estimates.</span>
+                </div>
+                <!-- Leaflet CSS -->
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                <!-- Map Canvas -->
+                <div id="colleges-map" style="
                         width: 100%;
                         height: 550px;
                         border-radius: 12px;
@@ -502,9 +577,9 @@
                         z-index: 1;
                         background: #f8fafc;
                     "></div>
-                </div>
             </div>
         </div>
+    </div>
     {% endif %}
 
     <!-- ===== FLOATING UI COMPONENTS ===== -->
@@ -521,12 +596,17 @@
 
     <div id="shortlist-bar" style="display:none;">
         <div class="sl-bar-inner">
-            <span class="sl-bar-info"><i class="fas fa-bookmark"></i> <strong id="shortlist-count">0</strong> shortlisted</span>
+            <span class="sl-bar-info"><i class="fas fa-bookmark"></i> <strong id="shortlist-count">0</strong>
+                shortlisted</span>
             <div class="sl-bar-actions">
-                <button class="sl-btn-download" onclick="exportShortlistCsv()"><i class="fas fa-file-csv"></i> DTE CSV</button>
-                <button class="sl-btn-download" onclick="exportShortlistCopy()"><i class="fas fa-copy"></i> Copy List</button>
-                <button class="sl-btn-download" onclick="downloadShortlistedPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-                <button class="sl-btn-download" onclick="syncShortlistCloud()" id="cloud-sync-btn" title="Save to account"><i class="fas fa-cloud-upload-alt"></i> Cloud</button>
+                <button class="sl-btn-download" onclick="exportShortlistCsv()"><i class="fas fa-file-csv"></i> DTE
+                    CSV</button>
+                <button class="sl-btn-download" onclick="exportShortlistCopy()"><i class="fas fa-copy"></i> Copy
+                    List</button>
+                <button class="sl-btn-download" onclick="downloadShortlistedPDF()"><i class="fas fa-file-pdf"></i>
+                    PDF</button>
+                <button class="sl-btn-download" onclick="syncShortlistCloud()" id="cloud-sync-btn"
+                    title="Save to account"><i class="fas fa-cloud-upload-alt"></i> Cloud</button>
                 <button class="sl-btn-clear" onclick="clearShortlist()">Clear All</button>
             </div>
         </div>
@@ -536,250 +616,519 @@
 </div>
 
 <style>
-/* Trend Badges styling */
-.trend-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.68rem;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
-    vertical-align: middle;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    font-family: 'Inter', sans-serif;
-}
-.trend-badge i {
-    font-size: 0.72rem;
-}
-.trend-badge.trend-up {
-    background: #FEF2F2;
-    color: #DC2626;
-    border: 1px solid #FCA5A5;
-}
-.trend-badge.trend-down {
-    background: #ECFDF5;
-    color: #059669;
-    border: 1px solid #6EE7B7;
-}
-.trend-badge.trend-stable {
-    background: #F8FAFC;
-    color: #64748B;
-    border: 1px solid #E2E8F0;
-}
+    /* Trend Badges styling */
+    .trend-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 6px;
+        vertical-align: middle;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        font-family: 'Inter', sans-serif;
+    }
 
-/* Serial Cell & Sublink */
-.serial-cell {
-    padding: 11px 10px !important;
-    vertical-align: top;
-    text-align: left;
-}
-.serial-number {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text);
-    margin-bottom: 5px;
-}
-.college-details-sublink {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--secondary);
-    text-decoration: underline;
-    line-height: 1.25;
-    transition: color 0.15s ease-in-out;
-}
-.college-details-sublink:hover {
-    color: var(--primary);
-}
+    .trend-badge i {
+        font-size: 0.72rem;
+    }
 
-/* Eligibility & Forms */
-.eligibility-box { cursor:default; }
-.elig-header { display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
-.elig-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:14px; margin-bottom:14px; }
-.elig-card { background:#F8FAFC; border:1px solid var(--border); border-radius:6px; padding:14px 16px; }
-.elig-title { font-size:0.88rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-.elig-list { list-style:none; padding:0; margin:0; }
-.elig-list li { font-size:0.84rem; color:#475569; padding:3px 0 3px 14px; position:relative; }
-.elig-list li::before { content:'✓'; position:absolute; left:0; color:var(--green); font-weight:700; }
-.elig-note { background:var(--info-bg); border-left:4px solid var(--secondary); padding:10px 14px; border-radius:4px; font-size:0.84rem; }
+    .trend-badge.trend-up {
+        background: #FEF2F2;
+        color: #DC2626;
+        border: 1px solid #FCA5A5;
+    }
 
-/* Tags & Badges */
-.field-hint { display:block; font-size:0.75rem; color:var(--muted); }
-.rules-note-bar { background:#FFFBEB; border-left:4px solid #F59E0B; padding:10px 16px; border-radius:4px; font-size:0.84rem; margin-bottom:18px; }
-.gender-tag { display:inline-block; padding:2px 9px; border-radius:12px; font-size:0.76rem; font-weight:700; }
-.gender-f { background:#FCE7F3; color:#9D174D; }
-.gender-op { background:#D1FAE5; color:#065F46; }
-/* Using global .prob-glow classes for premium styling */
+    .trend-badge.trend-down {
+        background: #ECFDF5;
+        color: #059669;
+        border: 1px solid #6EE7B7;
+    }
 
-/* Floating Bars */
-#shortlist-bar, #compare-tray { position:fixed; bottom:0; left:0; right:0; z-index:9999; animation: slideUp 0.25s ease; }
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.sl-bar-inner, .cmp-tray-inner { background: #1E3A5F; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:12px 28px; box-shadow: 0 -4px 20px rgba(0,0,0,0.25); }
-.sl-bar-actions, .cmp-tray-actions { display:flex; gap:10px; }
-.sl-btn-download, .cmp-go-btn { background:#22C55E; color:#fff; border:none; padding:8px 18px; border-radius:6px; font-weight:700; cursor:pointer; }
-.sl-btn-clear, .cmp-clear-btn { background:rgba(255,255,255,0.15); border:none; color:#fff; padding:8px 14px; border-radius:6px; cursor:pointer; }
+    .trend-badge.trend-stable {
+        background: #F8FAFC;
+        color: #64748B;
+        border: 1px solid #E2E8F0;
+    }
 
-/* Utils */
-.branch-tag { display:inline-block; padding:2px 9px; background:#EEF2FF; color:#3730A3; border-radius:5px; font-size:0.78rem; font-weight:700; }
-.btn-pdf, .btn-share { display:inline-flex; align-items:center; gap:6px; border:none; padding:7px 16px; border-radius:5px; font-size:0.85rem; font-weight:600; cursor:pointer; color:#fff; }
-.btn-pdf { background:#DC2626; }
-.btn-share { background:#6366F1; }
-.btn-share.copied { background:#22C55E !important; }
+    /* Serial Cell & Sublink */
+    .serial-cell {
+        padding: 11px 10px !important;
+        vertical-align: top;
+        text-align: left;
+    }
 
-@media (max-width: 768px) {
-    .form-row { grid-template-columns: 1fr !important; }
-    .gov-table { min-width: 800px; }
-    .table-wrapper { overflow-x: auto; }
-}
+    .serial-number {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--text);
+        margin-bottom: 5px;
+    }
+
+    .college-details-sublink {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--secondary);
+        text-decoration: underline;
+        line-height: 1.25;
+        transition: color 0.15s ease-in-out;
+    }
+
+    .college-details-sublink:hover {
+        color: var(--primary);
+    }
+
+    /* Eligibility & Forms */
+    .eligibility-box {
+        cursor: default;
+    }
+
+    .elig-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .elig-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+        margin-bottom: 14px;
+    }
+
+    .elig-card {
+        background: #F8FAFC;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 14px 16px;
+    }
+
+    .elig-title {
+        font-size: 0.88rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .elig-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .elig-list li {
+        font-size: 0.84rem;
+        color: #475569;
+        padding: 3px 0 3px 14px;
+        position: relative;
+    }
+
+    .elig-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--green);
+        font-weight: 700;
+    }
+
+    .elig-note {
+        background: var(--info-bg);
+        border-left: 4px solid var(--secondary);
+        padding: 10px 14px;
+        border-radius: 4px;
+        font-size: 0.84rem;
+    }
+
+    /* Tags & Badges */
+    .field-hint {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--muted);
+    }
+
+    .rules-note-bar {
+        background: #FFFBEB;
+        border-left: 4px solid #F59E0B;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-size: 0.84rem;
+        margin-bottom: 18px;
+    }
+
+    .gender-tag {
+        display: inline-block;
+        padding: 2px 9px;
+        border-radius: 12px;
+        font-size: 0.76rem;
+        font-weight: 700;
+    }
+
+    .gender-f {
+        background: #FCE7F3;
+        color: #9D174D;
+    }
+
+    .gender-op {
+        background: #D1FAE5;
+        color: #065F46;
+    }
+
+    /* Using global .prob-glow classes for premium styling */
+
+    /* Floating Bars */
+    #shortlist-bar,
+    #compare-tray {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    .sl-bar-inner,
+    .cmp-tray-inner {
+        background: #1E3A5F;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 28px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .sl-bar-actions,
+    .cmp-tray-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .sl-btn-download,
+    .cmp-go-btn {
+        background: #22C55E;
+        color: #fff;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 6px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .sl-btn-clear,
+    .cmp-clear-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: none;
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    /* Utils */
+    .branch-tag {
+        display: inline-block;
+        padding: 2px 9px;
+        background: #EEF2FF;
+        color: #3730A3;
+        border-radius: 5px;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .btn-pdf,
+    .btn-share {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: none;
+        padding: 7px 16px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    .btn-pdf {
+        background: #DC2626;
+    }
+
+    .btn-share {
+        background: #6366F1;
+    }
+
+    .btn-share.copied {
+        background: #22C55E !important;
+    }
+
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr !important;
+        }
+
+        .gov-table {
+            min-width: 800px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+    }
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <script>
-function toggleEligibility() {
-    const content = document.getElementById('elig-content');
-    const chevron = document.getElementById('elig-chevron');
-    const isHidden = content.style.display === 'none';
-    content.style.display = isHidden ? 'block' : 'none';
-    chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-}
-
-function copyShareLink() {
-    const form = document.getElementById('predictor-form');
-    const params = new URLSearchParams({
-        cgpa: form.querySelector('[name=cgpa]').value,
-        category: form.querySelector('[name=category]').value,
-        gender: form.querySelector('[name=gender]').value,
-        college_type: form.querySelector('[name=college_type]').value,
-        domicile: form.querySelector('[name=domicile]').value,
-        city: form.querySelector('[name=city]').value
-    });
-    form.querySelectorAll('select[name=branch] option:selected').forEach(opt => params.append('branch', opt.value));
-    const url = window.location.origin + '/predictor?' + params.toString();
-    const btn = document.getElementById('share-btn');
-    navigator.clipboard.writeText(url).then(() => {
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        btn.classList.add('copied');
-        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
-    });
-}
-
-let compareList = {};
-function addToCompare(btn, name) {
-    if (compareList[name]) { delete compareList[name]; btn.classList.remove('added'); btn.innerHTML = '<i class="fas fa-balance-scale"></i> Compare'; }
-    else {
-        if (Object.keys(compareList).length >= 3) { showToast('You can compare a maximum of 3 colleges side-by-side.', 'warning'); return; }
-        compareList[name] = name.substring(0,25); btn.classList.add('added'); btn.innerHTML = '<i class="fas fa-check"></i> Added';
+    function toggleEligibility() {
+        const content = document.getElementById('elig-content');
+        const chevron = document.getElementById('elig-chevron');
+        const isHidden = content.style.display === 'none';
+        content.style.display = isHidden ? 'block' : 'none';
+        chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
     }
-    updateCompareTray();
-}
-function updateCompareTray() {
-    const tray = document.getElementById('compare-tray');
-    const chips = document.getElementById('compare-chips');
-    const names = Object.keys(compareList);
-    tray.style.display = names.length ? 'block' : 'none';
-    chips.innerHTML = names.map(n => `<span class="cmp-chip">${compareList[n]}</span>`).join('');
-    document.getElementById('cmp-go-btn').disabled = names.length < 2;
-}
-function goCompare() {
-    const params = Object.keys(compareList).map(n => 'colleges=' + encodeURIComponent(n)).join('&');
-    window.open('/compare?' + params, '_blank');
-}
 
-function updateShortlistBar() {
-    const checked = document.querySelectorAll('.shortlist-check:checked');
-    const count = checked.length;
-    localStorage.setItem('mp_dte_shortlist', JSON.stringify(Array.from(checked).map(cb => cb.dataset.id)));
-    document.getElementById('shortlist-bar').style.display = count > 0 ? 'block' : 'none';
-    document.getElementById('shortlist-count').textContent = count;
-}
-function toggleSelectAll(sa) {
-    document.getElementById(sa.dataset.table).querySelectorAll('.shortlist-check').forEach(cb => cb.checked = sa.checked);
-    updateShortlistBar();
-}
-function clearShortlist() { localStorage.removeItem('mp_dte_shortlist'); document.querySelectorAll('.shortlist-check').forEach(cb => cb.checked = false); updateShortlistBar(); }
+    function copyShareLink() {
+        const form = document.getElementById('predictor-form');
+        const params = new URLSearchParams({
+            cgpa: form.querySelector('[name=cgpa]').value,
+            category: form.querySelector('[name=category]').value,
+            gender: form.querySelector('[name=gender]').value,
+            college_type: form.querySelector('[name=college_type]').value,
+            domicile: form.querySelector('[name=domicile]').value,
+            city: form.querySelector('[name=city]').value
+        });
+        form.querySelectorAll('select[name=branch] option:selected').forEach(opt => params.append('branch', opt.value));
+        const url = window.location.origin + '/predictor?' + params.toString();
+        const btn = document.getElementById('share-btn');
+        navigator.clipboard.writeText(url).then(() => {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
+        });
+    }
 
-function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation:'landscape', unit:'pt', format:'a4' });
-    doc.setFillColor(15,40,90); doc.rect(0,0,842,60,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255);
-    doc.text('MP DTE LATERAL ENTRY — CHOICE LIST', 40, 38);
-    
-    let y = 95; // Pushed down to clear the page 1 header copyright box
-    document.querySelectorAll('[id^="results-table-"]').forEach(table => {
-        const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
-            return Array.from(tr.querySelectorAll('td')).slice(1).map((td, index) => {
+    let compareList = {};
+    function addToCompare(btn, name) {
+        if (compareList[name]) { delete compareList[name]; btn.classList.remove('added'); btn.innerHTML = '<i class="fas fa-balance-scale"></i> Compare'; }
+        else {
+            if (Object.keys(compareList).length >= 3) { showToast('You can compare a maximum of 3 colleges side-by-side.', 'warning'); return; }
+            compareList[name] = name.substring(0, 25); btn.classList.add('added'); btn.innerHTML = '<i class="fas fa-check"></i> Added';
+        }
+        updateCompareTray();
+    }
+    function updateCompareTray() {
+        const tray = document.getElementById('compare-tray');
+        const chips = document.getElementById('compare-chips');
+        const names = Object.keys(compareList);
+        tray.style.display = names.length ? 'block' : 'none';
+        chips.innerHTML = names.map(n => `<span class="cmp-chip">${compareList[n]}</span>`).join('');
+        document.getElementById('cmp-go-btn').disabled = names.length < 2;
+    }
+    function goCompare() {
+        const params = Object.keys(compareList).map(n => 'colleges=' + encodeURIComponent(n)).join('&');
+        window.open('/compare?' + params, '_blank');
+    }
+
+    function updateShortlistBar() {
+        const checked = document.querySelectorAll('.shortlist-check:checked');
+        const count = checked.length;
+        localStorage.setItem('mp_dte_shortlist', JSON.stringify(Array.from(checked).map(cb => cb.dataset.id)));
+        document.getElementById('shortlist-bar').style.display = count > 0 ? 'block' : 'none';
+        document.getElementById('shortlist-count').textContent = count;
+    }
+    function toggleSelectAll(sa) {
+        document.getElementById(sa.dataset.table).querySelectorAll('.shortlist-check').forEach(cb => cb.checked = sa.checked);
+        updateShortlistBar();
+    }
+    function clearShortlist() { localStorage.removeItem('mp_dte_shortlist'); document.querySelectorAll('.shortlist-check').forEach(cb => cb.checked = false); updateShortlistBar(); }
+
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+        doc.setFillColor(15, 40, 90); doc.rect(0, 0, 842, 60, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(255);
+        doc.text('MP DTE LATERAL ENTRY — CHOICE LIST', 40, 38);
+
+        let y = 95; // Pushed down to clear the page 1 header copyright box
+        document.querySelectorAll('[id^="results-table-"]').forEach(table => {
+            const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
+                return Array.from(tr.querySelectorAll('td')).slice(1).map((td, index) => {
+                    let text = td.innerText.trim();
+                    // Replace Rupee symbol with Rs. to prevent jsPDF font corruption
+                    text = text.replace(/₹/g, 'Rs. ');
+                    // Column specific cleanup
+                    if (index === 0) { // Serial number column
+                        text = text.replace(/[\r\n\s]*click here to see college details/gi, '').trim();
+                    }
+                    if (index === 1) { // College Name column
+                        text = text.replace(/\s*Compare\s*$/, '').trim();
+                    }
+                    return text;
+                });
+            });
+
+            doc.autoTable({
+                startY: y,
+                head: [['#', 'College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']],
+                body: rows,
+                theme: 'striped',
+                headStyles: { fillColor: [15, 40, 90] },
+                margin: { top: 40, bottom: 42, left: 30, right: 30 },
+                styles: { fontSize: 8 }, // Smaller font size to fit all 12 columns beautifully!
+                columnStyles: {
+                    0: { cellWidth: 25 }, // #
+                    1: { cellWidth: 200 }, // College Name
+                    2: { cellWidth: 100 }, // Branch
+                    3: { cellWidth: 40 }, // Type
+                    4: { cellWidth: 50 }, // Open Rank
+                    5: { cellWidth: 50 }, // Close Rank
+                    6: { cellWidth: 35 }, // Quota
+                    7: { cellWidth: 45 }, // Resident
+                    8: { cellWidth: 30 }, // Seats
+                    9: { cellWidth: 90 }, // Fee
+                    10: { cellWidth: 60 }, // Distance
+                    11: { cellWidth: 45 } // Chance
+                },
+                didDrawPage: function (data) {
+                    const pageSize = doc.internal.pageSize;
+                    const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
+                    const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+
+                    const copyrightText = "Copyright © KRISHAN Kumar Awasthi | Website: lateralentrycollegepredictor.vercel.app";
+                    const absolutePage = doc.internal.getNumberOfPages();
+
+                    // --- 1. HEADER COPYRIGHT BOX (Vibrant Amber/Saffron Highlight) ---
+                    let headerY = 10;
+                    if (absolutePage === 1) {
+                        headerY = 66; // Position below the first page banner
+                    }
+
+                    doc.setFillColor(255, 251, 235); // Light amber
+                    doc.rect(30, headerY, pageWidth - 60, 18, 'F');
+                    doc.setDrawColor(253, 230, 138); // Amber border
+                    doc.setLineWidth(0.5);
+                    doc.rect(30, headerY, pageWidth - 60, 18, 'D');
+
+                    // Left amber accent bar
+                    doc.setFillColor(245, 158, 11);
+                    doc.rect(30, headerY, 4, 18, 'F');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8);
+                    doc.setTextColor(120, 53, 4); // Dark brown/amber text
+                    doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, headerY + 12);
+
+                    // --- 2. FOOTER COPYRIGHT BOX (Vibrant Blue Highlight) ---
+                    const footerY = pageHeight - 32;
+                    doc.setFillColor(240, 249, 255); // Light blue
+                    doc.rect(30, footerY, pageWidth - 60, 18, 'F');
+                    doc.setDrawColor(186, 230, 253); // Blue border
+                    doc.setLineWidth(0.5);
+                    doc.rect(30, footerY, pageWidth - 60, 18, 'D');
+
+                    // Left blue accent bar
+                    doc.setFillColor(14, 165, 233);
+                    doc.rect(30, footerY, 4, 18, 'F');
+
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8);
+                    doc.setTextColor(3, 105, 161); // Dark blue text
+                    doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, footerY + 12);
+                }
+            });
+            y = doc.lastAutoTable.finalY + 30;
+        });
+        doc.save('choice-list-by-krishan-kumar-awasthi.pdf');
+    }
+    function downloadShortlistedPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+        doc.setFillColor(15, 40, 90); doc.rect(0, 0, 842, 60, 'F');
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(255);
+        doc.text('My Shortlisted Colleges', 40, 38);
+
+        const rows = Array.from(document.querySelectorAll('.shortlist-check:checked')).map(cb => {
+            return Array.from(cb.closest('tr').querySelectorAll('td')).slice(2).map((td, index) => {
                 let text = td.innerText.trim();
                 // Replace Rupee symbol with Rs. to prevent jsPDF font corruption
                 text = text.replace(/₹/g, 'Rs. ');
                 // Column specific cleanup
-                if (index === 0) { // Serial number column
-                    text = text.replace(/[\r\n\s]*click here to see college details/gi, '').trim();
-                }
-                if (index === 1) { // College Name column
+                if (index === 0) { // College Name column (slice(2) means College is at index 0)
                     text = text.replace(/\s*Compare\s*$/, '').trim();
                 }
                 return text;
             });
         });
-        
-        doc.autoTable({ 
-            startY: y, 
-            head: [['#', 'College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']], 
-            body: rows, 
-            theme: 'striped', 
-            headStyles: { fillColor: [15,40,90] }, 
+
+        doc.autoTable({
+            startY: 95, // Pushed down to clear the page 1 header copyright box
+            head: [['College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']],
+            body: rows,
+            theme: 'grid',
+            headStyles: { fillColor: [15, 40, 90] },
             margin: { top: 40, bottom: 42, left: 30, right: 30 },
-            styles: { fontSize: 8 }, // Smaller font size to fit all 12 columns beautifully!
+            styles: { fontSize: 8 }, // Smaller font size to fit all 11 columns beautifully!
             columnStyles: {
-                0: { cellWidth: 25 }, // #
-                1: { cellWidth: 200 }, // College Name
-                2: { cellWidth: 100 }, // Branch
-                3: { cellWidth: 40 }, // Type
-                4: { cellWidth: 50 }, // Open Rank
-                5: { cellWidth: 50 }, // Close Rank
-                6: { cellWidth: 35 }, // Quota
-                7: { cellWidth: 45 }, // Resident
-                8: { cellWidth: 30 }, // Seats
-                9: { cellWidth: 90 }, // Fee
-                10: { cellWidth: 60 }, // Distance
-                11: { cellWidth: 45 } // Chance
+                0: { cellWidth: 220 }, // College Name
+                1: { cellWidth: 100 }, // Branch
+                2: { cellWidth: 40 }, // Type
+                3: { cellWidth: 50 }, // Open Rank
+                4: { cellWidth: 50 }, // Close Rank
+                5: { cellWidth: 35 }, // Quota
+                6: { cellWidth: 45 }, // Resident
+                7: { cellWidth: 30 }, // Seats
+                8: { cellWidth: 95 }, // Fee
+                9: { cellWidth: 60 }, // Distance
+                10: { cellWidth: 45 } // Chance
             },
-            didDrawPage: function(data) {
+            didDrawPage: function (data) {
                 const pageSize = doc.internal.pageSize;
                 const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
                 const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-                
+
                 const copyrightText = "Copyright © KRISHAN Kumar Awasthi | Website: lateralentrycollegepredictor.vercel.app";
                 const absolutePage = doc.internal.getNumberOfPages();
-                
+
                 // --- 1. HEADER COPYRIGHT BOX (Vibrant Amber/Saffron Highlight) ---
                 let headerY = 10;
                 if (absolutePage === 1) {
                     headerY = 66; // Position below the first page banner
                 }
-                
+
                 doc.setFillColor(255, 251, 235); // Light amber
                 doc.rect(30, headerY, pageWidth - 60, 18, 'F');
                 doc.setDrawColor(253, 230, 138); // Amber border
                 doc.setLineWidth(0.5);
                 doc.rect(30, headerY, pageWidth - 60, 18, 'D');
-                
+
                 // Left amber accent bar
                 doc.setFillColor(245, 158, 11);
                 doc.rect(30, headerY, 4, 18, 'F');
-                
+
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(8);
                 doc.setTextColor(120, 53, 4); // Dark brown/amber text
                 doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, headerY + 12);
-                
+
                 // --- 2. FOOTER COPYRIGHT BOX (Vibrant Blue Highlight) ---
                 const footerY = pageHeight - 32;
                 doc.setFillColor(240, 249, 255); // Light blue
@@ -787,189 +1136,98 @@ function downloadPDF() {
                 doc.setDrawColor(186, 230, 253); // Blue border
                 doc.setLineWidth(0.5);
                 doc.rect(30, footerY, pageWidth - 60, 18, 'D');
-                
+
                 // Left blue accent bar
                 doc.setFillColor(14, 165, 233);
                 doc.rect(30, footerY, 4, 18, 'F');
-                
+
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(8);
                 doc.setTextColor(3, 105, 161); // Dark blue text
                 doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, footerY + 12);
             }
         });
-        y = doc.lastAutoTable.finalY + 30;
-    });
-    doc.save('choice-list-by-krishan-kumar-awasthi.pdf');
-}
-function downloadShortlistedPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation:'landscape', unit:'pt', format:'a4' });
-    doc.setFillColor(15,40,90); doc.rect(0,0,842,60,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(255);
-    doc.text('My Shortlisted Colleges', 40, 38);
-    
-    const rows = Array.from(document.querySelectorAll('.shortlist-check:checked')).map(cb => {
-        return Array.from(cb.closest('tr').querySelectorAll('td')).slice(2).map((td, index) => {
-            let text = td.innerText.trim();
-            // Replace Rupee symbol with Rs. to prevent jsPDF font corruption
-            text = text.replace(/₹/g, 'Rs. ');
-            // Column specific cleanup
-            if (index === 0) { // College Name column (slice(2) means College is at index 0)
-                text = text.replace(/\s*Compare\s*$/, '').trim();
-            }
-            return text;
+        doc.save('shortlist-by-krishan-kumar-awasthi.pdf');
+    }
+
+    function getShortlistChoices() {
+        return DteExport.shortlistToChoices(
+            JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]')
+        );
+    }
+    function exportShortlistCsv() { DteExport.exportCsv(getShortlistChoices()); }
+    function exportShortlistCopy() {
+        DteExport.copyToClipboard(getShortlistChoices()).then(function (ok) {
+            if (ok) showToast('Choice list copied! Paste it when filling on DTE portal.', 'success');
         });
-    });
-    
-    doc.autoTable({ 
-        startY: 95, // Pushed down to clear the page 1 header copyright box
-        head: [['College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']], 
-        body: rows, 
-        theme: 'grid',
-        headStyles: { fillColor: [15,40,90] },
-        margin: { top: 40, bottom: 42, left: 30, right: 30 },
-        styles: { fontSize: 8 }, // Smaller font size to fit all 11 columns beautifully!
-        columnStyles: {
-            0: { cellWidth: 220 }, // College Name
-            1: { cellWidth: 100 }, // Branch
-            2: { cellWidth: 40 }, // Type
-            3: { cellWidth: 50 }, // Open Rank
-            4: { cellWidth: 50 }, // Close Rank
-            5: { cellWidth: 35 }, // Quota
-            6: { cellWidth: 45 }, // Resident
-            7: { cellWidth: 30 }, // Seats
-            8: { cellWidth: 95 }, // Fee
-            9: { cellWidth: 60 }, // Distance
-            10: { cellWidth: 45 } // Chance
-        },
-        didDrawPage: function(data) {
-            const pageSize = doc.internal.pageSize;
-            const pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight();
-            const pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-            
-            const copyrightText = "Copyright © KRISHAN Kumar Awasthi | Website: lateralentrycollegepredictor.vercel.app";
-            const absolutePage = doc.internal.getNumberOfPages();
-            
-            // --- 1. HEADER COPYRIGHT BOX (Vibrant Amber/Saffron Highlight) ---
-            let headerY = 10;
-            if (absolutePage === 1) {
-                headerY = 66; // Position below the first page banner
-            }
-            
-            doc.setFillColor(255, 251, 235); // Light amber
-            doc.rect(30, headerY, pageWidth - 60, 18, 'F');
-            doc.setDrawColor(253, 230, 138); // Amber border
-            doc.setLineWidth(0.5);
-            doc.rect(30, headerY, pageWidth - 60, 18, 'D');
-            
-            // Left amber accent bar
-            doc.setFillColor(245, 158, 11);
-            doc.rect(30, headerY, 4, 18, 'F');
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(8);
-            doc.setTextColor(120, 53, 4); // Dark brown/amber text
-            doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, headerY + 12);
-            
-            // --- 2. FOOTER COPYRIGHT BOX (Vibrant Blue Highlight) ---
-            const footerY = pageHeight - 32;
-            doc.setFillColor(240, 249, 255); // Light blue
-            doc.rect(30, footerY, pageWidth - 60, 18, 'F');
-            doc.setDrawColor(186, 230, 253); // Blue border
-            doc.setLineWidth(0.5);
-            doc.rect(30, footerY, pageWidth - 60, 18, 'D');
-            
-            // Left blue accent bar
-            doc.setFillColor(14, 165, 233);
-            doc.rect(30, footerY, 4, 18, 'F');
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(8);
-            doc.setTextColor(3, 105, 161); // Dark blue text
-            doc.text(copyrightText, (pageWidth - doc.getTextWidth(copyrightText)) / 2, footerY + 12);
+    }
+    function syncShortlistCloud() {
+        const items = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
+        fetch('/api/v1/shortlist/cloud', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: items })
+        }).then(function (r) {
+            if (r.status === 401) { window.location = '/account?next=' + encodeURIComponent(location.pathname); return; }
+            return r.json();
+        }).then(function (d) {
+            if (d && d.success) showToast('Shortlist saved to cloud (' + d.count + ' items)!', 'success');
+        });
+    }
+
+    function toggleAdvancedLocation() {
+        const row = document.getElementById('advanced-location-row');
+        const chevron = document.getElementById('adv-loc-chevron');
+        const text = document.getElementById('adv-loc-text');
+        if (row.style.display === 'none') {
+            row.style.display = 'grid';
+            chevron.style.transform = 'rotate(180deg)';
+            text.textContent = 'Hide Location & Distance Filters';
+        } else {
+            row.style.display = 'none';
+            chevron.style.transform = 'rotate(0deg)';
+            text.textContent = 'Show Location & Distance Filters (Optional)';
         }
-    });
-    doc.save('shortlist-by-krishan-kumar-awasthi.pdf');
-}
-
-function getShortlistChoices() {
-    return DteExport.shortlistToChoices(
-        JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]')
-    );
-}
-function exportShortlistCsv() { DteExport.exportCsv(getShortlistChoices()); }
-function exportShortlistCopy() {
-    DteExport.copyToClipboard(getShortlistChoices()).then(function(ok) {
-        if (ok) showToast('Choice list copied! Paste it when filling on DTE portal.', 'success');
-    });
-}
-function syncShortlistCloud() {
-    const items = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
-    fetch('/api/v1/shortlist/cloud', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({items: items})
-    }).then(function(r) {
-        if (r.status === 401) { window.location = '/account?next=' + encodeURIComponent(location.pathname); return; }
-        return r.json();
-    }).then(function(d) {
-        if (d && d.success) showToast('Shortlist saved to cloud (' + d.count + ' items)!', 'success');
-    });
-}
-
-function toggleAdvancedLocation() {
-    const row = document.getElementById('advanced-location-row');
-    const chevron = document.getElementById('adv-loc-chevron');
-    const text = document.getElementById('adv-loc-text');
-    if (row.style.display === 'none') {
-        row.style.display = 'grid';
-        chevron.style.transform = 'rotate(180deg)';
-        text.textContent = 'Hide Location & Distance Filters';
-    } else {
-        row.style.display = 'none';
-        chevron.style.transform = 'rotate(0deg)';
-        text.textContent = 'Show Location & Distance Filters (Optional)';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Branch multi-select dropdown setup
-    const container = document.getElementById('branch-select-container');
-    const display = document.getElementById('branch-display');
-    const optionsContainer = document.getElementById('branch-options');
-    const realSelect = document.getElementById('real-branch-select');
-    
-    // Save draft on form submit
-    const predictorFormSubmit = document.getElementById('predictor-form');
-    if (predictorFormSubmit) {
-        predictorFormSubmit.addEventListener('submit', () => {
-            let branches = [];
-            if (realSelect) {
-                branches = Array.from(realSelect.options)
-                    .filter(opt => opt.selected)
-                    .map(opt => opt.value);
-            }
-            const formData = {
-                timestamp: Date.now(),
-                cgpa: document.getElementById('cgpa')?.value || '',
-                category: document.getElementById('category')?.value || '',
-                gender: document.getElementById('gender')?.value || '',
-                college_type: document.getElementById('college_type')?.value || '',
-                domicile: document.getElementById('domicile')?.value || '',
-                city: document.getElementById('city')?.value || 'All',
-                district: document.getElementById('district')?.value || 'All',
-                home_city: document.getElementById('home_city')?.value || 'All',
-                max_distance_km: document.getElementById('max_distance_km')?.value || '',
-                branches: branches
-            };
-            sessionStorage.setItem('predictor_draft', JSON.stringify(formData));
-        });
     }
 
-    // Restore draft if user is logged in, draft exists, and no results are shown yet
-    const draftStr = sessionStorage.getItem('predictor_draft');
-    const isLoggedIn = {{ 'true' if current_user else 'false' }};
+    document.addEventListener('DOMContentLoaded', () => {
+        // Branch multi-select dropdown setup
+        const container = document.getElementById('branch-select-container');
+        const display = document.getElementById('branch-display');
+        const optionsContainer = document.getElementById('branch-options');
+        const realSelect = document.getElementById('real-branch-select');
+
+        // Save draft on form submit
+        const predictorFormSubmit = document.getElementById('predictor-form');
+        if (predictorFormSubmit) {
+            predictorFormSubmit.addEventListener('submit', () => {
+                let branches = [];
+                if (realSelect) {
+                    branches = Array.from(realSelect.options)
+                        .filter(opt => opt.selected)
+                        .map(opt => opt.value);
+                }
+                const formData = {
+                    timestamp: Date.now(),
+                    cgpa: document.getElementById('cgpa')?.value || '',
+                    category: document.getElementById('category')?.value || '',
+                    gender: document.getElementById('gender')?.value || '',
+                    college_type: document.getElementById('college_type')?.value || '',
+                    domicile: document.getElementById('domicile')?.value || '',
+                    city: document.getElementById('city')?.value || 'All',
+                    district: document.getElementById('district')?.value || 'All',
+                    home_city: document.getElementById('home_city')?.value || 'All',
+                    max_distance_km: document.getElementById('max_distance_km')?.value || '',
+                    branches: branches
+                };
+                sessionStorage.setItem('predictor_draft', JSON.stringify(formData));
+            });
+        }
+
+        // Restore draft if user is logged in, draft exists, and no results are shown yet
+        const draftStr = sessionStorage.getItem('predictor_draft');
+        const isLoggedIn = {{ 'true' if current_user else 'false' }
+    };
     const hasResults = document.getElementById('results-area') !== null || document.querySelector('.no-results') !== null;
 
     if (draftStr && isLoggedIn && !hasResults) {
@@ -986,16 +1244,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (draft.district) document.getElementById('district').value = draft.district;
                 if (draft.home_city) document.getElementById('home_city').value = draft.home_city;
                 if (draft.max_distance_km) document.getElementById('max_distance_km').value = draft.max_distance_km;
-                
+
                 if (draft.branches && draft.branches.length > 0 && realSelect) {
                     Array.from(realSelect.options).forEach(opt => {
                         opt.selected = draft.branches.includes(opt.value);
                     });
                 }
-                
+
                 // Clear draft so we don't submit infinitely
                 sessionStorage.removeItem('predictor_draft');
-                
+
                 // Auto submit form
                 setTimeout(() => {
                     document.getElementById('predictor-form')?.submit();
@@ -1031,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.appendChild(checkbox);
                     item.appendChild(label);
                     optionsContainer.appendChild(item);
-                    checkbox.addEventListener('change', function() { handleCheckboxChange(this); });
+                    checkbox.addEventListener('change', function () { handleCheckboxChange(this); });
                 }
             });
         }
@@ -1082,7 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saved = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
     document.querySelectorAll('.shortlist-check').forEach(cb => { if (saved.includes(cb.dataset.id)) cb.checked = true; });
     updateShortlistBar();
-    
+
     // Auto-expand advanced location filters if they contain non-default values
     const cityVal = document.getElementById('city')?.value;
     const distVal = document.getElementById('district')?.value;
@@ -1112,143 +1370,144 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-{% if prediction %}
-// 1. Colleges Coordinates payload for Map Explorer
-const mapColleges = [
-    {% for year, yr_data in prediction.items() %}
-        {% for item in yr_data.colleges %}
-            {% if item.coords %}
-            {
-                name: {{ item.college.college_name | tojson }},
-                branch: {{ (item.college.branch | branch_name) | tojson }},
-                branch_code: {{ item.college.branch | tojson }},
-                type: {{ item.college.college_type | tojson }},
-                opening: {{ item.college.opening_rank }},
-                closing: {{ item.college.closing_rank }},
-                chance: {{ item.probability }},
-                fee: {{ item.fee_display | tojson }},
-                distance: {{ item.distance_text | tojson }},
-                year: {{ year }},
-                lat: {{ item.coords[0] }},
-                lng: {{ item.coords[1] }}
-            },
-            {% endif %}
-        {% endfor %}
+    {% if prediction %}
+    // 1. Colleges Coordinates payload for Map Explorer
+    const mapColleges = [
+        {% for year, yr_data in prediction.items() %}
+    {% for item in yr_data.colleges %}
+    {% if item.coords %}
+    {
+        name: { { item.college.college_name | tojson } },
+        branch: { { (item.college.branch | branch_name) | tojson } },
+        branch_code: { { item.college.branch | tojson } },
+        type: { { item.college.college_type | tojson } },
+        opening: { { item.college.opening_rank } },
+        closing: { { item.college.closing_rank } },
+        chance: { { item.probability } },
+        fee: { { item.fee_display | tojson } },
+        distance: { { item.distance_text | tojson } },
+        year: { { year } },
+        lat: { { item.coords[0] } },
+        lng: { { item.coords[1] } }
+    },
+    {% endif %}
+    {% endfor %}
     {% endfor %}
 ];
 
-// 2. View Toggle
-let map = null;
-let mapInitialized = false;
+    // 2. View Toggle
+    let map = null;
+    let mapInitialized = false;
 
-function switchResultsView(view) {
-    const listContainer = document.getElementById('results-list-container');
-    const mapContainer = document.getElementById('results-map-container');
-    const btnList = document.getElementById('view-btn-list');
-    const btnMap = document.getElementById('view-btn-map');
+    function switchResultsView(view) {
+        const listContainer = document.getElementById('results-list-container');
+        const mapContainer = document.getElementById('results-map-container');
+        const btnList = document.getElementById('view-btn-list');
+        const btnMap = document.getElementById('view-btn-map');
 
-    if (!listContainer || !mapContainer) return;
+        if (!listContainer || !mapContainer) return;
 
-    if (view === 'map') {
-        listContainer.style.display = 'none';
-        mapContainer.style.display = 'block';
+        if (view === 'map') {
+            listContainer.style.display = 'none';
+            mapContainer.style.display = 'block';
 
-        if (btnList) {
-            btnList.style.color = 'var(--muted)';
-            btnList.style.borderBottomColor = 'transparent';
-        }
-        if (btnMap) {
-            btnMap.style.color = 'var(--primary)';
-            btnMap.style.borderBottomColor = 'var(--primary)';
-        }
+            if (btnList) {
+                btnList.style.color = 'var(--muted)';
+                btnList.style.borderBottomColor = 'transparent';
+            }
+            if (btnMap) {
+                btnMap.style.color = 'var(--primary)';
+                btnMap.style.borderBottomColor = 'var(--primary)';
+            }
 
-        // Initialize map
-        initCollegesMap();
-    } else {
-        listContainer.style.display = 'block';
-        mapContainer.style.display = 'none';
+            // Initialize map
+            initCollegesMap();
+        } else {
+            listContainer.style.display = 'block';
+            mapContainer.style.display = 'none';
 
-        if (btnList) {
-            btnList.style.color = 'var(--primary)';
-            btnList.style.borderBottomColor = 'var(--primary)';
-        }
-        if (btnMap) {
-            btnMap.style.color = 'var(--muted)';
-            btnMap.style.borderBottomColor = 'transparent';
+            if (btnList) {
+                btnList.style.color = 'var(--primary)';
+                btnList.style.borderBottomColor = 'var(--primary)';
+            }
+            if (btnMap) {
+                btnMap.style.color = 'var(--muted)';
+                btnMap.style.borderBottomColor = 'transparent';
+            }
         }
     }
-}
 
-function initCollegesMap() {
-    if (!window.L) {
-        // Load Leaflet script dynamically if not loaded yet
-        const script = document.createElement('script');
-        script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-        script.onload = () => {
-            setupMapInstance();
-        };
-        document.head.appendChild(script);
-    } else {
-        setupMapInstance();
-    }
-}
-
-function setupMapInstance() {
-    if (mapInitialized) {
-        if (map) {
-            map.invalidateSize();
-        }
-        return;
-    }
-
-    // Centered around Madhya Pradesh center (Bhopal)
-    map = L.map('colleges-map').setView([23.2599, 77.4126], 7);
-
-    // Modern styled Tile Layer (CartoDB Voyager)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20
-    }).addTo(map);
-
-    // Grouping by college
-    const grouped = {};
-    mapColleges.forEach(item => {
-        if (!grouped[item.name]) {
-            grouped[item.name] = {
-                name: item.name,
-                lat: item.lat,
-                lng: item.lng,
-                type: item.type,
-                fee: item.fee,
-                distance: item.distance,
-                details: []
+    function initCollegesMap() {
+        if (!window.L) {
+            // Load Leaflet script dynamically if not loaded yet
+            const script = document.createElement('script');
+            script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+            script.onload = () => {
+                setupMapInstance();
             };
+            document.head.appendChild(script);
+        } else {
+            setupMapInstance();
         }
-        grouped[item.name].details.push(item);
-    });
+    }
 
-    const markerBounds = [];
+    function setupMapInstance() {
+        if (mapInitialized) {
+            if (map) {
+                map.invalidateSize();
+            }
+            return;
+        }
 
-    // Custom Icon for college
-    const collegeIcon = L.divIcon({
-        className: 'custom-map-marker',
-        html: `<div style="background:var(--primary); color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); font-size: 0.8rem;"><i class="fas fa-university"></i></div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-    });
+        // Centered around Madhya Pradesh center (Bhopal)
+        map = L.map('colleges-map').setView([23.2599, 77.4126], 7);
 
-    // Custom Icon for home
-    const homeIcon = L.divIcon({
-        className: 'custom-map-marker-home',
-        html: `<div style="background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); font-size: 0.8rem;"><i class="fas fa-home"></i></div>`,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15]
-    });
+        // Modern styled Tile Layer (CartoDB Voyager)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
 
-    // Plot home city if valid
-    const homeCity = "{{ data.home_city if data else 'All' }}";
-    const cityCoords = {{ city_coords | tojson | safe }} || {};
+        // Grouping by college
+        const grouped = {};
+        mapColleges.forEach(item => {
+            if (!grouped[item.name]) {
+                grouped[item.name] = {
+                    name: item.name,
+                    lat: item.lat,
+                    lng: item.lng,
+                    type: item.type,
+                    fee: item.fee,
+                    distance: item.distance,
+                    details: []
+                };
+            }
+            grouped[item.name].details.push(item);
+        });
+
+        const markerBounds = [];
+
+        // Custom Icon for college
+        const collegeIcon = L.divIcon({
+            className: 'custom-map-marker',
+            html: `<div style="background:var(--primary); color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); font-size: 0.8rem;"><i class="fas fa-university"></i></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // Custom Icon for home
+        const homeIcon = L.divIcon({
+            className: 'custom-map-marker-home',
+            html: `<div style="background:#dc2626; color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); font-size: 0.8rem;"><i class="fas fa-home"></i></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+        });
+
+        // Plot home city if valid
+        const homeCity = "{{ data.home_city if data else 'All' }}";
+        const cityCoords = {{ city_coords | tojson | safe
+    }} || {};
 
     if (homeCity && homeCity !== 'All' && cityCoords[homeCity]) {
         const homeLat = parseFloat(cityCoords[homeCity].lat);
@@ -1276,7 +1535,7 @@ function setupMapInstance() {
             
             <div style="border-top:1px solid #e2e8f0; padding-top:6px; margin-top:6px;">
                 <strong style="font-size:0.78rem; display:block; margin-bottom:4px; color:#1e293b;">Matching Branches:</strong>`;
-        
+
         col.details.forEach(d => {
             const chanceColor = d.chance >= 75 ? '#10B981' : (d.chance >= 40 ? '#F59E0B' : '#EF4444');
             popupContent += `
@@ -1302,6 +1561,6 @@ function setupMapInstance() {
     }
     mapInitialized = true;
 }
-{% endif %}
+    {% endif %}
 </script>
 {% endblock %}
