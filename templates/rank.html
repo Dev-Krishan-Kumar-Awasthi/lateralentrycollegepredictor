@@ -16,6 +16,27 @@
             Curious about your merit rank? Enter your CGPA to see where you might stand based on previous year trends.
         </p>
 
+        {% if current_user %}
+        <div class="predictions-badge-container" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+            {% if current_user.has_unlimited_access %}
+                <span style="background: linear-gradient(135deg, #10B981, #059669); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                    <i class="fas fa-infinity"></i> Premium (Unlimited Predictions)
+                </span>
+            {% else %}
+                {% set left = current_user.remaining_predictions %}
+                {% if left <= 0 %}
+                    <span style="background: linear-gradient(135deg, #EF4444, #DC2626); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+                        <i class="fas fa-exclamation-triangle"></i> 0/{{ current_user.daily_prediction_limit }} predictions left today
+                    </span>
+                {% else %}
+                    <span style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);">
+                        <i class="fas fa-chart-bar"></i> {{ left }}/{{ current_user.daily_prediction_limit }} predictions left today
+                    </span>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+
         {% if error %}
         <div style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
             <i class="fas fa-exclamation-circle"></i> {{ error }}

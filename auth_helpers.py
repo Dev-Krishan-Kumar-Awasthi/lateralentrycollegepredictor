@@ -48,7 +48,15 @@ def current_user():
     uid = session.get("user_id")
     if not uid:
         return None
-    return db.session.get(User, uid)
+    user = db.session.get(User, uid)
+    if user:
+        from datetime import date
+        today_str = date.today().isoformat()
+        if user.last_prediction_date != today_str:
+            user.last_prediction_date = today_str
+            user.predictions_today = 0
+            db.session.commit()
+    return user
 
 
 def login_required(f):

@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Secure UPI Payment Checkout — MP DTE Predictor{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 950px; padding: 40px 20px;">
+    
+    <div style="background: #fff; border: 1px solid #E2E8F0; border-radius: 24px; box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05); overflow: hidden;">
+        
+        <!-- Header Section -->
+        <div style="background: linear-gradient(135deg, #1E3A8A 0%, #1D4ED8 100%); color: #fff; padding: 30px; text-align: center; position: relative;">
+            <div style="font-size: 2.4rem; margin-bottom: 8px;"><i class="fas fa-shield-alt" style="color: #38BDF8;"></i></div>
+            <h2 style="margin: 0; font-size: 1.55rem; font-weight: 800; color:#fff;">Secure Checkout</h2>
+            <p style="margin: 4px 0 0 0; opacity: 0.85; font-size: 0.9rem; font-weight: 500;">Follow the simple steps below to unlock Premium access.</p>
+        </div>
+
+        <!-- Two Column Content Grid -->
+        <div class="checkout-grid" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 35px; padding: 35px;">
+            
+            <!-- Left Column: Order Summary & QR Code -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <!-- Order Details Box -->
+                <div style="background: #F8FAFC; border-radius: 16px; padding: 20px; border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 8px;">
+                    <h3 style="margin: 0 0 12px 0; font-size: 0.95rem; color: #1E293B; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Order Summary</h3>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #475569;">
+                        <span style="font-weight: 600; color: #1E293B;">Upgrade Tier</span>
+                        <span style="background: #EFF6FF; color: #1D4ED8; padding: 2px 8px; border-radius: 20px; font-weight: 700; font-size: 0.72rem;">PREMIUM PRO PASS</span>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; color: #475569; margin-top: 4px;">
+                        <span>Predictions Limit</span>
+                        <strong style="color: #16A34A;"><i class="fas fa-infinity"></i> Unlimited predictions</strong>
+                    </div>
+                    
+                    <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 10px 0;">
+                    
+                    <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; color: #1E293B; align-items: center;">
+                        <span>Total Amount</span>
+                        <span style="color: #1D4ED8; font-size: 1.2rem;">₹149.00</span>
+                    </div>
+                </div>
+
+                <!-- QR Scan Box -->
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);">
+                    <img src="{{ url_for('static', filename='img/paytm_qr.png') }}" alt="Paytm UPI QR Code" style="width: 100%; max-width: 220px; border-radius: 8px; display: block; margin: 0 auto 10px;">
+                    <span style="font-size: 0.75rem; color: #64748B; font-weight: 700; display: block; margin-bottom: 2px;"><i class="fas fa-qrcode"></i> Krishan Kumar Awasthi</span>
+                    <span style="font-size: 0.7rem; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Scan with any UPI app</span>
+                </div>
+            </div>
+
+            <!-- Right Column: Step Instructions & WhatsApp Activator -->
+            <div style="display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+                <div>
+                    <h3 style="margin: 0 0 18px 0; font-size: 1.1rem; color: #1E293B; border-bottom: 2px solid #F1F5F9; padding-bottom: 8px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-list-ol" style="color: #1D4ED8;"></i> How to Complete Activation:
+                    </h3>
+
+                    <!-- Step 1: Scan -->
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px; align-items: flex-start;">
+                        <div style="background: #EFF6FF; color: #1D4ED8; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.85rem;">1</div>
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 3px 0; font-size: 0.92rem; color: #1E293B; font-weight: 700;">Scan & Pay ₹149</h4>
+                            <p style="margin: 0; color: #64748B; font-size: 0.85rem; line-height: 1.45;">Scan the Paytm QR code on the left using your favorite UPI app (PhonePe, Paytm, Google Pay, BHIM) and transfer exactly **₹149**.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Screenshot -->
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px; align-items: flex-start;">
+                        <div style="background: #EFF6FF; color: #1D4ED8; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.85rem;">2</div>
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 3px 0; font-size: 0.92rem; color: #1E293B; font-weight: 700;">Send Screenshot on WhatsApp</h4>
+                            <p style="margin: 0; color: #64748B; font-size: 0.85rem; line-height: 1.45;">Send the payment screenshot to **7089881219** on WhatsApp. Make sure to share your registered Name, Email, and Mobile number.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Verification -->
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px; align-items: flex-start;">
+                        <div style="background: #EFF6FF; color: #1D4ED8; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; font-size: 0.85rem;">3</div>
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0 0 3px 0; font-size: 0.92rem; color: #1E293B; font-weight: 700;">Fast Manual Activation</h4>
+                            <p style="margin: 0; color: #64748B; font-size: 0.85rem; line-height: 1.45;">Our team will verify the details and activate your Premium Pro pass manually within <strong>15 minutes</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Action Button -->
+                {% set encoded_msg = "Hi Krishan, I have completed the payment of Rs. 149 for Premium Pro access. Please activate my account.\n\nMy Details:\n- Name: " ~ (user.display_name or '—') ~ "\n- Email: " ~ user.email ~ "\n- Mobile: " ~ (user.mobile_number or '—') %}
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <a href="https://wa.me/917089881219?text={{ encoded_msg | urlencode }}" target="_blank" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; width: 100%; border: none; color: #fff; background: linear-gradient(135deg, #10B981 0%, #059669 100%); border-radius: 12px; padding: 15px; font-weight: 800; font-size: 1rem; box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15); transition: all 0.2s;" class="btn-whatsapp-action">
+                        <i class="fab fa-whatsapp" style="font-size: 1.25rem;"></i> Send Screenshot & Unlock
+                    </a>
+
+                    <!-- Guarantee Info -->
+                    <div style="padding-top: 10px; display: flex; align-items: center; justify-content: center; gap: 15px; color: #94A3B8; font-size: 0.78rem; font-weight: 600;">
+                        <span style="display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-lock" style="color: #10B981;"></i> Secure Payment</span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Trusted Merchant</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Responsive Layout Media Queries -->
+<style>
+    @media (max-width: 768px) {
+        .checkout-grid {
+            grid-template-columns: 1fr !important;
+            gap: 25px !important;
+            padding: 25px 20px !important;
+        }
+    }
+    .btn-whatsapp-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25) !important;
+        opacity: 0.95;
+    }
+</style>
+{% endblock %}

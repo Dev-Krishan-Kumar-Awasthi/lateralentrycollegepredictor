@@ -7,7 +7,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, request, redirect, jsonify, session, url_for
+from flask import Flask, render_template, request, redirect, jsonify, session, url_for, flash
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -373,7 +373,8 @@ with app.app_context():
             ("coupon_used", "TEXT"),
             ("referred_by_id", "INTEGER"),
             ("predictions_today", "INTEGER DEFAULT 0"),
-            ("last_prediction_date", "TEXT")
+            ("last_prediction_date", "TEXT"),
+            ("is_premium", "INTEGER DEFAULT 0")
         ]:
             try:
                 db.session.execute(text(f"ALTER TABLE User ADD COLUMN {col} {col_type}"))
@@ -470,6 +471,26 @@ with app.app_context():
     fetch_rank_maps_cache()
 
 
+def consume_prediction(user):
+    if not user:
+        return True
+    if user.has_unlimited_access:
+        return True
+    
+    from datetime import date
+    today_str = date.today().isoformat()
+    if user.last_prediction_date != today_str:
+        user.last_prediction_date = today_str
+        user.predictions_today = 0
+        
+    if user.predictions_today >= user.daily_prediction_limit:
+        return False
+        
+    user.predictions_today += 1
+    db.session.commit()
+    return True
+
+
 # ── Pages ────────────────────────────────────────────────────────────────────
 
 @app.route('/', methods=['GET'])
@@ -480,6 +501,31 @@ def home():
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html', metadata=get_data_metadata())
+
+
+@app.route('/premium', methods=['GET'])
+def premium_page():
+    limit_reached = request.args.get('limit') == '1'
+    user = current_user()
+    return render_template('premium.html', limit_reached=limit_reached, user=user)
+
+
+@app.route('/checkout', methods=['GET', 'POST'])
+@login_required
+def checkout():
+    user = current_user()
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'success':
+            user.is_premium = True
+            db.session.commit()
+            flash("Success! Premium Access Unlocked successfully.", "success")
+            return redirect(url_for('account_page'))
+        else:
+            flash("Payment simulation failed. Please try again.", "error")
+            return redirect(url_for('premium_page'))
+            
+    return render_template('checkout.html', user=user)
 
 
 @app.route('/predictor', methods=['GET', 'POST'])
@@ -536,37 +582,8 @@ def predictor():
 
     # ── Daily Prediction Limit Check ──
     user = current_user()
-    if user:
-        admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
-        is_admin = (user.email.strip().lower() == admin_email)
-        
-        has_referred_others = User.query.filter_by(referred_by_id=user.id).first() is not None
-        
-        # Verify coupon is still active/exists (if it is an admin coupon, not a student referral)
-        coupon_valid = True
-        if user.coupon_used and not user.referred_by_id:
-            from models import Coupon
-            coupon_valid = Coupon.query.filter_by(code=user.coupon_used, is_active=True).first() is not None
-            
-        has_unlimited_access = is_admin or (user.coupon_used is not None and coupon_valid) or has_referred_others
-        
-        if not has_unlimited_access:
-            from datetime import date
-            today_str = date.today().isoformat()
-            
-            if user.last_prediction_date != today_str:
-                user.last_prediction_date = today_str
-                user.predictions_today = 0
-                
-            if user.predictions_today >= 5:
-                return render_template(
-                    'predictor.html', data=None, prediction=None,
-                    error="You have reached your daily limit of 5 predictions. Register/use a coupon or invite friends to get unlimited access!",
-                    mp_cities=MP_CITIES, prefill=None, has_prefill=False
-                )
-            
-            user.predictions_today += 1
-            db.session.commit()
+    if user and not consume_prediction(user):
+        return redirect('/premium?limit=1')
 
     category = request.form.get('category')
     gender = request.form.get('gender')
@@ -656,6 +673,8 @@ def choice_builder():
                 cloud_shortlist=[], shortlisted_keys=[],
             )
         try:
+            if not consume_prediction(user):
+                return redirect('/premium?limit=1')
             cgpa = float(request.form.get('cgpa', '').strip())
             form_data = {
                 'cgpa': cgpa,
@@ -927,6 +946,9 @@ def rank():
         return render_template('rank.html', data=None, prediction=None)
 
     try:
+        user = current_user()
+        if user and not consume_prediction(user):
+            return redirect('/premium?limit=1')
         cgpa = float(request.form.get('cgpa', '').strip())
         if not (0.0 <= cgpa <= 10.0):
             raise ValueError()
@@ -949,6 +971,9 @@ def merit_insights():
         return render_template('merit_insights.html', data=None, insights=None)
 
     try:
+        user = current_user()
+        if user and not consume_prediction(user):
+            return redirect('/premium?limit=1')
         cgpa = float(request.form.get('cgpa', '').strip())
         if not (0.0 <= cgpa <= 10.0):
             raise ValueError()
@@ -998,6 +1023,9 @@ def simulator():
         return render_template('simulator.html', result=None)
 
     try:
+        user = current_user()
+        if user and not consume_prediction(user):
+            return redirect('/premium?limit=1')
         cgpa = float(request.form.get('cgpa', '').strip())
         category = request.form.get('category')
         gender = request.form.get('gender')
@@ -1691,6 +1719,26 @@ def delete_vault_slip(id):
     db.session.delete(slip)
     db.session.commit()
     return redirect('/admin/users?success=vault_deleted#choice-vault')
+
+
+@app.route('/admin/toggle-premium/<int:user_id>', methods=['POST'])
+@login_required
+def admin_toggle_premium(user_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    target_user = db.session.get(User, user_id)
+    if target_user:
+        target_user.is_premium = not target_user.is_premium
+        db.session.commit()
+        status_msg = f"Premium access updated for {target_user.display_name or target_user.email}!"
+        flash(status_msg, "success")
+    else:
+        flash("User not found.", "error")
+        
+    return redirect('/admin/users')
 
 
 @app.route('/admin/delete-user/<int:user_id>', methods=['POST'])

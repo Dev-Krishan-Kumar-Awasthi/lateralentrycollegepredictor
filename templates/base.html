@@ -225,6 +225,21 @@
                         <i class="fas fa-user-circle"></i> My Account
                     </a>
                 </li>
+                {% if current_user %}
+                    {% if not current_user.has_unlimited_access %}
+                    <li style="display: flex; align-items: center;">
+                        <a href="/premium" class="{% if request.endpoint == 'premium_page' %}nav-active{% endif %}" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #fff !important; border-radius: 20px; padding: 6px 14px; margin-left: 8px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(217, 119, 6, 0.2);">
+                            <i class="fas fa-crown"></i> Go Premium
+                        </a>
+                    </li>
+                    {% else %}
+                    <li style="display: flex; align-items: center;">
+                        <span style="background: linear-gradient(135deg, #10B981, #059669); color: #fff; border-radius: 20px; padding: 6px 14px; margin-left: 8px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);">
+                            <i class="fas fa-infinity"></i> Premium
+                        </span>
+                    </li>
+                    {% endif %}
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -888,6 +903,18 @@
 
     <!-- Toast Container for premium alert experience -->
     <div id="mp-toast-container" class="toast-container"></div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            {% for category, message in messages %}
+              showToast("{{ message }}", "{{ 'success' if category == 'success' else 'error' }}");
+            {% endfor %}
+          });
+        </script>
+      {% endif %}
+    {% endwith %}
 
     <!-- Scroll to top button -->
     <button id="scroll-top-btn" aria-label="Scroll to top" title="Back to top">

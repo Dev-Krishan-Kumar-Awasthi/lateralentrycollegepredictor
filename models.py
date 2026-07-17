@@ -113,10 +113,40 @@ class User(db.Model):
     referred_by_id = db.Column(db.Integer, db.ForeignKey("User.id"), nullable=True)
     predictions_today = db.Column(db.Integer, default=0)
     last_prediction_date = db.Column(db.String(20), nullable=True)
+    is_premium = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     shortlists = db.relationship("CloudShortlist", backref="user", lazy=True)
     referred_by = db.relationship("User", remote_side=[id], backref="referred_students")
+
+    @property
+    def has_unlimited_access(self):
+        import os
+        admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+        is_admin = (self.email.strip().lower() == admin_email)
+        
+        coupon_valid = True
+        if self.coupon_used and not self.referred_by_id:
+            from models import Coupon
+            coupon_valid = Coupon.query.filter_by(code=self.coupon_used, is_active=True).first() is not None
+            
+        return is_admin or (self.coupon_used is not None and not self.referred_by_id and coupon_valid) or bool(self.is_premium)
+
+    @property
+    def daily_prediction_limit(self):
+        if self.has_unlimited_access:
+            return 99999
+        limit = 5
+        if self.referred_by_id is not None:
+            limit += 5
+        limit += len(self.referred_students) * 5
+        return limit
+
+    @property
+    def remaining_predictions(self):
+        if self.has_unlimited_access:
+            return 99999
+        return max(0, self.daily_prediction_limit - (self.predictions_today or 0))
 
     @property
     def coupon_details(self):
@@ -124,6 +154,7 @@ class User(db.Model):
             from models import Coupon
             return Coupon.query.filter_by(code=self.coupon_used).first()
         return None
+
 
 
 class CloudShortlist(db.Model):

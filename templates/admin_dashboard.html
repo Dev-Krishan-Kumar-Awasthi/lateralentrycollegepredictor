@@ -375,8 +375,9 @@
                             <th>Gender</th>
                             <th>Coupon Used</th>
                             <th>Referred By</th>
+                            <th>Premium</th>
                             <th>Registered Date</th>
-                            <th style="text-align:center; min-width:140px;">Actions</th>
+                            <th style="text-align:center; min-width:240px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -425,6 +426,15 @@
                                 <span style="color:var(--muted);">—</span>
                                 {% endif %}
                             </td>
+                            <td>
+                                {% if u.is_premium %}
+                                    <span style="background:#FEF3C7; color:#D97706; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-crown"></i> Paid Premium</span>
+                                {% elif u.has_unlimited_access %}
+                                    <span style="background:#DCFCE7; color:#16A34A; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem; white-space:nowrap; display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-infinity"></i> Free Premium</span>
+                                {% else %}
+                                    <span style="background:#F1F5F9; color:#475569; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem; white-space:nowrap;">Free Tier</span>
+                                {% endif %}
+                            </td>
                             <td style="font-size:0.8rem; color:var(--muted);">{{ (u.created_at | to_ist).strftime('%d %b %Y, %I:%M %p') if u.created_at else '—' }}</td>
                             <td>
                                 <div style="display:flex; justify-content:center; gap:6px; align-items:center;">
@@ -434,6 +444,17 @@
                                     <button type="button" class="btn-primary-small" onclick="messageUser({{ u.id }}, '{{ u.email }}', '{{ u.display_name or 'Student' }}')" style="padding:5px 9px; font-size:0.75rem; background:#EA580C; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
                                         <i class="fas fa-envelope"></i> Msg
                                     </button>
+                                    <form method="POST" action="/admin/toggle-premium/{{ u.id }}" style="margin:0;">
+                                        {% if u.is_premium %}
+                                        <button type="submit" style="padding:5px 9px; font-size:0.75rem; background:#64748B; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                                            <i class="fas fa-minus-circle"></i> Revoke Premium
+                                        </button>
+                                        {% else %}
+                                        <button type="submit" style="padding:5px 9px; font-size:0.75rem; background:#D97706; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                                            <i class="fas fa-crown"></i> Grant Premium
+                                        </button>
+                                        {% endif %}
+                                    </form>
                                     <form method="POST" action="/admin/delete-user/{{ u.id }}" onsubmit="return confirm('Are you sure you want to delete this user ({{ u.display_name or u.email }})? All saved shortlists will also be deleted.')" style="margin:0;">
                                         <button type="submit" style="padding:5px 9px; font-size:0.75rem; background:#EF4444; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
                                             <i class="fas fa-trash-alt"></i> Delete
