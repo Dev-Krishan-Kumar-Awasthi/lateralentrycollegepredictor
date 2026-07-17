@@ -62,6 +62,37 @@
         </div>
     </div>
 
+    <!-- Quick Actions: Add to Shortlist -->
+    <div style="background: #fff; border: 1px solid var(--border); padding: 18px 24px; border-radius: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="background: rgba(30, 58, 138, 0.08); color: var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                <i class="fas fa-bookmark"></i>
+            </div>
+            <div>
+                <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: var(--primary);">Quick Shortlist</h4>
+                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: var(--muted);">Save this college to your choice filling list directly.</p>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <select id="detail-branch-select" style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; font-size: 0.85rem; background: #fff; min-width: 180px;">
+                {% for b in detail.branches %}
+                <option value="{{ b }}">{{ b | branch_name }} ({{ b }})</option>
+                {% endfor %}
+            </select>
+            
+            <select id="detail-year-select" style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-weight: 600; font-size: 0.85rem; background: #fff;">
+                {% for yr in detail.by_year.keys() | list %}
+                <option value="{{ yr }}">{{ yr }}</option>
+                {% endfor %}
+            </select>
+            
+            <button onclick="addDetailToShortlist()" style="padding: 9px 18px; background: #1E3A8A; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;" onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+                <i class="fas fa-plus"></i> Add to Shortlist
+            </button>
+        </div>
+    </div>
+
     <!-- Main Info Grid (Details, Maps, Placements) -->
     <div class="info-details-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:24px;">
         
@@ -1007,5 +1038,50 @@ document.getElementById('review-form')?.addEventListener('submit', function(e) {
         }
     });
 });
+</script>
+
+<script>
+function addDetailToShortlist() {
+    const collegeName = "{{ college_name }}";
+    const branch = document.getElementById('detail-branch-select').value;
+    const year = document.getElementById('detail-year-select').value;
+    
+    if (!branch || !year) {
+        if (window.showToast) {
+            window.showToast("Please select a branch and year!", "error");
+        } else {
+            alert("Please select a branch and year!");
+        }
+        return;
+    }
+    
+    const key = `${collegeName}|${branch}|${year}`;
+    
+    // Load current shortlist
+    let saved = [];
+    try {
+        saved = JSON.parse(localStorage.getItem('mp_dte_shortlist') || '[]');
+    } catch(e) {
+        saved = [];
+    }
+    
+    if (saved.includes(key)) {
+        if (window.showToast) {
+            window.showToast("Already in your shortlist!", "info");
+        } else {
+            alert("Already in your shortlist!");
+        }
+        return;
+    }
+    
+    saved.push(key);
+    localStorage.setItem('mp_dte_shortlist', JSON.stringify(saved));
+    
+    if (window.showToast) {
+        window.showToast("Added to shortlist successfully!", "success");
+    } else {
+        alert("Added to shortlist successfully!");
+    }
+}
 </script>
 {% endblock %}

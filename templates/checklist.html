@@ -36,6 +36,26 @@
         </div>
     </div>
 
+    <!-- Glowing Success Reporting Badge -->
+    <style>
+    @keyframes pulse-glow {
+        0% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.1); border-color: #10B981; }
+        50% { box-shadow: 0 0 18px rgba(16, 185, 129, 0.35); border-color: #34D399; }
+        100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.1); border-color: #10B981; }
+    }
+    </style>
+    <div id="reporting-success-badge" style="display: none; margin-bottom: 24px; padding: 18px; background: #ECFDF5; border: 1.5px solid #10B981; border-radius: 8px; transition: all 0.3s ease; animation: pulse-glow 2s infinite ease-in-out;">
+        <div style="display: flex; align-items: center; gap: 12px; color: #065F46;">
+            <div style="background: #10B981; color: #fff; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div>
+                <strong style="font-size: 0.98rem; display: block; color: #047857;">Status: Ready for Admission Reporting!</strong>
+                <span style="font-size: 0.85rem; color: #065F46; opacity: 0.95;">All mandatory verification documents are checked and ready. You are good to report to college.</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Documents List -->
     <div class="gov-box" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
         
@@ -212,6 +232,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const percent = Math.round((checkedCount / total) * 100);
         progressText.innerText = `${percent}% Completed (${checkedCount}/${total} Compiled)`;
         progressBar.style.width = `${percent}%`;
+
+        // Toggle success badge when all items are verified
+        const badge = document.getElementById("reporting-success-badge");
+        if (badge) {
+            badge.style.display = (checkedCount === total) ? "block" : "none";
+        }
     }
 
     // Initial progress computation

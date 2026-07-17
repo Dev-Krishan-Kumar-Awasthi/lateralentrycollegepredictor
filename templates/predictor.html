@@ -1226,8 +1226,7 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
 
         // Restore draft if user is logged in, draft exists, and no results are shown yet
         const draftStr = sessionStorage.getItem('predictor_draft');
-        const isLoggedIn = {{ 'true' if current_user else 'false' }
-    };
+        const isLoggedIn = {{ 'true' if current_user else 'false' }};
     const hasResults = document.getElementById('results-area') !== null || document.querySelector('.no-results') !== null;
 
     if (draftStr && isLoggedIn && !hasResults) {

@@ -176,9 +176,23 @@
 <script>
     function copyReferralCode(code) {
         navigator.clipboard.writeText(code).then(() => {
-            alert('Referral Code copied to clipboard: ' + code + '\nShare it on WhatsApp with friends!');
+            const shareUrl = window.location.origin;
+            const msg = `Hey! Check out this awesome MP B.Tech Lateral Entry College Predictor tool to check your college admission chances, expected rank, and build your smart choice list:\n\n👉 ${shareUrl}/\n\nUse my Referral Code during registration to get +5 extra daily predictions limit for free:\n🎁 Referral Code: ${code}\n\nDon't miss out, register today!`;
+            
+            if (window.showToast) {
+                window.showToast('Code copied! Opening WhatsApp...', 'success');
+            } else {
+                alert('Referral Code copied to clipboard!\nOpening WhatsApp to share with your friends.');
+            }
+            
+            setTimeout(() => {
+                window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg), "_blank");
+            }, 800);
         }).catch(err => {
             console.error('Could not copy text: ', err);
+            const shareUrl = window.location.origin;
+            const msg = `Hey! Check out this awesome MP B.Tech Lateral Entry College Predictor tool to check your college admission chances, expected rank, and build your smart choice list:\n\n👉 ${shareUrl}/\n\nUse my Referral Code during registration to get +5 extra daily predictions limit for free:\n🎁 Referral Code: ${code}\n\nDon't miss out, register today!`;
+            window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg), "_blank");
         });
     }
 </script>

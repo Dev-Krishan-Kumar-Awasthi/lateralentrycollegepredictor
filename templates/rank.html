@@ -105,8 +105,8 @@
     </div>
 
     <div style="text-align:center;margin-bottom:28px;">
-        <a href="/predictor" class="hero-btn primary" style="display:inline-block;">
-            <i class="fas fa-bullseye"></i> Now Predict Your Colleges
+        <a href="/predictor?cgpa={{ data.cgpa }}{% if current_user %}&category={{ current_user.category }}&gender={{ current_user.gender }}{% endif %}" class="hero-btn primary" style="display:inline-block;">
+            <i class="fas fa-bullseye"></i> Find Colleges for My Rank
         </a>
     </div>
     {% endif %}
