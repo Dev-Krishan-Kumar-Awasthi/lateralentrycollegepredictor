@@ -75,6 +75,16 @@ def get_college_profile(college_name: str) -> dict | None:
     return None
 
 
+def get_college_image(college_name: str) -> list:
+    """Fetch list of college image paths from config/college_images.json if mapped."""
+    try:
+        data = _load_json("college_images.json")
+        return data.get(college_name, {}).get("dest_imgs", [])
+    except Exception:
+        return []
+
+
+
 def infer_city_from_college_name(college_name: str) -> str | None:
     cmap = get_college_city_map()
     if college_name in cmap:
@@ -303,6 +313,7 @@ def get_college_info_bundle(college_name: str, college_type: str | None = None,
     avg_pkg = placement.get('average_package_lpa', 0.0)
     roi_index = round(avg_pkg / tuition_lpa, 2) if tuition_lpa > 0 else 0.0
 
+    image_list = get_college_image(college_name)
     return {
         "profile": profile,
         "fee": fee,
@@ -313,4 +324,7 @@ def get_college_info_bundle(college_name: str, college_type: str | None = None,
         "coords": get_college_coordinates(college_name),
         "placement": placement,
         "roi_index": roi_index,
+        "image_url": image_list[0] if image_list else None,
+        "image_urls": image_list,
     }
+

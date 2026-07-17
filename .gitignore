@@ -7,3 +7,5 @@ instance/
 *.db-shm
 *.db-wal
 only take frontend of this/
+scratch/
+

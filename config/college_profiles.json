@@ -2,7 +2,245 @@
   "meta": {
     "source": "google_maps_platform",
     "note": "Run scripts/enrich_colleges_google.py with GOOGLE_MAPS_API_KEY to populate all 261 colleges",
-    "fee_note": "Tuition not available via Google Places — see college_fees.json with verified public sources"
+    "fee_note": "Tuition not available via Google Places — see college_fees.json with verified public sources",
+    "image_count": 0
   },
-  "colleges": {}
+  "colleges": {
+    "ADINA INSTITUTE OF SCIENCE & TECHNOLOGY SAGAR (2009)": {
+      "college_name": "ADINA INSTITUTE OF SCIENCE & TECHNOLOGY SAGAR (2009)",
+      "google_status": "ok"
+    },
+    "ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)": {
+      "college_name": "ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)",
+      "google_status": "ok"
+    },
+    "Acropolis Institute of Technology & Research Indore (2005)": {
+      "college_name": "Acropolis Institute of Technology & Research Indore (2005)",
+      "google_status": "ok"
+    },
+    "Acropolis Institute of Technology & Research, Indore (2005)": {
+      "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+      "google_status": "ok"
+    },
+    "Aditya College of Technology & Science Satna (2007)": {
+      "college_name": "Aditya College of Technology & Science Satna (2007)",
+      "google_status": "ok"
+    },
+    "Aditya College of Technology & Science, Satna (2007)": {
+      "college_name": "Aditya College of Technology & Science, Satna (2007)",
+      "google_status": "ok"
+    },
+    "All Saints College of Technology Bhopal (2002)": {
+      "college_name": "All Saints College of Technology Bhopal (2002)",
+      "google_status": "ok"
+    },
+    "All Saints College of Technology, Bhopal (2002)": {
+      "college_name": "All Saints College of Technology, Bhopal (2002)",
+      "google_status": "ok"
+    },
+    "Alpine Institute of Technology, Ujjain (2007)": {
+      "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+      "google_status": "ok"
+    },
+    "Annie Institure of Technology and Research Center Chhindwara (2013)": {
+      "college_name": "Annie Institure of Technology and Research Center Chhindwara (2013)",
+      "google_status": "ok"
+    },
+    "Annie Institute of Technology and Research Centre, Chhindwara (2013)": {
+      "college_name": "Annie Institute of Technology and Research Centre, Chhindwara (2013)",
+      "google_status": "ok"
+    },
+    "Astral Institute of Technology & Research Indore (2006)": {
+      "college_name": "Astral Institute of Technology & Research Indore (2006)",
+      "google_status": "ok"
+    },
+    "Astral Institute of Technology & Research, Indore (2006)": {
+      "college_name": "Astral Institute of Technology & Research, Indore (2006)",
+      "google_status": "ok"
+    },
+    "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT JABALPUR": {
+      "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT JABALPUR",
+      "google_status": "ok"
+    },
+    "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT BHOPAL (2009)": {
+      "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT BHOPAL (2009)",
+      "google_status": "ok"
+    },
+    "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL (2009)": {
+      "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL (2009)",
+      "google_status": "ok"
+    },
+    "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE BHOPAL (2002)": {
+      "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE BHOPAL (2002)",
+      "google_status": "ok"
+    },
+    "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)": {
+      "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)",
+      "google_status": "ok"
+    },
+    "BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)": {
+      "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+      "google_status": "ok"
+    },
+    "BM College of Technology Indore (2007)": {
+      "college_name": "BM College of Technology Indore (2007)",
+      "google_status": "ok"
+    },
+    "Bansal College of Engineering, Obedullaganj, Raisen (2002)": {
+      "college_name": "Bansal College of Engineering, Obedullaganj, Raisen (2002)",
+      "google_status": "ok"
+    },
+    "DR. A.P.J. ABDUL KALAM UIT JHABUA": {
+      "college_name": "DR. A.P.J. ABDUL KALAM UIT JHABUA",
+      "google_status": "ok"
+    },
+    "Global Nature Care Sangathan's Group of Institutions, Jabalpur (2009)": {
+      "college_name": "Global Nature Care Sangathan's Group of Institutions, Jabalpur (2009)",
+      "google_status": "ok"
+    },
+    "Guru Ramdas Khalsa Institute of Science & Technology Jabalpur (1997)": {
+      "college_name": "Guru Ramdas Khalsa Institute of Science & Technology Jabalpur (1997)",
+      "google_status": "ok"
+    },
+    "Indira Gandhi Engineering College Sagar (IGEC) (1981)": {
+      "college_name": "Indira Gandhi Engineering College Sagar (IGEC) (1981)",
+      "google_status": "ok"
+    },
+    "Indira Gandhi Engineering College, Sagar (IGEC) (1981)": {
+      "college_name": "Indira Gandhi Engineering College, Sagar (IGEC) (1981)",
+      "google_status": "ok"
+    },
+    "Indore Institute of Science & Technology Indore (2003)": {
+      "college_name": "Indore Institute of Science & Technology Indore (2003)",
+      "google_status": "ok"
+    },
+    "Indore Institute of Science & Technology, Indore (2003)": {
+      "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+      "google_status": "ok"
+    },
+    "Infinity Management & Engineering College Sagar (2008)": {
+      "college_name": "Infinity Management & Engineering College Sagar (2008)",
+      "google_status": "ok"
+    },
+    "Infinity Management & Engineering College, Sagar (2008)": {
+      "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+      "google_status": "ok"
+    },
+    "Jawaharlal Nehru College of Technology Rewa (2007)": {
+      "college_name": "Jawaharlal Nehru College of Technology Rewa (2007)",
+      "google_status": "ok"
+    },
+    "Lakshmi Narain College of Technology & Science (RIT) Indore (2002)": {
+      "college_name": "Lakshmi Narain College of Technology & Science (RIT) Indore (2002)",
+      "google_status": "ok"
+    },
+    "Lakshmi Narain College of Technology & Science (RIT), Indore (2002)": {
+      "college_name": "Lakshmi Narain College of Technology & Science (RIT), Indore (2002)",
+      "google_status": "ok"
+    },
+    "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)": {
+      "college_name": "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+      "google_status": "ok"
+    },
+    "Mahakal Institute Technology & Management Ujjain (2007)": {
+      "college_name": "Mahakal Institute Technology & Management Ujjain (2007)",
+      "google_status": "ok"
+    },
+    "Mahakal Institute Technology & Management, Ujjain (2007)": {
+      "college_name": "Mahakal Institute Technology & Management, Ujjain (2007)",
+      "google_status": "ok"
+    },
+    "Mahakal Instute of Technology Ujjain (2001)": {
+      "college_name": "Mahakal Instute of Technology Ujjain (2001)",
+      "google_status": "ok"
+    },
+    "Mahakal Instute of Technology, Ujjain (2001)": {
+      "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+      "google_status": "ok"
+    },
+    "Mathura Devi Institute of Technology & Management Indore (2007)": {
+      "college_name": "Mathura Devi Institute of Technology & Management Indore (2007)",
+      "google_status": "ok"
+    },
+    "Mathura Devi Institute of Technology & Management, Indore (2007)": {
+      "college_name": "Mathura Devi Institute of Technology & Management, Indore (2007)",
+      "google_status": "ok"
+    },
+    "Millenium Institute of Technology and Science Bhopal (2007)": {
+      "college_name": "Millenium Institute of Technology and Science Bhopal (2007)",
+      "google_status": "ok"
+    },
+    "NRI Institute of Information Science & Technology Bhopal (2001)": {
+      "college_name": "NRI Institute of Information Science & Technology Bhopal (2001)",
+      "google_status": "ok"
+    },
+    "Oriental College of Technology, Bhopal (2002)": {
+      "college_name": "Oriental College of Technology, Bhopal (2002)",
+      "google_status": "ok"
+    },
+    "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)": {
+      "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)",
+      "google_status": "ok"
+    },
+    "Prashantee Institute of Technology & Science Ujjain (2008)": {
+      "college_name": "Prashantee Institute of Technology & Science Ujjain (2008)",
+      "google_status": "ok"
+    },
+    "Radha Raman Institute of Technology & Science Bhopal (2003)": {
+      "college_name": "Radha Raman Institute of Technology & Science Bhopal (2003)",
+      "google_status": "ok"
+    },
+    "Radha Raman Institute of Technology, & Science, Bhopal (2003)": {
+      "college_name": "Radha Raman Institute of Technology, & Science, Bhopal (2003)",
+      "google_status": "ok"
+    },
+    "Rewa Institute of Technology, Rewa (2003)": {
+      "college_name": "Rewa Institute of Technology, Rewa (2003)",
+      "google_status": "ok"
+    },
+    "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)": {
+      "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+      "google_status": "ok"
+    },
+    "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY BHOPAL (2006)": {
+      "college_name": "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY BHOPAL (2006)",
+      "google_status": "ok"
+    },
+    "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL \r\n(2006)": {
+      "college_name": "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL \r\n(2006)",
+      "google_status": "ok"
+    },
+    "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)": {
+      "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)",
+      "google_status": "ok"
+    },
+    "Surabhi College of Engineering & Technology, Bhopal (2008)": {
+      "college_name": "Surabhi College of Engineering & Technology, Bhopal (2008)",
+      "google_status": "ok"
+    },
+    "Sushila Devi Bansal College of Engineering, Indore (2006)": {
+      "college_name": "Sushila Devi Bansal College of Engineering, Indore (2006)",
+      "google_status": "ok"
+    },
+    "Swami Vivekanand College of Engineering Indore (2004)": {
+      "college_name": "Swami Vivekanand College of Engineering Indore (2004)",
+      "google_status": "ok"
+    },
+    "Swami Vivekanand College of Engineering, Indore (2004)": {
+      "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+      "google_status": "ok"
+    },
+    "Synergy Institute of Technology, Dewas (2008)": {
+      "college_name": "Synergy Institute of Technology, Dewas (2008)",
+      "google_status": "ok"
+    },
+    "Technocrats Institute of Technology (Excellence) Bhopal (2007)": {
+      "college_name": "Technocrats Institute of Technology (Excellence) Bhopal (2007)",
+      "google_status": "ok"
+    },
+    "Vaishnavi Institutes of Technology and Science Raisen (2010)": {
+      "college_name": "Vaishnavi Institutes of Technology and Science Raisen (2010)",
+      "google_status": "ok"
+    }
+  }
 }

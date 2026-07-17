@@ -36,8 +36,8 @@
     {% else %}
 
     <!-- College Header Card -->
-    <div class="college-header-card">
-        <div class="college-icon">
+    <div class="college-header-card" style="{% if image_url %}background: linear-gradient(180deg, rgba(15, 40, 73, 0.7) 0%, #0F2849 100%), url('{{ url_for('static', filename=image_url) }}') center/cover no-repeat; min-height: 180px; align-items: flex-end;{% endif %}">
+        <div class="college-icon" style="{% if image_url %}background: rgba(255,255,255,0.25); border: 1.5px solid rgba(255,255,255,0.4);{% endif %}">
             <i class="fas fa-university"></i>
         </div>
         <div class="college-title-block">
@@ -67,6 +67,36 @@
         
         <!-- Column 1: Fee, Location, Distance & Leaflet Map -->
         <div class="details-left-column" style="display:flex; flex-direction:column; gap:20px;">
+            {% if image_urls %}
+            <div class="gov-box" style="margin-bottom:0; padding:0; overflow:hidden; border-top: 4px solid var(--secondary); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <div style="position: relative; width: 100%; height: 260px; background: #000; overflow: hidden;">
+                    <img id="main-gallery-image" src="{{ url_for('static', filename=image_urls[0]) }}" alt="{{ college_name }}" style="width:100%; height:100%; object-fit:cover; display:block; transition: opacity 0.2s;">
+                    {% if image_urls|length > 1 %}
+                    <button onclick="prevGalleryImage()" style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; z-index: 5;"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="nextGalleryImage()" style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; z-index: 5;"><i class="fas fa-chevron-right"></i></button>
+                    {% endif %}
+                </div>
+                
+                <div style="padding: 14px 16px; background:#f8fafc; border-top: 1px solid var(--border);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                        <span style="font-size:0.82rem; font-weight:700; color:var(--primary); display: flex; align-items: center; gap: 6px;"><i class="fas fa-images" style="color: var(--secondary);"></i> Campus Photo Gallery</span>
+                        <span id="gallery-counter" style="font-size:0.75rem; color:var(--muted); font-weight:600;">1 of {{ image_urls|length }}</span>
+                    </div>
+                    {% if image_urls|length > 1 %}
+                    <div class="gallery-thumbnails" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
+                        {% for img in image_urls %}
+                        <img class="gallery-thumb {% if loop.first %}active-thumb{% endif %}" 
+                             src="{{ url_for('static', filename=img) }}" 
+                             onclick="setGalleryImage({{ loop.index0 }})" 
+                             style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px; cursor: pointer; opacity: 0.6; transition: all 0.2s; border: 2px solid transparent;"
+                             data-index="{{ loop.index0 }}">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            
             <div class="gov-box meta-info-bar" style="margin-bottom:0; display:flex; flex-direction:column; gap:16px; padding:22px 24px;">
                 <h3 style="margin:0; color:var(--primary); font-size:1.1rem; display:flex; align-items:center; gap:8px;">
                     <i class="fas fa-info-circle" style="color:var(--primary);"></i> College Essentials
@@ -691,6 +721,14 @@
 .transit-marker-pin .marker-pulse {
     background: rgba(234, 88, 12, 0.4);
 }
+.gallery-thumb:hover {
+    opacity: 1 !important;
+}
+.gallery-thumb.active-thumb {
+    opacity: 1 !important;
+    border-color: var(--secondary) !important;
+    box-shadow: 0 0 8px rgba(249, 115, 22, 0.3);
+}
 </style>
 
 {% endblock %}
@@ -698,6 +736,56 @@
 {% block extra_scripts %}
 <!-- Leaflet JS CDN -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+const galleryImages = [
+    {% for img in image_urls %}
+    "{{ url_for('static', filename=img) }}",
+    {% endfor %}
+];
+let currentGalleryIndex = 0;
+
+function updateGallery() {
+    const mainImg = document.getElementById('main-gallery-image');
+    const counter = document.getElementById('gallery-counter');
+    const thumbs = document.querySelectorAll('.gallery-thumb');
+    
+    if (mainImg) {
+        mainImg.style.opacity = '0.5';
+        setTimeout(() => {
+            mainImg.src = galleryImages[currentGalleryIndex];
+            mainImg.style.opacity = '1';
+        }, 150);
+    }
+    
+    if (counter) {
+        counter.textContent = `${currentGalleryIndex + 1} of ${galleryImages.length}`;
+    }
+    
+    thumbs.forEach((thumb, idx) => {
+        if (idx === currentGalleryIndex) {
+            thumb.classList.add('active-thumb');
+        } else {
+            thumb.classList.remove('active-thumb');
+        }
+    });
+}
+
+function setGalleryImage(idx) {
+    currentGalleryIndex = idx;
+    updateGallery();
+}
+
+function prevGalleryImage() {
+    currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    updateGallery();
+}
+
+function nextGalleryImage() {
+    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+    updateGallery();
+}
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

@@ -25,7 +25,7 @@ from college_meta import (
     MP_DISTRICTS, distance_from_home, get_fee_info, format_fee_display,
     infer_city_from_college_name, get_district_for_city, get_college_info_bundle,
     get_city_coords, get_placement_info, get_college_coordinates,
-    get_college_profile,
+    get_college_profile, get_college_image,
 )
 from google_college_service import api_key_configured
 from smart_choices import build_smart_choices
@@ -40,6 +40,17 @@ from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount, Cou
 from faq_data import (
     FAQ_LIST, get_faq_by_slug, get_faqs_by_category, get_all_categories
 )
+def normalize_name(name: str) -> str:
+    n = name.lower()
+    n = n.replace("institure", "institute")
+    n = n.replace("centre", "center")
+    n = n.replace("&", "and")
+    n = n.replace(",", " ")
+    n = n.replace(".", " ")
+    n = n.replace("-", " ")
+    n = " ".join(n.split())
+    return n
+
 
 
 app = Flask(__name__)
@@ -738,6 +749,8 @@ def college_detail_page():
         fee_display=bundle['fee_display'], fee=bundle['fee'],
         college_city=bundle['city'], college_district=bundle['district'],
         profile=bundle['profile'], distance=bundle['distance'],
+        image_url=bundle.get('image_url'),
+        image_urls=bundle.get('image_urls', []),
         home_city=home_city, reviews=reviews,
         mp_cities=MP_CITIES, placement=bundle['placement'],
         coords=bundle['coords'], city_coords=get_city_coords(),
@@ -792,32 +805,60 @@ def search():
                                mp_cities=MP_CITIES, needs_login=True)
 
     if not has_filters:
-        if request.args.get('json'):
-            colleges_query = db.session.query(
-                SeatInfo.college_name, 
-                SeatInfo.college_type
-            ).distinct().order_by(SeatInfo.college_name).all()
-            deduped = [{"college_name": name, "college_type": ctype} for name, ctype in colleges_query]
-            return jsonify(deduped)
-
-        # Load all unique colleges as a directory list
+        # Load all distinct colleges, resolve type duplicates by preferring GOVT
         colleges_query = db.session.query(
             SeatInfo.college_name, 
             SeatInfo.college_type
-        ).distinct().order_by(SeatInfo.college_name).all()
+        ).order_by(SeatInfo.college_name).all()
         
-        colleges = []
+        from collections import Counter
+        raw_counts = Counter(name for name, ctype in colleges_query)
+        
+        college_map = {}
         for name, ctype in colleges_query:
+            norm = normalize_name(name)
+            if norm not in college_map:
+                college_map[norm] = []
+            college_map[norm].append((name, ctype))
+            
+        deduped_list = []
+        for norm, items in college_map.items():
+            best_name, best_type = max(items, key=lambda x: raw_counts[x[0]])
+            
+            has_govt = any(ctype == "GOVT" for name, ctype in items)
+            if has_govt:
+                best_type = "GOVT"
+                
+            deduped_list.append((best_name, best_type))
+            
+        final_deduped_list = []
+        seen = set()
+        for name, ctype in deduped_list:
+            if name not in seen:
+                seen.add(name)
+                final_deduped_list.append((name, ctype))
+                
+        final_deduped_list.sort(key=lambda x: x[0])
+
+        if request.args.get('json'):
+            deduped_json = [{"college_name": name, "college_type": ctype} for name, ctype in final_deduped_list]
+            return jsonify(deduped_json)
+
+        colleges = []
+        for name, ctype in final_deduped_list:
             fee = get_fee_info(name, ctype)
             placement = get_placement_info(name, ctype)
             city_val = infer_city_from_college_name(name)
+            images = get_college_image(name)
             colleges.append({
                 'college_name': name,
                 'college_type': ctype,
                 'city': city_val,
                 'fee_display': format_fee_display(fee),
                 'fee_approximate': fee.get('is_approximate', True),
-                'placement': placement
+                'placement': placement,
+                'image_urls': images,
+                'image_url': images[0] if images else None
             })
             
         return render_template(
@@ -849,6 +890,11 @@ def search():
         # Attach placement statistics
         placement = get_placement_info(c['college_name'], c.get('college_type'))
         c['placement'] = placement
+        
+        # Attach image
+        images = get_college_image(c['college_name'])
+        c['image_urls'] = images
+        c['image_url'] = images[0] if images else None
         
         if min_package > 0:
             if placement['average_package_lpa'] >= min_package:

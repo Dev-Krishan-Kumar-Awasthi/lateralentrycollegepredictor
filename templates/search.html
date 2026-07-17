@@ -134,6 +134,14 @@
                     grid-template-columns: 1fr;
                 }
             }
+            .college-card-directory:hover .carousel-control {
+                opacity: 1 !important;
+            }
+            .carousel-dot.active {
+                background: #fff !important;
+                width: 12px !important;
+                border-radius: 3px !important;
+            }
         </style>
 
         <!-- Directory Mode Header -->
@@ -154,60 +162,84 @@
                  data-name="{{ college.college_name | lower }}" 
                  data-city="{{ college.city | lower }}" 
                  data-type="{{ college.college_type | lower }}"
-                 style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--primary); padding: 24px; background: #fff; margin-bottom: 0; min-height: 280px; position: relative;">
+                 style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--primary); padding: 0; background: #fff; margin-bottom: 0; min-height: 380px; position: relative; overflow: hidden;">
                 
-                <!-- Header -->
-                <div>
-                    <div style="display: flex; gap: 14px; align-items: flex-start; margin-bottom: 12px;">
-                        <div style="width: 42px; height: 42px; background: var(--light-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); flex-shrink: 0; border: 1.5px solid var(--border);">
-                            <i class="fas fa-university" style="font-size: 1.1rem;"></i>
+                <!-- Image Header Cover (with Carousel support) -->
+                <div class="carousel-container" data-active-index="0" style="position: relative; height: 160px; background: #f1f5f9; overflow: hidden; width: 100%;">
+                    {% if college.image_urls %}
+                    <div class="carousel-track" style="display: flex; width: 100%; height: 100%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                        {% for img in college.image_urls %}
+                        <div class="carousel-slide" style="min-width: 100%; width: 100%; height: 100%;">
+                            <img src="{{ url_for('static', filename=img) }}" alt="{{ college.college_name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </div>
-                        <div style="flex: 1; min-width: 0;">
-                            <h3 style="font-size: 1rem; font-weight: 700; color: var(--primary); margin: 0 0 6px 0; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                                <a href="/college?name={{ college.college_name | urlencode_val }}" style="color: inherit; text-decoration: none;">{{ college.college_name }}</a>
-                            </h3>
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                                <span class="type-tag {{ college.college_type | lower }}" style="font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase;">{{ college.college_type }}</span>
-                                <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-                                    <i class="fas fa-map-marker-alt" style="color: var(--saffron);"></i> {{ college.city or 'Madhya Pradesh' }}
-                                </span>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
-
-                    <!-- Placements Section -->
-                    <div style="background: #f8fafc; border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid #e2e8f0;">
-                        <span style="font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Placement Statistics</span>
-                        <div style="display: flex; gap: 10px;">
-                            <div style="flex: 1; background: #fff; border: 1.5px solid #d1fae5; border-radius: 6px; padding: 6px; text-align: center;">
-                                <div style="font-size: 0.65rem; color: #047857; font-weight: 700;">Avg Package</div>
-                                <div style="font-size: 0.95rem; font-weight: 800; color: #065f46; font-family: monospace;">{{ college.placement.average_package_lpa }} LPA</div>
-                            </div>
-                            <div style="flex: 1; background: #fff; border: 1.5px solid #ffe4e6; border-radius: 6px; padding: 6px; text-align: center;">
-                                <div style="font-size: 0.65rem; color: #b91c1c; font-weight: 700;">Highest Package</div>
-                                <div style="font-size: 0.95rem; font-weight: 800; color: #991b1b; font-family: monospace;">{{ college.placement.highest_package_lpa }} LPA</div>
-                            </div>
-                        </div>
+                    {% if college.image_urls|length > 1 %}
+                    <!-- Left and Right arrows -->
+                    <button class="carousel-control prev" onclick="moveCarousel(event, this, -1)" style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%); background: rgba(15,23,42,0.6); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; outline:none;"><i class="fas fa-chevron-left" style="font-size: 0.7rem;"></i></button>
+                    <button class="carousel-control next" onclick="moveCarousel(event, this, 1)" style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%); background: rgba(15,23,42,0.6); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; outline:none;"><i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i></button>
+                    <!-- Indicators -->
+                    <div class="carousel-indicators" style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; z-index: 10;">
+                        {% for img in college.image_urls %}
+                        <span class="carousel-dot {% if loop.first %}active{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: all 0.2s;"></span>
+                        {% endfor %}
                     </div>
+                    {% endif %}
+                    {% else %}
+                    <!-- Generic college illustration/placeholder -->
+                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--light-blue), #e2e8f0); color: var(--primary);">
+                        <i class="fas fa-university" style="font-size: 3rem; opacity: 0.7;"></i>
+                    </div>
+                    {% endif %}
+                    <span class="type-tag {{ college.college_type | lower }}" style="position: absolute; top: 12px; left: 12px; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; z-index: 2;">{{ college.college_type }}</span>
                 </div>
 
-                <!-- Fees & CTA Actions -->
-                <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-top: 4px; border-top: 1px solid #f1f5f9;">
-                        <span style="font-size: 0.78rem; color: var(--muted); font-weight: 600;">Tuition Fee (Approx):</span>
-                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--primary);">{{ college.fee_display }}</span>
+                <!-- Body Content -->
+                <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--primary); margin: 0 0 8px 0; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                            <a href="/college?name={{ college.college_name | urlencode_val }}" style="color: inherit; text-decoration: none;">{{ college.college_name }}</a>
+                        </h3>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-map-marker-alt" style="color: var(--saffron);"></i> {{ college.city or 'Madhya Pradesh' }}
+                            </span>
+                        </div>
+                        
+                        <!-- Placements Section -->
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; border: 1px solid #e2e8f0;">
+                            <span style="font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Placement Statistics</span>
+                            <div style="display: flex; gap: 8px;">
+                                <div style="flex: 1; background: #fff; border: 1.5px solid #d1fae5; border-radius: 6px; padding: 4px; text-align: center;">
+                                    <div style="font-size: 0.6rem; color: #047857; font-weight: 700;">Avg Pkg</div>
+                                    <div style="font-size: 0.85rem; font-weight: 800; color: #065f46; font-family: monospace;">{{ college.placement.average_package_lpa }} LPA</div>
+                                </div>
+                                <div style="flex: 1; background: #fff; border: 1.5px solid #ffe4e6; border-radius: 6px; padding: 4px; text-align: center;">
+                                    <div style="font-size: 0.6rem; color: #b91c1c; font-weight: 700;">Highest Pkg</div>
+                                    <div style="font-size: 0.85rem; font-weight: 800; color: #991b1b; font-family: monospace;">{{ college.placement.highest_package_lpa }} LPA</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div style="display: flex; gap: 8px;">
-                        <a href="/college?name={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.82rem; padding: 8px 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(11, 42, 92, 0.15);">
-                            <i class="fas fa-info-circle"></i> Info
-                        </a>
-                        <a href="/compare?colleges={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.82rem; padding: 8px 0; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.15);">
-                            <i class="fas fa-balance-scale"></i> Compare
-                        </a>
-                        <a href="/simulator" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.82rem; padding: 8px 0; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">
-                            <i class="fas fa-vial"></i> Simulator
-                        </a>
+                    
+                    <!-- Fees & CTA Actions -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-top: 4px; border-top: 1px solid #f1f5f9;">
+                            <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600;">Tuition Fee (Approx):</span>
+                            <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary);">{{ college.fee_display }}</span>
+                        </div>
+                        
+                        <div style="display: flex; gap: 6px;">
+                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: inline-flex; align-items: center; justify-content: center; gap: 4px; border-radius: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(11, 42, 92, 0.15);">
+                                <i class="fas fa-info-circle"></i> Info
+                            </a>
+                            <a href="/compare?colleges={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.15);">
+                                <i class="fas fa-balance-scale"></i> Compare
+                            </a>
+                            <a href="/simulator" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">
+                                <i class="fas fa-vial"></i> Simulator
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -259,17 +291,26 @@
                     <tr>
                         <td style="color:var(--muted);font-weight:700;width:40px;">{{ loop.index }}</td>
                         <td style="font-weight:600;color:var(--primary);">
-                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank" style="color:var(--primary);text-decoration:none; display:flex; flex-direction:column; gap:2px;">
-                                <span>{{ college.college_name }}</span>
-                                {% if college.placement %}
-                                    <span style="font-size:0.7rem; display:inline-flex; align-items:center; gap:4px; font-weight:normal;">
-                                        {% if college.placement.is_predicted %}
-                                            <span style="color:#2563EB;"><i class="fas fa-brain"></i> Estimated Placements</span>
-                                        {% else %}
-                                            <span style="color:#059669;"><i class="fas fa-check-circle"></i> Verified Brochure</span>
-                                        {% endif %}
-                                    </span>
+                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank" style="color:var(--primary);text-decoration:none; display:flex; align-items:center; gap:10px;">
+                                {% if college.image_url %}
+                                <img src="{{ url_for('static', filename=college.image_url) }}" alt="{{ college.college_name }}" style="width:38px; height:38px; border-radius:6px; object-fit:cover; flex-shrink:0; border:1.5px solid var(--border);">
+                                {% else %}
+                                <div style="width:38px; height:38px; border-radius:6px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--muted); flex-shrink:0; border:1.5px solid var(--border);">
+                                    <i class="fas fa-university" style="font-size:0.9rem;"></i>
+                                </div>
+                                {% endif %}
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span>{{ college.college_name }}</span>
+                                    {% if college.placement %}
+                                        <span style="font-size:0.7rem; display:inline-flex; align-items:center; gap:4px; font-weight:normal;">
+                                            {% if college.placement.is_predicted %}
+                                                <span style="color:#2563EB;"><i class="fas fa-brain"></i> Estimated Placements</span>
+                                            {% else %}
+                                                <span style="color:#059669;"><i class="fas fa-check-circle"></i> Verified Brochure</span>
+                                            {% endif %}
+                                        </span>
                                     {% endif %}
+                                </div>
                             </a>
                         </td>
                         <td><span class="type-tag">{{ college.college_type }}</span></td>
@@ -326,6 +367,35 @@
 {% block extra_scripts %}
 {% if directory_mode %}
 <script>
+function moveCarousel(event, btn, direction) {
+    event.preventDefault();
+    event.stopPropagation();
+    const container = btn.closest('.carousel-container');
+    const track = container.querySelector('.carousel-track');
+    const slides = container.querySelectorAll('.carousel-slide');
+    const dots = container.querySelectorAll('.carousel-dot');
+    
+    let activeIndex = parseInt(container.getAttribute('data-active-index') || '0');
+    activeIndex += direction;
+    
+    if (activeIndex < 0) {
+        activeIndex = slides.length - 1;
+    } else if (activeIndex >= slides.length) {
+        activeIndex = 0;
+    }
+    
+    container.setAttribute('data-active-index', activeIndex);
+    track.style.transform = `translateX(-${activeIndex * 100}%)`;
+    
+    dots.forEach((dot, idx) => {
+        if (idx === activeIndex) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     const searchInput = document.querySelector('input[name="q"]');
     const citySelect = document.querySelector('select[name="city"]');
