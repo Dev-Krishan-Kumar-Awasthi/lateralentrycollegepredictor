@@ -55,6 +55,15 @@
             {% endif %}
         </div>
         {% endif %}
+        <!-- Toggle Tabs -->
+        <div style="display: flex; gap: 12px; border-bottom: 2px solid var(--border); padding-bottom: 12px; margin-bottom: 20px;">
+            <button type="button" onclick="switchPredictorMode('cgpa-to-rank')" id="btn-cgpa-mode" style="background: none; border: none; font-size: 1rem; font-weight: 700; color: {% if not data or data.get('mode') != 'rank-to-cgpa' %}var(--primary){% else %}var(--muted){% endif %}; border-bottom: 3px solid {% if not data or data.get('mode') != 'rank-to-cgpa' %}var(--primary){% else %}transparent{% endif %}; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
+                <i class="fas fa-graduation-cap"></i> CGPA to Rank
+            </button>
+            <button type="button" onclick="switchPredictorMode('rank-to-cgpa')" id="btn-rank-mode" style="background: none; border: none; font-size: 1rem; font-weight: 700; color: {% if data and data.get('mode') == 'rank-to-cgpa' %}var(--primary){% else %}var(--muted){% endif %}; border-bottom: 3px solid {% if data and data.get('mode') == 'rank-to-cgpa' %}var(--primary){% else %}transparent{% endif %}; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
+                <i class="fas fa-list-ol"></i> Rank to CGPA
+            </button>
+        </div>
 
         {% if error %}
         <div style="background:#FEE2E2;border-left:4px solid #EF4444;padding:12px 16px;border-radius:4px;margin-bottom:18px;color:#991B1B;font-weight:600;">
@@ -62,17 +71,38 @@
         </div>
         {% endif %}
 
-        <form action="/rank_predictor" method="POST">
+        <!-- CGPA to Rank Form -->
+        <form action="/rank_predictor" method="POST" id="form-cgpa-to-rank" style="display: {% if not data or data.get('mode') != 'rank-to-cgpa' %}block{% else %}none{% endif %};">
             <div class="form-row">
                 <div class="form-group">
                     <label for="cgpa">CGPA (10 Point Scale)</label>
                     <input type="number" id="cgpa" name="cgpa" step="0.01" min="0" max="10"
                         placeholder="e.g. 9.00" required
-                        value="{{ data.cgpa if data else (current_user.cgpa if current_user and current_user.cgpa else '') }}">
+                        value="{{ data.cgpa if data and data.cgpa else (current_user.cgpa if current_user and current_user.cgpa else '') }}">
                 </div>
                 <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;">
                     <button type="submit" class="btn-primary" style="flex:1;">
                         <i class="fas fa-bolt"></i> Find My Rank
+                    </button>
+                    <button type="reset" class="btn-secondary">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Rank to CGPA Form -->
+        <form action="/rank_predictor" method="POST" id="form-rank-to-cgpa" style="display: {% if data and data.get('mode') == 'rank-to-cgpa' %}block{% else %}none{% endif %};">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="rank">Merit Rank (DTE General Rank)</label>
+                    <input type="number" id="rank" name="rank" min="1" step="1"
+                        placeholder="e.g. 250" required
+                        value="{{ data.rank if data and data.rank else '' }}">
+                </div>
+                <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;">
+                    <button type="submit" class="btn-primary" style="flex:1; background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-calculator"></i> Find My CGPA
                     </button>
                     <button type="reset" class="btn-secondary">
                         <i class="fas fa-redo"></i>
@@ -85,6 +115,21 @@
     <!-- ===== RESULTS ===== -->
     {% if data and prediction %}
     <div class="gov-box" id="results">
+        {% if data.get('mode') == 'rank-to-cgpa' %}
+        <h2><i class="fas fa-graduation-cap"></i> Estimated Corresponding CGPA</h2>
+        <p class="subtitle">Based on your Rank of <strong>{{ data.rank }}</strong>:</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:14px;">
+            {% for year, cgpa_val in prediction.items() %}
+            <div class="rank-result-box" style="border-top: 4px solid #10b981;">
+                <div class="rank-year-label">Year {{ year }}</div>
+                <div class="rank-value" style="color: #047857;">{{ "%.2f"|format(cgpa_val) if cgpa_val > 0 else 'N/A' }}</div>
+                <div class="rank-sub">Estimated CGPA Equivalence</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% else %}
         <h2><i class="fas fa-trophy"></i> Estimated Rank</h2>
         <p class="subtitle">Based on your CGPA of <strong>{{ data.cgpa }}</strong>:</p>
 
@@ -97,18 +142,21 @@
             </div>
             {% endfor %}
         </div>
+        {% endif %}
 
         <p style="margin-top:22px;font-size:0.85rem;color:var(--muted);text-align:center;">
             <i class="fas fa-info-circle"></i>
-            Estimates based on previous year DTE MP merit data. Actual rank depends on total applicants.
+            Estimates based on previous year DTE MP merit data. Actual equivalence varies by batch.
         </p>
     </div>
 
+    {% if data.get('mode') == 'cgpa-to-rank' %}
     <div style="text-align:center;margin-bottom:28px;">
         <a href="/predictor?cgpa={{ data.cgpa }}{% if current_user %}&category={{ current_user.category }}&gender={{ current_user.gender }}{% endif %}" class="hero-btn primary" style="display:inline-block;">
             <i class="fas fa-bullseye"></i> Find Colleges for My Rank
         </a>
     </div>
+    {% endif %}
     {% endif %}
 
     <!-- ===== INFO BOX ===== -->
@@ -121,14 +169,39 @@
             </div>
             <div>
                 <div class="faq-q">Is it accurate?</div>
-                <div class="faq-a">It's a very close estimate based on past data. Your actual rank might be slightly different depending on how many students apply this year.</div>
+                <div class="faq-a">It's a very close estimate based on past data. Your actual rank/CGPA might be slightly different depending on how many students apply this year.</div>
             </div>
             <div>
                 <div class="faq-q">Why check this?</div>
-                <div class="faq-a">Knowing your rank helps you pick the right colleges during choice filling, so you don't miss out on a good seat.</div>
+                <div class="faq-a">Knowing the relationship between ranks and CGPA helps you plan your choice filling list to secure the best possible seat.</div>
             </div>
         </div>
     </div>
 
 </div>
+
+<script>
+function switchPredictorMode(mode) {
+    const cgpaForm = document.getElementById('form-cgpa-to-rank');
+    const rankForm = document.getElementById('form-rank-to-cgpa');
+    const cgpaBtn = document.getElementById('btn-cgpa-mode');
+    const rankBtn = document.getElementById('btn-rank-mode');
+    
+    if (mode === 'cgpa-to-rank') {
+        cgpaForm.style.display = 'block';
+        rankForm.style.display = 'none';
+        cgpaBtn.style.color = 'var(--primary)';
+        cgpaBtn.style.borderBottom = '3px solid var(--primary)';
+        rankBtn.style.color = 'var(--muted)';
+        rankBtn.style.borderBottom = '3px solid transparent';
+    } else {
+        cgpaForm.style.display = 'none';
+        rankForm.style.display = 'block';
+        cgpaBtn.style.color = 'var(--muted)';
+        cgpaBtn.style.borderBottom = '3px solid transparent';
+        rankBtn.style.color = 'var(--primary)';
+        rankBtn.style.borderBottom = '3px solid var(--primary)';
+    }
+}
+</script>
 {% endblock %}

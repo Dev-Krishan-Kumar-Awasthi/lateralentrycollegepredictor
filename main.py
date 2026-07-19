@@ -232,6 +232,50 @@ def get_rank(cgpa):
     return result
 
 
+def estimate_cgpa_for_rank(cgpa_to_rank_map, rank):
+    if not cgpa_to_rank_map:
+        return 0.0
+    
+    # Check if the rank lies directly inside any range in the list
+    for r in cgpa_to_rank_map:
+        if r.min_rank <= rank <= r.max_rank:
+            return r.cgpa
+            
+    # If the rank is larger than the worst rank in the map:
+    if rank >= cgpa_to_rank_map[-1].max_rank:
+        return cgpa_to_rank_map[-1].cgpa
+        
+    # If the rank is smaller than the best rank in the map:
+    if rank <= cgpa_to_rank_map[0].min_rank:
+        return cgpa_to_rank_map[0].cgpa
+        
+    # Otherwise, it falls between two rows in the sorted list.
+    # The map is ordered by cgpa descending, so min_rank/max_rank is ascending.
+    for i in range(len(cgpa_to_rank_map) - 1):
+        r1 = cgpa_to_rank_map[i]
+        r2 = cgpa_to_rank_map[i + 1]
+        
+        # If target rank is between r1.max_rank and r2.min_rank
+        if r1.max_rank < rank < r2.min_rank:
+            c1 = r1.cgpa
+            c2 = r2.cgpa
+            denom = r2.min_rank - r1.max_rank
+            if denom == 0:
+                return c1
+            ratio = (rank - r1.max_rank) / denom
+            return round(c1 + (c2 - c1) * ratio, 2)
+            
+    return 0.0
+
+
+def get_cgpa_for_rank(rank):
+    result = {}
+    for year in YEARS:
+        cgpa_to_rank_map = RANK_MAPS_CACHE[year]
+        result[year] = estimate_cgpa_for_rank(cgpa_to_rank_map, rank)
+    return result
+
+
 def _resolve_simulation_rank(cgpa, year, rank_mode):
     cgpa_map = RANK_MAPS_CACHE[year]
     min_rank, max_rank = estimate_rank_range(cgpa_map, cgpa)
@@ -951,27 +995,61 @@ def search():
 
 @app.route('/rank_predictor', methods=['GET', 'POST'])
 def rank():
-    if request.method == 'POST' and not current_user():
-        cgpa_str = request.form.get('cgpa', '').strip()
-        return render_template('rank.html', data={"cgpa": cgpa_str}, prediction=None, needs_login=True)
-
     if request.method == 'GET':
         return render_template('rank.html', data=None, prediction=None)
 
-    try:
-        user = current_user()
-        if user and not consume_prediction(user):
-            return redirect('/premium?limit=1')
-        cgpa = float(request.form.get('cgpa', '').strip())
-        if not (0.0 <= cgpa <= 10.0):
-            raise ValueError()
-    except ValueError:
+    # Auth check
+    if not current_user():
+        cgpa_str = request.form.get('cgpa', '').strip()
+        rank_str = request.form.get('rank', '').strip()
+        mode = "rank-to-cgpa" if rank_str else "cgpa-to-rank"
         return render_template(
-            'rank.html', data=None, prediction=None,
-            error="Invalid CGPA. Please enter a number between 0 and 10.",
+            'rank.html',
+            data={"cgpa": cgpa_str, "rank": rank_str, "mode": mode},
+            prediction=None,
+            needs_login=True
         )
 
-    return render_template('rank.html', data={"cgpa": cgpa}, prediction=get_rank(cgpa))
+    user = current_user()
+    if user and not consume_prediction(user):
+        return redirect('/premium?limit=1')
+
+    cgpa_str = request.form.get('cgpa', '').strip()
+    rank_str = request.form.get('rank', '').strip()
+
+    if cgpa_str:
+        try:
+            cgpa = float(cgpa_str)
+            if not (0.0 <= cgpa <= 10.0):
+                raise ValueError()
+        except ValueError:
+            return render_template(
+                'rank.html', data=None, prediction=None,
+                error="Invalid CGPA. Please enter a number between 0 and 10.",
+            )
+        return render_template(
+            'rank.html',
+            data={"cgpa": cgpa, "mode": "cgpa-to-rank"},
+            prediction=get_rank(cgpa)
+        )
+
+    elif rank_str:
+        try:
+            rank_val = int(rank_str)
+            if rank_val <= 0:
+                raise ValueError()
+        except ValueError:
+            return render_template(
+                'rank.html', data=None, prediction=None,
+                error="Invalid Rank. Please enter a positive integer.",
+            )
+        return render_template(
+            'rank.html',
+            data={"rank": rank_val, "mode": "rank-to-cgpa"},
+            prediction=get_cgpa_for_rank(rank_val)
+        )
+
+    return render_template('rank.html', data=None, prediction=None)
 
 
 @app.route('/merit-insights', methods=['GET', 'POST'])
