@@ -97,6 +97,10 @@
                     <i class="fas fa-user-edit"></i> Edit Profile
                 </button>
 
+                <a href="/refer-share" class="btn-primary-small" style="text-decoration:none; background:#10B981; color:#fff; display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:4px; font-weight:700; font-size:0.8rem;">
+                    <i class="fas fa-gift"></i> Refer & Share
+                </a>
+
                 <form method="POST" class="no-loader" style="margin:0; margin-left:auto;">
                     <input type="hidden" name="action" value="toggle_alerts">
                     <button type="submit" class="btn-secondary" style="font-size:0.8rem; padding:6px 12px; display:inline-flex; align-items:center; gap:8px; border:1px solid #CBD5E1; background:#F8FAFC; color:#334155; font-weight:600; cursor:pointer;">
@@ -556,6 +560,73 @@
         }
         </script>
         {% endif %}
+        
+        <!-- Privacy & Policy Option (Visible at the bottom of account card) -->
+        <div style="margin-top: 24px; border-top: 1px dashed var(--border); padding-top: 14px; text-align: left;">
+            <a href="javascript:void(0)" onclick="openPrivacyModal()" style="font-size: 0.8rem; color: var(--muted); text-decoration: underline; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
+                <i class="fas fa-shield-alt"></i> Privacy & Policy
+            </a>
+        </div>
+
+        <!-- Privacy & Policy Modal Overlay -->
+        <div id="privacy-policy-modal" style="display:none; position:fixed; z-index:99999; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); align-items:center; justify-content:center; padding: 20px; box-sizing: border-box;">
+            <div style="background:#fff; border-radius:12px; max-width:650px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,0.15); overflow:hidden; border:1px solid var(--border); display: flex; flex-direction: column; max-height: 85vh; text-align: left;">
+                <!-- Header -->
+                <div style="background:var(--primary); padding:16px 20px; color:#fff; display:flex; justify-content:space-between; align-items:center; flex-shrink: 0;">
+                    <h3 style="margin:0; font-size:1.15rem; font-weight:bold; color:#fff; display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-user-shield"></i> Privacy & Policy
+                    </h3>
+                    <span style="font-size:1.6rem; font-weight:bold; cursor:pointer; line-height:1; color:#fff;" onclick="closePrivacyModal()">&times;</span>
+                </div>
+                <!-- Content (Scrollable) -->
+                <div style="padding:24px; overflow-y:auto; font-size:0.9rem; line-height:1.6; color:#334155; font-family: 'Inter', sans-serif;">
+                    <h4 style="margin-top:0; color:var(--primary); font-size:1rem; border-bottom:1.5px solid #e2e8f0; padding-bottom:6px;">1. Introduction & Scope</h4>
+                    <p style="margin-bottom:18px;">Welcome to the **MP DTE Lateral Entry College Predictor**. We value your privacy and are committed to protecting the academic and personal data you share with us. This policy describes how we handle candidate information across our platform.</p>
+
+                    <h4 style="color:var(--primary); font-size:1rem; border-bottom:1.5px solid #e2e8f0; padding-bottom:6px;">2. Information We Collect</h4>
+                    <p style="margin-bottom:8px;">To provide accurate college predictions and counselling notifications, we collect:</p>
+                    <ul style="margin-top:0; margin-bottom:18px; padding-left:20px;">
+                        <li><strong>Personal Identification:</strong> Your Full Name and Email Address.</li>
+                        <li><strong>Counselling Data:</strong> Diploma CGPA, Reservation Category (UR, OBC, SC, ST), Gender, Domicile status, and Diploma Branch.</li>
+                        <li><strong>Account Details:</strong> Mobile number (used as your referral link identifier) and your parent Polytechnic college name.</li>
+                    </ul>
+
+                    <h4 style="color:var(--primary); font-size:1rem; border-bottom:1.5px solid #e2e8f0; padding-bottom:6px;">3. How We Process & Use Data</h4>
+                    <p style="margin-bottom:8px;">Your data is used solely to run predictions and facilitate your college shortlist backup:</p>
+                    <ul style="margin-top:0; margin-bottom:18px; padding-left:20px;">
+                        <li><strong>Admissions Predictor:</strong> Processing your academic details against official DTE MP Lateral Entry cutoff databases to estimate admission probability.</li>
+                        <li><strong>Cloud Syncing:</strong> Safely backing up your shortlisted preferences so you can access them on any device.</li>
+                        <li><strong>Email Notifications:</strong> Sending timely counselling alerts for registrations, document verifications, choice filling deadlines, and allotment results (can be disabled in your profile settings).</li>
+                    </ul>
+
+                    <h4 style="color:var(--primary); font-size:1rem; border-bottom:1.5px solid #e2e8f0; padding-bottom:6px;">4. Security & Data Protection</h4>
+                    <p style="margin-bottom:18px;">We use industry-standard encryption protocols. Your data is stored on secure cloud databases. While we do not sell your personal data, we may share candidate profile and prediction details with participating engineering institutes, colleges, and coaching/counselling providers to connect you with relevant educational, scholarship, and admission opportunities in Madhya Pradesh.</p>
+
+                    <h4 style="color:var(--primary); font-size:1rem; border-bottom:1.5px solid #e2e8f0; padding-bottom:6px;">5. Candidate Access Rights</h4>
+                    <p style="margin-bottom:18px;">You retain complete control of your profile. You can edit your personal details, turn off notification alerts, or log out of your account directly from your dashboard at any time.</p>
+                </div>
+                <!-- Footer -->
+                <div style="background:#f8fafc; padding:14px 20px; display:flex; justify-content:flex-end; border-top:1px solid #e2e8f0; flex-shrink: 0;">
+                    <button type="button" onclick="closePrivacyModal()" class="btn-primary" style="background:var(--primary); color:#fff; border:none; padding:8px 20px; border-radius:6px; font-weight:700; cursor:pointer; font-size:0.85rem;">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        function openPrivacyModal() {
+            document.getElementById('privacy-policy-modal').style.display = 'flex';
+        }
+        function closePrivacyModal() {
+            document.getElementById('privacy-policy-modal').style.display = 'none';
+        }
+        // Close modal when clicking outside of modal-content
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('privacy-policy-modal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        </script>
     </div>
 </div>
 {% endblock %}

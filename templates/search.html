@@ -410,6 +410,62 @@ document.addEventListener("DOMContentLoaded", function() {
     if (citySelect) citySelect.id = 'directory-city-select';
     if (typeSelect) typeSelect.id = 'directory-type-select';
 
+    // College aliases list for frontend real-time matching
+    const collegeAliases = {
+        "sgsits": ["shri g.s. institute", "sgsits", "gsits"],
+        "gsits": ["shri g.s. institute", "sgsits", "gsits"],
+        "sgits": ["shri g.s. institute", "sgsits", "gsits"],
+        "mits": ["madhav institute", "mits"],
+        "iet": ["institute of engineering and technology", "iet davv", "iet-davv"],
+        "iet davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
+        "iet-davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
+        "davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
+        "jec": ["jabalpur engineering college", "jec"],
+        "uit rgpv": ["university institute of technology rgpv", "university institute of technology repv", "uit rgpv", "uit-rgpv"],
+        "uit-rgpv": ["university institute of technology rgpv", "university institute of technology repv", "uit rgpv", "uit-rgpv"],
+        "rgpv": ["university institute of technology", "rgpv", "school of information technology rgpv"],
+        "uit": ["university institute of technology", "uit"],
+        "lnct": ["lakshmi narain college", "lnct"],
+        "lncts": ["lakshmi narain college of technology & science", "lncts"],
+        "lncte": ["lakshmi narain college of technology excellence", "lncte"],
+        "jnct": ["jai narain college", "jnct"],
+        "uec": ["ujjain engineering college", "uec"],
+        "sati": ["samrat ashok", "sati"],
+        "rec": ["rewa engineering", "rec", "radharaman engineering"],
+        "igec": ["indira gandhi engineering", "igec"],
+        "rjit": ["rustamji institute", "rjit"],
+        "tit": ["technocrats institute", "tit"],
+        "sistec": ["sagar institute of science", "sistec"],
+        "sirt": ["sagar institute of research", "sirt"],
+        "acropolis": ["acropolis institute", "aitr"],
+        "aitr": ["acropolis institute", "aitr"],
+        "ips": ["ips academy", "ips college"],
+        "ipsa": ["ips academy", "ipsa"],
+        "oist": ["oriental institute", "oist"],
+        "oct": ["oriental college", "oct"],
+        "ggits": ["gyan ganga institute", "ggits"],
+        "ggct": ["gyan ganga college", "ggct"],
+        "gyan ganga": ["gyan ganga"],
+        "prestige": ["prestige institute", "piemr"],
+        "piemr": ["prestige institute", "piemr"],
+        "iist": ["indore institute of science", "iist"],
+        "btirt": ["babulal tarabai institute", "btirt"],
+        "sdbc": ["sushila devi bansal", "sdbc"],
+        "svce": ["swami vivekanand college", "svce"],
+        "vits": ["vindhya institute", "vits"],
+        "nec": ["nowgong engineering", "nec"],
+        "soit": ["school of information technology", "soit"],
+        "truba": ["truba institute", "truba"],
+        "bits": ["bansal institute", "bits"],
+        "birt": ["bansal institute of research", "birt"],
+        "bist": ["bansal institute of science", "bist"],
+        "cdgi": ["chameli devi", "cdgi"],
+        "hcet": ["hitkarni college", "hcet"],
+        "itm": ["institute of technology and management", "itm"],
+        "jit": ["jawaharlal institute", "jit"],
+        "mit": ["mahakal instute", "mahakal institute", "mit"]
+    };
+
     function filterDirectory() {
         const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
         const selectedCity = citySelect ? citySelect.value.trim().toLowerCase() : 'all';
@@ -422,7 +478,21 @@ document.addEventListener("DOMContentLoaded", function() {
             const city = card.getAttribute('data-city') || '';
             const type = card.getAttribute('data-type') || '';
 
-            const matchesQuery = query === '' || name.includes(query);
+            let matchesQuery = query === '' || name.includes(query);
+            if (!matchesQuery && query !== '') {
+                for (const [alias, targets] of Object.entries(collegeAliases)) {
+                    if (alias.includes(query) || query.includes(alias)) {
+                        for (const target of targets) {
+                            if (name.includes(target)) {
+                                matchesQuery = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (matchesQuery) break;
+                }
+            }
+
             const matchesCity = selectedCity === 'all' || city === selectedCity || name.includes(selectedCity);
             
             let matchesType = true;

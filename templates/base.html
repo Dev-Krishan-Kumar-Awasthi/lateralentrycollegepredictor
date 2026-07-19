@@ -82,6 +82,27 @@
                 margin-right: 10px;
             }
         }
+
+        /* Counselling schedule event helper classes */
+        .event-row-bg-edit_registration { background-color: #fffbeb; }
+        .event-row-bg-allotment_reporting { background-color: #ecfdf5; }
+        .event-row-bg-default { background-color: transparent; }
+
+        .event-item-color-edit_registration { color: #b45309 !important; font-weight: 700 !important; }
+        .event-item-color-allotment_reporting { color: #047857 !important; font-weight: 700 !important; }
+        .event-item-color-default { }
+
+        .event-icon-color-registration { color: #3b82f6; }
+        .event-icon-color-edit_registration { color: #b45309; }
+        .event-icon-color-choice_filling { color: #8b5cf6; }
+        .event-icon-color-merit_list { color: #10b981; }
+        .event-icon-color-allotment_reporting { color: #047857; }
+        .event-icon-color-default { color: #4f46e5; }
+
+        .event-date-color-edit_registration { color: #b45309 !important; }
+        .event-date-color-merit_list { color: #10b981 !important; }
+        .event-date-color-allotment_reporting { color: #047857 !important; }
+        .event-date-color-default { color: #1e40af !important; }
     </style>
 </head>
 
@@ -162,7 +183,7 @@
 
                 <li class="nav-dropdown-item">
                     <a href="javascript:void(0)"
-                        class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'merit_insights', 'recommendation_list', 'checklist', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
+                        class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'merit_insights', 'recommendation_list', 'checklist', 'registration_process', 'refer_share', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
                         <i class="fas fa-ellipsis-h"></i> More Tools <i class="fas fa-chevron-down"
                             style="margin-left: 4px; font-size: 0.75rem;"></i>
                     </a>
@@ -177,6 +198,18 @@
                             <a href="/checklist"
                                 class="{% if request.endpoint == 'checklist' %}dropdown-active{% endif %}">
                                 <i class="fas fa-check-double"></i> Document Checklist
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/registration-process"
+                                class="{% if request.endpoint == 'registration_process' %}dropdown-active{% endif %}">
+                                <i class="fas fa-user-plus"></i> Registration Process
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/refer-share"
+                                class="{% if request.endpoint == 'refer_share' %}dropdown-active{% endif %}">
+                                <i class="fas fa-gift"></i> Refer & Share
                             </a>
                         </li>
                         <li>
@@ -473,15 +506,17 @@
                                 </td>
                             </tr>
                             {% endif %}
-                            <tr
-                                style="border-bottom: 1px solid #f1f5f9; {% if ev.id == 'edit_registration' %}background: #fffbeb;{% elif ev.id == 'allotment_reporting' %}background: #ecfdf5;{% endif %}">
+                            {% set row_bg_class = 'event-row-bg-edit_registration' if ev.id == 'edit_registration' else 'event-row-bg-allotment_reporting' if ev.id == 'allotment_reporting' else 'event-row-bg-default' %}
+                            {% set item_color_class = 'event-item-color-edit_registration' if ev.id == 'edit_registration' else 'event-item-color-allotment_reporting' if ev.id == 'allotment_reporting' else 'event-item-color-default' %}
+                            {% set icon_color_class = 'event-icon-color-' ~ ev.id if ev.id in ['registration', 'edit_registration', 'choice_filling', 'merit_list', 'allotment_reporting'] else 'event-icon-color-default' %}
+                            {% set icon_class = 'fa-edit' if ev.id == 'registration' else 'fa-tools' if ev.id == 'edit_registration' else 'fa-list-ul' if ev.id == 'choice_filling' else 'fa-trophy' if ev.id == 'merit_list' else 'fa-file-invoice' if ev.id == 'allotment_reporting' else 'fa-sign-in-alt' %}
+                            {% set date_color_class = 'event-date-color-' ~ ev.id if ev.id in ['edit_registration', 'merit_list', 'allotment_reporting'] else 'event-date-color-default' %}
+
+                            <tr class="{{ row_bg_class }}" style="border-bottom: 1px solid #f1f5f9;">
                                 <td style="padding: 14px 20px;">
-                                    <div
-                                        style="display: flex; align-items: center; gap: 8px; font-weight: 600; {% if ev.id == 'edit_registration' %}color: #b45309; font-weight: 700;{% elif ev.id == 'allotment_reporting' %}color: #047857; font-weight: 700;{% endif %}">
-                                        <span
-                                            style="color: {% if ev.id == 'registration' %}#3b82f6{% elif ev.id == 'edit_registration' %}#b45309{% elif ev.id == 'choice_filling' %}#8b5cf6{% elif ev.id == 'merit_list' %}#10b981{% elif ev.id == 'allotment_reporting' %}#047857{% else %}#4f46e5{% endif %};">
-                                            <i
-                                                class="fas {% if ev.id == 'registration' %}fa-edit{% elif ev.id == 'edit_registration' %}fa-tools{% elif ev.id == 'choice_filling' %}fa-list-ul{% elif ev.id == 'merit_list' %}fa-trophy{% elif ev.id == 'allotment_reporting' %}fa-file-invoice{% else %}fa-sign-in-alt{% endif %}"></i>
+                                    <div class="{{ item_color_class }}" style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                                        <span class="{{ icon_color_class }}">
+                                            <i class="fas {{ icon_class }}"></i>
                                         </span>
                                         <span>{{ ev.title }}</span>
                                     </div>
@@ -508,8 +543,8 @@
                                     {% endif %}
                                     {% endif %}
                                 </td>
-                                <td
-                                    style="padding: 14px 20px; font-weight: 700; color: {% if ev.id == 'edit_registration' %}#b45309{% elif ev.id == 'merit_list' %}#10b981{% elif ev.id == 'allotment_reporting' %}#047857{% else %}#1e40af{% endif %}; white-space: nowrap;">
+                                <td class="{{ date_color_class }}"
+                                    style="padding: 14px 20px; font-weight: 700; white-space: nowrap;">
                                     {% if ev.date %}
                                     {% if '-' in ev.date %}
                                     {% set parts = ev.date.split('-') %}
@@ -1135,11 +1170,24 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
+    <script id="flash-messages-data" type="application/json">
+        {{ messages | tojson }}
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            {% for category, message in messages %}
-            showToast("{{ message }}", "{{ 'success' if category == 'success' else 'error' }}");
-            {% endfor %}
+            const flashEl = document.getElementById("flash-messages-data");
+            if (flashEl) {
+                try {
+                    const messages = JSON.parse(flashEl.textContent);
+                    messages.forEach(function (item) {
+                        const category = item[0];
+                        const message = item[1];
+                        showToast(message, category === 'success' ? 'success' : 'error');
+                    });
+                } catch (e) {
+                    console.error("Error parsing flash messages", e);
+                }
+            }
         });
     </script>
     {% endif %}

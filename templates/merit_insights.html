@@ -26,6 +26,13 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    .accuracy-high { --ring-color: #10B981 !important; }
+    .accuracy-medium { --ring-color: #F59E0B !important; }
+    .accuracy-low { --ring-color: #EF4444 !important; }
+    .trend-positive { color: #10B981 !important; }
+    .trend-negative { color: #EF4444 !important; }
+</style>
 <div class="container">
 
     <!-- ===== INPUT FORM ===== -->
@@ -103,9 +110,9 @@
             <div class="accuracy-ring-wrap">
                 <svg class="accuracy-ring" viewBox="0 0 120 120">
                     <circle class="ring-bg" cx="60" cy="60" r="52" />
-                    <circle class="ring-fill" cx="60" cy="60" r="52"
-                        stroke-dasharray="{{ (insights.accuracy / 100) * 326.7 }} 326.7"
-                        style="--ring-color: {{ '#10B981' if insights.accuracy >= 90 else ('#F59E0B' if insights.accuracy >= 75 else '#EF4444') }};" />
+                    {% set accuracy_class = 'accuracy-high' if insights.accuracy >= 90 else ('accuracy-medium' if insights.accuracy >= 75 else 'accuracy-low') %}
+                    <circle class="ring-fill {{ accuracy_class }}" cx="60" cy="60" r="52"
+                        stroke-dasharray="{{ (insights.accuracy / 100) * 326.7 }} 326.7" />
                 </svg>
                 <div class="accuracy-value">{{ insights.accuracy }}%</div>
             </div>
@@ -121,7 +128,7 @@
             <div class="percentile-icon"><i class="fas fa-medal" style="font-size:2rem;color:var(--saffron);"></i></div>
             <div class="percentile-value">{{ pct.label }}</div>
             <div class="percentile-bar-wrap">
-                <div class="percentile-bar-fill" style="width: {{ pct.value }}%;"></div>
+                <div class="percentile-bar-fill" data-rate="{{ pct.value }}"></div>
             </div>
             <div class="percentile-detail">
                 <span><strong>{{ pct.above_you }}</strong> above you</span>
@@ -253,7 +260,8 @@
             <div class="trend-stat">
                 <div class="trend-stat-label">Seat Change</div>
                 {% set seat_diff = insights.trend.seats_2025 - insights.trend.seats_2024 %}
-                <div class="trend-stat-value" style="color: {{ '#10B981' if seat_diff >= 0 else '#EF4444' }};">
+                {% set trend_class = 'trend-positive' if seat_diff >= 0 else 'trend-negative' %}
+                <div class="trend-stat-value {{ trend_class }}">
                     {{ '+' if seat_diff >= 0 else '' }}{{ seat_diff }}
                 </div>
             </div>
@@ -337,5 +345,13 @@
         </div>
     </div>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.percentile-bar-fill').forEach(function (bar) {
+            const rate = bar.getAttribute('data-rate');
+            bar.style.width = rate + '%';
+        });
+    });
+    </script>
 </div>
 {% endblock %}

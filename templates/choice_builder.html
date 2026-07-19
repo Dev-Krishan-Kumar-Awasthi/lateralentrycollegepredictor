@@ -25,6 +25,21 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    .bucket-heading-dream { color: #7C3AED !important; }
+    .bucket-heading-target { color: #D97706 !important; }
+    .bucket-heading-safe { color: #059669 !important; }
+
+    .choice-row-recommendation {
+        background: linear-gradient(90deg, #FFFDF5 0%, #FFFFFF 100%) !important;
+        border-left: 4px solid var(--saffron) !important;
+    }
+    .choice-row-shortlist {
+        background: #F0FDF4 !important;
+        border-left: 4px solid #16A34A !important;
+    }
+    .choice-row-default { }
+</style>
 <div class="container">
     <div class="gov-box">
         <h1 style="color:var(--primary);"><i class="fas fa-magic"></i> Smart Choice List Builder</h1>
@@ -132,7 +147,7 @@
         {% set full_sl_in_bucket = items | selectattr('in_shortlist', 'defined') | selectattr('in_shortlist') | list %}
         {% if full_sl_in_bucket %}{% set shortlisted_count.n = shortlisted_count.n + full_sl_in_bucket|length %}{% endif %}
 
-        <h3 style="color:{{ color }};margin-top:28px;"><i class="fas fa-layer-group"></i> {{ label }} ({{ items|length }})</h3>
+        <h3 class="bucket-heading-{{ bucket }}" style="margin-top:28px;"><i class="fas fa-layer-group"></i> {{ label }} ({{ items|length }})</h3>
 
         {% if rec_in_bucket %}
         <div style="background:#FFFDF5; border:1px solid #FDE68A; border-radius:8px; padding:10px 16px; margin-bottom:10px; font-size:0.85rem; color:#78350F; display:flex; align-items:center; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.02);">
@@ -174,7 +189,8 @@
                         </tr>
                     {% endif %}
 
-                    <tr style="{% if item.get('in_recommendation', false) %}background:linear-gradient(90deg, #FFFDF5 0%, #FFFFFF 100%); border-left:4px solid var(--saffron);{% elif item.get('in_shortlist', false) %}background:#F0FDF4; border-left:4px solid #16A34A;{% endif %}">
+                    {% set row_class = 'choice-row-recommendation' if item.get('in_recommendation', false) else 'choice-row-shortlist' if item.get('in_shortlist', false) else 'choice-row-default' %}
+                    <tr class="{{ row_class }}">
                         <td>{{ loop.index }}</td>
                         <td>
                             {% if item.get('in_recommendation', false) %}
@@ -225,8 +241,11 @@
         </p>
     </div>
 
+    <script id="smart-merged-data" type="application/json">
+        {{ result.merged | tojson }}
+    </script>
     <script>
-    const smartMerged = {{ result.merged | tojson | safe }};
+    const smartMerged = JSON.parse(document.getElementById('smart-merged-data').textContent);
     function exportSmartCsv() { DteExport.exportCsv(smartMerged); }
     function exportSmartPdf() {
         const profile = {

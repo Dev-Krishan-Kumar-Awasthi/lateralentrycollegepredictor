@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Refer & Share — MP DTE Lateral Entry Predictor{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto; padding: 20px 10px;">
+    
+    <!-- Hero Header -->
+    <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; padding: 30px 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3); text-align: center; position: relative; overflow: hidden;">
+        <div style="font-size: 3.5rem; margin-bottom: 12px; display: inline-block; animation: bounceRefer 1.5s infinite alternate;">🎁</div>
+        <h2 style="margin: 0 0 8px 0; color: #fff; font-size: 1.8rem; font-weight: 800;">Refer Friends & Boost Daily Predictions!</h2>
+        <p style="margin: 0; opacity: 0.95; font-size: 1.05rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            Invite your polytechnic classmates and friends to the MP Lateral Entry Predictor. When they register using your code, <strong>both of you get +5 daily predictions limit</strong>!
+        </p>
+    </div>
+
+    <!-- Main Referral Dashboard Card -->
+    <div class="gov-box" style="background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 24px;">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px 0;">
+            <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--muted); letter-spacing: 0.5px;">Your Unique Referral Code</span>
+            
+            <div style="display: flex; align-items: center; gap: 8px; margin: 12px 0 20px 0; background: #f8fafc; border: 2px dashed #10b981; padding: 12px 24px; border-radius: 8px;">
+                <span id="ref-code" style="font-family: monospace; font-size: 1.6rem; font-weight: 800; color: #047857; letter-spacing: 1px;">{{ user.mobile_number }}</span>
+                <button type="button" onclick="copyReferralCode()" style="background: #10b981; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; transition: background 0.2s;">
+                    <i class="fas fa-copy"></i> <span id="copy-btn-text">Copy</span>
+                </button>
+            </div>
+            
+            <!-- Quick Share Options -->
+            <h4 style="margin: 10px 0 14px 0; color: var(--primary); font-size: 1rem;">Share Your Invite Link Instantly</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%;">
+                
+                <button onclick="shareInviteWhatsApp()" style="background: #25D366; color: #fff; border: none; border-radius: 8px; padding: 12px 20px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.92rem; flex: 1 1 200px; max-width: 280px; justify-content: center; box-shadow: 0 4px 10px rgba(37,211,102,0.25);">
+                    <i class="fab fa-whatsapp" style="font-size: 1.15rem;"></i> Share via WhatsApp
+                </button>
+                
+                <button onclick="copyInviteLink()" style="background: #2563EB; color: #fff; border: none; border-radius: 8px; padding: 12px 20px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.92rem; flex: 1 1 200px; max-width: 280px; justify-content: center; box-shadow: 0 4px 10px rgba(37,99,235,0.25);">
+                    <i class="fas fa-link"></i> <span id="link-btn-text">Copy Invite Link</span>
+                </button>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- How it Works section -->
+    <div class="gov-box" style="background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 24px;">
+        <h3 style="color: var(--primary); margin: 0 0 20px 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-question-circle" style="color: #10b981;"></i> How the Referral Program Works
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;">
+            <!-- Step 1 -->
+            <div style="background: #f8fafc; padding: 18px; border-radius: 8px; border: 1px solid #e2e8f0; position: relative;">
+                <div style="position: absolute; top: -12px; left: 16px; background: #10b981; color: #fff; font-weight: 800; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">1</div>
+                <h4 style="margin: 8px 0 8px 0; color: var(--primary); font-size: 0.95rem; font-weight: 700;">Share Code or Link</h4>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Send your unique code (mobile number) or referral link to your diploma colleagues who are preparing for DTE BTech admission.</p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div style="background: #f8fafc; padding: 18px; border-radius: 8px; border: 1px solid #e2e8f0; position: relative;">
+                <div style="position: absolute; top: -12px; left: 16px; background: #10b981; color: #fff; font-weight: 800; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">2</div>
+                <h4 style="margin: 8px 0 8px 0; color: var(--primary); font-size: 0.95rem; font-weight: 700;">Friend Registers</h4>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Your friend registers a new account on our platform and inputs your referral code in the coupon code field.</p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div style="background: #f8fafc; padding: 18px; border-radius: 8px; border: 1px solid #e2e8f0; position: relative;">
+                <div style="position: absolute; top: -12px; left: 16px; background: #10b981; color: #fff; font-weight: 800; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">3</div>
+                <h4 style="margin: 8px 0 8px 0; color: var(--primary); font-size: 0.95rem; font-weight: 700;">Both Earn Limits!</h4>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Instantly, you both get <strong>+5 daily predictions limit</strong>. Refer more friends to get unlimited predicted results!</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function copyReferralCode() {
+    const code = document.getElementById('ref-code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        const btnText = document.getElementById('copy-btn-text');
+        btnText.innerText = 'Copied!';
+        setTimeout(() => { btnText.innerText = 'Copy'; }, 2000);
+        if (window.showToast) window.showToast('Referral code copied successfully!', 'success');
+    }).catch(err => {
+        console.error('Failed to copy referral code:', err);
+    });
+}
+
+function copyInviteLink() {
+    const inviteLink = window.location.origin + '/account?ref=' + encodeURIComponent('{{ user.mobile_number }}');
+    navigator.clipboard.writeText(inviteLink).then(() => {
+        const btnText = document.getElementById('link-btn-text');
+        btnText.innerText = 'Link Copied!';
+        setTimeout(() => { btnText.innerText = 'Copy Invite Link'; }, 2000);
+        if (window.showToast) window.showToast('Invite link copied successfully!', 'success');
+    }).catch(err => {
+        console.error('Failed to copy invite link:', err);
+    });
+}
+
+function shareInviteWhatsApp() {
+    const code = '{{ user.mobile_number }}';
+    const inviteLink = window.location.origin + '/account?ref=' + encodeURIComponent(code);
+    const message = `🎓 *MP DTE B.Tech Lateral Entry Predictor* 🎓\n\nHey! Check out this free college predictor tool. It uses official cutoff ranks to predict engineering admission chances for Polytechnic Diploma holders in MP.\n\nSign up using my referral link:\n🔗 ${inviteLink}\n\n(Or use my mobile number *${code}* as the referral code during registration) to unlock *+5 extra predictions* instantly!`;
+    window.open('https://wa.me/?text=' + encodeURIComponent(message), '_blank');
+}
+</script>
+
+<style>
+@keyframes bounceRefer {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+</style>
+{% endblock %}

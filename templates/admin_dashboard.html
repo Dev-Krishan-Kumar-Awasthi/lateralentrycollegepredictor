@@ -3,6 +3,14 @@
 
 {% block content %}
 <style>
+/* Review row border colors based on status */
+.review-row.review-approved {
+    border-left: 4px solid #10B981 !important;
+}
+.review-row.review-pending {
+    border-left: 4px solid #F59E0B !important;
+}
+
 /* Modern Admin Dashboard styling */
 .admin-card-summary {
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
@@ -248,7 +256,7 @@
                                     <span style="color:var(--muted);">{{ count }} ({{ pct }}%)</span>
                                 </div>
                                 <div class="admin-progress-bar">
-                                    <div class="admin-progress-fill progress-fill-blue" style="width:{{ pct }}%;"></div>
+                                    <div class="admin-progress-fill progress-fill-blue" data-rate="{{ pct }}"></div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -267,7 +275,7 @@
                                     <span style="color:var(--muted);">{{ count }} ({{ pct }}%)</span>
                                 </div>
                                 <div class="admin-progress-bar">
-                                    <div class="admin-progress-fill progress-fill-amber" style="width:{{ pct }}%;"></div>
+                                    <div class="admin-progress-fill progress-fill-amber" data-rate="{{ pct }}"></div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -498,7 +506,7 @@
                                         <span style="color:var(--muted);">{{ count }} students</span>
                                     </div>
                                     <div class="admin-progress-bar">
-                                        <div class="admin-progress-fill progress-fill-blue" style="width:{{ pct if pct <= 100 else 100 }}%;"></div>
+                                        <div class="admin-progress-fill progress-fill-blue" data-rate="{{ pct if pct <= 100 else 100 }}"></div>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -523,7 +531,7 @@
                                         <span style="color:var(--muted);">{{ count }} ({{ pct }}%)</span>
                                     </div>
                                     <div class="admin-progress-bar">
-                                        <div class="admin-progress-fill progress-fill-amber" style="width:{{ pct if pct <= 100 else 100 }}%;"></div>
+                                        <div class="admin-progress-fill progress-fill-amber" data-rate="{{ pct if pct <= 100 else 100 }}"></div>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -621,7 +629,8 @@
                     </thead>
                     <tbody>
                         {% for r in reviews %}
-                        <tr class="review-row" data-college="{{ r.college_name or '' }}" data-status="{% if r.is_approved %}approved{% else %}pending{% endif %}" style="border-left: 4px solid {% if r.is_approved %}#10B981{% else %}#F59E0B{% endif %};">
+                        {% set review_status_class = 'review-approved' if r.is_approved else 'review-pending' %}
+                        <tr class="review-row {{ review_status_class }}" data-college="{{ r.college_name or '' }}" data-status="{% if r.is_approved %}approved{% else %}pending{% endif %}">
                             <td style="font-weight:700; color:var(--muted);">#{{ r.id }}</td>
                             <td style="font-weight:700; color:var(--primary);">{{ r.college_name }}</td>
                             <td style="font-weight:600;">{{ r.author_name }}</td>
@@ -1480,6 +1489,14 @@ if (recoSearchInput) recoSearchInput.addEventListener('input', filterRecoTable);
 
 // Restore Tab on Page Load
 document.addEventListener('DOMContentLoaded', () => {
+    // Set admin progress fills dynamically
+    document.querySelectorAll('.admin-progress-fill').forEach(function (fill) {
+        const rate = fill.getAttribute('data-rate');
+        if (rate !== null) {
+            fill.style.width = rate + '%';
+        }
+    });
+
     let savedTab = localStorage.getItem('adminActiveTab') || 'students';
     if (window.location.hash === '#reviews') {
         savedTab = 'reviews';

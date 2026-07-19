@@ -36,8 +36,21 @@
     {% else %}
 
     <!-- College Header Card -->
-    <div class="college-header-card" style="{% if image_url %}background: linear-gradient(180deg, rgba(15, 40, 73, 0.7) 0%, #0F2849 100%), url('{{ url_for('static', filename=image_url) }}') center/cover no-repeat; min-height: 180px; align-items: flex-end;{% endif %}">
-        <div class="college-icon" style="{% if image_url %}background: rgba(255,255,255,0.25); border: 1.5px solid rgba(255,255,255,0.4);{% endif %}">
+    {% if image_url %}
+    <style>
+        .college-header-card.has-bg {
+            background: linear-gradient(180deg, rgba(15, 40, 73, 0.7) 0%, #0F2849 100%), url('{{ url_for("static", filename=image_url) }}') center/cover no-repeat !important;
+            min-height: 180px !important;
+            align-items: flex-end !important;
+        }
+        .college-icon.has-bg {
+            background: rgba(255,255,255,0.25) !important;
+            border: 1.5px solid rgba(255,255,255,0.4) !important;
+        }
+    </style>
+    {% endif %}
+    <div class="college-header-card{% if image_url %} has-bg{% endif %}">
+        <div class="college-icon{% if image_url %} has-bg{% endif %}">
             <i class="fas fa-university"></i>
         </div>
         <div class="college-title-block">
@@ -118,7 +131,6 @@
                         {% for img in image_urls %}
                         <img class="gallery-thumb {% if loop.first %}active-thumb{% endif %}" 
                              src="{{ url_for('static', filename=img) }}" 
-                             onclick="setGalleryImage({{ loop.index0 }})" 
                              style="width: 48px; height: 48px; object-fit: cover; border-radius: 6px; cursor: pointer; opacity: 0.6; transition: all 0.2s; border: 2px solid transparent;"
                              data-index="{{ loop.index0 }}">
                         {% endfor %}
@@ -221,7 +233,7 @@
                         <span style="color:var(--primary); font-weight:800;">{{ placement.placement_percentage }}%</span>
                     </div>
                     <div style="height:10px; background:#F1F5F9; border-radius:5px; overflow:hidden;">
-                        <div style="width:{{ placement.placement_percentage }}%; height:100%; background:linear-gradient(90deg, var(--primary) 0%, #3B82F6 100%); border-radius:5px;"></div>
+                        <div class="placement-rate-bar" data-rate="{{ placement.placement_percentage }}" style="height:100%; background:linear-gradient(90deg, var(--primary) 0%, #3B82F6 100%); border-radius:5px;"></div>
                     </div>
                 </div>
                 
@@ -453,8 +465,8 @@
                             {% set total_avg = avg_val_prev + avg_val_latest %}
                             {% set pct_prev = (avg_val_prev / total_avg * 100) | round | int %}
                             {% set pct_latest = 100 - pct_prev %}
-                            <div style="width:{{ pct_prev }}%; background:#94A3B8; height:100%;" title="{{ prev_year }} Average: {{ avg_val_prev }}"></div>
-                            <div style="width:{{ pct_latest }}%; background:var(--primary); height:100%;" title="{{ latest_year }} Average: {{ avg_val_latest }}"></div>
+                            <div class="cutoff-share-bar" data-rate="{{ pct_prev }}" style="background:#94A3B8; height:100%;" title="{{ prev_year }} Average: {{ avg_val_prev }}"></div>
+                            <div class="cutoff-share-bar" data-rate="{{ pct_latest }}" style="background:var(--primary); height:100%;" title="{{ latest_year }} Average: {{ avg_val_latest }}"></div>
                         </div>
                         
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; margin-top:3px;">
@@ -768,12 +780,25 @@
 <!-- Leaflet JS CDN -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+{% set resolved_image_urls = [] %}
+{% for img in image_urls %}
+    {% set _ = resolved_image_urls.append(url_for('static', filename=img)) %}
+{% endfor %}
+<script id="gallery-images-data" type="application/json">
+    {{ resolved_image_urls | tojson }}
+</script>
+
+<script id="map-data" type="application/json">
+    {
+        "collegeCoords": {{ coords | tojson }},
+        "cityCoords": {{ city_coords | tojson }},
+        "collegeName": {{ college_name | tojson }},
+        "homeCity": {{ home_city | tojson }}
+    }
+</script>
+
 <script>
-const galleryImages = [
-    {% for img in image_urls %}
-    "{{ url_for('static', filename=img) }}",
-    {% endfor %}
-];
+const galleryImages = JSON.parse(document.getElementById('gallery-images-data').textContent);
 let currentGalleryIndex = 0;
 
 function updateGallery() {
@@ -820,11 +845,32 @@ function nextGalleryImage() {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Gallery click handler initialization
+    document.querySelectorAll('.gallery-thumb').forEach(function (thumb) {
+        thumb.addEventListener('click', function () {
+            const index = parseInt(this.getAttribute('data-index'), 10);
+            setGalleryImage(index);
+        });
+    });
+
+    // Set placement rate bar width dynamically
+    document.querySelectorAll('.placement-rate-bar').forEach(function (bar) {
+        const rate = bar.getAttribute('data-rate');
+        bar.style.width = rate + '%';
+    });
+
+    // Set cutoff share bar widths dynamically
+    document.querySelectorAll('.cutoff-share-bar').forEach(function (bar) {
+        const rate = bar.getAttribute('data-rate');
+        bar.style.width = rate + '%';
+    });
+
     // 1. Initialize Map Variables
-    const collegeCoords = {{ coords | tojson | safe }};
-    const cityCoords = {{ city_coords | tojson | safe }} || {};
-    const collegeName = {{ college_name | tojson | safe }};
-    const homeCity = {{ home_city | tojson | safe }};
+    const mapData = JSON.parse(document.getElementById('map-data').textContent);
+    const collegeCoords = mapData.collegeCoords;
+    const cityCoords = mapData.cityCoords || {};
+    const collegeName = mapData.collegeName;
+    const homeCity = mapData.homeCity;
     
     const mapDiv = document.getElementById('map-container');
     if (!mapDiv) return;

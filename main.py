@@ -745,6 +745,19 @@ def checklist():
     return render_template('checklist.html', user=user)
 
 
+@app.route('/registration-process')
+def registration_process():
+    user = current_user()
+    return render_template('registration_process.html', user=user)
+
+
+@app.route('/refer-share')
+@login_required
+def refer_share():
+    user = current_user()
+    return render_template('refer_share.html', user=user)
+
+
 @app.route('/college')
 def college_detail_page():
     name = request.args.get('name', '').strip()
