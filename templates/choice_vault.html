@@ -163,8 +163,9 @@
         </div>
 
         <!-- Right Panel: Scanned Slip Viewer -->
-        <div class="viewer-panel" style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 750px; min-width: 0; overflow: hidden; width: 100%;">
+        <div class="viewer-panel" style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 750px; min-width: 0; overflow: hidden; width: 100%; position: relative;">
             
+            {% if is_premium %}
             <!-- Details Header -->
             <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; flex-wrap: wrap;">
                 <div>
@@ -212,12 +213,10 @@
                 cursor: grab;
                 position: relative;
             " onmousedown="startDrag(event)" onmousemove="drag(event)" onmouseup="endDrag()" onmouseleave="endDrag()">
-                
-                <!-- Floating Instructions (disappear on mobile) -->
+                <!-- Floating Instructions -->
                 <div class="drag-info-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(15, 23, 42, 0.75); color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; pointer-events: none; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 5px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); z-index: 10;">
                     <i class="fas fa-arrows-alt"></i> Drag to pan | Wheel/Pinch to zoom
                 </div>
-
                 <!-- Slip Image Viewport -->
                 <img id="slip-image" src="" alt="Choice Slip" style="
                     max-width: 95%;
@@ -231,6 +230,35 @@
                     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
                 ">
             </div>
+
+            {% else %}
+            <!-- ===== PREMIUM GATE — Choice Vault Viewer ===== -->
+            <!-- Blurred demo image -->
+            <div style="flex-grow:1; position:relative; border-radius:12px; overflow:hidden; background:#f8fafc; border:1px solid #e2e8f0;">
+                <!-- Fake blurred slip preview -->
+                <div style="width:100%; height:100%; filter:blur(10px); opacity:0.35; background: repeating-linear-gradient(0deg, #e2e8f0 0px, #e2e8f0 1px, transparent 1px, transparent 28px), repeating-linear-gradient(90deg, #e2e8f0 0px, #e2e8f0 1px, transparent 1px, transparent 180px); display:flex; align-items:center; justify-content:center;">
+                    <div style="font-size:0.85rem;color:#94a3b8;font-family:monospace;text-align:center;padding:20px;">
+                        <div style="margin-bottom:8px;font-size:1.2rem;">📋📋📋</div>
+                        Choice Slip Data Hidden
+                    </div>
+                </div>
+                <!-- Premium overlay -->
+                <div style="position:absolute;inset:0; background:linear-gradient(135deg,rgba(11,42,92,0.92) 0%,rgba(30,64,175,0.88) 50%,rgba(124,58,237,0.88) 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px;">
+                    <div style="font-size:2.8rem;margin-bottom:16px;">🔒</div>
+                    <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#fbbf24;font-size:0.8rem;font-weight:700;padding:5px 16px;border-radius:50px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;"><i class="fas fa-crown"></i> Premium Feature</div>
+                    <h3 style="color:#fff;font-size:1.5rem;font-weight:800;margin:0 0 10px;line-height:1.3;">View Choice Slips with Premium</h3>
+                    <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin:0 0 22px;max-width:360px;line-height:1.6;">See real DTE choice filling slips from past successful students. Learn how toppers arranged their preferences.</p>
+                    <a href="/premium" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1a1a;font-weight:800;font-size:0.95rem;padding:12px 30px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(251,191,36,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fas fa-crown"></i> Upgrade — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
+                    </a>
+                    <div style="margin-top:18px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                        <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> {{ slips|length }} Real Choice Slips</span>
+                        <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> Zoom & Fullscreen View</span>
+                        <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> Topper Strategies</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
         </div>
 

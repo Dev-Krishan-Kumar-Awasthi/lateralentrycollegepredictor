@@ -49,8 +49,18 @@
                     {% if user.has_unlimited_access %}
                         <span style="font-weight:700; color:#16A34A;"><i class="fas fa-infinity"></i> Unlimited (Premium)</span>
                     {% else %}
-                        <span style="font-weight:700; color:#EA580C;"><i class="fas fa-shield-alt"></i> Free Tier ({{ user.remaining_predictions }}/{{ user.daily_prediction_limit }} left today)</span>
+                        <span style="font-weight:700; color:#EA580C;"><i class="fas fa-lock"></i> Restricted (Free Account)</span>
                     {% endif %}
+                </div>
+                <div>
+                    <span style="color:#6366F1; font-weight:700;"><i class="fas fa-coins" style="color:#F59E0B;"></i> Coins Balance:</span> 
+                    <span style="font-weight:700; color:#10B981;">{{ user.coins or 0 }} Coins</span>
+                    <span style="font-size:0.8rem; color:#64748B; margin-left:4px;">(Value: ₹{{ '%.2f' | format((user.coins or 0) / 10.0) }})</span>
+                </div>
+                <div>
+                    <span style="color:#6366F1; font-weight:700;"><i class="fas fa-users"></i> Friends Referred:</span> 
+                    <span style="font-weight:700; color:#2563eb;">{{ user.referred_students|length }} Joined</span>
+                    <a href="/refer-share" style="font-size:0.8rem; font-weight:700; color:#10b981; margin-left:6px; text-decoration:underline;"><i class="fas fa-external-link-alt"></i> Refer &amp; Earn</a>
                 </div>
                 {% if user.coupon_used %}
                 <div>
@@ -74,7 +84,7 @@
                     <div style="margin-top:16px; padding:12px; background:#FEF2F2; border-radius:6px; border:1px solid #FCA5A5; font-size:0.85rem; line-height:1.4; color:#991B1B; width:100%; box-sizing:border-box;">
                         <i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i> 
                         <strong>Your Coupon Code ({{ user.coupon_used }}) Has Expired!</strong> 
-                        Unlimited access has been deactivated because this coupon code was deleted or expired. Go for premium or invite friends using the link below to unlock unlimited access again.
+                        Your coupon code has expired. Upgrade to Premium or invite friends to earn bonus coins!
                     </div>
                 {% elif user.has_unlimited_access %}
                     <div style="margin-top:16px; padding:12px; background:#ECFDF5; border-radius:6px; border:1px solid #A7F3D0; font-size:0.85rem; line-height:1.4; color:#065F46; width:100%; box-sizing:border-box;">
@@ -84,9 +94,9 @@
                 {% else %}
                     <div style="margin-top:16px; padding:12px; background:#FFFBEB; border-radius:6px; border:1px solid #FDE68A; font-size:0.85rem; line-height:1.4; color:#92400E; width:100%; box-sizing:border-box;">
                         <i class="fas fa-share-alt" style="margin-right:4px;"></i> 
-                        <strong>Invite your friends to increase your daily limit!</strong> Share your mobile number 
+                        <strong>Invite your friends to earn coins!</strong> Share your mobile number 
                         <strong style="font-family:monospace; background:#FEF3C7; padding:2px 6px; border-radius:4px;">{{ user.mobile_number }}</strong> 
-                        as a referral code. When they register with it, you will both get <strong>+5 daily predictions limit</strong> added to your accounts!
+                        as a referral code. When they register, you will get <strong>{{ referral_coins_reward }} coins</strong> to unlock Premium for free!
                     </div>
                 {% endif %}
             {% endif %}
@@ -515,19 +525,24 @@
                     <!-- Floating Celebration Confetti Particles -->
                     <div style="font-size:3.5rem; margin-bottom:10px; animation: bounceCongrats 1.5s infinite alternate;">🎉</div>
                     <h2 style="margin:0; font-size:1.6rem; font-weight:850; color:#fff; text-shadow: 0 2px 4px rgba(0,0,0,0.15); font-family: 'Inter', sans-serif;">Congratulations!</h2>
-                    <p style="margin:4px 0 0 0; font-size:0.95rem; opacity:0.9; font-weight:600;">Premium Access Unlocked</p>
+                    <p style="margin:4px 0 0 0; font-size:0.95rem; opacity:0.9; font-weight:600;">🪙 {{ congrats_coins_rewarded or 50 }} Bonus Coins Received!</p>
                 </div>
                 
                 <div style="padding:24px 30px; text-align:center;">
                     {% if congrats_coupon_for %}
-                    <p style="font-size:1.05rem; line-height:1.6; color:#1e293b; margin-top:0; margin-bottom:24px; font-family: 'Inter', sans-serif;">
-                        You have unlocked <strong>Unlimited Access</strong> of tools for using this DTE predictor because you used {% if congrats_coupon_for == congrats_coupon_for|upper and ' ' not in congrats_coupon_for %}coupon code{% else %}a coupon code created for{% endif %} <strong style="color:#2563eb; font-size:1.1rem; background:#eff6ff; padding:2px 8px; border-radius:4px; display:inline-block; margin-top:4px;">{{ congrats_coupon_for }}</strong>!
+                    <p style="font-size:1.05rem; line-height:1.6; color:#1e293b; margin-top:0; margin-bottom:16px; font-family: 'Inter', sans-serif;">
+                        You received 🪙 <strong>{{ congrats_coins_rewarded or 50 }} Bonus Coins</strong> because you used {% if congrats_coupon_for == congrats_coupon_for|upper and ' ' not in congrats_coupon_for %}coupon code{% else %}a coupon code created for{% endif %} <strong style="color:#2563eb; font-size:1.1rem; background:#eff6ff; padding:2px 8px; border-radius:4px; display:inline-block; margin-top:4px;">{{ congrats_coupon_for }}</strong>!
                     </p>
                     {% elif congrats_referral_by %}
-                    <p style="font-size:1.05rem; line-height:1.6; color:#1e293b; margin-top:0; margin-bottom:24px; font-family: 'Inter', sans-serif;">
-                        You have unlocked <strong>Unlimited Access</strong> of tools for using this DTE predictor because you used a referral code from your friend <strong style="color:#2563eb; font-size:1.1rem; background:#eff6ff; padding:2px 8px; border-radius:4px; display:inline-block; margin-top:4px;">{{ congrats_referral_by }}</strong>!
+                    <p style="font-size:1.05rem; line-height:1.6; color:#1e293b; margin-top:0; margin-bottom:16px; font-family: 'Inter', sans-serif;">
+                        You received 🪙 <strong>{{ congrats_coins_rewarded or 50 }} Bonus Coins</strong> because you used a referral code from your friend <strong style="color:#2563eb; font-size:1.1rem; background:#eff6ff; padding:2px 8px; border-radius:4px; display:inline-block; margin-top:4px;">{{ congrats_referral_by }}</strong>!
                     </p>
                     {% endif %}
+
+                    <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:10px; padding:12px; margin-bottom:20px; font-size:0.88rem; color:#92400e; font-weight:600; text-align:center;">
+                        <i class="fas fa-coins" style="color:#f59e0b; margin-right:4px;"></i> <strong>10 Coins = ₹1</strong><br>
+                        Use your coins to buy Premium &amp; unlock all predictor tools!
+                    </div>
                     
                     <button type="button" onclick="closeCongratsModal()" class="btn-primary" style="width:100%; padding:14px; font-size:1.05rem; font-weight:800; border-radius:10px; border:none; background: linear-gradient(135deg, #2563eb, #1d4ed8); color:#fff; cursor:pointer; box-shadow:0 4px 14px rgba(37,99,235,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
                         <i class="fas fa-rocket"></i> Get Started

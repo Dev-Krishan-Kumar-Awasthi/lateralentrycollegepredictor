@@ -9,8 +9,8 @@
     <div style="text-align: center; margin-bottom: 50px;">
         {% if limit_reached %}
         <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 16px 24px; display: inline-flex; align-items: center; gap: 12px; margin-bottom: 24px; color: #DC2626; font-weight: 700; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.05); animation: shake 0.5s ease-in-out;">
-            <i class="fas fa-exclamation-circle" style="font-size: 1.2rem;"></i>
-            <span>Daily Limit Reached! You have used your 5 free predictions for today. Upgrade to unlock unlimited access.</span>
+            <i class="fas fa-lock" style="font-size: 1.2rem;"></i>
+            <span>Access Restricted! Premium Membership is required to unlock predictor tools. Upgrade now or invite friends to earn coins.</span>
         </div>
         {% endif %}
         
@@ -23,39 +23,8 @@
     </div>
 
     <!-- Pricing Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; align-items: stretch; margin-bottom: 60px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; align-items: stretch; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto;">
         
-        <!-- Free Plan -->
-        <div class="pricing-card" style="background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 40px 30px; display: flex; flex-direction: column; position: relative; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
-            <div style="margin-bottom: 24px;">
-                <span style="background: #F1F5F9; color: #475569; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Free Plan</span>
-                <h3 style="font-size: 2rem; font-weight: 800; color: #1E293B; margin: 15px 0 5px;">₹0</h3>
-                <p style="color: #94A3B8; font-size: 0.85rem; margin: 0;">Forever free access</p>
-            </div>
-            
-            <hr style="border: 0; border-top: 1px solid #F1F5F9; margin: 0 0 24px 0;">
-            
-            <ul style="list-style: none; padding: 0; margin: 0 0 40px 0; display: flex; flex-direction: column; gap: 16px; font-size: 0.9rem; color: #475569;">
-                <li style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-check-circle" style="color: #10B981;"></i> 5 predictions per day</li>
-                <li style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Standard College Search</li>
-                <li style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Basic Rank Predictor</li>
-                <li style="color: #94A3B8; display: flex; align-items: center; gap: 10px;"><i class="fas fa-times-circle" style="color: #E2E8F0;"></i> No simulator access</li>
-                <li style="color: #94A3B8; display: flex; align-items: center; gap: 10px;"><i class="fas fa-times-circle" style="color: #E2E8F0;"></i> No priority choice sorting</li>
-            </ul>
-            
-            <div style="margin-top: auto;">
-                {% if user and not user.has_unlimited_access %}
-                <button disabled style="width: 100%; border: 1px solid #CBD5E1; color: #94A3B8; background: #F8FAFC; border-radius: 12px; padding: 14px; font-weight: 700; cursor: not-allowed; font-size: 0.95rem;">
-                    Active Plan
-                </button>
-                {% else %}
-                <a href="/predictor" style="display: block; text-align: center; width: 100%; border: 1px solid #CBD5E1; color: #475569; background: #fff; border-radius: 12px; padding: 14px; font-weight: 700; text-decoration: none; font-size: 0.95rem; transition: all 0.2s;">
-                    Start Predicting
-                </a>
-                {% endif %}
-            </div>
-        </div>
-
         <!-- Premium Pro Plan (Glow card) -->
         <div class="pricing-card premium-glow" style="background: #fff; border: 2px solid #3B82F6; border-radius: 20px; padding: 40px 30px; display: flex; flex-direction: column; position: relative; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.08);">
             
@@ -64,19 +33,27 @@
                 <i class="fas fa-crown"></i> Best Value
             </span>
 
-            <div style="margin-bottom: 24px;">
+            <div style="margin-bottom: 12px;">
                 <span style="background: #EFF6FF; color: #1D4ED8; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Premium Pro</span>
-                <div style="display: flex; align-items: baseline; gap: 8px; margin: 15px 0 5px;">
-                    <h3 style="font-size: 2.2rem; font-weight: 800; color: #1E293B; margin: 0;">₹149</h3>
-                    <span style="color: #94A3B8; text-decoration: line-through; font-size: 1rem;">₹499</span>
+                <div style="display: flex; align-items: center; gap: 8px; margin: 15px 0 5px;">
+                    <h3 style="font-size: 2.2rem; font-weight: 800; color: #1E293B; margin: 0;">₹199</h3>
+                    <span style="color: #94A3B8; text-decoration: line-through; font-size: 1rem;">₹399</span>
+                    <span style="background: #FEF3C7; color: #D97706; padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">50% OFF THIS MONTH</span>
                 </div>
                 <p style="color: #3B82F6; font-size: 0.85rem; font-weight: 600; margin: 0;">Full counselling season pass</p>
             </div>
+
+            {% if user and user.is_authenticated %}
+            <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 12px; padding: 15px; margin: 15px 0; font-size: 0.9rem; color: #1E40AF; text-align: center;">
+                <i class="fas fa-coins" style="color: #F59E0B; margin-right: 4px;"></i>
+                <strong>Your Balance:</strong> {{ user.coins or 0 }} Coins (Value: ₹{{ '%.2f' | format((user.coins or 0) / 10.0) }})
+            </div>
+            {% endif %}
             
             <hr style="border: 0; border-top: 1px solid #EFF6FF; margin: 0 0 24px 0;">
             
             <ul style="list-style: none; padding: 0; margin: 0 0 40px 0; display: flex; flex-direction: column; gap: 16px; font-size: 0.9rem; color: #334155;">
-                <li style="display: flex; align-items: center; gap: 10px; font-weight: 600;"><i class="fas fa-check-circle" style="color: #3B82F6;"></i> <span style="background: #DBEAFE; color: #1E40AF; padding: 2px 6px; border-radius: 4px;">Unlimited</span> Predictions today</li>
+                <li style="display: flex; align-items: center; gap: 10px; font-weight: 600;"><i class="fas fa-check-circle" style="color: #3B82F6;"></i> <span style="background: #DBEAFE; color: #1E40AF; padding: 2px 6px; border-radius: 4px;">Unlimited</span> Predictions</li>
                 <li style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-check-circle" style="color: #3B82F6;"></i> Priority DTE Choice Sorting</li>
                 <li style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-check-circle" style="color: #3B82F6;"></i> Allotment Choice Simulator</li>
                 <li style="display: flex; align-items: center; gap: 10px;"><i class="fas fa-check-circle" style="color: #3B82F6;"></i> Detailed Merit Insights & Graph</li>
@@ -90,25 +67,39 @@
                     <i class="fas fa-check-double"></i> Premium Unlocked
                 </button>
                 {% else %}
-                <a href="/checkout" style="display: block; text-align: center; width: 100%; border: none; color: #fff; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); border-radius: 12px; padding: 14px; font-weight: 800; text-decoration: none; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);" class="btn-upgrade-action">
-                    Unlock Premium Now
+                <a href="/checkout" style="display: block; text-align: center; width: 100%; border: none; color: #fff; background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); border-radius: 12px; padding: 14px; font-weight: 800; text-decoration: none; font-size: 0.95rem; transition: all 0.2s; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2); margin-bottom: 12px;" class="btn-upgrade-action">
+                    Unlock Premium Now (₹199)
                 </a>
+                
+                {% if user and user.is_authenticated %}
+                    {% if (user.coins or 0) >= 1990 %}
+                        <form method="POST" action="/buy-premium-with-coins" class="no-loader">
+                            <button type="submit" style="width: 100%; border: 2px solid #F59E0B; color: #D97706; background: #FFFBEB; border-radius: 12px; padding: 12px; font-weight: 800; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                <i class="fas fa-coins"></i> Unlock with 1990 Coins (Free)
+                            </button>
+                        </form>
+                    {% else %}
+                        <button disabled style="width: 100%; border: 1px dashed #CBD5E1; color: #94A3B8; background: #F8FAFC; border-radius: 12px; padding: 12px; font-weight: 700; font-size: 0.85rem; cursor: not-allowed; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                            <i class="fas fa-lock"></i> Need 1990 Coins to Unlock Free
+                        </button>
+                    {% endif %}
+                {% endif %}
                 {% endif %}
             </div>
         </div>
 
-        <!-- Referral Upgrade Plan -->
+        <!-- Referral Coins Plan -->
         <div class="pricing-card" style="background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 40px 30px; display: flex; flex-direction: column; position: relative; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
             <div style="margin-bottom: 24px;">
                 <span style="background: #ECFDF5; color: #047857; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Invite Friends</span>
-                <h3 style="font-size: 2rem; font-weight: 800; color: #1E293B; margin: 15px 0 5px;">Free Upgrade</h3>
-                <p style="color: #059669; font-size: 0.85rem; font-weight: 600; margin: 0;">Referral unlock</p>
+                <h3 style="font-size: 2rem; font-weight: 800; color: #1E293B; margin: 15px 0 5px;">+{{ referral_coins_reward }} Coins</h3>
+                <p style="color: #059669; font-size: 0.85rem; font-weight: 600; margin: 0;">Referral Bonus (10 coins = ₹1)</p>
             </div>
             
             <hr style="border: 0; border-top: 1px solid #ECFDF5; margin: 0 0 24px 0;">
             
             <p style="color: #475569; font-size: 0.9rem; line-height: 1.5; margin: 0 0 24px 0;">
-                Apne friend ko register karwao! Jab woh register karte waqt aapka code daalenge, toh <strong>dono ko +5 predictions/day limit</strong> extra mil jayegi bilkul free!
+                Apne friend ko register karwao! Jab woh register karte waqt aapka code daalenge, toh aapko <strong>{{ referral_coins_reward }} Coins (Value ₹{{ '%.2f'|format(referral_coins_reward / 10.0) }})</strong> milenge. In coins ka upyog aap Premium kharidne ke liye kar sakte hain!
             </p>
             
             <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 30px;">
@@ -143,7 +134,7 @@
             </div>
             <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; border: 1px solid #F1F5F9;">
                 <h4 style="margin: 0 0 8px 0; color: #1E3A8A; font-size: 1rem;">Referral process kya hai?</h4>
-                <p style="margin: 0; color: #475569; font-size: 0.9rem; line-height: 1.5;">Aapka friend jab register karega, tab registration form main "Referral / Coupon Code" input area main aapka mobile number daalega. Uske verify hote hi dono accounts premium ban jayenge.</p>
+                <p style="margin: 0; color: #475569; font-size: 0.9rem; line-height: 1.5;">Aapka friend jab register karega, tab registration form main "Referral / Coupon Code" input area main aapka mobile number daalega. Uske verify hote hi aapke account main {{ referral_coins_reward }} Coins add ho jayenge.</p>
             </div>
         </div>
     </div>
@@ -177,7 +168,7 @@
     function copyReferralCode(code) {
         navigator.clipboard.writeText(code).then(() => {
             const shareUrl = window.location.origin;
-            const msg = `Hey! Check out this awesome MP B.Tech Lateral Entry College Predictor tool to check your college admission chances, expected rank, and build your smart choice list:\n\n👉 ${shareUrl}/\n\nUse my Referral Code during registration to get +5 extra daily predictions limit for free:\n🎁 Referral Code: ${code}\n\nDon't miss out, register today!`;
+            const msg = `Hey! Check out this awesome MP B.Tech Lateral Entry College Predictor tool to check your college admission chances, expected rank, and build your smart choice list:\n\n👉 ${shareUrl}/\n\nUse my Referral Code during registration to support me and earn coins:\n🎁 Referral Code: ${code}\n\nDon't miss out, register today!`;
             
             if (window.showToast) {
                 window.showToast('Code copied! Opening WhatsApp...', 'success');
@@ -191,7 +182,7 @@
         }).catch(err => {
             console.error('Could not copy text: ', err);
             const shareUrl = window.location.origin;
-            const msg = `Hey! Check out this awesome MP B.Tech Lateral Entry College Predictor tool to check your college admission chances, expected rank, and build your smart choice list:\n\n👉 ${shareUrl}/\n\nUse my Referral Code during registration to get +5 extra daily predictions limit for free:\n🎁 Referral Code: ${code}\n\nDon't miss out, register today!`;
+            const msg = `Hey! Check out this awesome MP B.Tech Lateral Entry College Predictor tool to check your college admission chances, expected rank, and build your smart choice list:\n\n👉 ${shareUrl}/\n\nUse my Referral Code during registration to support me and earn coins:\n🎁 Referral Code: ${code}\n\nDon't miss out, register today!`;
             window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(msg), "_blank");
         });
     }

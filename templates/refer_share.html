@@ -7,9 +7,9 @@
     <!-- Hero Header -->
     <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; padding: 30px 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3); text-align: center; position: relative; overflow: hidden;">
         <div style="font-size: 3.5rem; margin-bottom: 12px; display: inline-block; animation: bounceRefer 1.5s infinite alternate;">🎁</div>
-        <h2 style="margin: 0 0 8px 0; color: #fff; font-size: 1.8rem; font-weight: 800;">Refer Friends & Boost Daily Predictions!</h2>
+        <h2 style="margin: 0 0 8px 0; color: #fff; font-size: 1.8rem; font-weight: 800;">Refer Friends & Earn Coins!</h2>
         <p style="margin: 0; opacity: 0.95; font-size: 1.05rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;">
-            Invite your polytechnic classmates and friends to the MP Lateral Entry Predictor. When they register using your code, <strong>both of you get +5 daily predictions limit</strong>!
+            Invite your polytechnic classmates and friends to the MP Lateral Entry Predictor. When they register using your code, <strong>you get {{ referral_coins_reward }} Coins (Value ₹{{ '%.2f'|format(referral_coins_reward / 10.0) }})</strong> which can be used to purchase Premium!
         </p>
     </div>
 
@@ -39,6 +39,105 @@
                 
             </div>
         </div>
+    <!-- Referral Performance & History Dashboard -->
+    <div class="gov-box" style="background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 24px;">
+        <h3 style="color: var(--primary); margin: 0 0 18px 0; font-size: 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <span><i class="fas fa-chart-line" style="color: #10b981;"></i> Your Referral Performance</span>
+            <span style="font-size: 0.85rem; font-weight: 700; background: #ecfdf5; color: #047857; padding: 4px 12px; border-radius: 20px; border: 1px solid #a7f3d0;">
+                <i class="fas fa-coins" style="color: #f59e0b;"></i> 10 Coins = ₹1
+            </span>
+        </h3>
+
+        <!-- Stat Cards Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            
+            <!-- Card 1: Total Referrals -->
+            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: center;">
+                <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--muted); margin-bottom: 6px;">
+                    <i class="fas fa-users" style="color: #2563eb;"></i> Total Successful Referrals
+                </div>
+                <div style="font-size: 1.8rem; font-weight: 850; color: #1e3a8a;">
+                    {{ user.referred_students|length }}
+                </div>
+                <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">Friends Joined</div>
+            </div>
+
+            <!-- Card 2: Coins Earned -->
+            <div style="background: #fffdf5; border: 1.5px solid #fef3c7; border-radius: 10px; padding: 16px; text-align: center;">
+                <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #b45309; margin-bottom: 6px;">
+                    <i class="fas fa-coins" style="color: #f59e0b;"></i> Referral Coins Earned
+                </div>
+                <div style="font-size: 1.8rem; font-weight: 850; color: #d97706;">
+                    {{ (user.referred_students|length) * referral_coins_reward }} <span style="font-size: 1rem;">Coins</span>
+                </div>
+                <div style="font-size: 0.78rem; color: #92400e; margin-top: 4px;">Worth ₹{{ '%.1f'|format(((user.referred_students|length) * referral_coins_reward) / 10.0) }}</div>
+            </div>
+
+            <!-- Card 3: Current Wallet Balance -->
+            <div style="background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 10px; padding: 16px; text-align: center;">
+                <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: #047857; margin-bottom: 6px;">
+                    <i class="fas fa-wallet" style="color: #10b981;"></i> Current Coin Balance
+                </div>
+                <div style="font-size: 1.8rem; font-weight: 850; color: #065f46;">
+                    {{ user.coins or 0 }} <span style="font-size: 1rem;">Coins</span>
+                </div>
+                <div style="font-size: 0.78rem; color: #047857; margin-top: 4px;">Worth ₹{{ '%.1f'|format((user.coins or 0) / 10.0) }} discount</div>
+            </div>
+
+        </div>
+
+        <!-- Successful Referrals Activity Log -->
+        <h4 style="margin: 0 0 12px 0; color: var(--primary); font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-list-check" style="color: #2563eb;"></i> Successful Referral Activity
+        </h4>
+
+        {% if user.referred_students %}
+        <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <table class="gov-table" style="width: 100%; margin: 0; font-size: 0.88rem;">
+                <thead>
+                    <tr style="background: #f8fafc; text-align: left;">
+                        <th style="padding: 10px 14px;">#</th>
+                        <th style="padding: 10px 14px;">Friend Name</th>
+                        <th style="padding: 10px 14px;">Polytechnic / Branch</th>
+                        <th style="padding: 10px 14px;">Joined On</th>
+                        <th style="padding: 10px 14px; text-align: right;">Bonus Earned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for friend in user.referred_students %}
+                    <tr style="border-top: 1px solid #f1f5f9;">
+                        <td style="padding: 10px 14px; font-weight: 700; color: var(--muted);">{{ loop.index }}</td>
+                        <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">
+                            <i class="fas fa-user-circle" style="color: #94a3b8; margin-right: 6px;"></i>
+                            {{ friend.display_name or 'Student' }}
+                        </td>
+                        <td style="padding: 10px 14px; color: #475569; font-size: 0.82rem;">
+                            {{ friend.polytechnic_college or 'Polytechnic Student' }}
+                            {% if friend.diploma_branch %}<span style="color: #64748b;">({{ friend.diploma_branch }})</span>{% endif %}
+                        </td>
+                        <td style="padding: 10px 14px; color: #64748b; font-size: 0.82rem;">
+                            {{ friend.created_at.strftime('%d %b %Y') if friend.created_at else 'Successful' }}
+                        </td>
+                        <td style="padding: 10px 14px; text-align: right;">
+                            <span style="background: #d1fae5; color: #065f46; font-weight: 800; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-coins" style="color: #f59e0b;"></i> +{{ referral_coins_reward }} Coins (₹{{ '%.2f'|format(referral_coins_reward / 10.0) }})
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 10px; padding: 28px 20px; text-align: center;">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">🚀</div>
+            <h5 style="margin: 0 0 6px 0; color: #334155; font-size: 1rem; font-weight: 700;">No Referrals Yet</h5>
+            <p style="margin: 0 auto; color: #64748b; font-size: 0.88rem; max-width: 440px; line-height: 1.5;">
+                Share your referral code <strong style="color: #047857; font-family: monospace;">{{ user.mobile_number }}</strong> with your diploma friends. When they register, both of you will receive {{ referral_coins_reward }} bonus coins!
+            </p>
+        </div>
+        {% endif %}
+
     </div>
 
     <!-- How it Works section -->
@@ -65,8 +164,8 @@
             <!-- Step 3 -->
             <div style="background: #f8fafc; padding: 18px; border-radius: 8px; border: 1px solid #e2e8f0; position: relative;">
                 <div style="position: absolute; top: -12px; left: 16px; background: #10b981; color: #fff; font-weight: 800; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">3</div>
-                <h4 style="margin: 8px 0 8px 0; color: var(--primary); font-size: 0.95rem; font-weight: 700;">Both Earn Limits!</h4>
-                <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Instantly, you both get <strong>+5 daily predictions limit</strong>. Refer more friends to get unlimited predicted results!</p>
+                <h4 style="margin: 8px 0 8px 0; color: var(--primary); font-size: 0.95rem; font-weight: 700;">Earn Coins!</h4>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Instantly, you receive {{ referral_coins_reward }} Coins (worth ₹{{ '%.2f'|format(referral_coins_reward / 10.0) }}) in your balance. Refer more friends to stack up coins and unlock Premium Pro for free!</p>
             </div>
         </div>
     </div>
@@ -101,7 +200,7 @@ function copyInviteLink() {
 function shareInviteWhatsApp() {
     const code = '{{ user.mobile_number }}';
     const inviteLink = window.location.origin + '/account?ref=' + encodeURIComponent(code);
-    const message = `🎓 *MP DTE B.Tech Lateral Entry Predictor* 🎓\n\nHey! Check out this free college predictor tool. It uses official cutoff ranks to predict engineering admission chances for Polytechnic Diploma holders in MP.\n\nSign up using my referral link:\n🔗 ${inviteLink}\n\n(Or use my mobile number *${code}* as the referral code during registration) to unlock *+5 extra predictions* instantly!`;
+    const message = `🎓 *MP DTE B.Tech Lateral Entry Predictor* 🎓\n\nHey! Check out this awesome college predictor tool. It uses official cutoff ranks to predict engineering admission chances for Polytechnic Diploma holders in MP.\n\nSign up using my referral link:\n🔗 ${inviteLink}\n\n(Or use my mobile number *${code}* as the referral code during registration) to support me and help earn premium coins!`;
     window.open('https://wa.me/?text=' + encodeURIComponent(message), '_blank');
 }
 </script>

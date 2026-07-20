@@ -36,7 +36,7 @@ from auth_helpers import (
     pre_validate_registration, send_otp_email, reset_password_in_db,
     pre_validate_profile_update, send_broadcast_email,
 )
-from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount, Coupon, CgpaRankRange, RecommendationChoice
+from models import CollegeReview, User, SeatInfo, ChoiceVault, VisitorCount, Coupon, CgpaRankRange, RecommendationChoice, SiteSetting, get_referral_coins
 from faq_data import (
     FAQ_LIST, get_faq_by_slug, get_faqs_by_category, get_all_categories
 )
@@ -107,7 +107,10 @@ app.jinja_env.filters['to_ist'] = to_ist
 
 @app.context_processor
 def inject_years():
-    return dict(years_list=YEARS)
+    return dict(
+        years_list=YEARS,
+        referral_coins_reward=get_referral_coins()
+    )
 
 
 RANK_MAPS_CACHE = {}
@@ -418,7 +421,8 @@ with app.app_context():
             ("referred_by_id", "INTEGER"),
             ("predictions_today", "INTEGER DEFAULT 0"),
             ("last_prediction_date", "TEXT"),
-            ("is_premium", "INTEGER DEFAULT 0")
+            ("is_premium", "INTEGER DEFAULT 0"),
+            ("coins", "INTEGER DEFAULT 0")
         ]:
             try:
                 db.session.execute(text(f"ALTER TABLE User ADD COLUMN {col} {col_type}"))
@@ -429,6 +433,12 @@ with app.app_context():
         # Dynamic SQLite migration for Coupon table
         try:
             db.session.execute(text("ALTER TABLE Coupon ADD COLUMN for_whom TEXT"))
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            
+        try:
+            db.session.execute(text("ALTER TABLE Coupon ADD COLUMN coins_reward INTEGER DEFAULT 50"))
             db.session.commit()
         except Exception:
             db.session.rollback()
@@ -517,22 +527,8 @@ with app.app_context():
 
 def consume_prediction(user):
     if not user:
-        return True
-    if user.has_unlimited_access:
-        return True
-    
-    from datetime import date
-    today_str = date.today().isoformat()
-    if user.last_prediction_date != today_str:
-        user.last_prediction_date = today_str
-        user.predictions_today = 0
-        
-    if user.predictions_today >= user.daily_prediction_limit:
         return False
-        
-    user.predictions_today += 1
-    db.session.commit()
-    return True
+    return bool(user.has_unlimited_access)
 
 
 # ── Pages ────────────────────────────────────────────────────────────────────
@@ -575,23 +571,8 @@ def checkout():
 @app.route('/predictor', methods=['GET', 'POST'])
 @limiter.limit("20 per minute", methods=["POST"])
 def predictor():
-    if request.method == 'POST' and not current_user():
-        prefill = {
-            'cgpa': request.form.get('cgpa', ''),
-            'category': request.form.get('category', ''),
-            'gender': request.form.get('gender', ''),
-            'college_type': request.form.get('college_type', ''),
-            'branch': request.form.getlist('branch'),
-            'domicile': request.form.get('domicile', 'Y'),
-            'city': request.form.get('city', 'All'),
-            'district': request.form.get('district', 'All'),
-            'home_city': request.form.get('home_city', 'All'),
-            'max_distance_km': request.form.get('max_distance_km', ''),
-        }
-        return render_template(
-            'predictor.html', data=None, prediction=None,
-            needs_login=True, mp_cities=MP_CITIES, prefill=prefill, has_prefill=False,
-        )
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
 
     if request.method == 'GET':
         prefill = {
@@ -610,6 +591,14 @@ def predictor():
         return render_template(
             'predictor.html', data=None, prediction=None,
             mp_cities=MP_CITIES, prefill=prefill, has_prefill=has_prefill,
+            is_premium=is_premium,
+        )
+
+    if not user:
+        return render_template(
+            'predictor.html', data=None, prediction=None,
+            needs_login=True, mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+            is_premium=False,
         )
 
     try:
@@ -622,12 +611,8 @@ def predictor():
             'predictor.html', data=None, prediction=None,
             error="Invalid CGPA. Please enter a number between 0 and 10.",
             mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+            is_premium=is_premium,
         )
-
-    # ── Daily Prediction Limit Check ──
-    user = current_user()
-    if user and not consume_prediction(user):
-        return redirect('/premium?limit=1')
 
     category = request.form.get('category')
     gender = request.form.get('gender')
@@ -677,19 +662,21 @@ def predictor():
     return render_template(
         'predictor.html', data=form_data, prediction=prediction,
         mp_cities=MP_CITIES, prefill=None, has_prefill=False,
+        is_premium=is_premium,
     )
 
 
 @app.route('/choice-builder', methods=['GET', 'POST'])
 def choice_builder():
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
+
     def normalize(name):
         return " ".join((name or "").replace(",", " ").split()).lower().strip()
 
     result = None
     form_data = None
-    user = current_user()
     cloud_shortlist = load_cloud_shortlist(user.id) if user else []
-    # Build a set of (college_name, branch_code) from the user's saved shortlist
     shortlisted_keys = set()
     for item in cloud_shortlist:
         cname = normalize(item.get('college_name'))
@@ -698,27 +685,12 @@ def choice_builder():
 
     if request.method == 'POST':
         if not user:
-            try:
-                cgpa_val = float(request.form.get('cgpa', '').strip() or '0')
-            except ValueError:
-                cgpa_val = 0.0
-            form_data = {
-                'cgpa': cgpa_val,
-                'category': request.form.get('category'),
-                'gender': request.form.get('gender'),
-                'college_type': request.form.get('college_type', 'Any'),
-                'branch': request.form.getlist('branch') or ['All'],
-                'domicile': request.form.get('domicile', 'Y'),
-                'city': request.form.get('city', 'All'),
-            }
             return render_template(
-                'choice_builder.html', result=None, form_data=form_data,
+                'choice_builder.html', result=None, form_data=None,
                 needs_login=True, mp_cities=MP_CITIES,
-                cloud_shortlist=[], shortlisted_keys=[],
+                cloud_shortlist=[], shortlisted_keys=[], is_premium=False, user=None,
             )
         try:
-            if not consume_prediction(user):
-                return redirect('/premium?limit=1')
             cgpa = float(request.form.get('cgpa', '').strip())
             form_data = {
                 'cgpa': cgpa,
@@ -771,7 +743,7 @@ def choice_builder():
             form_data = {'error': 'Invalid CGPA'}
     return render_template(
         'choice_builder.html', result=result, form_data=form_data, mp_cities=MP_CITIES,
-        shortlisted_keys=list(shortlisted_keys), user=user,
+        shortlisted_keys=list(shortlisted_keys), user=user, is_premium=is_premium,
     )
 
 
@@ -804,12 +776,14 @@ def refer_share():
 
 @app.route('/college')
 def college_detail_page():
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
     name = request.args.get('name', '').strip()
     if not name:
-        return redirect('/predictor')
+        return redirect('/search')
     detail = get_college_detail(name)
     if not detail:
-        return render_template('college_detail.html', detail=None, college_name=name)
+        return render_template('college_detail.html', detail=None, college_name=name, is_premium=is_premium)
     home_city = request.args.get('home_city', 'All')
     bundle = get_college_info_bundle(name, detail['college_type'], home_city)
     latest_year = YEARS[0] if YEARS else 2025
@@ -831,7 +805,8 @@ def college_detail_page():
         mp_cities=MP_CITIES, placement=bundle['placement'],
         coords=bundle['coords'], city_coords=get_city_coords(),
         roi_index=bundle['roi_index'],
-        latest_year=latest_year, prev_year=prev_year
+        latest_year=latest_year, prev_year=prev_year,
+        is_premium=is_premium,
     )
 
 
@@ -842,16 +817,22 @@ def how_it_works():
 
 @app.route('/compare')
 def compare():
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
     names = request.args.getlist('colleges')
     names = [n.strip() for n in names if n.strip()][:3]
     data = get_compare_data(names)
     latest_year = YEARS[0] if YEARS else 2025
     prev_year = YEARS[1] if (YEARS and len(YEARS) > 1) else (latest_year - 1)
-    return render_template('compare.html', colleges=data, branch_names=BRANCH_NAMES, latest_year=latest_year, prev_year=prev_year)
+    return render_template('compare.html', colleges=data, branch_names=BRANCH_NAMES,
+                           latest_year=latest_year, prev_year=prev_year, is_premium=is_premium)
 
 
 @app.route('/search')
 def search():
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
+
     q = request.args.get("q", "").strip()
     category = request.args.get("category", "").strip()
     gender = request.args.get("gender", "").strip()
@@ -867,18 +848,6 @@ def search():
 
     # Execute search if q or min_package or any filters are specified
     has_filters = bool(q or category or gender or college_type or branch or (city and city != 'All') or year or min_package > 0)
-    
-    # Login required to view search results or directory
-    if not current_user():
-        if request.args.get('json'):
-            return jsonify({"error": "Login required. Please login first.", "needs_login": True}), 401
-        data = {
-            "q": q, "category": category, "gender": gender,
-            "college_type": college_type, "branch": branch, "city": city, "year": year,
-            "min_package": min_package,
-        } if has_filters else None
-        return render_template("search.html", data=data, colleges=None,
-                               mp_cities=MP_CITIES, needs_login=True)
 
     if not has_filters:
         # Load all distinct colleges, resolve type duplicates by preferring GOVT
@@ -936,13 +905,25 @@ def search():
                 'image_urls': images,
                 'image_url': images[0] if images else None
             })
-            
+
+        # For non-premium users: show only 3 fixed demo colleges
+        if not is_premium:
+            DEMO_KEYWORDS = ['shri g.s.', 'davv', 'jec', 'jabalpur engineering']
+            demo = []
+            for kw in DEMO_KEYWORDS:
+                for c in colleges:
+                    if kw in c['college_name'].lower() and c not in demo:
+                        demo.append(c)
+                        break
+            colleges = demo[:3]
+
         return render_template(
             "search.html", 
             data=None, 
             colleges=colleges, 
             mp_cities=MP_CITIES,
-            directory_mode=True
+            directory_mode=True,
+            is_premium=is_premium,
         )
 
     data = {
@@ -990,29 +971,20 @@ def search():
                 deduped.append(c)
         return jsonify(deduped)
 
-    return render_template("search.html", data=data, colleges=colleges, mp_cities=MP_CITIES)
+    return render_template("search.html", data=data, colleges=colleges, mp_cities=MP_CITIES, is_premium=is_premium)
 
 
 @app.route('/rank_predictor', methods=['GET', 'POST'])
 def rank():
-    if request.method == 'GET':
-        return render_template('rank.html', data=None, prediction=None)
-
-    # Auth check
-    if not current_user():
-        cgpa_str = request.form.get('cgpa', '').strip()
-        rank_str = request.form.get('rank', '').strip()
-        mode = "rank-to-cgpa" if rank_str else "cgpa-to-rank"
-        return render_template(
-            'rank.html',
-            data={"cgpa": cgpa_str, "rank": rank_str, "mode": mode},
-            prediction=None,
-            needs_login=True
-        )
-
     user = current_user()
-    if user and not consume_prediction(user):
-        return redirect('/premium?limit=1')
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
+
+    if request.method == 'GET':
+        return render_template('rank.html', data=None, prediction=None, is_premium=is_premium)
+
+    if not user:
+        return render_template('rank.html', data=None, prediction=None,
+                               needs_login=True, is_premium=False)
 
     cgpa_str = request.form.get('cgpa', '').strip()
     rank_str = request.form.get('rank', '').strip()
@@ -1026,11 +998,13 @@ def rank():
             return render_template(
                 'rank.html', data=None, prediction=None,
                 error="Invalid CGPA. Please enter a number between 0 and 10.",
+                is_premium=is_premium,
             )
         return render_template(
             'rank.html',
             data={"cgpa": cgpa, "mode": "cgpa-to-rank"},
-            prediction=get_rank(cgpa)
+            prediction=get_rank(cgpa),
+            is_premium=is_premium,
         )
 
     elif rank_str:
@@ -1042,29 +1016,31 @@ def rank():
             return render_template(
                 'rank.html', data=None, prediction=None,
                 error="Invalid Rank. Please enter a positive integer.",
+                is_premium=is_premium,
             )
         return render_template(
             'rank.html',
             data={"rank": rank_val, "mode": "rank-to-cgpa"},
-            prediction=get_cgpa_for_rank(rank_val)
+            prediction=get_cgpa_for_rank(rank_val),
+            is_premium=is_premium,
         )
 
-    return render_template('rank.html', data=None, prediction=None)
+    return render_template('rank.html', data=None, prediction=None, is_premium=is_premium)
 
 
 @app.route('/merit-insights', methods=['GET', 'POST'])
 def merit_insights():
-    if request.method == 'POST' and not current_user():
-        cgpa_str = request.form.get('cgpa', '').strip()
-        return render_template('merit_insights.html', data={'cgpa': cgpa_str}, insights=None, needs_login=True)
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
 
     if request.method == 'GET':
-        return render_template('merit_insights.html', data=None, insights=None)
+        return render_template('merit_insights.html', data=None, insights=None, is_premium=is_premium)
+
+    if not user:
+        return render_template('merit_insights.html', data=None, insights=None,
+                               needs_login=True, is_premium=False)
 
     try:
-        user = current_user()
-        if user and not consume_prediction(user):
-            return redirect('/premium?limit=1')
         cgpa = float(request.form.get('cgpa', '').strip())
         if not (0.0 <= cgpa <= 10.0):
             raise ValueError()
@@ -1072,51 +1048,27 @@ def merit_insights():
         return render_template(
             'merit_insights.html', data=None, insights=None,
             error="Invalid CGPA. Please enter a number between 0 and 10.",
+            is_premium=is_premium,
         )
 
     insights = get_merit_insights(cgpa, RANK_MAPS_CACHE, YEARS)
-    return render_template('merit_insights.html', data={'cgpa': cgpa}, insights=insights)
+    return render_template('merit_insights.html', data={'cgpa': cgpa}, insights=insights,
+                           is_premium=is_premium)
 
 
 @app.route('/simulator', methods=['GET', 'POST'])
 def simulator():
-    if request.method == 'POST' and not current_user():
-        try:
-            cgpa = float(request.form.get('cgpa', '').strip() or '0')
-        except ValueError:
-            cgpa = 0.0
-        category = request.form.get('category')
-        gender = request.form.get('gender')
-        domicile = request.form.get('domicile', 'Y')
-        year = int(request.form.get('year', YEARS[0] if YEARS else 2025))
-        rank_mode = request.form.get('rank_mode', 'average')
-        
-        raw_choices = request.form.get('choice_list_json', '[]')
-        try:
-            choices = json.loads(raw_choices)
-        except Exception:
-            choices = []
-            
-        mock_user = {
-            'cgpa': cgpa,
-            'category': category,
-            'gender': gender,
-            'domicile': domicile,
-            'year': year,
-            'rank_mode': rank_mode,
-        }
-        return render_template(
-            'simulator.html', result=None, user=mock_user,
-            choices=choices, needs_login=True,
-        )
+    user = current_user()
+    is_premium = bool(user and getattr(user, 'has_unlimited_access', False))
 
     if request.method == 'GET':
-        return render_template('simulator.html', result=None)
+        return render_template('simulator.html', result=None, is_premium=is_premium)
+
+    if not user:
+        return render_template('simulator.html', result=None,
+                               needs_login=True, is_premium=False)
 
     try:
-        user = current_user()
-        if user and not consume_prediction(user):
-            return redirect('/premium?limit=1')
         cgpa = float(request.form.get('cgpa', '').strip())
         category = request.form.get('category')
         gender = request.form.get('gender')
@@ -1128,7 +1080,8 @@ def simulator():
         choices = json.loads(raw_choices)
 
         if not choices:
-            return render_template('simulator.html', error="Your choice list is empty. Please add colleges first.")
+            return render_template('simulator.html', error="Your choice list is empty. Please add colleges first.",
+                                   is_premium=is_premium)
 
         sim_rank, min_rank, max_rank = _resolve_simulation_rank(cgpa, year, rank_mode)
         sim_result = run_counselling_simulation(
@@ -1171,9 +1124,10 @@ def simulator():
         return render_template(
             'simulator.html', result=sim_result, user=user_data,
             choices=choices, recommendations=recommendations,
+            is_premium=is_premium,
         )
     except Exception as e:
-        return render_template('simulator.html', error=str(e))
+        return render_template('simulator.html', error=str(e), is_premium=is_premium)
 
 
 @app.route('/recommendation-list')
@@ -1213,8 +1167,10 @@ def choice_filling_rules():
 
 @app.route('/choice-vault')
 def choice_vault():
+    user = current_user()
+    is_premium = bool(user and user.has_unlimited_access)
     slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
-    return render_template('choice_vault.html', slips=slips)
+    return render_template('choice_vault.html', slips=slips, is_premium=is_premium)
 
 
 @app.route('/faq/<string:slug>')
@@ -1310,18 +1266,14 @@ def account_page():
             if err:
                 return render_template('account.html', error=err, prefill_reg=request.form)
 
-            coupon_code = request.form.get('coupon_code', '').strip().upper()
-            coupon_used = None
-            referred_by_id = None
-            coupon_for_whom = None
-            referred_by_name = None
-
+            coins_rewarded = 0
             if coupon_code:
                 # 1. Check Coupon Table
                 coupon = Coupon.query.filter_by(code=coupon_code, is_active=True).first()
                 if coupon:
                     coupon_used = coupon_code
                     coupon_for_whom = coupon.for_whom.strip() if (coupon.for_whom and coupon.for_whom.strip()) else coupon.code
+                    coins_rewarded = getattr(coupon, 'coins_reward', 50) or 50
                 else:
                     # 2. Check User Table for mobile or email
                     referrer = User.query.filter(
@@ -1331,6 +1283,7 @@ def account_page():
                         coupon_used = coupon_code
                         referred_by_id = referrer.id
                         referred_by_name = referrer.display_name or referrer.email
+                        coins_rewarded = get_referral_coins()
                     else:
                         return render_template(
                             'account.html',
@@ -1342,6 +1295,7 @@ def account_page():
             sanitized["referred_by_id"] = referred_by_id
             sanitized["coupon_for_whom"] = coupon_for_whom
             sanitized["referred_by_name"] = referred_by_name
+            sanitized["coins_rewarded"] = coins_rewarded
             
             import random
             otp = str(random.randint(100000, 999999))
@@ -1405,8 +1359,10 @@ def account_page():
             
             if pending_data.get("coupon_for_whom"):
                 session["registered_with_coupon_for"] = pending_data.get("coupon_for_whom")
+                session["registered_coins_rewarded"] = pending_data.get("coins_rewarded", 50)
             elif pending_data.get("referred_by_name"):
                 session["registered_with_referral_by"] = pending_data.get("referred_by_name")
+                session["registered_coins_rewarded"] = pending_data.get("coins_rewarded", 50)
             
             session.pop("pending_registration", None)
             session.pop("registration_otp", None)
@@ -1558,6 +1514,7 @@ def account_page():
     
     congrats_coupon_for = session.pop("registered_with_coupon_for", None)
     congrats_referral_by = session.pop("registered_with_referral_by", None)
+    congrats_coins_rewarded = session.pop("registered_coins_rewarded", None)
     
     return render_template(
         'account.html', 
@@ -1687,7 +1644,8 @@ def admin_users():
         vault_slips=vault_slips,
         analytics=analytics,
         coupons=coupons,
-        recommendations=recommendations
+        recommendations=recommendations,
+        referral_coins_reward=get_referral_coins()
     )
 
 
@@ -1862,6 +1820,15 @@ def admin_add_coupon():
     
     code = request.form.get('code', '').strip().upper()
     for_whom = request.form.get('for_whom', '').strip()
+    coins_reward_str = request.form.get('coins_reward', '50').strip()
+    
+    try:
+        coins_reward = int(coins_reward_str)
+        if coins_reward < 0:
+            raise ValueError()
+    except ValueError:
+        return redirect('/admin/users?error=invalid_coins#coupons')
+        
     if not code:
         return redirect('/admin/users?error=coupon_code_empty#coupons')
         
@@ -1870,10 +1837,58 @@ def admin_add_coupon():
     if existing:
         return redirect('/admin/users?error=coupon_exists#coupons')
         
-    coupon = Coupon(code=code, for_whom=for_whom, created_by="admin", is_active=True)
+    coupon = Coupon(code=code, for_whom=for_whom, created_by="admin", is_active=True, coins_reward=coins_reward)
     db.session.add(coupon)
     db.session.commit()
     return redirect('/admin/users?success=coupon_added#coupons')
+
+
+@app.route('/admin/settings/referral-coins', methods=['POST'])
+@login_required
+def admin_update_referral_coins():
+    user = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not user or user.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+    
+    coins_str = request.form.get('referral_coins_reward', '50').strip()
+    try:
+        coins = int(coins_str)
+        if coins < 0:
+            raise ValueError()
+        SiteSetting.set('referral_coins_reward', str(coins))
+    except ValueError:
+        return redirect('/admin/users?error=invalid_referral_coins#coupons')
+        
+    return redirect('/admin/users?success=referral_coins_updated#coupons')
+
+
+@app.route('/admin/add-coins/<int:user_id>', methods=['POST'])
+@login_required
+def admin_add_coins(user_id):
+    admin = current_user()
+    admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
+    if not admin or admin.email.strip().lower() != admin_email:
+        return "Access Denied: Admin privileges required.", 403
+        
+    amount_str = request.form.get('amount', '0').strip()
+    try:
+        amount = int(amount_str)
+    except ValueError:
+        flash("Invalid coins amount.", "error")
+        return redirect('/admin/users')
+        
+    target_user = db.session.get(User, user_id)
+    if target_user:
+        target_user.coins = (target_user.coins or 0) + amount
+        if target_user.coins < 0:
+            target_user.coins = 0
+        db.session.commit()
+        flash(f"Updated coins balance for {target_user.display_name or target_user.email} by {amount} coins!", "success")
+    else:
+        flash("User not found.", "error")
+        
+    return redirect('/admin/users')
 
 
 @app.route('/admin/coupons/delete/<int:id>', methods=['POST'])
@@ -2954,6 +2969,30 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
+
+
+@app.route('/buy-premium-with-coins', methods=['POST'])
+@login_required
+def buy_premium_with_coins():
+    user = current_user()
+    if not user:
+        return redirect('/account')
+        
+    if user.is_premium:
+        flash("You already have Premium access!", "info")
+        return redirect('/account')
+        
+    # Cost in coins: 1990
+    required_coins = 1990
+    if (user.coins or 0) < required_coins:
+        flash(f"Insufficient coins. You need {required_coins} coins (₹199) but you only have {user.coins} coins.", "error")
+        return redirect('/premium')
+        
+    user.coins -= required_coins
+    user.is_premium = True
+    db.session.commit()
+    flash("Congratulations! You have unlocked Premium Pro using your coins!", "success")
+    return redirect('/account')
 
 
 if __name__ == '__main__':

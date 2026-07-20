@@ -35,26 +35,7 @@
             Curious about your merit rank? Enter your CGPA to see where you might stand based on previous year trends.
         </p>
 
-        {% if current_user %}
-        <div class="predictions-badge-container" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-            {% if current_user.has_unlimited_access %}
-                <span style="background: linear-gradient(135deg, #10B981, #059669); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
-                    <i class="fas fa-infinity"></i> Premium (Unlimited Predictions)
-                </span>
-            {% else %}
-                {% set left = current_user.remaining_predictions %}
-                {% if left <= 0 %}
-                    <span style="background: linear-gradient(135deg, #EF4444, #DC2626); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
-                        <i class="fas fa-exclamation-triangle"></i> 0/{{ current_user.daily_prediction_limit }} predictions left today
-                    </span>
-                {% else %}
-                    <span style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);">
-                        <i class="fas fa-chart-bar"></i> {{ left }}/{{ current_user.daily_prediction_limit }} predictions left today
-                    </span>
-                {% endif %}
-            {% endif %}
-        </div>
-        {% endif %}
+
         <!-- Toggle Tabs -->
         <div style="display: flex; gap: 12px; border-bottom: 2px solid var(--border); padding-bottom: 12px; margin-bottom: 20px;">
             <button type="button" onclick="switchPredictorMode('cgpa-to-rank')" id="btn-cgpa-mode" style="background: none; border: none; font-size: 1rem; font-weight: 700; color: {% if not data or data.get('mode') != 'rank-to-cgpa' %}var(--primary){% else %}var(--muted){% endif %}; border-bottom: 3px solid {% if not data or data.get('mode') != 'rank-to-cgpa' %}var(--primary){% else %}transparent{% endif %}; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;">
@@ -114,6 +95,7 @@
 
     <!-- ===== RESULTS ===== -->
     {% if data and prediction %}
+    {% if is_premium %}
     <div class="gov-box" id="results">
         {% if data.get('mode') == 'rank-to-cgpa' %}
         <h2><i class="fas fa-graduation-cap"></i> Estimated Corresponding CGPA</h2>
@@ -155,6 +137,35 @@
         <a href="/predictor?cgpa={{ data.cgpa }}{% if current_user %}&category={{ current_user.category }}&gender={{ current_user.gender }}{% endif %}" class="hero-btn primary" style="display:inline-block;">
             <i class="fas fa-bullseye"></i> Find Colleges for My Rank
         </a>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- ===== PREMIUM GATE — Rank Results ===== -->
+    <div style="position:relative; margin:20px 0 30px; background:linear-gradient(135deg,#0b2a5c 0%,#1e40af 50%,#7c3aed 100%); border-radius:20px; padding:50px 32px; text-align:center; overflow:hidden; box-shadow:0 20px 60px rgba(11,42,92,0.35);">
+        <div style="position:absolute;top:-50px;left:-50px;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
+        <div style="position:absolute;bottom:-50px;right:-50px;width:240px;height:240px;background:rgba(255,255,255,0.04);border-radius:50%;"></div>
+        <div style="position:relative;z-index:1;">
+            <div style="font-size:3rem;margin-bottom:16px;">🔒</div>
+            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#fbbf24;font-size:0.82rem;font-weight:700;padding:6px 18px;border-radius:50px;margin-bottom:18px;text-transform:uppercase;letter-spacing:0.5px;"><i class="fas fa-crown"></i> Premium Feature</div>
+            <h2 style="color:#fff;font-size:1.8rem;font-weight:800;margin:0 0 12px;line-height:1.3;">Your Rank is Ready! Unlock to See It</h2>
+            <p style="color:rgba(255,255,255,0.75);font-size:1rem;margin:0 0 28px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6;">We've calculated your estimated rank based on your CGPA. <strong style="color:#fbbf24;">Upgrade to Premium</strong> to reveal it instantly along with college predictions, simulator access, and more.</p>
+            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+                <a href="/premium" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1a1a;font-weight:800;font-size:1rem;padding:14px 36px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 25px rgba(251,191,36,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <i class="fas fa-crown"></i> Upgrade — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
+                </a>
+                {% if not current_user %}
+                <a href="/account" style="background:rgba(255,255,255,0.1);color:#fff;font-weight:700;font-size:0.95rem;padding:14px 28px;border-radius:50px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:8px;">
+                    <i class="fas fa-sign-in-alt"></i> Login First
+                </a>
+                {% endif %}
+            </div>
+            <div style="margin-top:22px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+                <span style="color:rgba(255,255,255,0.6);font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> Rank Prediction</span>
+                <span style="color:rgba(255,255,255,0.6);font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> College Predictor</span>
+                <span style="color:rgba(255,255,255,0.6);font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> Allotment Simulator</span>
+            </div>
+        </div>
     </div>
     {% endif %}
     {% endif %}

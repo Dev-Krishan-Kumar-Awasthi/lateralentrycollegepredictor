@@ -10,7 +10,7 @@ from flask import session, redirect, url_for, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db
-from models import User, CloudShortlist
+from models import User, CloudShortlist, Coupon
 
 
 def init_auth(app):
@@ -400,6 +400,17 @@ def register_user(email: str, password: str, display_name: str = "",
         "gender": gender.strip()
     }
 
+    from models import get_referral_coins
+    ref_coins = get_referral_coins()
+    initial_coins = 0
+    if coupon_used:
+        if not referred_by_id:
+            coupon = Coupon.query.filter_by(code=coupon_used, is_active=True).first()
+            if coupon:
+                initial_coins = getattr(coupon, 'coins_reward', 50) or 50
+        else:
+            initial_coins = ref_coins
+
     user = User(
         email=data["email"],
         password_hash=generate_password_hash(data["password"]),
@@ -411,9 +422,16 @@ def register_user(email: str, password: str, display_name: str = "",
         category=data["category"],
         gender=data["gender"],
         coupon_used=coupon_used,
-        referred_by_id=referred_by_id
+        referred_by_id=referred_by_id,
+        coins=initial_coins
     )
     db.session.add(user)
+    
+    if referred_by_id:
+        referrer = db.session.get(User, referred_by_id)
+        if referrer:
+            referrer.coins = (referrer.coins or 0) + ref_coins
+
     db.session.commit()
     return user, None
 

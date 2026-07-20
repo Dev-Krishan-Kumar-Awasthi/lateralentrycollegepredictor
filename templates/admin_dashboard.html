@@ -384,6 +384,7 @@
                             <th>Coupon Used</th>
                             <th>Referred By</th>
                             <th>Premium</th>
+                            <th>Coins</th>
                             <th>Registered Date</th>
                             <th style="text-align:center; min-width:240px;">Actions</th>
                         </tr>
@@ -443,6 +444,9 @@
                                     <span style="background:#F1F5F9; color:#475569; padding:2px 8px; border-radius:4px; font-weight:700; font-size:0.75rem; white-space:nowrap;">Free Tier</span>
                                 {% endif %}
                             </td>
+                            <td style="font-weight:700; color:#10B981; font-family:monospace;">
+                                {{ u.coins or 0 }} Coins
+                            </td>
                             <td style="font-size:0.8rem; color:var(--muted);">{{ (u.created_at | to_ist).strftime('%d %b %Y, %I:%M %p') if u.created_at else '—' }}</td>
                             <td>
                                 <div style="display:flex; justify-content:center; gap:6px; align-items:center;">
@@ -451,6 +455,9 @@
                                     </button>
                                     <button type="button" class="btn-primary-small" onclick="messageUser({{ u.id }}, '{{ u.email }}', '{{ u.display_name or 'Student' }}')" style="padding:5px 9px; font-size:0.75rem; background:#EA580C; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
                                         <i class="fas fa-envelope"></i> Msg
+                                    </button>
+                                    <button type="button" class="btn-primary-small" onclick="adminAddCoins({{ u.id }}, '{{ u.display_name or u.email }}')" style="padding:5px 9px; font-size:0.75rem; background:#10B981; color:#fff; display:inline-flex; align-items:center; gap:4px; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                                        <i class="fas fa-coins"></i> Give Coins
                                     </button>
                                     <form method="POST" action="/admin/toggle-premium/{{ u.id }}" style="margin:0;">
                                         {% if u.is_premium %}
@@ -481,6 +488,22 @@
                 <p>No registered users found in the database yet.</p>
             </div>
             {% endif %}
+
+            <!-- Hidden form and Javascript for giving coins -->
+            <form id="admin-coins-form" method="POST" style="display:none;" class="no-loader">
+                <input type="hidden" name="amount" id="admin-coins-amount">
+            </form>
+            <script>
+            function adminAddCoins(userId, name) {
+                const amount = prompt("Enter coins to add to " + name + " (use negative number to deduct):", "50");
+                if (amount !== null && amount.trim() !== "") {
+                    const form = document.getElementById("admin-coins-form");
+                    form.action = "/admin/add-coins/" + userId;
+                    document.getElementById("admin-coins-amount").value = amount.trim();
+                    form.submit();
+                }
+            }
+            </script>
         </div>
 
         <!-- Shortlist Analytics Pane (Feature 1) -->
@@ -945,8 +968,33 @@ Sabi category conversions, tie-breaker rules aur verification parameters ko deta
                             <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">For Whom / Description (e.g. Anoop Sir)</label>
                             <input type="text" name="for_whom" placeholder="e.g. Anoop Sir" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
                         </div>
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">Coins Reward (e.g. 50)</label>
+                            <input type="number" name="coins_reward" value="50" min="0" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                        </div>
                         <button type="submit" class="btn-primary" style="width:100%; padding:10px; font-weight:700; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                             <i class="fas fa-save"></i> Save Coupon
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Student Referral Bonus Settings Card -->
+                <div style="background:#fff; border:1px solid var(--border); padding:20px; border-radius:12px; box-shadow: var(--glass-shadow); margin-top:20px;">
+                    <h3 style="margin-top:0; font-size:1rem; color:var(--primary); margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px;">
+                        <i class="fas fa-users-cog"></i> Student Referral Bonus Settings
+                    </h3>
+                    <form method="POST" action="/admin/settings/referral-coins" class="no-loader">
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label style="display:block; font-size:0.85rem; font-weight:700; color:var(--muted); margin-bottom:4px;">
+                                Bonus Coins per Student Referral (Default: 50)
+                            </label>
+                            <input type="number" name="referral_coins_reward" value="{{ referral_coins_reward or 50 }}" min="0" required style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; box-sizing:border-box;">
+                            <small style="color:var(--muted); display:block; margin-top:6px; line-height:1.4;">
+                                <i class="fas fa-info-circle" style="color:#10b981;"></i> Student referral bonus points (10 Coins = ₹1). Both referrer &amp; referee receive this amount upon successful registration.
+                            </small>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width:100%; padding:10px; font-weight:700; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #10b981, #059669);">
+                            <i class="fas fa-save"></i> Save Referral Bonus Coins
                         </button>
                     </form>
                 </div>
@@ -964,6 +1012,7 @@ Sabi category conversions, tie-breaker rules aur verification parameters ko deta
                                     <th>ID</th>
                                     <th>Coupon Code</th>
                                     <th>For Whom / Offer</th>
+                                    <th>Coins Reward</th>
                                     <th>Created By</th>
                                     <th>Created Date</th>
                                     <th style="text-align:center;">Action</th>
@@ -975,6 +1024,7 @@ Sabi category conversions, tie-breaker rules aur verification parameters ko deta
                                     <td style="font-weight:700; color:var(--muted);">#{{ cp.id }}</td>
                                     <td><strong style="color:var(--primary); font-family:monospace; font-size:0.95rem;">{{ cp.code }}</strong></td>
                                     <td style="font-weight:600; color:#4F46E5;">{{ cp.for_whom or '—' }}</td>
+                                    <td style="font-weight:700; color:#10B981;">{{ cp.coins_reward if cp.coins_reward is defined else 50 }} Coins</td>
                                     <td>{{ cp.created_by }}</td>
                                     <td style="font-size:0.8rem; color:var(--muted);">{{ (cp.created_at | to_ist).strftime('%d %b %Y, %I:%M %p') if cp.created_at else '—' }}</td>
                                     <td style="text-align:center;">

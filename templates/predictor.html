@@ -118,30 +118,7 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
             & 2025).
         </p>
 
-        {% if current_user %}
-        <div class="predictions-badge-container" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-            {% if current_user.has_unlimited_access %}
-            <span
-                style="background: linear-gradient(135deg, #10B981, #059669); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
-                <i class="fas fa-infinity"></i> Premium (Unlimited Predictions)
-            </span>
-            {% else %}
-            {% set left = current_user.remaining_predictions %}
-            {% if left <= 0 %} <span
-                style="background: linear-gradient(135deg, #EF4444, #DC2626); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
-                <i class="fas fa-exclamation-triangle"></i> 0/{{ current_user.daily_prediction_limit }} predictions left
-                today
-                </span>
-                {% else %}
-                <span
-                    style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);">
-                    <i class="fas fa-chart-bar"></i> {{ left }}/{{ current_user.daily_prediction_limit }} predictions
-                    left today
-                </span>
-                {% endif %}
-                {% endif %}
-        </div>
-        {% endif %}
+
 
         {% if error %}
         <div
@@ -382,6 +359,7 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
         </ul>
     </div>
     {% else %}
+    {% if is_premium %}
     <div id="results-area">
         <div class="results-header">
             <h3><i class="fas fa-list-check"></i> Analysis of Available Colleges</h3>
@@ -553,6 +531,7 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
                         </tbody>
                     </table>
                 </div>
+
                 {% endfor %}
             </div>
 
@@ -580,6 +559,35 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
             </div>
         </div>
     </div>
+    {% else %}
+    <!-- ===== PREMIUM GATE — College Predictor (0 results shown) ===== -->
+    <div style="position:relative; margin:20px 0 40px; background:linear-gradient(135deg,#0b2a5c 0%,#1e40af 50%,#7c3aed 100%); border-radius:24px; padding:60px 36px; text-align:center; overflow:hidden; box-shadow:0 24px 70px rgba(11,42,92,0.4);">
+        <div style="position:absolute;top:-60px;left:-60px;width:240px;height:240px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
+        <div style="position:absolute;bottom:-60px;right:-60px;width:280px;height:280px;background:rgba(255,255,255,0.04);border-radius:50%;"></div>
+        <div style="position:relative;z-index:1;">
+            <div style="font-size:3.5rem;margin-bottom:20px;">🔒</div>
+            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#fbbf24;font-size:0.85rem;font-weight:700;padding:8px 20px;border-radius:50px;margin-bottom:22px;text-transform:uppercase;letter-spacing:0.5px;"><i class="fas fa-crown"></i> Premium Feature</div>
+            <h2 style="color:#fff;font-size:2rem;font-weight:800;margin:0 0 14px;line-height:1.3;">Your Colleges are Ready! Upgrade to See Them</h2>
+            <p style="color:rgba(255,255,255,0.75);font-size:1.05rem;margin:0 0 32px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7;">We've found colleges matching your CGPA &amp; profile. <strong style="color:#fbbf24;">Premium members</strong> can view all matching colleges, cutoffs, admission chances, placement stats, and use the Smart Choice Builder.</p>
+            <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                <a href="/premium" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1a1a;font-weight:800;font-size:1.05rem;padding:16px 40px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(251,191,36,0.45);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <i class="fas fa-crown"></i> Upgrade to Premium — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
+                </a>
+                {% if not current_user %}
+                <a href="/account" style="background:rgba(255,255,255,0.12);color:#fff;font-weight:700;font-size:1rem;padding:16px 32px;border-radius:50px;text-decoration:none;border:2px solid rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:8px;">
+                    <i class="fas fa-sign-in-alt"></i> Login / Register Free
+                </a>
+                {% endif %}
+            </div>
+            <div style="margin-top:28px;display:flex;gap:28px;justify-content:center;flex-wrap:wrap;">
+                <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;"><i class="fas fa-check" style="color:#34d399;"></i> All Matching Colleges</span>
+                <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;"><i class="fas fa-check" style="color:#34d399;"></i> Cutoff &amp; Admission Chance %</span>
+                <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;"><i class="fas fa-check" style="color:#34d399;"></i> Smart Choice Builder</span>
+                <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;"><i class="fas fa-check" style="color:#34d399;"></i> Allotment Simulator</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     {% endif %}
 
     <!-- ===== FLOATING UI COMPONENTS ===== -->

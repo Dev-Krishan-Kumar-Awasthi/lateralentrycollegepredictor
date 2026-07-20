@@ -114,6 +114,7 @@ class User(db.Model):
     predictions_today = db.Column(db.Integer, default=0)
     last_prediction_date = db.Column(db.String(20), nullable=True)
     is_premium = db.Column(db.Boolean, default=False)
+    coins = db.Column(db.Integer, default=0, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     shortlists = db.relationship("CloudShortlist", backref="user", lazy=True)
@@ -124,13 +125,7 @@ class User(db.Model):
         import os
         admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
         is_admin = (self.email.strip().lower() == admin_email)
-        
-        coupon_valid = True
-        if self.coupon_used and not self.referred_by_id:
-            from models import Coupon
-            coupon_valid = Coupon.query.filter_by(code=self.coupon_used, is_active=True).first() is not None
-            
-        return is_admin or (self.coupon_used is not None and not self.referred_by_id and coupon_valid) or bool(self.is_premium)
+        return is_admin or bool(self.is_premium)
 
     @property
     def daily_prediction_limit(self):
@@ -212,6 +207,7 @@ class Coupon(db.Model):
     created_by = db.Column(db.String(100), default="admin")  # "admin" or referrer user ID
     for_whom = db.Column(db.String(100), nullable=True)  # Name/Description for whom/what code was made
     is_active = db.Column(db.Boolean, default=True)
+    coins_reward = db.Column(db.Integer, default=50, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     def __repr__(self):
@@ -229,6 +225,43 @@ class RecommendationChoice(db.Model):
 
     def __repr__(self):
         return f"<RecommendationChoice SN={self.sn} {self.display_name}>"
+
+
+class SiteSetting(db.Model):
+    __tablename__ = "SiteSetting"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    key = db.Column(db.String(100), unique=True, nullable=False, index=True)
+    value = db.Column(db.Text, nullable=False)
+
+    @classmethod
+    def get(cls, key, default=""):
+        try:
+            setting = cls.query.filter_by(key=key).first()
+            return setting.value if setting else str(default)
+        except Exception:
+            return str(default)
+
+    @classmethod
+    def set(cls, key, value):
+        try:
+            setting = cls.query.filter_by(key=key).first()
+            if not setting:
+                setting = cls(key=key, value=str(value))
+                db.session.add(setting)
+            else:
+                setting.value = str(value)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+
+
+def get_referral_coins():
+    try:
+        val = SiteSetting.get('referral_coins_reward', '50')
+        return int(val)
+    except Exception:
+        return 50
 
 
 def model_to_dict(model):
