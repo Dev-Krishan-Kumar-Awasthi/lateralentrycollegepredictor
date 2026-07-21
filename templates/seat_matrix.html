@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% block title %}DTE Seat Matrix & Category Seat Distribution 2026 — MP DTE Lateral Entry Predictor{% endblock %}
+{% block meta_description %}Official MP DTE B.Tech Lateral Entry Seat Matrix 2026-27. Category-wise seat chart breakdown for UR, OBC, SC, ST, EWS, and Female quota seats in top MP colleges.{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1100px; margin: 0 auto; padding: 20px 10px;">
+    
+    <!-- Hero Header -->
+    <div style="background: linear-gradient(135deg, #065f46 0%, #059669 50%, #10b981 100%); color: #fff; padding: 36px 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 12px 30px -5px rgba(5, 150, 105, 0.35); text-align: center; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+        <div style="font-size: 3.2rem; margin-bottom: 10px;">📊</div>
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.5px;">
+            <i class="fas fa-table"></i> MP DTE Official Seat Chart Matrix
+        </div>
+        <h1 style="margin: 0 0 10px 0; color: #fff; font-size: 1.9rem; font-weight: 800;">Official DTE Seat Matrix 2026-27</h1>
+        <p style="margin: 0; opacity: 0.94; font-size: 1.02rem; max-width: 780px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            Detailed category-wise seat breakdown (Unreserved, OBC, SC, ST, EWS, Female Quota) for MP B.Tech Lateral Entry engineering admissions.
+        </p>
+    </div>
+
+    {% if not seat_matrix_data %}
+    <!-- Upcoming Status Announcement Box -->
+    <div style="background: linear-gradient(135deg, #fffdf5 0%, #fef3c7 100%); border: 2px dashed #f59e0b; border-radius: 16px; padding: 32px 24px; margin-bottom: 28px; text-align: center; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.08);">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; background: #fbbf24; color: #78350f; border-radius: 50%; font-size: 1.8rem; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
+            <i class="fas fa-clock"></i>
+        </div>
+        <h2 style="margin: 0 0 12px 0; color: #78350f; font-size: 1.4rem; font-weight: 800;">
+            ✨ Seat Matrix 2026 Data Release — Upcoming / Coming Soon!
+        </h2>
+        <p style="margin: 0 0 20px 0; color: #92400e; font-size: 0.96rem; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+            DTE MP dwara session 2026-27 ka official category-wise <strong>Seat Chart Matrix</strong> jaise hi release hota hai, yahan par live update kar diya jayega. Aap abhi tak ka <strong>Tentative Institute Intake</strong> aur <strong>Vacant Seats</strong> data dekh sakte hain!
+        </p>
+        
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="/tentative-institutes" class="btn-primary" style="background: #1e3a8a; color: #fff; text-decoration: none; padding: 10px 22px; border-radius: 24px; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-building"></i> View Tentative Intake 2026 (828 Records)
+            </a>
+            <a href="/vacant-seats" class="btn-secondary" style="background: #059669; color: #fff; text-decoration: none; padding: 10px 22px; border-radius: 24px; font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-chair"></i> View Vacant Seats (759 Records)
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Summary Stat Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <div style="color: var(--muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Total Colleges</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #1e3a8a;">{{ colleges_count or 155 }}</div>
+            <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">Participating Institutes</div>
+        </div>
+
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 18px; text-align: center;">
+            <div style="color: #047857; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Category Distribution</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #065f46;">UR / OBC / SC / ST / EWS</div>
+            <div style="font-size: 0.78rem; color: #047857; margin-top: 4px;">MP DTE Reservation Quotas</div>
+        </div>
+
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px; text-align: center;">
+            <div style="color: #1d4ed8; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Status</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #1e40af;">{% if seat_matrix_data %}LIVE{% else %}UPCOMING{% endif %}</div>
+            <div style="font-size: 0.78rem; color: #1e40af; margin-top: 4px;">DTE MP 2026 Session</div>
+        </div>
+    </div>
+
+    <!-- Filter Control Card -->
+    <div class="gov-box" style="background: #fff; padding: 22px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+        
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+            <h3 style="margin: 0; color: var(--primary); font-size: 1.15rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-filter" style="color: #2563eb;"></i> Search &amp; Filter Seat Matrix Chart
+            </h3>
+        </div>
+
+        <!-- Filter Form Inputs -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+            
+            <!-- Search Text -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-search"></i> Search College or Branch
+                </label>
+                <input type="text" id="filter-search" placeholder="Type college name or branch..." onkeyup="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#cbd5e1'">
+            </div>
+
+            <!-- College Type -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-university"></i> College Type
+                </label>
+                <select id="filter-type" onchange="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #fff;">
+                    <option value="ALL">All Types (GOVT / Private)</option>
+                    <option value="GOVT">Government / Autonomous</option>
+                    <option value="PRIVATE">Private</option>
+                </select>
+            </div>
+
+            <!-- Branch Select -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-code-branch"></i> Engineering Branch
+                </label>
+                <select id="filter-branch" onchange="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #fff;">
+                    <option value="ALL">All Branches</option>
+                    {% for b in branches %}
+                    <option value="{{ b }}">{{ b }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Results Table Container -->
+    <div class="gov-box" style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 0.92rem; font-weight: 700; color: #334155;" id="showing-count">
+                Showing all {{ seat_matrix_data|length }} records
+            </div>
+            <div style="font-size: 0.82rem; color: #64748b;">
+                <i class="fas fa-shield-alt"></i> Official Category Reservation Matrix
+            </div>
+        </div>
+
+        <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <table class="gov-table" style="width: 100%; margin: 0; font-size: 0.88rem;" id="seat-table">
+                <thead>
+                    <tr style="background: #f8fafc; text-align: left;">
+                        <th style="padding: 12px 14px;">#</th>
+                        <th style="padding: 12px 14px;">College Name</th>
+                        <th style="padding: 12px 14px;">Branch</th>
+                        <th style="padding: 12px 14px; text-align: center;">UR</th>
+                        <th style="padding: 12px 14px; text-align: center;">OBC</th>
+                        <th style="padding: 12px 14px; text-align: center;">SC</th>
+                        <th style="padding: 12px 14px; text-align: center;">ST</th>
+                        <th style="padding: 12px 14px; text-align: center;">EWS</th>
+                        <th style="padding: 12px 14px; text-align: right;">Total Seats</th>
+                    </tr>
+                </thead>
+                <tbody id="seat-tbody">
+                    {% if seat_matrix_data %}
+                    {% for item in seat_matrix_data %}
+                    <tr class="seat-row" 
+                        data-name="{{ item.college_name | lower }}" 
+                        data-type="{{ item.college_type | upper }}" 
+                        data-branch="{{ item.branch | upper }}">
+                        <td style="padding: 10px 14px; font-weight: 700; color: var(--muted);">{{ loop.index }}</td>
+                        <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">
+                            {{ item.college_name }}
+                        </td>
+                        <td style="padding: 10px 14px; font-weight: 600; color: #2563eb;">
+                            {{ item.branch }}
+                        </td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 700; color: #1e3a8a;">{{ item.ur or 0 }}</td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 700; color: #b45309;">{{ item.obc or 0 }}</td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 700; color: #4338ca;">{{ item.sc or 0 }}</td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 700; color: #065f46;">{{ item.st or 0 }}</td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 700; color: #6d28d9;">{{ item.ews or 0 }}</td>
+                        <td style="padding: 10px 14px; text-align: right; font-weight: 800; color: #0f172a;">{{ item.total_seats or 0 }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="9" style="padding: 30px; text-align: center; color: #64748b; font-weight: 600;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; color: #2563eb; margin-bottom: 10px; display: block;"></i>
+                            Seat matrix chart data for 2026-27 will be populated automatically when the official DTE file is uploaded.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Client side live search & filter script -->
+<script>
+function applyFilters() {
+    const query = document.getElementById('filter-search').value.toLowerCase().trim();
+    const typeVal = document.getElementById('filter-type').value.toUpperCase();
+    const branchVal = document.getElementById('filter-branch').value.toUpperCase();
+
+    const rows = document.querySelectorAll('.seat-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const name = row.dataset.name || '';
+        const type = row.dataset.type || '';
+        const branch = row.dataset.branch || '';
+
+        let matchesSearch = !query || name.includes(query) || branch.toLowerCase().includes(query);
+        let matchesType = (typeVal === 'ALL') || (type.includes(typeVal));
+        let matchesBranch = (branchVal === 'ALL') || (branch === branchVal);
+
+        if (matchesSearch && matchesType && matchesBranch) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    const countElem = document.getElementById('showing-count');
+    if (countElem) {
+        countElem.textContent = `Showing ${visibleCount} matching records`;
+    }
+}
+</script>
+{% endblock %}

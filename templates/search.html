@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
 {% block title %}Search MP Engineering Colleges — Cutoffs, Fees & Details{% endblock %}
-{% block meta_description %}Search all government and private engineering colleges in Madhya Pradesh. View lateral entry cutoffs, available seat counts, estimated fee structures, and campus reviews.{% endblock %}
-{% block meta_keywords %}search MP colleges, MP BTech lateral entry seats, MP engineering college fees, DTE college list{% endblock %}
+{% block meta_description %}Search all government and private engineering colleges in Madhya Pradesh. View lateral entry
+cutoffs, available seat counts, estimated fee structures, and campus reviews.{% endblock %}
+{% block meta_keywords %}search MP colleges, MP BTech lateral entry seats, MP engineering college fees, DTE college
+list{% endblock %}
 {% block og_title %}Search MP Engineering Colleges — Cutoffs, Fees & Details{% endblock %}
-{% block og_description %}Find details of all Madhya Pradesh engineering colleges. Filter and search by name, view cutoffs, fees, and seat availability.{% endblock %}
+{% block og_description %}Find details of all Madhya Pradesh engineering colleges. Filter and search by name, view
+cutoffs, fees, and seat availability.{% endblock %}
 {% block twitter_title %}Search MP Engineering Colleges{% endblock %}
-{% block twitter_description %}Search details, cutoffs, and fees of all government and private engineering colleges in MP.{% endblock %}
+{% block twitter_description %}Search details, cutoffs, and fees of all government and private engineering colleges in
+MP.{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -14,7 +18,8 @@
     <!-- ===== SEARCH HERO ===== -->
     <div class="search-hero">
         <h1><i class="fas fa-university"></i> Find Your College</h1>
-        <p>Search colleges by name — view cutoffs, seats, and <strong>approximate fees</strong> (where available). Fee figures are estimates; verify on college website.</p>
+        <p>Search colleges by name — view cutoffs, seats, and <strong>approximate fees</strong> (where available). Fee
+            figures are estimates; verify on college website.</p>
     </div>
 
     <!-- ===== SEARCH FORM ===== -->
@@ -23,8 +28,7 @@
             <!-- Main Search Input -->
             <div class="search-input-row">
                 <input type="text" name="q" class="search-input"
-                    placeholder="Search by name (Ex: SGSITS, DAVV, MITS...)"
-                    value="{{ data.q if data else '' }}">
+                    placeholder="Search by name (Ex: SGSITS, DAVV, MITS...)" value="{{ data.q if data else '' }}">
                 <button type="submit" class="btn-primary" style="white-space:nowrap;">
                     <i class="fas fa-search"></i> Search
                 </button>
@@ -36,10 +40,10 @@
                 <!-- Category -->
                 <select name="category" class="filter-select">
                     <option value="">All Categories</option>
-                    <option value="UR"  {% if data and data.category=='UR'  %}selected{% endif %}>UR (Unreserved)</option>
+                    <option value="UR" {% if data and data.category=='UR' %}selected{% endif %}>UR (Unreserved)</option>
                     <option value="OBC" {% if data and data.category=='OBC' %}selected{% endif %}>OBC</option>
-                    <option value="SC"  {% if data and data.category=='SC'  %}selected{% endif %}>SC</option>
-                    <option value="ST"  {% if data and data.category=='ST'  %}selected{% endif %}>ST</option>
+                    <option value="SC" {% if data and data.category=='SC' %}selected{% endif %}>SC</option>
+                    <option value="ST" {% if data and data.category=='ST' %}selected{% endif %}>ST</option>
                 </select>
 
                 <!-- Gender -->
@@ -52,10 +56,14 @@
                 <!-- College Type -->
                 <select name="college_type" class="filter-select">
                     <option value="">All Types</option>
-                    <option value="GOVT"    {% if data and data.college_type=='GOVT'    %}selected{% endif %}>Government / Aided</option>
-                    <option value="S.F.I."  {% if data and data.college_type=='S.F.I.'  %}selected{% endif %}>SFI / Self Finance</option>
-                    <option value="GOVT+SFI" {% if data and data.college_type=='GOVT+SFI' %}selected{% endif %}>Govt Aided + S.F.I (Both)</option>
-                    <option value="Private" {% if data and data.college_type=='Private' %}selected{% endif %}>Private</option>
+                    <option value="GOVT" {% if data and data.college_type=='GOVT' %}selected{% endif %}>Government /
+                        Aided</option>
+                    <option value="S.F.I." {% if data and data.college_type=='S.F.I.' %}selected{% endif %}>SFI / Self
+                        Finance</option>
+                    <option value="GOVT+SFI" {% if data and data.college_type=='GOVT+SFI' %}selected{% endif %}>Govt
+                        Aided + S.F.I (Both)</option>
+                    <option value="Private" {% if data and data.college_type=='Private' %}selected{% endif %}>Private
+                    </option>
                 </select>
 
                 <!-- Branch -->
@@ -68,7 +76,7 @@
                 <select name="city" class="filter-select">
                     <option value="All">All Cities</option>
                     {% for c in mp_cities %}
-                    <option value="{{ c }}" {% if data and data.city == c %}selected{% endif %}>{{ c }}</option>
+                    <option value="{{ c }}" {% if data and data.city==c %}selected{% endif %}>{{ c }}</option>
                     {% endfor %}
                 </select>
 
@@ -76,16 +84,16 @@
                 <select name="year" class="filter-select">
                     <option value="">All Years</option>
                     {% for y in years_list %}
-                    <option value="{{ y }}" {% if data and data.year == y | string %}selected{% endif %}>{{ y }}</option>
+                    <option value="{{ y }}" {% if data and data.year==y | string %}selected{% endif %}>{{ y }}</option>
                     {% endfor %}
                 </select>
 
                 <!-- Placement Package Filter -->
                 <select name="min_package" class="filter-select" style="border-color: var(--saffron);">
                     <option value="0">Any Placement Package</option>
-                    <option value="4" {% if data and data.min_package == 4.0 %}selected{% endif %}>4+ LPA Average</option>
-                    <option value="6" {% if data and data.min_package == 6.0 %}selected{% endif %}>6+ LPA Average</option>
-                    <option value="8" {% if data and data.min_package == 8.0 %}selected{% endif %}>8+ LPA Average</option>
+                    <option value="4" {% if data and data.min_package==4.0 %}selected{% endif %}>4+ LPA Average</option>
+                    <option value="6" {% if data and data.min_package==6.0 %}selected{% endif %}>6+ LPA Average</option>
+                    <option value="8" {% if data and data.min_package==8.0 %}selected{% endif %}>8+ LPA Average</option>
                 </select>
 
             </div>
@@ -95,7 +103,7 @@
     <!-- ===== RESULTS ===== -->
     {% if colleges is not none %}
     <div id="results">
-        
+
         {% if directory_mode %}
         <style>
             .colleges-grid-directory {
@@ -104,39 +112,47 @@
                 gap: 24px;
                 margin-top: 20px;
             }
+
             .college-card-directory {
                 border-radius: 12px;
                 box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
             }
+
             .college-card-directory:hover {
                 transform: translateY(-4px);
                 box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08) !important;
                 border-color: var(--secondary) !important;
             }
+
             .type-tag.govt {
                 background: #e0f2fe;
                 color: #0369a1;
                 border: 1px solid #bae6fd;
             }
+
             .type-tag.private {
                 background: #fef3c7;
                 color: #b45309;
                 border: 1px solid #fde68a;
             }
+
             .type-tag.s.f.i. {
                 background: #f3e8ff;
                 color: #6b21a8;
                 border: 1px solid #e9d5ff;
             }
+
             @media (max-width: 480px) {
                 .colleges-grid-directory {
                     grid-template-columns: 1fr;
                 }
             }
+
             .college-card-directory:hover .carousel-control {
                 opacity: 1 !important;
             }
+
             .carousel-dot.active {
                 background: #fff !important;
                 width: 12px !important;
@@ -145,12 +161,15 @@
         </style>
 
         <!-- Directory Mode Header -->
-        <div class="prediction-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom: 20px;">
+        <div class="prediction-box"
+            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom: 20px;">
             <div>
                 <i class="fas fa-university" style="color: var(--secondary);"></i>
-                Madhya Pradesh Lateral Entry College Directory — Showing <strong><span id="dir-count">{{ colleges|length }}</span></strong> Colleges
+                Madhya Pradesh Lateral Entry College Directory — Showing <strong><span id="dir-count">{{ colleges|length
+                        }}</span></strong> Colleges
             </div>
-            <span style="font-size:0.78rem; color:var(--muted); background:#fff; padding:4px 10px; border-radius:6px; border:1px solid var(--border);">
+            <span
+                style="font-size:0.78rem; color:var(--muted); background:#fff; padding:4px 10px; border-radius:6px; border:1px solid var(--border);">
                 Type to filter in real-time or click Search to view branch cutoffs.
             </span>
         </div>
@@ -158,82 +177,113 @@
         <!-- Directory Card Grid -->
         <div class="colleges-grid-directory" id="directory-grid">
             {% for college in colleges %}
-            <div class="college-card-directory gov-box animate-fade-in" 
-                 data-name="{{ college.college_name | lower }}" 
-                 data-city="{{ college.city | lower }}" 
-                 data-type="{{ college.college_type | lower }}"
-                 style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--primary); padding: 0; background: #fff; margin-bottom: 0; min-height: 380px; position: relative; overflow: hidden;">
-                
+            <div class="college-card-directory gov-box animate-fade-in" data-name="{{ college.college_name | lower }}"
+                data-city="{{ college.city | lower }}" data-type="{{ college.college_type | lower }}"
+                style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--primary); padding: 0; background: #fff; margin-bottom: 0; min-height: 380px; position: relative; overflow: hidden;">
+
                 <!-- Image Header Cover (with Carousel support) -->
-                <div class="carousel-container" data-active-index="0" style="position: relative; height: 160px; background: #f1f5f9; overflow: hidden; width: 100%;">
+                <div class="carousel-container" data-active-index="0"
+                    style="position: relative; height: 160px; background: #f1f5f9; overflow: hidden; width: 100%;">
                     {% if college.image_urls %}
-                    <div class="carousel-track" style="display: flex; width: 100%; height: 100%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <div class="carousel-track"
+                        style="display: flex; width: 100%; height: 100%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                         {% for img in college.image_urls %}
                         <div class="carousel-slide" style="min-width: 100%; width: 100%; height: 100%;">
-                            <img src="{{ url_for('static', filename=img) }}" alt="{{ college.college_name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="{{ url_for('static', filename=img) }}" alt="{{ college.college_name }}"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </div>
                         {% endfor %}
                     </div>
                     {% if college.image_urls|length > 1 %}
-                    <button class="carousel-control prev" onclick="moveCarousel(event, this, -1)" style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%); background: rgba(15,23,42,0.6); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; outline:none;"><i class="fas fa-chevron-left" style="font-size: 0.7rem;"></i></button>
-                    <button class="carousel-control next" onclick="moveCarousel(event, this, 1)" style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%); background: rgba(15,23,42,0.6); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; outline:none;"><i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i></button>
-                    <div class="carousel-indicators" style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; z-index: 10;">
+                    <button class="carousel-control prev" onclick="moveCarousel(event, this, -1)"
+                        style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%); background: rgba(15,23,42,0.6); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; outline:none;"><i
+                            class="fas fa-chevron-left" style="font-size: 0.7rem;"></i></button>
+                    <button class="carousel-control next" onclick="moveCarousel(event, this, 1)"
+                        style="position: absolute; top: 50%; right: 8px; transform: translateY(-50%); background: rgba(15,23,42,0.6); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; outline:none;"><i
+                            class="fas fa-chevron-right" style="font-size: 0.7rem;"></i></button>
+                    <div class="carousel-indicators"
+                        style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; z-index: 10;">
                         {% for img in college.image_urls %}
-                        <span class="carousel-dot {% if loop.first %}active{% endif %}" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: all 0.2s;"></span>
+                        <span class="carousel-dot {% if loop.first %}active{% endif %}"
+                            style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: all 0.2s;"></span>
                         {% endfor %}
                     </div>
                     {% endif %}
                     {% else %}
-                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--light-blue), #e2e8f0); color: var(--primary);">
+                    <div
+                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--light-blue), #e2e8f0); color: var(--primary);">
                         <i class="fas fa-university" style="font-size: 3rem; opacity: 0.7;"></i>
                     </div>
                     {% endif %}
-                    <span class="type-tag {{ college.college_type | lower }}" style="position: absolute; top: 12px; left: 12px; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; z-index: 2;">{{ college.college_type }}</span>
+                    <span class="type-tag {{ college.college_type | lower }}"
+                        style="position: absolute; top: 12px; left: 12px; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; z-index: 2;">{{
+                        college.college_type }}</span>
                 </div>
 
                 <!-- Body Content -->
-                <div style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div
+                    style="padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
-                        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--primary); margin: 0 0 8px 0; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                            <a href="/college?name={{ college.college_name | urlencode_val }}" style="color: inherit; text-decoration: none;">{{ college.college_name }}</a>
+                        <h3
+                            style="font-size: 0.95rem; font-weight: 700; color: var(--primary); margin: 0 0 8px 0; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                            <a href="/college?name={{ college.college_name | urlencode_val }}"
+                                style="color: inherit; text-decoration: none;">{{ college.college_name }}</a>
                         </h3>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px;">
-                            <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
-                                <i class="fas fa-map-marker-alt" style="color: var(--saffron);"></i> {{ college.city or 'Madhya Pradesh' }}
+                        <div
+                            style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px;">
+                            <span
+                                style="font-size: 0.75rem; color: var(--muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-map-marker-alt" style="color: var(--saffron);"></i> {{ college.city or
+                                'Madhya Pradesh' }}
                             </span>
                         </div>
-                        
+
                         <!-- Placements Section -->
-                        <div style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; border: 1px solid #e2e8f0;">
-                            <span style="font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Placement Statistics</span>
+                        <div
+                            style="background: #f8fafc; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px; border: 1px solid #e2e8f0;">
+                            <span
+                                style="font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 0.5px;">Placement
+                                Statistics</span>
                             <div style="display: flex; gap: 8px;">
-                                <div style="flex: 1; background: #fff; border: 1.5px solid #d1fae5; border-radius: 6px; padding: 4px; text-align: center;">
+                                <div
+                                    style="flex: 1; background: #fff; border: 1.5px solid #d1fae5; border-radius: 6px; padding: 4px; text-align: center;">
                                     <div style="font-size: 0.6rem; color: #047857; font-weight: 700;">Avg Pkg</div>
-                                    <div style="font-size: 0.85rem; font-weight: 800; color: #065f46; font-family: monospace;">{{ college.placement.average_package_lpa }} LPA</div>
+                                    <div
+                                        style="font-size: 0.85rem; font-weight: 800; color: #065f46; font-family: monospace;">
+                                        {{ college.placement.average_package_lpa }} LPA</div>
                                 </div>
-                                <div style="flex: 1; background: #fff; border: 1.5px solid #ffe4e6; border-radius: 6px; padding: 4px; text-align: center;">
+                                <div
+                                    style="flex: 1; background: #fff; border: 1.5px solid #ffe4e6; border-radius: 6px; padding: 4px; text-align: center;">
                                     <div style="font-size: 0.6rem; color: #b91c1c; font-weight: 700;">Highest Pkg</div>
-                                    <div style="font-size: 0.85rem; font-weight: 800; color: #991b1b; font-family: monospace;">{{ college.placement.highest_package_lpa }} LPA</div>
+                                    <div
+                                        style="font-size: 0.85rem; font-weight: 800; color: #991b1b; font-family: monospace;">
+                                        {{ college.placement.highest_package_lpa }} LPA</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Fees & CTA Actions -->
                     <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-top: 4px; border-top: 1px solid #f1f5f9;">
-                            <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600;">Tuition Fee (Approx):</span>
-                            <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary);">{{ college.fee_display }}</span>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-top: 4px; border-top: 1px solid #f1f5f9;">
+                            <span style="font-size: 0.75rem; color: var(--muted); font-weight: 600;">Tuition Fee
+                                (Approx):</span>
+                            <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary);">{{
+                                college.fee_display }}</span>
                         </div>
-                        
+
                         <div style="display: flex; gap: 6px;">
-                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: inline-flex; align-items: center; justify-content: center; gap: 4px; border-radius: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(11, 42, 92, 0.15);">
+                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="btn-primary"
+                                style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: inline-flex; align-items: center; justify-content: center; gap: 4px; border-radius: 6px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(11, 42, 92, 0.15);">
                                 <i class="fas fa-info-circle"></i> Info
                             </a>
-                            <a href="/compare?colleges={{ college.college_name | urlencode_val }}" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.15);">
+                            <a href="/compare?colleges={{ college.college_name | urlencode_val }}" class="btn-primary"
+                                style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.15);">
                                 <i class="fas fa-balance-scale"></i> Compare
                             </a>
-                            <a href="/simulator" class="btn-primary" style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">
+                            <a href="/simulator" class="btn-primary"
+                                style="flex: 1; text-align: center; text-decoration: none; font-size: 0.8rem; padding: 7px 0; background: linear-gradient(135deg, #10b981, #059669); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fff; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">
                                 <i class="fas fa-vial"></i> Simulator
                             </a>
                         </div>
@@ -245,29 +295,49 @@
 
         {% if not is_premium %}
         <!-- ===== PREMIUM GATE — Directory Mode ===== -->
-        <div style="position:relative; margin: 24px 0 30px; background: linear-gradient(135deg, #0b2a5c 0%, #1e40af 50%, #7c3aed 100%); border-radius: 22px; padding: 50px 36px; text-align: center; overflow: hidden; box-shadow: 0 20px 60px rgba(11,42,92,0.35);">
-            <div style="position:absolute; top:-50px; left:-50px; width:200px; height:200px; background:rgba(255,255,255,0.05); border-radius:50%;"></div>
-            <div style="position:absolute; bottom:-60px; right:-40px; width:250px; height:250px; background:rgba(255,255,255,0.04); border-radius:50%;"></div>
+        <div
+            style="position:relative; margin: 24px 0 30px; background: linear-gradient(135deg, #0b2a5c 0%, #1e40af 50%, #7c3aed 100%); border-radius: 22px; padding: 50px 36px; text-align: center; overflow: hidden; box-shadow: 0 20px 60px rgba(11,42,92,0.35);">
+            <div
+                style="position:absolute; top:-50px; left:-50px; width:200px; height:200px; background:rgba(255,255,255,0.05); border-radius:50%;">
+            </div>
+            <div
+                style="position:absolute; bottom:-60px; right:-40px; width:250px; height:250px; background:rgba(255,255,255,0.04); border-radius:50%;">
+            </div>
             <div style="position:relative; z-index:1;">
                 <div style="font-size:2.8rem; margin-bottom:16px;">🎓</div>
-                <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.3); color:#fbbf24; font-size:0.82rem; font-weight:700; padding:6px 18px; border-radius:50px; margin-bottom:18px; letter-spacing:0.5px; text-transform:uppercase;"><i class="fas fa-crown"></i> Premium Feature</div>
-                <h2 style="color:#fff; font-size:1.75rem; font-weight:800; margin:0 0 12px; line-height:1.3;">100+ More Colleges Waiting for You!</h2>
-                <p style="color:rgba(255,255,255,0.75); font-size:1rem; margin:0 0 28px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.6;">You've seen <strong style="color:#fbbf24;">3 demo colleges</strong> (SGSITS, DAVV IET, JEC). Upgrade to <strong style="color:#fbbf24;">Premium</strong> to browse all colleges with cutoffs, placements, fees & more.</p>
+                <div
+                    style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.3); color:#fbbf24; font-size:0.82rem; font-weight:700; padding:6px 18px; border-radius:50px; margin-bottom:18px; letter-spacing:0.5px; text-transform:uppercase;">
+                    <i class="fas fa-crown"></i> Premium Feature</div>
+                <h2 style="color:#fff; font-size:1.75rem; font-weight:800; margin:0 0 12px; line-height:1.3;">250+ More
+                    Colleges Waiting for You!</h2>
+                <p
+                    style="color:rgba(255,255,255,0.75); font-size:1rem; margin:0 0 28px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.6;">
+                    You've seen <strong style="color:#fbbf24;">3 demo colleges</strong> (SGSITS, DAVV IET, JEC). Upgrade
+                    to <strong style="color:#fbbf24;">Premium</strong> to browse all colleges with cutoffs, placements,
+                    fees & more.</p>
                 <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
-                    <a href="/premium" style="background: linear-gradient(135deg,#fbbf24,#f59e0b); color:#1a1a1a; font-weight:800; font-size:1rem; padding:14px 36px; border-radius:50px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 8px 25px rgba(251,191,36,0.4); transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                        <i class="fas fa-crown"></i> Upgrade to Premium — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
+                    <a href="/premium"
+                        style="background: linear-gradient(135deg,#fbbf24,#f59e0b); color:#1a1a1a; font-weight:800; font-size:1rem; padding:14px 36px; border-radius:50px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 8px 25px rgba(251,191,36,0.4); transition:transform 0.2s;"
+                        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fas fa-crown"></i> Upgrade to Premium — ₹<del style="opacity:0.5;">399</del>
+                        <strong>₹199</strong>
                     </a>
                     {% if not current_user %}
-                    <a href="/account" style="background:rgba(255,255,255,0.1); color:#fff; font-weight:700; font-size:0.95rem; padding:14px 28px; border-radius:50px; text-decoration:none; border:1.5px solid rgba(255,255,255,0.25); display:inline-flex; align-items:center; gap:8px;">
+                    <a href="/account"
+                        style="background:rgba(255,255,255,0.1); color:#fff; font-weight:700; font-size:0.95rem; padding:14px 28px; border-radius:50px; text-decoration:none; border:1.5px solid rgba(255,255,255,0.25); display:inline-flex; align-items:center; gap:8px;">
                         <i class="fas fa-sign-in-alt"></i> Login / Register Free
                     </a>
                     {% endif %}
                 </div>
                 <div style="margin-top:22px; display:flex; gap:24px; justify-content:center; flex-wrap:wrap;">
-                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> All 100+ Colleges</span>
-                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> Full Cutoff History</span>
-                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> Placement & Fee Data</span>
-                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check" style="color:#34d399;"></i> Smart Choice Builder</span>
+                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check"
+                            style="color:#34d399;"></i> All 100+ Colleges</span>
+                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check"
+                            style="color:#34d399;"></i> Full Cutoff History</span>
+                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check"
+                            style="color:#34d399;"></i> Placement & Fee Data</span>
+                    <span style="color:rgba(255,255,255,0.6); font-size:0.82rem;"><i class="fas fa-check"
+                            style="color:#34d399;"></i> Smart Choice Builder</span>
                 </div>
             </div>
         </div>
@@ -280,8 +350,9 @@
         </div>
 
         {% else %}
-        
-        <div class="prediction-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+
+        <div class="prediction-box"
+            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
             <div>
                 <i class="fas fa-info-circle"></i>
                 We found <strong>{{ colleges|length }}</strong>
@@ -289,7 +360,8 @@
                 {% if data.year %} for year {{ data.year }}{% endif %}
                 {% if data.min_package > 0 %} with avg package &ge; {{ data.min_package }} LPA{% endif %}
             </div>
-            <span style="font-size:0.75rem; color:var(--muted); background:#fff; padding:4px 10px; border-radius:6px; border:1px solid var(--border);">
+            <span
+                style="font-size:0.75rem; color:var(--muted); background:#fff; padding:4px 10px; border-radius:6px; border:1px solid var(--border);">
                 *CS/IT branches usually get 20-30% higher package.
             </span>
         </div>
@@ -318,33 +390,55 @@
                     {% if not is_premium and loop.index > 5 %}
                     <tr style="filter:blur(5px); pointer-events:none; user-select:none; background:#f8fafc;">
                         <td style="color:var(--muted);font-weight:700;">{{ loop.index }}</td>
-                        <td><div style="width:180px; height:14px; background:#e2e8f0; border-radius:4px;"></div></td>
-                        <td><div style="width:50px; height:14px; background:#e2e8f0; border-radius:4px;"></div></td>
-                        <td><div style="width:90px; height:14px; background:#e2e8f0; border-radius:4px;"></div></td>
-                        <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+                        <td>
+                            <div style="width:180px; height:14px; background:#e2e8f0; border-radius:4px;"></div>
+                        </td>
+                        <td>
+                            <div style="width:50px; height:14px; background:#e2e8f0; border-radius:4px;"></div>
+                        </td>
+                        <td>
+                            <div style="width:90px; height:14px; background:#e2e8f0; border-radius:4px;"></div>
+                        </td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
                     </tr>
                     {% else %}
                     <tr>
                         <td style="color:var(--muted);font-weight:700;width:40px;">{{ loop.index }}</td>
                         <td style="font-weight:600;color:var(--primary);">
-                            <a href="/college?name={{ college.college_name | urlencode_val }}" class="college-detail-link" target="_blank" style="color:var(--primary);text-decoration:none; display:flex; align-items:center; gap:10px;">
+                            <a href="/college?name={{ college.college_name | urlencode_val }}"
+                                class="college-detail-link" target="_blank"
+                                style="color:var(--primary);text-decoration:none; display:flex; align-items:center; gap:10px;">
                                 {% if college.image_url %}
-                                <img src="{{ url_for('static', filename=college.image_url) }}" alt="{{ college.college_name }}" style="width:38px; height:38px; border-radius:6px; object-fit:cover; flex-shrink:0; border:1.5px solid var(--border);">
+                                <img src="{{ url_for('static', filename=college.image_url) }}"
+                                    alt="{{ college.college_name }}"
+                                    style="width:38px; height:38px; border-radius:6px; object-fit:cover; flex-shrink:0; border:1.5px solid var(--border);">
                                 {% else %}
-                                <div style="width:38px; height:38px; border-radius:6px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--muted); flex-shrink:0; border:1.5px solid var(--border);">
+                                <div
+                                    style="width:38px; height:38px; border-radius:6px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:var(--muted); flex-shrink:0; border:1.5px solid var(--border);">
                                     <i class="fas fa-university" style="font-size:0.9rem;"></i>
                                 </div>
                                 {% endif %}
                                 <div style="display:flex; flex-direction:column; gap:2px;">
                                     <span>{{ college.college_name }}</span>
                                     {% if college.placement %}
-                                        <span style="font-size:0.7rem; display:inline-flex; align-items:center; gap:4px; font-weight:normal;">
-                                            {% if college.placement.is_predicted %}
-                                                <span style="color:#2563EB;"><i class="fas fa-brain"></i> Estimated Placements</span>
-                                            {% else %}
-                                                <span style="color:#059669;"><i class="fas fa-check-circle"></i> Verified Brochure</span>
-                                            {% endif %}
-                                        </span>
+                                    <span
+                                        style="font-size:0.7rem; display:inline-flex; align-items:center; gap:4px; font-weight:normal;">
+                                        {% if college.placement.is_predicted %}
+                                        <span style="color:#2563EB;"><i class="fas fa-brain"></i> Estimated
+                                            Placements</span>
+                                        {% else %}
+                                        <span style="color:#059669;"><i class="fas fa-check-circle"></i> Verified
+                                            Brochure</span>
+                                        {% endif %}
+                                    </span>
                                     {% endif %}
                                 </div>
                             </a>
@@ -353,11 +447,11 @@
                         <td>{{ college.branch | branch_name }} ({{ college.branch }})</td>
                         <td style="font-family:monospace;">
                             {% if college.min_cgpa_required and college.max_cgpa_required %}
-                                {{ college.min_cgpa_required }} – {{ college.max_cgpa_required }}
+                            {{ college.min_cgpa_required }} – {{ college.max_cgpa_required }}
                             {% elif college.min_cgpa_required %}
-                                {{ college.min_cgpa_required }}+
+                            {{ college.min_cgpa_required }}+
                             {% else %}
-                                —
+                            —
                             {% endif %}
                         </td>
                         <td>{{ college.category }}</td>
@@ -366,19 +460,20 @@
                         <td>{{ college.total_seats }}</td>
                         <td style="font-weight:700; color:var(--primary); font-family:monospace;">
                             {% if college.placement %}
-                                {{ college.placement.average_package_lpa }} LPA
+                            {{ college.placement.average_package_lpa }} LPA
                             {% else %}
-                                —
+                            —
                             {% endif %}
                         </td>
                         <td style="font-weight:700; color:#E11D48; font-family:monospace;">
                             {% if college.placement %}
-                                {{ college.placement.highest_package_lpa }} LPA
+                            {{ college.placement.highest_package_lpa }} LPA
                             {% else %}
-                                —
+                            —
                             {% endif %}
                         </td>
-                        <td style="font-size:0.78rem;">{{ college.fee_display or '—' }}{% if college.fee_approximate %}*{% endif %}</td>
+                        <td style="font-size:0.78rem;">{{ college.fee_display or '—' }}{% if college.fee_approximate
+                            %}*{% endif %}</td>
                         <td>{{ college.year }}</td>
                     </tr>
                     {% endif %}
@@ -397,14 +492,25 @@
         </div>
         {% if not is_premium and colleges|length > 5 %}
         <!-- ===== PREMIUM GATE — Search Mode ===== -->
-        <div style="position:relative; margin: 20px 0; background: linear-gradient(135deg, #0b2a5c 0%, #1e40af 50%, #7c3aed 100%); border-radius: 20px; padding: 40px 28px; text-align: center; overflow: hidden; box-shadow: 0 20px 60px rgba(11,42,92,0.35);">
-            <div style="position:absolute; top:-40px; right:-40px; width:200px; height:200px; background:rgba(255,255,255,0.05); border-radius:50%;"></div>
+        <div
+            style="position:relative; margin: 20px 0; background: linear-gradient(135deg, #0b2a5c 0%, #1e40af 50%, #7c3aed 100%); border-radius: 20px; padding: 40px 28px; text-align: center; overflow: hidden; box-shadow: 0 20px 60px rgba(11,42,92,0.35);">
+            <div
+                style="position:absolute; top:-40px; right:-40px; width:200px; height:200px; background:rgba(255,255,255,0.05); border-radius:50%;">
+            </div>
             <div style="position:relative; z-index:1;">
-                <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.3); color:#fbbf24; font-size:0.8rem; font-weight:700; padding:6px 16px; border-radius:50px; margin-bottom:18px; text-transform:uppercase;"><i class="fas fa-lock"></i> Unlock Full Results</div>
-                <h2 style="color:#fff; font-size:1.6rem; font-weight:800; margin:0 0 10px;">{{ colleges|length - 5 }} More Results Hidden 🔒</h2>
-                <p style="color:rgba(255,255,255,0.75); font-size:0.95rem; margin:0 0 24px; max-width:480px; margin-left:auto; margin-right:auto;">You're seeing 5 of {{ colleges|length }} matching rows. Upgrade to Premium to view all cutoff data, seats, and placement stats.</p>
-                <a href="/premium" style="background: linear-gradient(135deg,#fbbf24,#f59e0b); color:#1a1a1a; font-weight:800; font-size:1rem; padding:12px 32px; border-radius:50px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 8px 25px rgba(251,191,36,0.4);">
-                    <i class="fas fa-crown"></i> Upgrade — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong> only
+                <div
+                    style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,215,0,0.15); border:1px solid rgba(255,215,0,0.3); color:#fbbf24; font-size:0.8rem; font-weight:700; padding:6px 16px; border-radius:50px; margin-bottom:18px; text-transform:uppercase;">
+                    <i class="fas fa-lock"></i> Unlock Full Results</div>
+                <h2 style="color:#fff; font-size:1.6rem; font-weight:800; margin:0 0 10px;">{{ colleges|length - 5 }}
+                    More Results Hidden 🔒</h2>
+                <p
+                    style="color:rgba(255,255,255,0.75); font-size:0.95rem; margin:0 0 24px; max-width:480px; margin-left:auto; margin-right:auto;">
+                    You're seeing 5 of {{ colleges|length }} matching rows. Upgrade to Premium to view all cutoff data,
+                    seats, and placement stats.</p>
+                <a href="/premium"
+                    style="background: linear-gradient(135deg,#fbbf24,#f59e0b); color:#1a1a1a; font-weight:800; font-size:1rem; padding:12px 32px; border-radius:50px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 8px 25px rgba(251,191,36,0.4);">
+                    <i class="fas fa-crown"></i> Upgrade — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
+                    only
                 </a>
             </div>
         </div>
@@ -418,168 +524,168 @@
 {% block extra_scripts %}
 {% if directory_mode %}
 <script>
-function moveCarousel(event, btn, direction) {
-    event.preventDefault();
-    event.stopPropagation();
-    const container = btn.closest('.carousel-container');
-    const track = container.querySelector('.carousel-track');
-    const slides = container.querySelectorAll('.carousel-slide');
-    const dots = container.querySelectorAll('.carousel-dot');
-    
-    let activeIndex = parseInt(container.getAttribute('data-active-index') || '0');
-    activeIndex += direction;
-    
-    if (activeIndex < 0) {
-        activeIndex = slides.length - 1;
-    } else if (activeIndex >= slides.length) {
-        activeIndex = 0;
-    }
-    
-    container.setAttribute('data-active-index', activeIndex);
-    track.style.transform = `translateX(-${activeIndex * 100}%)`;
-    
-    dots.forEach((dot, idx) => {
-        if (idx === activeIndex) {
-            dot.classList.add('active');
-        } else {
-            dot.classList.remove('active');
+    function moveCarousel(event, btn, direction) {
+        event.preventDefault();
+        event.stopPropagation();
+        const container = btn.closest('.carousel-container');
+        const track = container.querySelector('.carousel-track');
+        const slides = container.querySelectorAll('.carousel-slide');
+        const dots = container.querySelectorAll('.carousel-dot');
+
+        let activeIndex = parseInt(container.getAttribute('data-active-index') || '0');
+        activeIndex += direction;
+
+        if (activeIndex < 0) {
+            activeIndex = slides.length - 1;
+        } else if (activeIndex >= slides.length) {
+            activeIndex = 0;
         }
-    });
-}
 
-document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.querySelector('input[name="q"]');
-    const citySelect = document.querySelector('select[name="city"]');
-    const typeSelect = document.querySelector('select[name="college_type"]');
-    const cards = document.querySelectorAll('.college-card-directory');
-    const countSpan = document.getElementById('dir-count');
-    const emptyState = document.getElementById('dir-empty-state');
-    const grid = document.getElementById('directory-grid');
+        container.setAttribute('data-active-index', activeIndex);
+        track.style.transform = `translateX(-${activeIndex * 100}%)`;
 
-    // Assign IDs for cleaner hooks
-    if (searchInput) searchInput.id = 'directory-search-input';
-    if (citySelect) citySelect.id = 'directory-city-select';
-    if (typeSelect) typeSelect.id = 'directory-type-select';
-
-    // College aliases list for frontend real-time matching
-    const collegeAliases = {
-        "sgsits": ["shri g.s. institute", "sgsits", "gsits"],
-        "gsits": ["shri g.s. institute", "sgsits", "gsits"],
-        "sgits": ["shri g.s. institute", "sgsits", "gsits"],
-        "mits": ["madhav institute", "mits"],
-        "iet": ["institute of engineering and technology", "iet davv", "iet-davv"],
-        "iet davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
-        "iet-davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
-        "davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
-        "jec": ["jabalpur engineering college", "jec"],
-        "uit rgpv": ["university institute of technology rgpv", "university institute of technology repv", "uit rgpv", "uit-rgpv"],
-        "uit-rgpv": ["university institute of technology rgpv", "university institute of technology repv", "uit rgpv", "uit-rgpv"],
-        "rgpv": ["university institute of technology", "rgpv", "school of information technology rgpv"],
-        "uit": ["university institute of technology", "uit"],
-        "lnct": ["lakshmi narain college", "lnct"],
-        "lncts": ["lakshmi narain college of technology & science", "lncts"],
-        "lncte": ["lakshmi narain college of technology excellence", "lncte"],
-        "jnct": ["jai narain college", "jnct"],
-        "uec": ["ujjain engineering college", "uec"],
-        "sati": ["samrat ashok", "sati"],
-        "rec": ["rewa engineering", "rec", "radharaman engineering"],
-        "igec": ["indira gandhi engineering", "igec"],
-        "rjit": ["rustamji institute", "rjit"],
-        "tit": ["technocrats institute", "tit"],
-        "sistec": ["sagar institute of science", "sistec"],
-        "sirt": ["sagar institute of research", "sirt"],
-        "acropolis": ["acropolis institute", "aitr"],
-        "aitr": ["acropolis institute", "aitr"],
-        "ips": ["ips academy", "ips college"],
-        "ipsa": ["ips academy", "ipsa"],
-        "oist": ["oriental institute", "oist"],
-        "oct": ["oriental college", "oct"],
-        "ggits": ["gyan ganga institute", "ggits"],
-        "ggct": ["gyan ganga college", "ggct"],
-        "gyan ganga": ["gyan ganga"],
-        "prestige": ["prestige institute", "piemr"],
-        "piemr": ["prestige institute", "piemr"],
-        "iist": ["indore institute of science", "iist"],
-        "btirt": ["babulal tarabai institute", "btirt"],
-        "sdbc": ["sushila devi bansal", "sdbc"],
-        "svce": ["swami vivekanand college", "svce"],
-        "vits": ["vindhya institute", "vits"],
-        "nec": ["nowgong engineering", "nec"],
-        "soit": ["school of information technology", "soit"],
-        "truba": ["truba institute", "truba"],
-        "bits": ["bansal institute", "bits"],
-        "birt": ["bansal institute of research", "birt"],
-        "bist": ["bansal institute of science", "bist"],
-        "cdgi": ["chameli devi", "cdgi"],
-        "hcet": ["hitkarni college", "hcet"],
-        "itm": ["institute of technology and management", "itm"],
-        "jit": ["jawaharlal institute", "jit"],
-        "mit": ["mahakal instute", "mahakal institute", "mit"]
-    };
-
-    function filterDirectory() {
-        const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-        const selectedCity = citySelect ? citySelect.value.trim().toLowerCase() : 'all';
-        const selectedType = typeSelect ? typeSelect.value.trim().toLowerCase() : '';
-
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-            const name = card.getAttribute('data-name') || '';
-            const city = card.getAttribute('data-city') || '';
-            const type = card.getAttribute('data-type') || '';
-
-            let matchesQuery = query === '' || name.includes(query);
-            if (!matchesQuery && query !== '') {
-                for (const [alias, targets] of Object.entries(collegeAliases)) {
-                    if (alias.includes(query) || query.includes(alias)) {
-                        for (const target of targets) {
-                            if (name.includes(target)) {
-                                matchesQuery = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (matchesQuery) break;
-                }
-            }
-
-            const matchesCity = selectedCity === 'all' || city === selectedCity || name.includes(selectedCity);
-            
-            let matchesType = true;
-            if (selectedType !== '') {
-                if (selectedType === 'govt+sfi') {
-                    matchesType = type === 'govt' || type === 's.f.i.';
-                } else {
-                    matchesType = type === selectedType;
-                }
-            }
-
-            if (matchesQuery && matchesCity && matchesType) {
-                card.style.display = 'flex';
-                visibleCount++;
+        dots.forEach((dot, idx) => {
+            if (idx === activeIndex) {
+                dot.classList.add('active');
             } else {
-                card.style.display = 'none';
+                dot.classList.remove('active');
             }
         });
-
-        if (countSpan) countSpan.textContent = visibleCount;
-
-        if (visibleCount === 0) {
-            emptyState.style.display = 'block';
-            grid.style.display = 'none';
-        } else {
-            emptyState.style.display = 'none';
-            grid.style.display = 'grid';
-        }
     }
 
-    if (searchInput) searchInput.addEventListener('input', filterDirectory);
-    if (citySelect) citySelect.addEventListener('change', filterDirectory);
-    if (typeSelect) typeSelect.addEventListener('change', filterDirectory);
-    
-    filterDirectory();
-});
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.querySelector('input[name="q"]');
+        const citySelect = document.querySelector('select[name="city"]');
+        const typeSelect = document.querySelector('select[name="college_type"]');
+        const cards = document.querySelectorAll('.college-card-directory');
+        const countSpan = document.getElementById('dir-count');
+        const emptyState = document.getElementById('dir-empty-state');
+        const grid = document.getElementById('directory-grid');
+
+        // Assign IDs for cleaner hooks
+        if (searchInput) searchInput.id = 'directory-search-input';
+        if (citySelect) citySelect.id = 'directory-city-select';
+        if (typeSelect) typeSelect.id = 'directory-type-select';
+
+        // College aliases list for frontend real-time matching
+        const collegeAliases = {
+            "sgsits": ["shri g.s. institute", "sgsits", "gsits"],
+            "gsits": ["shri g.s. institute", "sgsits", "gsits"],
+            "sgits": ["shri g.s. institute", "sgsits", "gsits"],
+            "mits": ["madhav institute", "mits"],
+            "iet": ["institute of engineering and technology", "iet davv", "iet-davv"],
+            "iet davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
+            "iet-davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
+            "davv": ["institute of engineering and technology", "iet davv", "iet-davv"],
+            "jec": ["jabalpur engineering college", "jec"],
+            "uit rgpv": ["university institute of technology rgpv", "university institute of technology repv", "uit rgpv", "uit-rgpv"],
+            "uit-rgpv": ["university institute of technology rgpv", "university institute of technology repv", "uit rgpv", "uit-rgpv"],
+            "rgpv": ["university institute of technology", "rgpv", "school of information technology rgpv"],
+            "uit": ["university institute of technology", "uit"],
+            "lnct": ["lakshmi narain college", "lnct"],
+            "lncts": ["lakshmi narain college of technology & science", "lncts"],
+            "lncte": ["lakshmi narain college of technology excellence", "lncte"],
+            "jnct": ["jai narain college", "jnct"],
+            "uec": ["ujjain engineering college", "uec"],
+            "sati": ["samrat ashok", "sati"],
+            "rec": ["rewa engineering", "rec", "radharaman engineering"],
+            "igec": ["indira gandhi engineering", "igec"],
+            "rjit": ["rustamji institute", "rjit"],
+            "tit": ["technocrats institute", "tit"],
+            "sistec": ["sagar institute of science", "sistec"],
+            "sirt": ["sagar institute of research", "sirt"],
+            "acropolis": ["acropolis institute", "aitr"],
+            "aitr": ["acropolis institute", "aitr"],
+            "ips": ["ips academy", "ips college"],
+            "ipsa": ["ips academy", "ipsa"],
+            "oist": ["oriental institute", "oist"],
+            "oct": ["oriental college", "oct"],
+            "ggits": ["gyan ganga institute", "ggits"],
+            "ggct": ["gyan ganga college", "ggct"],
+            "gyan ganga": ["gyan ganga"],
+            "prestige": ["prestige institute", "piemr"],
+            "piemr": ["prestige institute", "piemr"],
+            "iist": ["indore institute of science", "iist"],
+            "btirt": ["babulal tarabai institute", "btirt"],
+            "sdbc": ["sushila devi bansal", "sdbc"],
+            "svce": ["swami vivekanand college", "svce"],
+            "vits": ["vindhya institute", "vits"],
+            "nec": ["nowgong engineering", "nec"],
+            "soit": ["school of information technology", "soit"],
+            "truba": ["truba institute", "truba"],
+            "bits": ["bansal institute", "bits"],
+            "birt": ["bansal institute of research", "birt"],
+            "bist": ["bansal institute of science", "bist"],
+            "cdgi": ["chameli devi", "cdgi"],
+            "hcet": ["hitkarni college", "hcet"],
+            "itm": ["institute of technology and management", "itm"],
+            "jit": ["jawaharlal institute", "jit"],
+            "mit": ["mahakal instute", "mahakal institute", "mit"]
+        };
+
+        function filterDirectory() {
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+            const selectedCity = citySelect ? citySelect.value.trim().toLowerCase() : 'all';
+            const selectedType = typeSelect ? typeSelect.value.trim().toLowerCase() : '';
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name') || '';
+                const city = card.getAttribute('data-city') || '';
+                const type = card.getAttribute('data-type') || '';
+
+                let matchesQuery = query === '' || name.includes(query);
+                if (!matchesQuery && query !== '') {
+                    for (const [alias, targets] of Object.entries(collegeAliases)) {
+                        if (alias.includes(query) || query.includes(alias)) {
+                            for (const target of targets) {
+                                if (name.includes(target)) {
+                                    matchesQuery = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (matchesQuery) break;
+                    }
+                }
+
+                const matchesCity = selectedCity === 'all' || city === selectedCity || name.includes(selectedCity);
+
+                let matchesType = true;
+                if (selectedType !== '') {
+                    if (selectedType === 'govt+sfi') {
+                        matchesType = type === 'govt' || type === 's.f.i.';
+                    } else {
+                        matchesType = type === selectedType;
+                    }
+                }
+
+                if (matchesQuery && matchesCity && matchesType) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (countSpan) countSpan.textContent = visibleCount;
+
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+                grid.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                grid.style.display = 'grid';
+            }
+        }
+
+        if (searchInput) searchInput.addEventListener('input', filterDirectory);
+        if (citySelect) citySelect.addEventListener('change', filterDirectory);
+        if (typeSelect) typeSelect.addEventListener('change', filterDirectory);
+
+        filterDirectory();
+    });
 </script>
 {% endif %}
 {% endblock %}

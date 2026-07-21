@@ -43,94 +43,96 @@
         </div>
         {% endif %}
 
-        {% if result and is_premium %}
-        <div id="simulation-processing" class="gov-box" style="margin-bottom:30px; text-align:center;">
-            <div class="loader-spinner" style="margin: 0 auto 15px;"></div>
-            <h3 id="processing-text">DTE MP Engine: Starting Allotment...</h3>
-            <div id="processing-steps" style="margin-top:15px; font-size:0.9rem; color:var(--muted);"></div>
-        </div>
-
-        <div id="simulation-final-result" class="simulation-result-card animate-pop" style="margin-bottom:30px; display:none;">
-            <div class="sim-res-header">
-                <i class="fas fa-certificate"></i> Official-Style Mock Allotment Result
+        {% if is_premium %}
+            {% if result %}
+            <div id="simulation-processing" class="gov-box" style="margin-bottom:30px; text-align:center;">
+                <div class="loader-spinner" style="margin: 0 auto 15px;"></div>
+                <h3 id="processing-text">DTE MP Engine: Starting Allotment...</h3>
+                <div id="processing-steps" style="margin-top:15px; font-size:0.9rem; color:var(--muted);"></div>
             </div>
-            <div class="sim-res-body">
-                {% if result.success %}
-                    <div class="allotted-box">
-                        <div class="allotted-label"><i class="fas fa-check-circle"></i> PROVISIONALLY ALLOTTED</div>
-                        <h2 class="allotted-college">{{ result.college }}</h2>
-                        <div class="allotted-branch">{{ result.branch | branch_name }} ({{ result.branch }})</div>
-                        <div class="allotted-meta">
-                            <span><i class="fas fa-sort-numeric-down"></i> Choice #{{ result.choice_no }}</span>
-                            <span><i class="fas fa-user-shield"></i> Allotted Quota: {{ result.allotted_category }} ({{ result.allotted_gender }})</span>
-                            <span><i class="fas fa-history"></i> Based on {{ result.year }} Trend</span>
+
+            <div id="simulation-final-result" class="simulation-result-card animate-pop" style="margin-bottom:30px; display:none;">
+                <div class="sim-res-header">
+                    <i class="fas fa-certificate"></i> Official-Style Mock Allotment Result
+                </div>
+                <div class="sim-res-body">
+                    {% if result.success %}
+                        <div class="allotted-box">
+                            <div class="allotted-label"><i class="fas fa-check-circle"></i> PROVISIONALLY ALLOTTED</div>
+                            <h2 class="allotted-college">{{ result.college }}</h2>
+                            <div class="allotted-branch">{{ result.branch | branch_name }} ({{ result.branch }})</div>
+                            <div class="allotted-meta">
+                                <span><i class="fas fa-sort-numeric-down"></i> Choice #{{ result.choice_no }}</span>
+                                <span><i class="fas fa-user-shield"></i> Allotted Quota: {{ result.allotted_category }} ({{ result.allotted_gender }})</span>
+                                <span><i class="fas fa-history"></i> Based on {{ result.year }} Trend</span>
+                            </div>
+                            <p style="margin-top:20px; font-size:0.85rem; color:#64748B;">
+                                This is only a practice result. Your real allotment will appear on the official DTE MP website after you fill and lock your choices there.
+                            </p>
+                            <!-- Route Planner & Checklist Action -->
+                            <div style="margin-top:20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                                <button type="button" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:24px; font-weight:700; font-size:0.9rem; background: linear-gradient(135deg, #0F2C5E, #1D4ED8); border: none; cursor: pointer; color: #fff; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);" onclick="openRoutePlanner('{{ result.college | replace('\'', '\\\'') }}', '{{ result.allotted_category }}', 'All')">
+                                    <i class="fas fa-map-marked-alt"></i> Route Planner &amp; Checklist
+                                </button>
+                            </div>
+                            <!-- WhatsApp Share Action -->
+                            <div style="margin-top:20px;">
+                                <div class="share-result-btns" data-share-result>
+                                    <a href="#" data-share-whatsapp class="btn-whatsapp" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem;">
+                                        <i class="fab fa-whatsapp"></i> WhatsApp
+                                    </a>
+                                    <a href="#" data-share-telegram class="btn-telegram" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#0088cc; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem; margin-left:8px;">
+                                        <i class="fab fa-telegram"></i> Telegram
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <p style="margin-top:20px; font-size:0.85rem; color:#64748B;">
-                            This is only a practice result. Your real allotment will appear on the official DTE MP website after you fill and lock your choices there.
-                        </p>
-                        <!-- Route Planner & Checklist Action -->
-                        <div style="margin-top:20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                            <button type="button" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:24px; font-weight:700; font-size:0.9rem; background: linear-gradient(135deg, #0F2C5E, #1D4ED8); border: none; cursor: pointer; color: #fff; box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);" onclick="openRoutePlanner('{{ result.college | replace('\'', '\\\'') }}', '{{ result.allotted_category }}', 'All')">
-                                <i class="fas fa-map-marked-alt"></i> Route Planner &amp; Checklist
-                            </button>
-                        </div>
-                        <!-- WhatsApp Share Action -->
-                        <div style="margin-top:20px;">
-                            <div class="share-result-btns" data-share-result>
-                                <a href="#" data-share-whatsapp class="btn-whatsapp" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem;">
+                    {% else %}
+                        <div class="not-allotted-box">
+                            <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#F59E0B; margin-bottom:15px;"></i>
+                            <h3>Seat Not Allotted!</h3>
+                            <p>Based on your rank ({{ user.rank }}) and last year's cutoffs, no seat matched your list. <br><strong>Tip:</strong> Add more colleges to your list or change the order of your choices.</p>
+                            <div class="share-result-btns" data-share-result style="margin-top:15px;">
+                                <a href="#" data-share-whatsapp class="btn-whatsapp" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 22px;border-radius:24px;text-decoration:none;font-weight:700;">
                                     <i class="fab fa-whatsapp"></i> WhatsApp
                                 </a>
-                                <a href="#" data-share-telegram class="btn-telegram" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#0088cc; color:#fff; padding:10px 22px; border-radius:24px; text-decoration:none; font-weight:700; font-size:0.9rem; margin-left:8px;">
+                                <a href="#" data-share-telegram target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#0088cc;color:#fff;padding:10px 22px;border-radius:24px;text-decoration:none;font-weight:700;margin-left:8px;">
                                     <i class="fab fa-telegram"></i> Telegram
                                 </a>
                             </div>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="not-allotted-box">
-                        <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:#F59E0B; margin-bottom:15px;"></i>
-                        <h3>Seat Not Allotted!</h3>
-                        <p>Based on your rank ({{ user.rank }}) and last year's cutoffs, no seat matched your list. <br><strong>Tip:</strong> Add more colleges to your list or change the order of your choices.</p>
-                        <div class="share-result-btns" data-share-result style="margin-top:15px;">
-                            <a href="#" data-share-whatsapp class="btn-whatsapp" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 22px;border-radius:24px;text-decoration:none;font-weight:700;">
-                                <i class="fab fa-whatsapp"></i> WhatsApp
-                            </a>
-                            <a href="#" data-share-telegram target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#0088cc;color:#fff;padding:10px 22px;border-radius:24px;text-decoration:none;font-weight:700;margin-left:8px;">
-                                <i class="fab fa-telegram"></i> Telegram
-                            </a>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-
-        {% if recommendations %}
-        <div class="gov-box recommendation-box" style="margin-top:25px; border-top: 4px solid var(--primary); background:#F8FAFC; animation: fadeIn 0.5s ease; display:none;" id="recommendations-container">
-            <h3 style="color:var(--primary); font-size:1.1rem; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-lightbulb" style="color:var(--saffron);"></i> 
-                <strong>Smart Choice Recommendations for Your Profile</strong>
-            </h3>
-            <p style="font-size:0.82rem; margin-bottom:14px; color:var(--muted); line-height:1.4;">
-                These colleges match your rank and category with high/medium admission probability based on historical data. Click <strong>+ Add</strong> to instantly append them to your priority choice list below.
-            </p>
-            <div class="rec-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
-                {% for rec in recommendations %}
-                <div class="rec-card" style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; gap:10px; transition:0.3s; box-shadow:0 2px 5px rgba(0,0,0,0.02);">
-                    <div style="flex:1; text-align:left;">
-                        <div style="font-weight:700; font-size:0.84rem; color:var(--primary); line-height:1.3;">{{ rec.college_name }}</div>
-                        <div style="font-size:0.75rem; margin-top:6px; display:flex; gap:6px; align-items:center;">
-                            <span class="branch-tag" style="background:#EEF2FF; color:#3730A3; padding:2px 6px; border-radius:4px; font-weight:700;">{{ rec.branch | branch_name }}</span>
-                            <span class="prob-badge prob-high" style="background:#D1FAE5; color:#065F46; padding:2px 6px; border-radius:4px; font-weight:700;">{{ rec.probability }}% Chance</span>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-primary-small" style="padding:6px 10px; font-size:0.75rem; white-space:nowrap; cursor:pointer;" onclick="addRecommendation('{{ rec.college_name | replace("'","\\'") }}', '{{ rec.branch }}', this)">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
+                    {% endif %}
                 </div>
-                {% endfor %}
             </div>
-        </div>
-        {% endif %}
+
+            {% if recommendations %}
+            <div class="gov-box recommendation-box" style="margin-top:25px; border-top: 4px solid var(--primary); background:#F8FAFC; animation: fadeIn 0.5s ease; display:none;" id="recommendations-container">
+                <h3 style="color:var(--primary); font-size:1.1rem; margin-top:0; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-lightbulb" style="color:var(--saffron);"></i> 
+                    <strong>Smart Choice Recommendations for Your Profile</strong>
+                </h3>
+                <p style="font-size:0.82rem; margin-bottom:14px; color:var(--muted); line-height:1.4;">
+                    These colleges match your rank and category with high/medium admission probability based on historical data. Click <strong>+ Add</strong> to instantly append them to your priority choice list below.
+                </p>
+                <div class="rec-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
+                    {% for rec in recommendations %}
+                    <div class="rec-card" style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; gap:10px; transition:0.3s; box-shadow:0 2px 5px rgba(0,0,0,0.02);">
+                        <div style="flex:1; text-align:left;">
+                            <div style="font-weight:700; font-size:0.84rem; color:var(--primary); line-height:1.3;">{{ rec.college_name }}</div>
+                            <div style="font-size:0.75rem; margin-top:6px; display:flex; gap:6px; align-items:center;">
+                                <span class="branch-tag" style="background:#EEF2FF; color:#3730A3; padding:2px 6px; border-radius:4px; font-weight:700;">{{ rec.branch | branch_name }}</span>
+                                <span class="prob-badge prob-high" style="background:#D1FAE5; color:#065F46; padding:2px 6px; border-radius:4px; font-weight:700;">{{ rec.probability }}% Chance</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-primary-small" style="padding:6px 10px; font-size:0.75rem; white-space:nowrap; cursor:pointer;" onclick="addRecommendation('{{ rec.college_name | replace("'","\\'") }}', '{{ rec.branch }}', this)">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
         {% else %}
         <!-- ===== PREMIUM GATE — Allotment Simulator ===== -->
         <div style="position:relative; margin:20px 0 40px; background:linear-gradient(135deg,#0b2a5c 0%,#1e40af 50%,#7c3aed 100%); border-radius:24px; padding:55px 36px; text-align:center; overflow:hidden; box-shadow:0 24px 70px rgba(11,42,92,0.4);">
@@ -796,8 +798,8 @@ document.addEventListener('DOMContentLoaded', () => {
     choices = parsed;
     renderChoices();
 
-    // If there is a result, run the animation
-    {% if result %}
+    // If there is a result and user is premium, run the animation
+    {% if result and is_premium %}
     const resultBox = document.getElementById('simulation-final-result');
     const processBox = document.getElementById('simulation-processing');
     const procText = document.getElementById('processing-text');

@@ -115,6 +115,7 @@ class User(db.Model):
     last_prediction_date = db.Column(db.String(20), nullable=True)
     is_premium = db.Column(db.Boolean, default=False)
     coins = db.Column(db.Integer, default=0, nullable=False)
+    current_session_token = db.Column(db.String(100), nullable=True)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     shortlists = db.relationship("CloudShortlist", backref="user", lazy=True)

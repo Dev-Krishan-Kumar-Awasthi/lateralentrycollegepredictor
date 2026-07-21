@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block title %}Vacant Seats After Allotment — MP DTE Lateral Entry Predictor{% endblock %}
+{% block meta_description %}Check official MP DTE B.Tech Lateral Entry vacant seats remaining after allotment rounds. Search college-wise, branch-wise, and category-wise vacant seats for 2025 & 2026.{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1100px; margin: 0 auto; padding: 20px 10px;">
+    
+    <!-- Hero Header -->
+    <div style="background: linear-gradient(135deg, #0b2a5c 0%, #1e40af 50%, #3b82f6 100%); color: #fff; padding: 36px 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 12px 30px -5px rgba(30, 64, 175, 0.35); text-align: center; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+        <div style="font-size: 3.2rem; margin-bottom: 10px;">🪑</div>
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-bottom: 14px; letter-spacing: 0.5px;">
+            <i class="fas fa-university"></i> Official DTE MP Counselling Data
+        </div>
+        <h1 style="margin: 0 0 10px 0; color: #fff; font-size: 1.9rem; font-weight: 800;">Vacant Seats After Allotment Matrix</h1>
+        <p style="margin: 0; opacity: 0.92; font-size: 1.02rem; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            Check remaining vacant seats in MP B.Tech Lateral Entry engineering colleges after allotment rounds. Easily search by college name, branch, type, and seat availability.
+        </p>
+    </div>
+
+    <!-- Summary Stat Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <div style="color: var(--muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Total Colleges</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #1e3a8a;">{{ colleges_count or 0 }}</div>
+            <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">Participating Institutes</div>
+        </div>
+
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 18px; text-align: center;">
+            <div style="color: #047857; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Vacant Seats (Remaining)</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #065f46;">{{ total_vacant or 0 }}</div>
+            <div style="font-size: 0.78rem; color: #047857; margin-top: 4px;">Available for Admission</div>
+        </div>
+
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px; text-align: center;">
+            <div style="color: #1d4ed8; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Allotted Seats (Filled)</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #1e40af;">{{ total_allotted or 0 }}</div>
+            <div style="font-size: 0.78rem; color: #1e40af; margin-top: 4px;">Students Admitted</div>
+        </div>
+
+        <div style="background: #fffdf5; border: 1px solid #fef3c7; border-radius: 12px; padding: 18px; text-align: center;">
+            <div style="color: #b45309; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Total Intake Capacity</div>
+            <div style="font-size: 1.9rem; font-weight: 850; color: #d97706;">{{ total_seats or 0 }}</div>
+            <div style="font-size: 0.78rem; color: #92400e; margin-top: 4px;">Lateral Entry Seats</div>
+        </div>
+    </div>
+
+    <!-- Filter Control Card -->
+    <div class="gov-box" style="background: #fff; padding: 22px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+        
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+            <h3 style="margin: 0; color: var(--primary); font-size: 1.15rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-filter" style="color: #2563eb;"></i> Search &amp; Filter Vacant Seats
+            </h3>
+
+            <!-- Year Switch Tabs -->
+            <div style="display: flex; gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 8px;">
+                <button type="button" class="year-tab-btn active-year-tab" onclick="switchYear('2025')" id="tab-2025" style="border: none; padding: 6px 16px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; background: #1e3a8a; color: #fff; transition: all 0.2s;">
+                    📅 2025 Data (Live)
+                </button>
+                <button type="button" class="year-tab-btn" onclick="switchYear('2026')" id="tab-2026" style="border: none; padding: 6px 16px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; background: transparent; color: #64748b; transition: all 0.2s;">
+                    ✨ 2026 Data (Upcoming)
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Form Inputs -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+            
+            <!-- Search Text -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-search"></i> Search College or Branch
+                </label>
+                <input type="text" id="filter-search" placeholder="Type college name or branch..." onkeyup="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; outline: none;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#cbd5e1'">
+            </div>
+
+            <!-- College Type -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-university"></i> College Type
+                </label>
+                <select id="filter-type" onchange="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #fff;">
+                    <option value="ALL">All Types (GOVT / Private / S.F.I.)</option>
+                    <option value="GOVT">Government (GOVT)</option>
+                    <option value="PRIVATE">Private</option>
+                    <option value="S.F.I.">Self Finance (S.F.I.)</option>
+                </select>
+            </div>
+
+            <!-- Branch Select -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-code-branch"></i> Engineering Branch
+                </label>
+                <select id="filter-branch" onchange="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #fff;">
+                    <option value="ALL">All Branches</option>
+                    {% for b in branches %}
+                    <option value="{{ b }}">{{ b }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Availability Status -->
+            <div>
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); margin-bottom: 4px;">
+                    <i class="fas fa-check-circle"></i> Vacancy Status
+                </label>
+                <select id="filter-status" onchange="applyFilters()" style="width: 100%; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #fff;">
+                    <option value="ALL" selected>Show All Seats Matrix (759 Records)</option>
+                    <option value="VACANT_ONLY">Show Vacant Seats Only (&gt; 0)</option>
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Results Table Container -->
+    <div class="gov-box" style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="font-size: 0.92rem; font-weight: 700; color: #334155;" id="showing-count">
+                Showing all {{ vacant_data|length }} records
+            </div>
+            <div style="font-size: 0.82rem; color: #64748b; display: flex; align-items: center; gap: 12px;">
+                <span><i class="fas fa-circle" style="color: #10b981; font-size: 0.7rem;"></i> 5+ Vacant Seats</span>
+                <span><i class="fas fa-circle" style="color: #f59e0b; font-size: 0.7rem;"></i> 1-4 Vacant Seats</span>
+                <span><i class="fas fa-circle" style="color: #ef4444; font-size: 0.7rem;"></i> Filled (0 Vacant)</span>
+            </div>
+        </div>
+
+        <div style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
+            <table class="gov-table" style="width: 100%; margin: 0; font-size: 0.88rem;" id="vacant-table">
+                <thead>
+                    <tr style="background: #f8fafc; text-align: left;">
+                        <th style="padding: 12px 14px;">#</th>
+                        <th style="padding: 12px 14px;">College Name</th>
+                        <th style="padding: 12px 14px;">Type</th>
+                        <th style="padding: 12px 14px;">Branch</th>
+                        <th style="padding: 12px 14px; text-align: center;">Total Seats</th>
+                        <th style="padding: 12px 14px; text-align: center;">Allotted</th>
+                        <th style="padding: 12px 14px; text-align: right;">Vacant Seats</th>
+                    </tr>
+                </thead>
+                <tbody id="vacant-tbody">
+                    {% for item in vacant_data %}
+                    <tr class="vacant-row" 
+                        data-name="{{ item.college_name | lower }}" 
+                        data-type="{{ item.college_type | upper }}" 
+                        data-branch="{{ item.branch | upper }}" 
+                        data-remaining="{{ item.remaining }}">
+                        <td style="padding: 10px 14px; font-weight: 700; color: var(--muted);">{{ loop.index }}</td>
+                        <td style="padding: 10px 14px; font-weight: 700; color: #0f172a;">
+                            <a href="/college?name={{ item.college_name | urlencode }}" style="color: #1e3a8a; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                                {{ item.college_name }}
+                            </a>
+                        </td>
+                        <td style="padding: 10px 14px;">
+                            <span style="font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; background: {% if item.college_type == 'GOVT' %}#dbeafe; color: #1e40af;{% else %}#f1f5f9; color: #475569;{% endif %}">
+                                {{ item.college_type }}
+                            </span>
+                        </td>
+                        <td style="padding: 10px 14px; font-weight: 600; color: #2563eb;">
+                            {{ item.branch }}
+                        </td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 600; color: #475569;">
+                            {{ item.total_seats }}
+                        </td>
+                        <td style="padding: 10px 14px; text-align: center; font-weight: 600; color: #64748b;">
+                            {{ item.allotment }}
+                        </td>
+                        <td style="padding: 10px 14px; text-align: right;">
+                            {% if item.remaining >= 5 %}
+                            <span style="background: #d1fae5; color: #065f46; font-weight: 800; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-chair" style="color: #10b981;"></i> {{ item.remaining }} Vacant
+                            </span>
+                            {% elif item.remaining > 0 %}
+                            <span style="background: #fef3c7; color: #92400e; font-weight: 800; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-exclamation-circle" style="color: #f59e0b;"></i> {{ item.remaining }} Vacant
+                            </span>
+                            {% else %}
+                            <span style="background: #fee2e2; color: #991b1b; font-weight: 700; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">
+                                0 (Filled)
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Client side live search & filter script -->
+<script>
+function applyFilters() {
+    const query = document.getElementById('filter-search').value.toLowerCase().trim();
+    const typeVal = document.getElementById('filter-type').value.toUpperCase();
+    const branchVal = document.getElementById('filter-branch').value.toUpperCase();
+    const statusVal = document.getElementById('filter-status').value;
+
+    const rows = document.querySelectorAll('.vacant-row');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const name = row.dataset.name || '';
+        const type = row.dataset.type || '';
+        const branch = row.dataset.branch || '';
+        const remaining = parseInt(row.dataset.remaining || '0', 10);
+
+        let matchesSearch = !query || name.includes(query) || branch.toLowerCase().includes(query);
+        let matchesType = (typeVal === 'ALL') || (type.includes(typeVal));
+        let matchesBranch = (branchVal === 'ALL') || (branch === branchVal);
+        let matchesStatus = (statusVal === 'ALL') || (remaining > 0);
+
+        if (matchesSearch && matchesType && matchesBranch && matchesStatus) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    document.getElementById('showing-count').textContent = `Showing ${visibleCount} matching records`;
+}
+
+function switchYear(yr) {
+    if (yr === '2026') {
+        alert("Session 2026 vacant seat data will be updated live after the official 2026 DTE allotment round!");
+        return;
+    }
+    document.getElementById('tab-2025').style.background = '#1e3a8a';
+    document.getElementById('tab-2025').style.color = '#fff';
+    document.getElementById('tab-2026').style.background = 'transparent';
+    document.getElementById('tab-2026').style.color = '#64748b';
+}
+</script>
+{% endblock %}

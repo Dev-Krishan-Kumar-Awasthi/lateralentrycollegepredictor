@@ -183,101 +183,132 @@
 
                 <li class="nav-dropdown-item">
                     <a href="javascript:void(0)"
-                        class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'merit_insights', 'recommendation_list', 'checklist', 'registration_process', 'refer_share', 'schedule', 'dte_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
-                        <i class="fas fa-ellipsis-h"></i> More Tools <i class="fas fa-chevron-down"
+                        class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'merit_insights', 'recommendation_list', 'checklist', 'registration_process', 'refer_share', 'schedule', 'vacant_seats', 'tentative_institutes', 'seat_matrix', 'dte_rules', 'choice_filling_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
+                        <i class="fas fa-th-large"></i> More Tools <i class="fas fa-chevron-down"
                             style="margin-left: 4px; font-size: 0.75rem;"></i>
                     </a>
-                    <ul class="nav-dropdown">
-                        <li>
-                            <a href="/choice-vault"
-                                class="{% if request.endpoint == 'choice_vault' %}dropdown-active{% endif %}">
-                                <i class="fas fa-vault"></i> Choice Vault
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/checklist"
-                                class="{% if request.endpoint == 'checklist' %}dropdown-active{% endif %}">
-                                <i class="fas fa-check-double"></i> Document Checklist
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/registration-process"
-                                class="{% if request.endpoint == 'registration_process' %}dropdown-active{% endif %}">
-                                <i class="fas fa-user-plus"></i> Registration Process
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/refer-share"
-                                class="{% if request.endpoint == 'refer_share' %}dropdown-active{% endif %}">
-                                <i class="fas fa-gift"></i> Refer & Share
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/choice-builder"
-                                class="{% if request.endpoint == 'choice_builder' %}dropdown-active{% endif %}">
-                                <i class="fas fa-magic"></i> Smart Choices
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/merit-insights"
-                                class="{% if request.endpoint == 'merit_insights' %}dropdown-active{% endif %}">
-                                <i class="fas fa-chart-pie"></i> Merit Insights
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/recommendation-list"
-                                class="{% if request.endpoint == 'recommendation_list' %}dropdown-active{% endif %}">
-                                <i class="fas fa-list-ol"></i> Recommendation List
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/schedule"
-                                class="{% if request.endpoint == 'schedule' %}dropdown-active{% endif %}">
-                                <i class="fas fa-calendar-alt"></i> Counselling Schedule
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/dte-rules"
-                                class="{% if request.endpoint == 'dte_rules' %}dropdown-active{% endif %}">
-                                <i class="fas fa-gavel"></i> Official DTE Rules
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/choice-filling-rules"
-                                class="{% if request.endpoint == 'choice_filling_rules' %}dropdown-active{% endif %}">
-                                <i class="fas fa-clipboard-check"></i> Choice Filling Rules
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/how-it-works"
-                                class="{% if request.endpoint == 'how_it_works' %}dropdown-active{% endif %}">
-                                <i class="fas fa-book-open"></i> Counselling Guide
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/faq" class="{% if request.endpoint == 'faq' %}dropdown-active{% endif %}">
-                                <i class="fas fa-question-circle"></i> FAQs
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/about" class="{% if request.endpoint == 'about' %}dropdown-active{% endif %}">
-                                <i class="fas fa-info-circle"></i> About Us
-                            </a>
-                        </li>
-                        {% if is_admin %}
-                        <li>
-                            <a href="/admin/users"
-                                class="{% if request.endpoint == 'admin_users' %}dropdown-active{% endif %}">
-                                <i class="fas fa-user-cog"></i> Admin Panel
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li>
-                            <a href="/contact" class="{% if request.endpoint == 'contact' %}dropdown-active{% endif %}">
-                                <i class="fas fa-headset"></i> Contact Support
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="nav-dropdown mega-dropdown" data-lenis-prevent>
+                        <div class="mega-col">
+                            <div class="dropdown-col-title" style="color: #6d28d9; background: #f5f3ff;">
+                                <i class="fas fa-magic"></i> Smart Tools &amp; Insights
+                            </div>
+                            <ul class="dropdown-list">
+                                <li>
+                                    <a href="/choice-vault" class="{% if request.endpoint == 'choice_vault' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-vault" style="color: #7c3aed;"></i> Choice Vault
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/choice-builder" class="{% if request.endpoint == 'choice_builder' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-magic" style="color: #2563eb;"></i> Smart Choices
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/merit-insights" class="{% if request.endpoint == 'merit_insights' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-chart-pie" style="color: #059669;"></i> Merit Insights
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/recommendation-list" class="{% if request.endpoint == 'recommendation_list' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-list-ol" style="color: #d97706;"></i> Recommendation List
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/refer-share" class="{% if request.endpoint == 'refer_share' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-gift" style="color: #ec4899;"></i> Refer &amp; Share
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mega-col">
+                            <div class="dropdown-col-title" style="color: #047857; background: #ecfdf5;">
+                                <i class="fas fa-database"></i> Seat Data &amp; Matrix 2026
+                            </div>
+                            <ul class="dropdown-list">
+                                <li>
+                                    <a href="/vacant-seats" class="{% if request.endpoint == 'vacant_seats' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-chair" style="color: #10b981;"></i> Vacant Seats After Allotment
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/tentative-institutes" class="{% if request.endpoint == 'tentative_institutes' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-building" style="color: #3b82f6;"></i> Tentative Institutes 2026
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/seat-matrix" class="{% if request.endpoint == 'seat_matrix' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-table" style="color: #f59e0b;"></i> DTE Seat Matrix (Upcoming)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/schedule" class="{% if request.endpoint == 'schedule' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-calendar-alt" style="color: #6366f1;"></i> Counselling Schedule
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mega-col">
+                            <div class="dropdown-col-title" style="color: #1d4ed8; background: #eff6ff;">
+                                <i class="fas fa-book"></i> Rules, Process &amp; Support
+                            </div>
+                            <ul class="dropdown-list">
+                                <li>
+                                    <a href="/dte-rules" class="{% if request.endpoint == 'dte_rules' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-gavel" style="color: #dc2626;"></i> Official DTE Rules
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/choice-filling-rules" class="{% if request.endpoint == 'choice_filling_rules' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-clipboard-check" style="color: #0284c7;"></i> Choice Filling Rules
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/checklist" class="{% if request.endpoint == 'checklist' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-check-double" style="color: #16a34a;"></i> Document Checklist
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/registration-process" class="{% if request.endpoint == 'registration_process' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-user-plus" style="color: #9333ea;"></i> Registration Process
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/how-it-works" class="{% if request.endpoint == 'how_it_works' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-book-open" style="color: #ea580c;"></i> Counselling Guide
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/faq" class="{% if request.endpoint == 'faq' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-question-circle" style="color: #4f46e5;"></i> FAQs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/about" class="{% if request.endpoint == 'about' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-info-circle" style="color: #0891b2;"></i> About Us
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/contact" class="{% if request.endpoint == 'contact' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-headset" style="color: #e11d48;"></i> Contact Support
+                                    </a>
+                                </li>
+                                {% if is_admin %}
+                                <li>
+                                    <a href="/admin/users" class="{% if request.endpoint == 'admin_users' %}dropdown-active{% endif %}">
+                                        <i class="fas fa-user-cog" style="color: #475569;"></i> Admin Panel
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li style="display: flex; align-items: center;">
+                    <button type="button" class="cmd-trigger-btn" onclick="openCmdPalette()">
+                        <i class="fas fa-search"></i> Search <kbd>Ctrl K</kbd>
+                    </button>
                 </li>
                 <li>
                     <a href="/account" class="{% if request.endpoint == 'account_page' %}nav-active{% endif %}">
@@ -1470,10 +1501,179 @@
         </div>
     </div>
 
+    <!-- ===== MOBILE BOTTOM NAVIGATION BAR ===== -->
+    <div class="mobile-bottom-nav">
+        <a href="/" class="mobile-nav-btn {% if request.endpoint == 'home' %}active-tab{% endif %}">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/predictor" class="mobile-nav-btn {% if request.endpoint == 'predictor' %}active-tab{% endif %}">
+            <i class="fas fa-bullseye"></i>
+            <span>Predict</span>
+        </a>
+        <a href="/simulator" class="mobile-nav-btn {% if request.endpoint == 'simulator' %}active-tab{% endif %}">
+            <i class="fas fa-vial"></i>
+            <span>Simulator</span>
+        </a>
+        <a href="/search" class="mobile-nav-btn {% if request.endpoint in ['search', 'college_detail_page'] %}active-tab{% endif %}">
+            <i class="fas fa-university"></i>
+            <span>Colleges</span>
+        </a>
+        <a href="/account" class="mobile-nav-btn {% if request.endpoint == 'account_page' %}active-tab{% endif %}">
+            <i class="fas fa-user-circle"></i>
+            <span>Account</span>
+        </a>
+    </div>
+
+    <!-- ===== COMMAND PALETTE QUICK SEARCH MODAL ===== -->
+    <div id="cmd-backdrop" class="cmd-backdrop" data-lenis-prevent onclick="if(event.target===this) closeCmdPalette()">
+        <div class="cmd-card">
+            <div class="cmd-header">
+                <i class="fas fa-search"></i>
+                <input type="text" id="cmd-input" placeholder="Type to search all tools, rules, FAQs, colleges..." onkeyup="filterCmdResults()">
+                <span class="cmd-esc-badge">ESC</span>
+            </div>
+            <div class="cmd-results" id="cmd-results" data-lenis-prevent>
+                <!-- Group 1: Core Navigation Tools -->
+                <div class="cmd-group" id="cmd-group-core">
+                    <div class="cmd-group-title">⚡ Core Tools</div>
+                    <a href="/predictor" class="cmd-item" data-keywords="predictor predict college cgpa cutoff chances admission"><i class="fas fa-bullseye" style="color:#2563eb;"></i> College Predictor — Estimate Admission Chances</a>
+                    <a href="/simulator" class="cmd-item" data-keywords="simulator allotment simulation mock choice filling trial"><i class="fas fa-vial" style="color:#7c3aed;"></i> Allotment Simulator — Practice Choice Filling</a>
+                    <a href="/compare" class="cmd-item" data-keywords="compare colleges comparison sgsits jec rgpv mits side by side"><i class="fas fa-balance-scale" style="color:#059669;"></i> Compare Colleges Side-by-Side</a>
+                    <a href="/search" class="cmd-item" data-keywords="explore search colleges engineering institutes mp indore bhopal jabalpur"><i class="fas fa-university" style="color:#d97706;"></i> Explore All MP Engineering Colleges</a>
+                    <a href="/rank_predictor" class="cmd-item" data-keywords="rank predictor cgpa to rank merit list position"><i class="fas fa-chart-line" style="color:#dc2626;"></i> Check Rank Estimator (CGPA to Rank)</a>
+                </div>
+
+                <!-- Group 2: Smart Tools & Insights -->
+                <div class="cmd-group" id="cmd-group-smart">
+                    <div class="cmd-group-title">🔮 Smart Tools &amp; Insights</div>
+                    <a href="/choice-vault" class="cmd-item" data-keywords="choice vault saved locked priority list choices preference"><i class="fas fa-vault" style="color:#7c3aed;"></i> Choice Vault — Saved &amp; Locked Choice Lists</a>
+                    <a href="/choice-builder" class="cmd-item" data-keywords="smart choices choice builder priority generator intelligent smart-choice"><i class="fas fa-magic" style="color:#2563eb;"></i> Smart Choices — Intelligent Choice Filling Builder</a>
+                    <a href="/merit-insights" class="cmd-item" data-keywords="merit insights rank percentile stats distribution cutoffs analysis"><i class="fas fa-chart-pie" style="color:#059669;"></i> Merit Insights — CGPA &amp; Rank Breakdown Analytics</a>
+                    <a href="/recommendation-list" class="cmd-item" data-keywords="recommendation list top colleges suggested priority recommendations"><i class="fas fa-list-ol" style="color:#d97706;"></i> Recommendation List — Personalized Top Colleges</a>
+                    <a href="/refer-share" class="cmd-item" data-keywords="refer share invite friends coins rewards earn premium"><i class="fas fa-gift" style="color:#ec4899;"></i> Refer &amp; Share — Invite Diploma Friends &amp; Earn Rewards</a>
+                </div>
+
+                <!-- Group 3: Seat Data & Matrix 2026 -->
+                <div class="cmd-group" id="cmd-group-seats">
+                    <div class="cmd-group-title">📊 Seat Data &amp; Matrix 2026</div>
+                    <a href="/vacant-seats" class="cmd-item" data-keywords="vacant seats empty seats availability after round 1 round 2 institute wise"><i class="fas fa-chair" style="color:#10b981;"></i> Vacant Seats After Allotment Rounds</a>
+                    <a href="/tentative-institutes" class="cmd-item" data-keywords="tentative institutes list 2026 intake capacity seats 155 colleges"><i class="fas fa-building" style="color:#3b82f6;"></i> Tentative List of Institutes &amp; Intake 2026</a>
+                    <a href="/seat-matrix" class="cmd-item" data-keywords="seat matrix dte category UR OBC SC ST EWS seats distribution"><i class="fas fa-table" style="color:#f59e0b;"></i> Official DTE Seat Matrix 2026</a>
+                    <a href="/schedule" class="cmd-item" data-keywords="counselling schedule dates round 1 round 2 clc registration timeline"><i class="fas fa-calendar-alt" style="color:#6366f1;"></i> Counselling Schedule &amp; Key Dates 2026</a>
+                </div>
+
+                <!-- Group 4: Rules & Guides -->
+                <div class="cmd-group" id="cmd-group-rules">
+                    <div class="cmd-group-title">📑 Rules, Process &amp; Support</div>
+                    <a href="/dte-rules" class="cmd-item" data-keywords="official dte rules guidelines eligibility norms government policy booklet"><i class="fas fa-gavel" style="color:#dc2626;"></i> Official DTE Counselling Rules</a>
+                    <a href="/choice-filling-rules" class="cmd-item" data-keywords="choice filling rules strategy tips tricks priority filling top 10 rules"><i class="fas fa-clipboard-check" style="color:#0284c7;"></i> Choice Filling Rules &amp; Strategy</a>
+                    <a href="/checklist" class="cmd-item" data-keywords="document checklist verification required documents domicile tc marksheets caste income"><i class="fas fa-check-double" style="color:#16a34a;"></i> Document Verification Checklist</a>
+                    <a href="/registration-process" class="cmd-item" data-keywords="registration process step by step guide how to register dte online portal"><i class="fas fa-user-plus" style="color:#9333ea;"></i> Step-by-Step Registration Guide</a>
+                    <a href="/how-it-works" class="cmd-item" data-keywords="counselling guide how it works lateral entry diploma to btech handbook"><i class="fas fa-book-open" style="color:#ea580c;"></i> Lateral Entry Counselling Guide</a>
+                    <a href="/faq" class="cmd-item" data-keywords="faqs questions answers help doubts common questions"><i class="fas fa-question-circle" style="color:#4f46e5;"></i> FAQs — Frequently Asked Questions</a>
+                    <a href="/about" class="cmd-item" data-keywords="about us platform details mission team predictor"><i class="fas fa-info-circle" style="color:#0891b2;"></i> About Us</a>
+                    <a href="/contact" class="cmd-item" data-keywords="contact support helpline email phone address helpline number"><i class="fas fa-headset" style="color:#e11d48;"></i> Contact Support &amp; Admission Helpline</a>
+                    {% if is_admin %}
+                    <a href="/admin/users" class="cmd-item" data-keywords="admin panel users management transactions coupons"><i class="fas fa-user-cog" style="color:#475569;"></i> Admin Panel</a>
+                    {% endif %}
+                </div>
+
+                <!-- Group 5: Frequently Asked Questions (Q&A) -->
+                {% if all_faqs %}
+                <div class="cmd-group" id="cmd-group-faqs">
+                    <div class="cmd-group-title">❓ Frequently Asked Questions (Q&amp;A)</div>
+                    {% for faq in all_faqs %}
+                    <a href="/faq#{{ faq.slug }}" class="cmd-item" data-keywords="{{ faq.keywords | lower }} {{ faq.category | lower }} {{ faq.description | lower }}">
+                        <i class="fas fa-question-circle" style="color:#0284c7; flex-shrink:0; margin-top:2px;"></i>
+                        <div style="flex:1;">
+                            <div style="font-weight:600; color:#1e293b; line-height:1.3;">{{ faq.question }}</div>
+                            <div style="font-size:0.74rem; color:#64748b; font-weight:500; margin-top:2px;">Category: {{ faq.category }}</div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FLOATING COLLEGE COMPARE BAR ===== -->
+    <div id="compare-sticky-dock" class="compare-sticky-dock">
+        <span><i class="fas fa-balance-scale" style="color:#38bdf8;"></i> <strong id="compare-count">0</strong> Colleges Selected</span>
+        <a href="/compare" class="compare-dock-btn"><i class="fas fa-compress-arrows-alt"></i> Compare Now</a>
+    </div>
+
     <script src="{{ url_for('static', filename='js/dte-export.js') }}"></script>
     <script src="{{ url_for('static', filename='js/share-utils.js') }}"></script>
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
     <script src="{{ url_for('static', filename='js/route-planner.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const megaMenu = document.querySelector('.mega-dropdown');
+        if (megaMenu) {
+            megaMenu.addEventListener('wheel', (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+        }
+        const cmdRes = document.getElementById('cmd-results');
+        if (cmdRes) {
+            cmdRes.addEventListener('wheel', (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+        }
+    });
+
+    function openCmdPalette() {
+        const bd = document.getElementById('cmd-backdrop');
+        const inp = document.getElementById('cmd-input');
+        if (bd) {
+            bd.classList.add('cmd-active');
+            if (inp) {
+                inp.value = '';
+                filterCmdResults();
+                setTimeout(() => inp.focus(), 100);
+            }
+        }
+    }
+    function closeCmdPalette() {
+        const bd = document.getElementById('cmd-backdrop');
+        if (bd) bd.classList.remove('cmd-active');
+    }
+    function filterCmdResults() {
+        const raw = (document.getElementById('cmd-input').value || '').toLowerCase().trim();
+        const tokens = raw.split(/\s+/).filter(t => t.length > 0);
+        const items = document.querySelectorAll('.cmd-item');
+
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            const kw = (item.getAttribute('data-keywords') || '').toLowerCase();
+            const fullStr = text + ' ' + kw;
+
+            let matches = true;
+            if (tokens.length > 0) {
+                matches = tokens.every(token => fullStr.includes(token));
+            }
+            item.style.display = matches ? 'flex' : 'none';
+        });
+
+        // Hide empty group titles
+        const groups = document.querySelectorAll('.cmd-group');
+        groups.forEach(group => {
+            const visibleItems = group.querySelectorAll('.cmd-item[style*="display: flex"]');
+            group.style.display = (visibleItems.length > 0) ? 'block' : 'none';
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            openCmdPalette();
+        } else if (e.key === 'Escape') {
+            closeCmdPalette();
+        }
+    });
+    </script>
     {% block extra_scripts %}{% endblock %}
 </body>
 

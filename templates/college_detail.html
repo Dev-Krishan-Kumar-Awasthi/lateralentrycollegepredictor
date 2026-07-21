@@ -790,10 +790,10 @@
 
 <script id="map-data" type="application/json">
     {
-        "collegeCoords": {{ coords | tojson }},
-        "cityCoords": {{ city_coords | tojson }},
-        "collegeName": {{ college_name | tojson }},
-        "homeCity": {{ home_city | tojson }}
+        "collegeCoords": {{ (coords or None) | tojson }},
+        "cityCoords": {{ (city_coords or None) | tojson }},
+        "collegeName": {{ (college_name or '') | tojson }},
+        "homeCity": {{ (home_city or '') | tojson }}
     }
 </script>
 

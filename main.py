@@ -54,7 +54,10 @@ def normalize_name(name: str) -> str:
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or "sqlite:///data.db"
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 init_auth(app)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -318,6 +321,7 @@ def inject_globals():
         'total_visits': total_visits,
         'city_coords': get_city_coords(),
         'schedule': get_counselling_schedule(),
+        'all_faqs': FAQ_LIST,
         'prefill_reg': None,
         'congrats_coupon_for': None,
         'congrats_referral_by': None,
@@ -752,6 +756,94 @@ def schedule():
     user = current_user()
     sched_data = get_counselling_schedule()
     return render_template('schedule.html', user=user, schedule=sched_data)
+
+
+@app.route('/vacant-seats')
+def vacant_seats():
+    user = current_user()
+    vacant_data = []
+    json_path = os.path.join(app.root_path, 'data', 'vacant2025_clean.json')
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                vacant_data = json.load(f)
+        except Exception:
+            vacant_data = []
+            
+    branches = sorted(list(set(item['branch'] for item in vacant_data if item.get('branch'))))
+    colleges = sorted(list(set(item['college_name'] for item in vacant_data if item.get('college_name'))))
+    
+    total_vacant = sum(item.get('remaining', 0) for item in vacant_data)
+    total_allotted = sum(item.get('allotment', 0) for item in vacant_data)
+    total_seats = sum(item.get('total_seats', 0) for item in vacant_data)
+    
+    return render_template(
+        'vacant_seats.html',
+        user=user,
+        vacant_data=vacant_data,
+        branches=branches,
+        colleges_count=len(colleges),
+        total_vacant=total_vacant,
+        total_allotted=total_allotted,
+        total_seats=total_seats
+    )
+
+
+@app.route('/tentative-institutes')
+def tentative_institutes():
+    user = current_user()
+    tentative_data = []
+    json_path = os.path.join(app.root_path, 'data', 'tentative2026_clean.json')
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                tentative_data = json.load(f)
+        except Exception:
+            tentative_data = []
+
+    branches = sorted(list(set(item['branch'] for item in tentative_data if item.get('branch'))))
+    colleges = sorted(list(set(item['college_name'] for item in tentative_data if item.get('college_name'))))
+    universities = sorted(list(set(item['university'] for item in tentative_data if item.get('university'))))
+
+    total_intake = sum(item.get('intake', 0) for item in tentative_data)
+    total_le_capacity = sum(item.get('intake_10_pct', 0) + item.get('vacancy_2025', 0) for item in tentative_data)
+
+    return render_template(
+        'tentative_institutes.html',
+        user=user,
+        tentative_data=tentative_data,
+        branches=branches,
+        colleges_count=len(colleges),
+        branches_count=len(branches),
+        universities=universities,
+        total_intake=total_intake,
+        total_le_capacity=total_le_capacity
+    )
+
+
+@app.route('/seat-matrix')
+def seat_matrix():
+    user = current_user()
+    seat_matrix_data = []
+    json_path = os.path.join(app.root_path, 'data', 'seatmatrix2026_clean.json')
+    if os.path.exists(json_path):
+        try:
+            with open(json_path, 'r', encoding='utf-8') as f:
+                seat_matrix_data = json.load(f)
+        except Exception:
+            seat_matrix_data = []
+
+    branches = sorted(list(set(item['branch'] for item in seat_matrix_data if item.get('branch'))))
+    colleges = sorted(list(set(item['college_name'] for item in seat_matrix_data if item.get('college_name'))))
+
+    return render_template(
+        'seat_matrix.html',
+        user=user,
+        seat_matrix_data=seat_matrix_data,
+        branches=branches,
+        colleges_count=len(colleges)
+    )
+
 
 
 @app.route('/checklist')
@@ -1509,7 +1601,11 @@ def account_page():
             shortlist = load_cloud_shortlist(user.id)
             return render_template('account.html', user=user, cloud_shortlist=shortlist, success="Profile updated successfully!")
 
+    logged_out_reason = session.pop("logged_out_reason", None)
     user = current_user()
+    if not logged_out_reason:
+        logged_out_reason = session.pop("logged_out_reason", None)
+        
     shortlist = load_cloud_shortlist(user.id) if user else []
     
     congrats_coupon_for = session.pop("registered_with_coupon_for", None)
@@ -1521,7 +1617,8 @@ def account_page():
         user=user, 
         cloud_shortlist=shortlist,
         congrats_coupon_for=congrats_coupon_for,
-        congrats_referral_by=congrats_referral_by
+        congrats_referral_by=congrats_referral_by,
+        logged_out_reason=logged_out_reason
     )
 
 

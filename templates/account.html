@@ -10,6 +10,16 @@
 {% block content %}
 <div class="container">
     <div class="gov-box" style="max-width:600px; margin:30px auto;">
+        {% if request.args.get('reason') == 'logged_out_other_device' or logged_out_reason == 'other_device' %}
+        <div class="alert-warning" style="background:#FFFBEB; border:1px solid #FCD34D; color:#92400E; padding:14px; border-radius:8px; margin-bottom:16px; font-weight:600; line-height:1.5; display:flex; align-items:center; gap:10px;">
+            <i class="fas fa-desktop" style="font-size:1.4rem; color:#D97706;"></i>
+            <div>
+                <strong>Logged out from another device!</strong><br>
+                <span style="font-size:0.85rem; font-weight:500; opacity:0.9;">Your account was logged in on a new device, so this device was automatically logged out.</span>
+            </div>
+        </div>
+        {% endif %}
+
         {% if error %}
         <div class="alert-danger" style="background:#FEE2E2; color:#991B1B; padding:12px; border-radius:6px; margin-bottom:16px; font-weight:600;">
             <i class="fas fa-exclamation-circle"></i> {{ error }}

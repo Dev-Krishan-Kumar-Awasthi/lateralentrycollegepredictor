@@ -1381,26 +1381,26 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
     // 1. Colleges Coordinates payload for Map Explorer
     const mapColleges = [
         {% for year, yr_data in prediction.items() %}
-    {% for item in yr_data.colleges %}
-    {% if item.coords %}
-    {
-        name: { { item.college.college_name | tojson } },
-        branch: { { (item.college.branch | branch_name) | tojson } },
-        branch_code: { { item.college.branch | tojson } },
-        type: { { item.college.college_type | tojson } },
-        opening: { { item.college.opening_rank } },
-        closing: { { item.college.closing_rank } },
-        chance: { { item.probability } },
-        fee: { { item.fee_display | tojson } },
-        distance: { { item.distance_text | tojson } },
-        year: { { year } },
-        lat: { { item.coords[0] } },
-        lng: { { item.coords[1] } }
-    },
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
-];
+        {% for item in yr_data.colleges %}
+        {% if item.coords %}
+        {
+            name: {{ item.college.college_name | tojson }},
+            branch: {{ (item.college.branch | branch_name) | tojson }},
+            branch_code: {{ item.college.branch | tojson }},
+            type: {{ item.college.college_type | tojson }},
+            opening: {{ item.college.opening_rank }},
+            closing: {{ item.college.closing_rank }},
+            chance: {{ item.probability }},
+            fee: {{ item.fee_display | tojson }},
+            distance: {{ item.distance_text | tojson }},
+            year: {{ year }},
+            lat: {{ item.coords[0] }},
+            lng: {{ item.coords[1] }}
+        },
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    ];
 
     // 2. View Toggle
     let map = null;
@@ -1513,8 +1513,7 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
 
         // Plot home city if valid
         const homeCity = "{{ data.home_city if data else 'All' }}";
-        const cityCoords = {{ city_coords | tojson | safe
-    }} || {};
+        const cityCoords = {{ (city_coords or {}) | tojson | safe }} || {};
 
     if (homeCity && homeCity !== 'All' && cityCoords[homeCity]) {
         const homeLat = parseFloat(cityCoords[homeCity].lat);

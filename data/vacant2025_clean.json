@@ -1,0 +1,7592 @@
+[
+  {
+    "s_no": 1,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 2,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 24,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 3,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "ICSECS",
+    "total_seats": 5,
+    "allotment": 0,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 4,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 5,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CEIL",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 6,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 7,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSIT",
+    "total_seats": 12,
+    "allotment": 5,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 8,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 9,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "ECACT",
+    "total_seats": 30,
+    "allotment": 0,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 10,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "EEVDT",
+    "total_seats": 32,
+    "allotment": 0,
+    "remaining": 32,
+    "year": 2025
+  },
+  {
+    "s_no": 11,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 12,
+    "allotment": 7,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 12,
+    "college_name": "Acropolis Institute of Technology & Research, Indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 14,
+    "college_name": "ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 17,
+    "college_name": "ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 18,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "AGRITECH",
+    "total_seats": 53,
+    "allotment": 0,
+    "remaining": 53,
+    "year": 2025
+  },
+  {
+    "s_no": 19,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 59,
+    "allotment": 2,
+    "remaining": 57,
+    "year": 2025
+  },
+  {
+    "s_no": 20,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 53,
+    "allotment": 1,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 21,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 17,
+    "allotment": 1,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 22,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 56,
+    "allotment": 1,
+    "remaining": 55,
+    "year": 2025
+  },
+  {
+    "s_no": 23,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "IFTS",
+    "total_seats": 62,
+    "allotment": 5,
+    "remaining": 57,
+    "year": 2025
+  },
+  {
+    "s_no": 24,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 46,
+    "allotment": 3,
+    "remaining": 43,
+    "year": 2025
+  },
+  {
+    "s_no": 25,
+    "college_name": "Aditya College of Technology & Science, Satna (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MINING",
+    "total_seats": 53,
+    "allotment": 39,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 26,
+    "college_name": "All Saints College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 110,
+    "allotment": 83,
+    "remaining": 27,
+    "year": 2025
+  },
+  {
+    "s_no": 27,
+    "college_name": "All Saints College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 16,
+    "allotment": 16,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 28,
+    "college_name": "All Saints College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "LEC",
+    "total_seats": 57,
+    "allotment": 5,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 29,
+    "college_name": "All Saints College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 36,
+    "allotment": 22,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 30,
+    "college_name": "All Saints College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 71,
+    "allotment": 26,
+    "remaining": 45,
+    "year": 2025
+  },
+  {
+    "s_no": 31,
+    "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 65,
+    "allotment": 65,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 32,
+    "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 47,
+    "allotment": 1,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 33,
+    "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 34,
+    "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 65,
+    "allotment": 10,
+    "remaining": 55,
+    "year": 2025
+  },
+  {
+    "s_no": 35,
+    "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 36,
+    "college_name": "Alpine Institute of Technology, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 65,
+    "allotment": 3,
+    "remaining": 62,
+    "year": 2025
+  },
+  {
+    "s_no": 37,
+    "college_name": "Annie Institute of Technology and Research Centre, Chhindwara",
+    "college_type": "PRIVATE",
+    "branch": "AUTO",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 38,
+    "college_name": "Annie Institute of Technology and Research Centre, Chhindwara",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 46,
+    "allotment": 2,
+    "remaining": 44,
+    "year": 2025
+  },
+  {
+    "s_no": 39,
+    "college_name": "Annie Institute of Technology and Research Centre, Chhindwara",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 3,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 40,
+    "college_name": "Annie Institute of Technology and Research Centre, Chhindwara (2013)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 41,
+    "college_name": "Annie Institute of Technology and Research Centre, Chhindwara (2013)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 59,
+    "allotment": 2,
+    "remaining": 57,
+    "year": 2025
+  },
+  {
+    "s_no": 42,
+    "college_name": "Astral Institute of Technology & Research, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 46,
+    "allotment": 1,
+    "remaining": 45,
+    "year": 2025
+  },
+  {
+    "s_no": 43,
+    "college_name": "Astral Institute of Technology & Research, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 36,
+    "allotment": 2,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 44,
+    "college_name": "Astral Institute of Technology & Research, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 29,
+    "allotment": 1,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 45,
+    "college_name": "Astral Institute of Technology & Research, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 26,
+    "allotment": 0,
+    "remaining": 26,
+    "year": 2025
+  },
+  {
+    "s_no": 46,
+    "college_name": "Astral Institute of Technology & Research, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 52,
+    "allotment": 2,
+    "remaining": 50,
+    "year": 2025
+  },
+  {
+    "s_no": 47,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 46,
+    "allotment": 0,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 48,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 15,
+    "allotment": 15,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 49,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 14,
+    "allotment": 14,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 50,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 51,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 52,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 19,
+    "allotment": 3,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 53,
+    "college_name": "Babulal Tarabai Institute of Research & Technology, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 17,
+    "allotment": 17,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 54,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 55,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "CMPS",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 56,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 30,
+    "allotment": 10,
+    "remaining": 20,
+    "year": 2025
+  },
+  {
+    "s_no": 57,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS\"JABALPUR",
+    "total_seats": 9,
+    "allotment": 0,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 58,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 18,
+    "allotment": 1,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 59,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "CSEITCS",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 60,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 61,
+    "college_name": "BADERIA GLOBAL INSTITUTE OF ENGINEERING & MANAGEMENT",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 62,
+    "college_name": "Bagulamukhi College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 61,
+    "allotment": 14,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 63,
+    "college_name": "Bagulamukhi College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 182,
+    "allotment": 1,
+    "remaining": 181,
+    "year": 2025
+  },
+  {
+    "s_no": 64,
+    "college_name": "Bagulamukhi College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 28,
+    "allotment": 17,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 65,
+    "college_name": "Bagulamukhi College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 65,
+    "allotment": 4,
+    "remaining": 61,
+    "year": 2025
+  },
+  {
+    "s_no": 66,
+    "college_name": "Bansal College of Engineering, Obedullaganj, Raisen (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 20,
+    "allotment": 10,
+    "remaining": 10,
+    "year": 2025
+  },
+  {
+    "s_no": 67,
+    "college_name": "Bansal College of Engineering, Obedullaganj, Raisen (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 16,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 72,
+    "college_name": "Bansal Institute of Research & Technology, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 73,
+    "college_name": "Bansal Institute of Research & Technology, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 65,
+    "allotment": 14,
+    "remaining": 51,
+    "year": 2025
+  },
+  {
+    "s_no": 74,
+    "college_name": "Bansal Institute of Research & Technology, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 12,
+    "allotment": 0,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 75,
+    "college_name": "Bansal Institute of Research & Technology, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 76,
+    "college_name": "Bansal Institute of Research & Technology, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 11,
+    "allotment": 6,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 77,
+    "college_name": "Bansal Institute of Research & Technology, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 4,
+    "allotment": 3,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 78,
+    "college_name": "Bansal Institute of Research Technology & Science, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 29,
+    "allotment": 7,
+    "remaining": 22,
+    "year": 2025
+  },
+  {
+    "s_no": 79,
+    "college_name": "Bansal Institute of Research Technology & Science, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 106,
+    "allotment": 1,
+    "remaining": 105,
+    "year": 2025
+  },
+  {
+    "s_no": 80,
+    "college_name": "Bansal Institute of Research Technology & Science, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 21,
+    "allotment": 0,
+    "remaining": 21,
+    "year": 2025
+  },
+  {
+    "s_no": 81,
+    "college_name": "Bansal Institute of Research Technology & Science, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 82,
+    "college_name": "Bansal Institute of Research Technology & Science, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 28,
+    "allotment": 1,
+    "remaining": 27,
+    "year": 2025
+  },
+  {
+    "s_no": 83,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 84,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 13,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 85,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "]CSEIML",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 86,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 87,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 8,
+    "allotment": 0,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 88,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 4,
+    "allotment": 2,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 89,
+    "college_name": "Bansal Institute of Science & Technology, Bhopal (2000)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 90,
+    "college_name": "Bethesda Institute of Technology and Science, Gwalior (2011)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 45,
+    "allotment": 5,
+    "remaining": 40,
+    "year": 2025
+  },
+  {
+    "s_no": 91,
+    "college_name": "Bethesda Institute of Technology and Science, Gwalior (2011)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 45,
+    "allotment": 45,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 92,
+    "college_name": "Bethesda Institute of Technology and Science, Gwalior (2011)",
+    "college_type": "PRIVATE",
+    "branch": "TEC",
+    "total_seats": 56,
+    "allotment": 3,
+    "remaining": 53,
+    "year": 2025
+  },
+  {
+    "s_no": 93,
+    "college_name": "Bethesda Institute of Technology and Science, Gwalior (2011)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 56,
+    "allotment": 6,
+    "remaining": 50,
+    "year": 2025
+  },
+  {
+    "s_no": 94,
+    "college_name": "Bethesda Institute of Technology and Science, Gwalior (2011)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 45,
+    "allotment": 11,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 95,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 17,
+    "allotment": 15,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 96,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 31,
+    "allotment": 31,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 97,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 20,
+    "allotment": 19,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 98,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 26,
+    "allotment": 26,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 99,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 41,
+    "allotment": 40,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 100,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 65,
+    "allotment": 13,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 101,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 29,
+    "allotment": 17,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 102,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 79,
+    "allotment": 74,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 103,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 87,
+    "allotment": 36,
+    "remaining": 51,
+    "year": 2025
+  },
+  {
+    "s_no": 104,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 54,
+    "allotment": 2,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 105,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 31,
+    "allotment": 10,
+    "remaining": 21,
+    "year": 2025
+  },
+  {
+    "s_no": 106,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 85,
+    "allotment": 60,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 107,
+    "college_name": "BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 92,
+    "allotment": 27,
+    "remaining": 65,
+    "year": 2025
+  },
+  {
+    "s_no": 108,
+    "college_name": "BM College of Technology, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 60,
+    "allotment": 1,
+    "remaining": 59,
+    "year": 2025
+  },
+  {
+    "s_no": 109,
+    "college_name": "BM College of Technology, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 60,
+    "allotment": 3,
+    "remaining": 57,
+    "year": 2025
+  },
+  {
+    "s_no": 110,
+    "college_name": "BM College of Technology, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 32,
+    "allotment": 2,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 111,
+    "college_name": "BM College of Technology, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 30,
+    "allotment": 4,
+    "remaining": 26,
+    "year": 2025
+  },
+  {
+    "s_no": 112,
+    "college_name": "BM College of Technology, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 31,
+    "allotment": 31,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 113,
+    "college_name": "BM College of Technology, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 124,
+    "allotment": 6,
+    "remaining": 118,
+    "year": 2025
+  },
+  {
+    "s_no": 114,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 115,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 16,
+    "allotment": 1,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 116,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 12,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 117,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSIT",
+    "total_seats": 22,
+    "allotment": 22,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 118,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 10,
+    "allotment": 10,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 119,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "GENERAL",
+    "total_seats": 13,
+    "allotment": 0,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 120,
+    "college_name": "Chameli Devi Group of Institutions, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 14,
+    "allotment": 1,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 121,
+    "college_name": "Corporate Institute of Science & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 48,
+    "allotment": 32,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 122,
+    "college_name": "Corporate Institute of Science & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 49,
+    "allotment": 5,
+    "remaining": 44,
+    "year": 2025
+  },
+  {
+    "s_no": 123,
+    "college_name": "Corporate Institute of Science & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 8,
+    "allotment": 3,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 124,
+    "college_name": "Corporate Institute of Science & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 30,
+    "allotment": 2,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 125,
+    "college_name": "Corporate Institute of Science & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 13,
+    "allotment": 7,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 126,
+    "college_name": "Corporate Institute of Science & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 28,
+    "allotment": 15,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 127,
+    "college_name": "DR. A.P.J. ABDUL KALAM UIT, JHABUA",
+    "college_type": "S.F.I.",
+    "branch": "CSE",
+    "total_seats": 39,
+    "allotment": 9,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 128,
+    "college_name": "DR. A.P.J. ABDUL KALAM UIT, JHABUA",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 52,
+    "allotment": 1,
+    "remaining": 51,
+    "year": 2025
+  },
+  {
+    "s_no": 129,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 130,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI",
+    "college_type": "PRIVATE",
+    "branch": "ARE",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 131,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEON",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 132,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI",
+    "college_type": "PRIVATE",
+    "branch": "CYSEC",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 133,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI",
+    "college_type": "PRIVATE",
+    "branch": "DS•",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 134,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 135,
+    "college_name": "DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEON",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 136,
+    "college_name": "Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur",
+    "college_type": "PRIVATE",
+    "branch": "AGE",
+    "total_seats": 39,
+    "allotment": 0,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 137,
+    "college_name": "Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 140,
+    "college_name": "Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 28,
+    "allotment": 3,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 141,
+    "college_name": "Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 30,
+    "allotment": 0,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 142,
+    "college_name": "Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur\",25",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 27,
+    "allotment": 2,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 143,
+    "college_name": "Gwalior Institute of Information Technology, Gwalior (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 144,
+    "college_name": "Gwalior Institute of Information Technology, Gwalior (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 145,
+    "college_name": "Gwalior Institute of Information Technology, Gwalior (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 146,
+    "college_name": "Gwalior Institute of Information Technology, Gwalior (2008)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 147,
+    "college_name": "Gwalior Institute of Information Technology, Gwalior (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 148,
+    "college_name": "Gyan Ganga College of Technology, Jabalpur (2006)",
+    "college_type": "PRIVATE",
+    "branch": "AIAIDS",
+    "total_seats": 1,
+    "allotment": 5,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 149,
+    "college_name": "Gyan Ganga College of Technology, Jabalpur (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 2,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 150,
+    "college_name": "Gyan Ganga College of Technology, Jabalpur (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 152,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 32,
+    "allotment": 5,
+    "remaining": 27,
+    "year": 2025
+  },
+  {
+    "s_no": 153,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR",
+    "college_type": "PRIVATE",
+    "branch": "CBS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 154,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 30,
+    "allotment": 5,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 155,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 32,
+    "allotment": 1,
+    "remaining": 31,
+    "year": 2025
+  },
+  {
+    "s_no": 156,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 18,
+    "allotment": 2,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 158,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 41,
+    "allotment": 6,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 159,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 54,
+    "allotment": 8,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 160,
+    "college_name": "GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR\",6",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 5,
+    "allotment": 1,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 171,
+    "college_name": "Hitkarni College of Engineering & Technology, Jabalpur (1997)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 32,
+    "allotment": 16,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 172,
+    "college_name": "Hitkarni College of Engineering & Technology, Jabalpur (1997)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 58,
+    "allotment": 58,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 173,
+    "college_name": "Hitkarni College of Engineering & Technology, Jabalpur (1997)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 65,
+    "allotment": 1,
+    "remaining": 64,
+    "year": 2025
+  },
+  {
+    "s_no": 174,
+    "college_name": "Hitkarni College of Engineering & Technology, Jabalpur (1997)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 62,
+    "allotment": 28,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 175,
+    "college_name": "IASSCOM fortune Institute of Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 176,
+    "college_name": "IASSCOM fortune Institute of Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 178,
+    "college_name": "IASSCOM fortune Institute of Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 179,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ALAIDS",
+    "total_seats": 18,
+    "allotment": 0,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 180,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 53,
+    "allotment": 23,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 181,
+    "college_name": "LIES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSBS",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 182,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 5,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 183,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 36,
+    "allotment": 1,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 184,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 82,
+    "allotment": 82,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 185,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 27,
+    "allotment": 3,
+    "remaining": 24,
+    "year": 2025
+  },
+  {
+    "s_no": 186,
+    "college_name": "LIES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 19,
+    "allotment": 7,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 187,
+    "college_name": "LIES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 52,
+    "allotment": 30,
+    "remaining": 22,
+    "year": 2025
+  },
+  {
+    "s_no": 188,
+    "college_name": "IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 48,
+    "allotment": 19,
+    "remaining": 29,
+    "year": 2025
+  },
+  {
+    "s_no": 189,
+    "college_name": "Indira Gandhi Engineering College, Sagar (IGEC (1981)",
+    "college_type": "GOVT",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 190,
+    "college_name": "Indira Gandhi Engineering College, Sagar (IGEC (1981)",
+    "college_type": "GOVT",
+    "branch": "EC",
+    "total_seats": 1,
+    "allotment": 0,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 191,
+    "college_name": "Indira Gandhi Engineering College, Sagar (IGEC (1981)",
+    "college_type": "GOVT",
+    "branch": "EE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 192,
+    "college_name": "Indira Gandhi Engineering College, Sagar (IGEC (1981)",
+    "college_type": "GOVT",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 193,
+    "college_name": "Indira Gandhi Engineering College, Sagar (IGEC (1981)",
+    "college_type": "GOVT",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 194,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 18,
+    "allotment": 1,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 195,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "AIR",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 196,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 197,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 30,
+    "allotment": 11,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 198,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 199,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 200,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ECS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 201,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 202,
+    "college_name": "Indore Institute of Science & Technology, Indore (2003)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 203,
+    "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 42,
+    "allotment": 0,
+    "remaining": 42,
+    "year": 2025
+  },
+  {
+    "s_no": 204,
+    "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 52,
+    "allotment": 46,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 205,
+    "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 16,
+    "allotment": 1,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 206,
+    "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 27,
+    "allotment": 27,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 207,
+    "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 23,
+    "allotment": 4,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 208,
+    "college_name": "Infinity Management & Engineering College, Sagar (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 56,
+    "allotment": 1,
+    "remaining": 55,
+    "year": 2025
+  },
+  {
+    "s_no": 209,
+    "college_name": "Institute of Engineering and Technology, DAVV, Indore (1996)",
+    "college_type": "S.F.I.",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 210,
+    "college_name": "Institute of Engineering and Technology, DAVV, Indore (1996)",
+    "college_type": "S.F.I.",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 211,
+    "college_name": "Institute of Engineering and Technology, DAVV, Indore (1996)",
+    "college_type": "S.F.I.",
+    "branch": "EL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 212,
+    "college_name": "Institute of Engineering and Technology, DAVV, Indore (1996)",
+    "college_type": "S.F.I.",
+    "branch": "ET",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 214,
+    "college_name": "Institute of Engineering and Technology, DAVV, Indore \",| (1996)",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 215,
+    "college_name": "INSTITUTE OF ENGINEERING JIWAJI UNIVERSITY, GWALIOR (1996)",
+    "college_type": "S.F.I.",
+    "branch": "CHEM",
+    "total_seats": 43,
+    "allotment": 1,
+    "remaining": 42,
+    "year": 2025
+  },
+  {
+    "s_no": 217,
+    "college_name": "INSTITUTE OF ENGINEERING JIWAJI UNIVERSITY, GWALIOR (1996)",
+    "college_type": "S.F.I.",
+    "branch": "EL",
+    "total_seats": 28,
+    "allotment": 27,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 218,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 219,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 7,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 220,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "SECS",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 221,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 9,
+    "allotment": 0,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 222,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 9,
+    "allotment": 0,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 223,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIOT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 224,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 225,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 12,
+    "allotment": 0,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 226,
+    "college_name": "INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 227,
+    "college_name": "IS Academy Institute of Engineering and Science, Indore Off Campus-",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 1,
+    "allotment": 5,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 228,
+    "college_name": "IPS Academy Institute of Engineering and Science, Indore Off Campus-",
+    "college_type": "PRIVATE",
+    "branch": "CENG",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 229,
+    "college_name": "IPS Academy Institute of Engineering and Science, Indore Off Campus-",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 0,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 230,
+    "college_name": "IPS Academy Institute of Engineering and Science, Indore Off Campus-",
+    "college_type": "PRIVATE",
+    "branch": "CSIT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 231,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CHEM",
+    "total_seats": 10,
+    "allotment": 2,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 232,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 26,
+    "allotment": 1,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 233,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 30,
+    "allotment": 11,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 234,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 235,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 18,
+    "allotment": 1,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 236,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIOT",
+    "total_seats": 12,
+    "allotment": 10,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 237,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSEITCS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 238,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSERC",
+    "total_seats": 63,
+    "allotment": 3,
+    "remaining": 60,
+    "year": 2025
+  },
+  {
+    "s_no": 239,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "CSIT",
+    "total_seats": 24,
+    "allotment": 0,
+    "remaining": 24,
+    "year": 2025
+  },
+  {
+    "s_no": 240,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 4,
+    "allotment": 2,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 241,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 13,
+    "allotment": 0,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 242,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "FTS",
+    "total_seats": 12,
+    "allotment": 7,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 243,
+    "college_name": "IPS Academy, Institute of Engineering and Science, Indore (1999)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 4,
+    "allotment": 3,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 244,
+    "college_name": "IPS College of Technology & Management, Gwalior (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 46,
+    "allotment": 0,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 245,
+    "college_name": "IPS College of Technology & Management, Gwalior (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 2,
+    "remaining": 10,
+    "year": 2025
+  },
+  {
+    "s_no": 246,
+    "college_name": "IPS College of Technology & Management, Gwalior (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 21,
+    "allotment": 21,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 247,
+    "college_name": "IPS College of Technology & Management, Gwalior (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 41,
+    "allotment": 2,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 248,
+    "college_name": "IPS College of Technology & Management, Gwalior (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 36,
+    "allotment": 1,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 249,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "ALAIDS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 250,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 251,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 0,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 254,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "IP",
+    "total_seats": 9,
+    "allotment": 6,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 255,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "IT",
+    "total_seats": 9,
+    "allotment": 0,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 256,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "MECH",
+    "total_seats": 8,
+    "allotment": 0,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 257,
+    "college_name": "JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC (1947)",
+    "college_type": "GOVT",
+    "branch": "IMTENG",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 258,
+    "college_name": "Jai Narain College of Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ALAIDS",
+    "total_seats": 8,
+    "allotment": 0,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 260,
+    "college_name": "Jai Narain College of Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 17,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 261,
+    "college_name": "Jai Narain College of Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 262,
+    "college_name": "Jai Narain College of Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 263,
+    "college_name": "Jai Narain College of Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 16,
+    "allotment": 16,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 264,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "AGE",
+    "total_seats": 11,
+    "allotment": 0,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 265,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 53,
+    "allotment": 5,
+    "remaining": 48,
+    "year": 2025
+  },
+  {
+    "s_no": 266,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 13,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 267,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 44,
+    "allotment": 1,
+    "remaining": 43,
+    "year": 2025
+  },
+  {
+    "s_no": 268,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 51,
+    "allotment": 19,
+    "remaining": 32,
+    "year": 2025
+  },
+  {
+    "s_no": 269,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 270,
+    "college_name": "Jawaharlal Institute of Technology, Borawan, Khargone (1997)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 50,
+    "allotment": 4,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 271,
+    "college_name": "Jawaharlal Nehru College of Technology, Rewa (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 104,
+    "allotment": 10,
+    "remaining": 94,
+    "year": 2025
+  },
+  {
+    "s_no": 272,
+    "college_name": "Jawaharlal Nehru College of Technology, Rewa (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 3,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 273,
+    "college_name": "Jawaharlal Nehru College of Technology, Rewa (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 43,
+    "allotment": 1,
+    "remaining": 42,
+    "year": 2025
+  },
+  {
+    "s_no": 274,
+    "college_name": "Jawaharlal Nehru College of Technology, Rewa (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 44,
+    "allotment": 8,
+    "remaining": 36,
+    "year": 2025
+  },
+  {
+    "s_no": 275,
+    "college_name": "Jawaharlal Nehru College of Technology, Rewa (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 87,
+    "allotment": 12,
+    "remaining": 75,
+    "year": 2025
+  },
+  {
+    "s_no": 276,
+    "college_name": "Jawaharlal Nehru College of Technology, Rewa (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MINING",
+    "total_seats": 53,
+    "allotment": 53,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 277,
+    "college_name": "Kailash Narayan Patidar College of Science & Technology, Bhopal\",22",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 62,
+    "allotment": 0,
+    "remaining": 62,
+    "year": 2025
+  },
+  {
+    "s_no": 278,
+    "college_name": "Kailash Narayan Patidar College of Science & Technology, Bhopal\",51",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 55,
+    "allotment": 4,
+    "remaining": 51,
+    "year": 2025
+  },
+  {
+    "s_no": 281,
+    "college_name": "Kailash Narayan Patidar College of Science & Technology, Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 91,
+    "allotment": 12,
+    "remaining": 79,
+    "year": 2025
+  },
+  {
+    "s_no": 282,
+    "college_name": "Lakshmi Narain College of Technology & Science (RIT), Indore (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 30,
+    "allotment": 0,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 283,
+    "college_name": "Lakshmi Narain College of Technology & Science (RIT), Indore (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 94,
+    "allotment": 5,
+    "remaining": 89,
+    "year": 2025
+  },
+  {
+    "s_no": 284,
+    "college_name": "Lakshmi Narain College of Technology & Science (RIT), Indore (2002)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 285,
+    "college_name": "Lakshmi Narain College of Technology & Science (RIT), Indore (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 32,
+    "allotment": 32,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 286,
+    "college_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 21,
+    "allotment": 1,
+    "remaining": 20,
+    "year": 2025
+  },
+  {
+    "s_no": 287,
+    "college_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 14,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 288,
+    "college_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 289,
+    "college_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 18,
+    "allotment": 2,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 290,
+    "college_name": "Lakshmi Narain College of Technology & Science, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 291,
+    "college_name": "Lakshmi Narain College of Technology Excellence, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 7,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 292,
+    "college_name": "Lakshmi Narain College of Technology Excellence, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 12,
+    "allotment": 4,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 293,
+    "college_name": "Lakshmi Narain College of Technology Excellence, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 294,
+    "college_name": "Lakshmi Narain College of Technology Excellence, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 295,
+    "college_name": "Lakshmi Narain College of Technology Excellence, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ECACT",
+    "total_seats": 46,
+    "allotment": 0,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 296,
+    "college_name": "Lakshmi Narain College of Technology Excellence, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 25,
+    "allotment": 2,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 297,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 18,
+    "allotment": 9,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 298,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 15,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 299,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 36,
+    "allotment": 36,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 300,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 36,
+    "allotment": 36,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 301,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 18,
+    "allotment": 13,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 302,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "ECACT",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 303,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 6,
+    "allotment": 5,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 304,
+    "college_name": "Lakshmi Narain College of Technology, Bhopal (1994)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 305,
+    "college_name": "Lakshmi Narain College of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 92,
+    "allotment": 3,
+    "remaining": 89,
+    "year": 2025
+  },
+  {
+    "s_no": 306,
+    "college_name": "Lakshmi Narain College of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 32,
+    "allotment": 32,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 307,
+    "college_name": "Lakshmi Narain College of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 32,
+    "allotment": 32,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 308,
+    "college_name": "Lakshmi Narain College of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 26,
+    "allotment": 1,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 309,
+    "college_name": "Lakshmi Narain College of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 30,
+    "allotment": 0,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 310,
+    "college_name": "Lakshmi Narain College of Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 62,
+    "allotment": 4,
+    "remaining": 58,
+    "year": 2025
+  },
+  {
+    "s_no": 311,
+    "college_name": "Lakshmi Narain College of Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 51,
+    "allotment": 1,
+    "remaining": 50,
+    "year": 2025
+  },
+  {
+    "s_no": 312,
+    "college_name": "Lakshmi Narain College of Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ECSEIML",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 313,
+    "college_name": "Lakshmi Narain College of Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 65,
+    "allotment": 2,
+    "remaining": 63,
+    "year": 2025
+  },
+  {
+    "s_no": 314,
+    "college_name": "Lakshmi Narain College of Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MMP",
+    "total_seats": 54,
+    "allotment": 1,
+    "remaining": 53,
+    "year": 2025
+  },
+  {
+    "s_no": 315,
+    "college_name": "LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 64,
+    "allotment": 10,
+    "remaining": 54,
+    "year": 2025
+  },
+  {
+    "s_no": 316,
+    "college_name": "LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 49,
+    "allotment": 3,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 317,
+    "college_name": "LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 31,
+    "allotment": 0,
+    "remaining": 31,
+    "year": 2025
+  },
+  {
+    "s_no": 318,
+    "college_name": "LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 64,
+    "allotment": 12,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 319,
+    "college_name": "LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 65,
+    "allotment": 10,
+    "remaining": 55,
+    "year": 2025
+  },
+  {
+    "s_no": 320,
+    "college_name": "LNCT (BHOPAL) INDORE CAMPUS (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 59,
+    "allotment": 0,
+    "remaining": 59,
+    "year": 2025
+  },
+  {
+    "s_no": 321,
+    "college_name": "LNCT (BHOPAL) INDORE CAMPUS (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 113,
+    "allotment": 5,
+    "remaining": 108,
+    "year": 2025
+  },
+  {
+    "s_no": 322,
+    "college_name": "LNCT (BHOPAL) INDORE CAMPUS (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 27,
+    "allotment": 4,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 323,
+    "college_name": "LNCT (BHOPAL) INDORE CAMPUS ,[ (2006)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 23,
+    "allotment": 5,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 324,
+    "college_name": "University),\"Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "AI",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 325,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "AIAIDS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 326,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "AIML",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 327,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "CHEM",
+    "total_seats": 48,
+    "allotment": 4,
+    "remaining": 44,
+    "year": 2025
+  },
+  {
+    "s_no": 328,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "CIVIL :",
+    "total_seats": 39,
+    "allotment": 15,
+    "remaining": 24,
+    "year": 2025
+  },
+  {
+    "s_no": 329,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed\",1 (1957)",
+    "college_type": "GOVT",
+    "branch": "CSBS",
+    "total_seats": 6,
+    "allotment": 5,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 331,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 332,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "EE",
+    "total_seats": 53,
+    "allotment": 12,
+    "remaining": 41,
+    "year": 2025
+  },
+  {
+    "s_no": 333,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "EELOT",
+    "total_seats": 19,
+    "allotment": 0,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 334,
+    "college_name": "Mavery Institute of Technology and science, walior  (Deemied (1957)",
+    "college_type": "GOVT",
+    "branch": "EL",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 335,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "TELECOMMUNICATI",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 336,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "IT",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 337,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "ITAIAR",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 338,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "ITIOT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 339,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed\",11 (1957)",
+    "college_type": "GOVT",
+    "branch": "MAC",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 340,
+    "college_name": "Madhav Institute of Technology and Science, Gwalior  (Deemed (1957)",
+    "college_type": "GOVT",
+    "branch": "MECH",
+    "total_seats": 66,
+    "allotment": 14,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 341,
+    "college_name": "Mahakal Institute Technology & Management, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 342,
+    "college_name": "Mahakal Institute Technology & Management, Ujjain (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 3,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 343,
+    "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+    "college_type": "PRIVATE",
+    "branch": "ALAIDS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 344,
+    "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 345,
+    "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 6,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 346,
+    "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 348,
+    "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 349,
+    "college_name": "Mahakal Instute of Technology, Ujjain (2001)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 1,
+    "allotment": 5,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 350,
+    "college_name": "Maharana Pratap College of Technology, Gwalior (1996)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 61,
+    "allotment": 3,
+    "remaining": 58,
+    "year": 2025
+  },
+  {
+    "s_no": 351,
+    "college_name": "Maharana Pratap College of Technology, Gwalior (1996)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 352,
+    "college_name": "Maharana Pratap College of Technology, Gwalior (1996)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 20,
+    "allotment": 0,
+    "remaining": 20,
+    "year": 2025
+  },
+  {
+    "s_no": 353,
+    "college_name": "Maharana Pratap College of Technology, Gwalior (1996)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 30,
+    "allotment": 13,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 354,
+    "college_name": "Maharana Pratap College of Technology, Gwalior (1996)",
+    "college_type": "PRIVATE",
+    "branch": "LIT",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 355,
+    "college_name": "Maharana Pratap College of Technology, Gwalior (1996)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 46,
+    "allotment": 8,
+    "remaining": 38,
+    "year": 2025
+  },
+  {
+    "s_no": 356,
+    "college_name": "Malwa Institute of Science & Technology, Indore (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 36,
+    "allotment": 36,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 357,
+    "college_name": "Malwa Institute of Science & Technology, Indore (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 0,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 358,
+    "college_name": "Malwa Institute of Science & Technology, Indore (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 36,
+    "allotment": 0,
+    "remaining": 36,
+    "year": 2025
+  },
+  {
+    "s_no": 359,
+    "college_name": "Malwa Institute of Science & Technology, Indore (2008)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 21,
+    "allotment": 0,
+    "remaining": 21,
+    "year": 2025
+  },
+  {
+    "s_no": 360,
+    "college_name": "Malwa Institute of Science & Technology, Indore (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 36,
+    "allotment": 0,
+    "remaining": 36,
+    "year": 2025
+  },
+  {
+    "s_no": 361,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 362,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "AUTO",
+    "total_seats": 25,
+    "allotment": 0,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 363,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 18,
+    "allotment": 18,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 364,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 73,
+    "allotment": 3,
+    "remaining": 70,
+    "year": 2025
+  },
+  {
+    "s_no": 365,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 41,
+    "allotment": 3,
+    "remaining": 38,
+    "year": 2025
+  },
+  {
+    "s_no": 366,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 56,
+    "allotment": 13,
+    "remaining": 43,
+    "year": 2025
+  },
+  {
+    "s_no": 367,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 31,
+    "allotment": 31,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 368,
+    "college_name": "Malwa Institute of Technology, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 41,
+    "allotment": 2,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 369,
+    "college_name": "Mathura Devi Institute of Technology & Management, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 370,
+    "college_name": "Mathura Devi Institute of Technology & Management, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 48,
+    "allotment": 1,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 371,
+    "college_name": "Mathura Devi Institute of Technology & Management, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 2,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 372,
+    "college_name": "Millenium Institute of Technology and Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 19,
+    "allotment": 2,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 373,
+    "college_name": "Millenium Institute of Technology and Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 65,
+    "allotment": 61,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 374,
+    "college_name": "Millenium Institute of Technology and Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 77,
+    "allotment": 73,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 375,
+    "college_name": "Millenium Institute of Technology and Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 97,
+    "allotment": 35,
+    "remaining": 62,
+    "year": 2025
+  },
+  {
+    "s_no": 376,
+    "college_name": "Millenium Institute of Technology and Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 69,
+    "allotment": 63,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 377,
+    "college_name": "Millenium Institute of Technology and Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 98,
+    "allotment": 63,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 378,
+    "college_name": "Millenium Institute of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 28,
+    "allotment": 0,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 379,
+    "college_name": "Millenium Institute of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "AME",
+    "total_seats": 23,
+    "allotment": 0,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 380,
+    "college_name": "Millenium Institute of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 98,
+    "allotment": 93,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 381,
+    "college_name": "Millenium Institute of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 98,
+    "allotment": 8,
+    "remaining": 90,
+    "year": 2025
+  },
+  {
+    "s_no": 382,
+    "college_name": "Millenium Institute of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH /",
+    "total_seats": 38,
+    "allotment": 26,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 383,
+    "college_name": "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 35,
+    "allotment": 34,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 384,
+    "college_name": "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 11,
+    "allotment": 10,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 385,
+    "college_name": "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 386,
+    "college_name": "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 27,
+    "allotment": 27,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 387,
+    "college_name": "MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 56,
+    "allotment": 15,
+    "remaining": 41,
+    "year": 2025
+  },
+  {
+    "s_no": 388,
+    "college_name": "Nagaji Institute of Technology & Management, Gwalior (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 389,
+    "college_name": "Nagaji Institute of Technology & Management, Gwalior (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 4,
+    "allotment": 0,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 390,
+    "college_name": "Nagaji Institute of Technology & Management, Gwalior (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 0,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 391,
+    "college_name": "Nagaji Institute of Technology & Management, Gwalior (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 392,
+    "college_name": "Nagaji Institute of Technology & Management, Gwalior (2003)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 393,
+    "college_name": "Nagaji Institute of Technology & Management, Gwalior (2003)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 394,
+    "college_name": "Nowgong Engineering College, Nowgong (NEC (2012)",
+    "college_type": "GOVT",
+    "branch": "CIVIL",
+    "total_seats": 50,
+    "allotment": 3,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 395,
+    "college_name": "Nowgong Engineering College, Nowgong (NEC (2012)",
+    "college_type": "GOVT",
+    "branch": "]MECH",
+    "total_seats": 54,
+    "allotment": 1,
+    "remaining": 53,
+    "year": 2025
+  },
+  {
+    "s_no": 396,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 55,
+    "allotment": 8,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 397,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 56,
+    "allotment": 4,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 398,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 19,
+    "allotment": 19,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 399,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CSIT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 400,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 53,
+    "allotment": 8,
+    "remaining": 45,
+    "year": 2025
+  },
+  {
+    "s_no": 401,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 19,
+    "allotment": 14,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 402,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 56,
+    "allotment": 2,
+    "remaining": 54,
+    "year": 2025
+  },
+  {
+    "s_no": 403,
+    "college_name": "NRI Institute of Information Science & Technology, Bhopal (2001)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 25,
+    "allotment": 3,
+    "remaining": 22,
+    "year": 2025
+  },
+  {
+    "s_no": 404,
+    "college_name": "NRI Institute of Research & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 28,
+    "allotment": 9,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 405,
+    "college_name": "NRI Institute of Research & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE/",
+    "total_seats": 108,
+    "allotment": 4,
+    "remaining": 104,
+    "year": 2025
+  },
+  {
+    "s_no": 406,
+    "college_name": "NRI Institute of Research & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "]CSECS",
+    "total_seats": 51,
+    "allotment": 0,
+    "remaining": 51,
+    "year": 2025
+  },
+  {
+    "s_no": 407,
+    "college_name": "NRI Institute of Research & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 57,
+    "allotment": 25,
+    "remaining": 32,
+    "year": 2025
+  },
+  {
+    "s_no": 408,
+    "college_name": "NRI Institute of Research & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 30,
+    "allotment": 12,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 409,
+    "college_name": "NRI Institute of Research & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MINING",
+    "total_seats": 113,
+    "allotment": 73,
+    "remaining": 40,
+    "year": 2025
+  },
+  {
+    "s_no": 410,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 18,
+    "allotment": 15,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 411,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 63,
+    "allotment": 31,
+    "remaining": 32,
+    "year": 2025
+  },
+  {
+    "s_no": 412,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 24,
+    "allotment": 1,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 413,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 62,
+    "allotment": 0,
+    "remaining": 62,
+    "year": 2025
+  },
+  {
+    "s_no": 414,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "TCSEIML",
+    "total_seats": 73,
+    "allotment": 10,
+    "remaining": 63,
+    "year": 2025
+  },
+  {
+    "s_no": 415,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 35,
+    "allotment": 1,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 416,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 27,
+    "allotment": 15,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 417,
+    "college_name": "Oriental College of Technology, Bhopal (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 22,
+    "allotment": 14,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 419,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "GENERAL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 420,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 36,
+    "allotment": 8,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 421,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 18,
+    "allotment": 3,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 422,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 18,
+    "allotment": 5,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 423,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 424,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 425,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 16,
+    "allotment": 1,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 426,
+    "college_name": "Oriental Institute of Science & Technology, Bhopal (1995)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 427,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 4,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 428,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "(SEDS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 429,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 430,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 0,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 431,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 432,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 57,
+    "allotment": 4,
+    "remaining": 53,
+    "year": 2025
+  },
+  {
+    "s_no": 433,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 83,
+    "allotment": 3,
+    "remaining": 80,
+    "year": 2025
+  },
+  {
+    "s_no": 434,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)",
+    "college_type": "PRIVATE",
+    "branch": "ICSEIML",
+    "total_seats": 21,
+    "allotment": 0,
+    "remaining": 21,
+    "year": 2025
+  },
+  {
+    "s_no": 435,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSEITCS",
+    "total_seats": 6,
+    "allotment": 5,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 436,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 437,
+    "college_name": "PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 59,
+    "allotment": 20,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 438,
+    "college_name": "Prashantee Institute of Technology & Science, Ujjain (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ALAIDS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 439,
+    "college_name": "Prashantee Institute of Technology & Science, Ujjain (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 440,
+    "college_name": "Prashantee Institute of Technology & Science, Ujjain (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 2,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 441,
+    "college_name": "Prashantee Institute of Technology & Science, Ujjain (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 442,
+    "college_name": "Prashantee Institute of Technology & Science, Ujjain (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 443,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 444,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "ARE",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 445,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "CEWCA",
+    "total_seats": 4,
+    "allotment": 0,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 446,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 447,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 9,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 449,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "EAPE",
+    "total_seats": 19,
+    "allotment": 0,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 450,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 0,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 451,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 4,
+    "allotment": 1,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 452,
+    "college_name": "Prestige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "LG",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 453,
+    "college_name": "Presige Institute of Engineering Management and Research, Indore",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 5,
+    "allotment": 2,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 454,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 455,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 1,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 456,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 457,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 458,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 459,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 460,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 461,
+    "college_name": "PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "MTENG",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 463,
+    "college_name": "PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 4,
+    "allotment": 2,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 464,
+    "college_name": "PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 28,
+    "allotment": 28,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 465,
+    "college_name": "PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 20,
+    "allotment": 19,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 466,
+    "college_name": "PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 33,
+    "allotment": 33,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 467,
+    "college_name": "PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur\",34",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 38,
+    "allotment": 4,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 468,
+    "college_name": "Radha Raman Institute of Technology, & Science, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 44,
+    "allotment": 44,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 469,
+    "college_name": "Radha Raman Institute of Technology, & Science, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 118,
+    "allotment": 26,
+    "remaining": 92,
+    "year": 2025
+  },
+  {
+    "s_no": 470,
+    "college_name": "Radha Raman Institute of Technology, & Science, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 22,
+    "allotment": 8,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 471,
+    "college_name": "Radha Raman Institute of Technology, & Science, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 57,
+    "allotment": 50,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 472,
+    "college_name": "Radha Raman Institute of Technology, & Science, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 40,
+    "allotment": 39,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 473,
+    "college_name": "RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 47,
+    "allotment": 46,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 474,
+    "college_name": "RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 77,
+    "allotment": 5,
+    "remaining": 72,
+    "year": 2025
+  },
+  {
+    "s_no": 476,
+    "college_name": "RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "GENERAL",
+    "total_seats": 43,
+    "allotment": 30,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 477,
+    "college_name": "Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "฿",
+    "total_seats": 60,
+    "allotment": 10,
+    "remaining": 50,
+    "year": 2025
+  },
+  {
+    "s_no": 478,
+    "college_name": "Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 28,
+    "allotment": 5,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 479,
+    "college_name": "Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 480,
+    "college_name": "Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 29,
+    "allotment": 7,
+    "remaining": 22,
+    "year": 2025
+  },
+  {
+    "s_no": 481,
+    "college_name": "Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)",
+    "college_type": "PRIVATE",
+    "branch": "GENERAL",
+    "total_seats": 122,
+    "allotment": 4,
+    "remaining": 118,
+    "year": 2025
+  },
+  {
+    "s_no": 483,
+    "college_name": "Rewa Engineering College, Rewa (REC (1964)",
+    "college_type": "GOVT",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 484,
+    "college_name": "Rewa Engineering College, Rewa (REC (1964)",
+    "college_type": "GOVT",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 485,
+    "college_name": "Rewa Engineering College, Rewa (REC (1964)",
+    "college_type": "GOVT",
+    "branch": "EE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 486,
+    "college_name": "Rewa Engineering College, Rewa (REC (1964)",
+    "college_type": "GOVT",
+    "branch": "GENERAL",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 487,
+    "college_name": "Rewa Institute of Technology, Rewa (2003)",
+    "college_type": "PRIVATE",
+    "branch": "GENERAL",
+    "total_seats": 64,
+    "allotment": 1,
+    "remaining": 63,
+    "year": 2025
+  },
+  {
+    "s_no": 488,
+    "college_name": "Rewa Institute of Technology, Rewa (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 125,
+    "allotment": 2,
+    "remaining": 123,
+    "year": 2025
+  },
+  {
+    "s_no": 489,
+    "college_name": "Rewa Institute of Technology, Rewa (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 131,
+    "allotment": 3,
+    "remaining": 128,
+    "year": 2025
+  },
+  {
+    "s_no": 490,
+    "college_name": "Rewa Institute of Technology, Rewa (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 65,
+    "allotment": 4,
+    "remaining": 61,
+    "year": 2025
+  },
+  {
+    "s_no": 491,
+    "college_name": "Rewa Institute of Technology, Rewa (2003)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 492,
+    "college_name": "Rewa Institute of Technology, Rewa (2003)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 130,
+    "allotment": 4,
+    "remaining": 126,
+    "year": 2025
+  },
+  {
+    "s_no": 493,
+    "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+    "college_type": "S.F.I.",
+    "branch": "AUTO",
+    "total_seats": 12,
+    "allotment": 0,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 494,
+    "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+    "college_type": "S.F.I.",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 8,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 495,
+    "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+    "college_type": "S.F.I.",
+    "branch": "EC",
+    "total_seats": 47,
+    "allotment": 1,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 496,
+    "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+    "college_type": "S.F.I.",
+    "branch": "EE",
+    "total_seats": 17,
+    "allotment": 0,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 497,
+    "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+    "college_type": "S.F.I.",
+    "branch": "GENERAL",
+    "total_seats": 16,
+    "allotment": 0,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 498,
+    "college_name": "Rustamji Institute of Technology, Tekanpur, Gwalior (1999)",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 16,
+    "allotment": 1,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 499,
+    "college_name": "Sagar Institute of Research & Technology - Excellence, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 500,
+    "college_name": "Sagar Institute of Research & Technology - Excellence, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 501,
+    "college_name": "Sagar Institute of Research & Technology - Excellence, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "SE",
+    "total_seats": 18,
+    "allotment": 4,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 502,
+    "college_name": "Sagar Institute of Research & Technology - Excellence, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSEITCS",
+    "total_seats": 47,
+    "allotment": 47,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 503,
+    "college_name": "Sagar Institute of Research & Technology - Excellence, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 31,
+    "allotment": 8,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 504,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 12,
+    "allotment": 5,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 505,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 14,
+    "allotment": 9,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 506,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ICSBS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 507,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 30,
+    "allotment": 20,
+    "remaining": 10,
+    "year": 2025
+  },
+  {
+    "s_no": 508,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 12,
+    "allotment": 2,
+    "remaining": 10,
+    "year": 2025
+  },
+  {
+    "s_no": 509,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ICSIT",
+    "total_seats": 24,
+    "allotment": 3,
+    "remaining": 21,
+    "year": 2025
+  },
+  {
+    "s_no": 510,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 511,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 8,
+    "allotment": 1,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 512,
+    "college_name": "Sagar Institute of Research & Technology, Bhopal (2003)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 5,
+    "allotment": 1,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 513,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 16,
+    "allotment": 3,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 514,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 34,
+    "allotment": 2,
+    "remaining": 32,
+    "year": 2025
+  },
+  {
+    "s_no": 515,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "SEALADS",
+    "total_seats": 12,
+    "allotment": 11,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 516,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 517,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSIT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 518,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 16,
+    "allotment": 1,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 519,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 520,
+    "college_name": "Sagar Institute of Science & Technology (SISTEC) Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 16,
+    "allotment": 5,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 521,
+    "college_name": "Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 10,
+    "allotment": 2,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 524,
+    "college_name": "Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 11,
+    "allotment": 11,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 525,
+    "college_name": "Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 16,
+    "allotment": 5,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 527,
+    "college_name": "Sagar Institute of Science, Technology & Engineering(SiSTec-E), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "CSEIOT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 528,
+    "college_name": "Sagar Institute of Science, Technology & Engineering(SiSTec-E), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 529,
+    "college_name": "Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 31,
+    "allotment": 31,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 530,
+    "college_name": "Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 531,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "CIVIL",
+    "total_seats": 12,
+    "allotment": 21,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 3,
+    "college_name": "samar Ashok technelseral natute, Viasha (49607.7",
+    "college_type": "GOVT",
+    "branch": "CSEALADS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 534,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "CSEBC",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 535,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "CSEIOT",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 536,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "LEC",
+    "total_seats": 8,
+    "allotment": 0,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 537,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "EE",
+    "total_seats": 35,
+    "allotment": 12,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 538,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "EI",
+    "total_seats": 62,
+    "allotment": 62,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 540,
+    "college_name": "Samrat Ashok Technological Institute, Vidisha (1960)",
+    "college_type": "GOVT",
+    "branch": "MECH",
+    "total_seats": 54,
+    "allotment": 5,
+    "remaining": 49,
+    "year": 2025
+  },
+  {
+    "s_no": 541,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "AGE",
+    "total_seats": 17,
+    "allotment": 1,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 542,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ALADS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 543,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 31,
+    "allotment": 2,
+    "remaining": 29,
+    "year": 2025
+  },
+  {
+    "s_no": 544,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 1,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 545,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 546,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 27,
+    "allotment": 2,
+    "remaining": 25,
+    "year": 2025
+  },
+  {
+    "s_no": 547,
+    "college_name": "Saraswati Institute of Engineering & Technology, Jabalpur (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 548,
+    "college_name": "SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 59,
+    "allotment": 13,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 549,
+    "college_name": "SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 113,
+    "allotment": 0,
+    "remaining": 113,
+    "year": 2025
+  },
+  {
+    "s_no": 550,
+    "college_name": "SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 56,
+    "allotment": 19,
+    "remaining": 37,
+    "year": 2025
+  },
+  {
+    "s_no": 551,
+    "college_name": "SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 59,
+    "allotment": 12,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 552,
+    "college_name": "SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT",
+    "college_type": "PRIVATE",
+    "branch": "MINING",
+    "total_seats": 99,
+    "allotment": 57,
+    "remaining": 42,
+    "year": 2025
+  },
+  {
+    "s_no": 555,
+    "college_name": "School of Engineering and Technology, Vikram University, Ujjain",
+    "college_type": "S.F.I.",
+    "branch": "EC",
+    "total_seats": 52,
+    "allotment": 52,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 556,
+    "college_name": "School of Engineering and Technology, Vikram University, Ujjain",
+    "college_type": "S.F.I.",
+    "branch": "ECS",
+    "total_seats": 13,
+    "allotment": 3,
+    "remaining": 10,
+    "year": 2025
+  },
+  {
+    "s_no": 558,
+    "college_name": "School of Engineering and Technology, Vikram University, Ujjain",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 51,
+    "allotment": 4,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 559,
+    "college_name": "SCHOOL OF INFORMATION TECHNOLOGY, RGPV BHOPAL\",I",
+    "college_type": "S.F.I.",
+    "branch": "GENERAL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 560,
+    "college_name": "SCHOOL OF INFORMATION TECHNOLOGY, RGPV BHOPAL",
+    "college_type": "S.F.I.",
+    "branch": "CSEDS",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 561,
+    "college_name": "SCHOOL OF INFORMATION TECHNOLOGY, RGPV BHOPAL\",T",
+    "college_type": "S.F.I.",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 562,
+    "college_name": "SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 31,
+    "allotment": 1,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 563,
+    "college_name": "SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI",
+    "college_type": "PRIVATE",
+    "branch": "ICSE",
+    "total_seats": 65,
+    "allotment": 65,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 564,
+    "college_name": "SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 2,
+    "allotment": 2,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 567,
+    "college_name": "SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 568,
+    "college_name": "Sha-Shib College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 569,
+    "college_name": "Sha-Shib College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 570,
+    "college_name": "Sha-Shib College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 571,
+    "college_name": "Sha-Shib College of Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 572,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 573,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 63,
+    "allotment": 1,
+    "remaining": 62,
+    "year": 2025
+  },
+  {
+    "s_no": 574,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 575,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 3,
+    "allotment": 2,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 576,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "FTS",
+    "total_seats": 53,
+    "allotment": 19,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 577,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 578,
+    "college_name": "Shiv Kumar Singh Institute of Technology & Science, Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 4,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 579,
+    "college_name": "Shivajirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 580,
+    "college_name": "Shirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 581,
+    "college_name": "Shivajirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 2,
+    "remaining": 22,
+    "year": 2025
+  },
+  {
+    "s_no": 583,
+    "college_name": "Shivajirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "DS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 584,
+    "college_name": "Shivajirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 585,
+    "college_name": "Shivajirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 586,
+    "college_name": "Shivajirao Kadam Institute of Technology and Management-Technical",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 587,
+    "college_name": "Shreejee Institute of Technology and Management, Khargone (2010)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 5,
+    "allotment": 1,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 588,
+    "college_name": "Shreejee Institute of Technology and Management, Khargone (2010)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 5,
+    "allotment": 3,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 589,
+    "college_name": "Shreejee Institute of Technology and Management, Khargone (2010)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 5,
+    "allotment": 0,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 590,
+    "college_name": "Shreejee Institute of Technology and Management, Khargone (2010)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 5,
+    "allotment": 5,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 591,
+    "college_name": "Shreejee Institute of Technology and Management, Khargone (2010)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 592,
+    "college_name": "Shri Balaji Institute of Technology & Management, Betul (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ALAIDS",
+    "total_seats": 26,
+    "allotment": 0,
+    "remaining": 26,
+    "year": 2025
+  },
+  {
+    "s_no": 593,
+    "college_name": "Shri Balaji Institute of Technology & Management, Betul (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 46,
+    "allotment": 3,
+    "remaining": 43,
+    "year": 2025
+  },
+  {
+    "s_no": 594,
+    "college_name": "Shri Balaji Institute of Technology & Management, Betul (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 595,
+    "college_name": "Shri Balaji Institute of Technology & Management, Betul (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 51,
+    "allotment": 2,
+    "remaining": 49,
+    "year": 2025
+  },
+  {
+    "s_no": 596,
+    "college_name": "Shri Balaji Institute of Technology & Management, Betul (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 51,
+    "allotment": 5,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 597,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 58,
+    "allotment": 8,
+    "remaining": 50,
+    "year": 2025
+  },
+  {
+    "s_no": 598,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 1,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 599,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "CEIL",
+    "total_seats": 19,
+    "allotment": 1,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 600,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "DS",
+    "total_seats": 3,
+    "allotment": 2,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 601,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 32,
+    "allotment": 3,
+    "remaining": 29,
+    "year": 2025
+  },
+  {
+    "s_no": 602,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 60,
+    "allotment": 2,
+    "remaining": 58,
+    "year": 2025
+  },
+  {
+    "s_no": 603,
+    "college_name": "Shri Dadaji Institute of Technology & Science, khandwa",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 53,
+    "allotment": 7,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 604,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "BEIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 605,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "BM",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 606,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "CIVIL",
+    "total_seats": 9,
+    "allotment": 9,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 607,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 608,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "EE",
+    "total_seats": 9,
+    "allotment": 9,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 609,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (MP. (1952)",
+    "college_type": "GOVT",
+    "branch": "EI",
+    "total_seats": 9,
+    "allotment": 9,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 610,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "TELECOMMUNICATI",
+    "total_seats": 9,
+    "allotment": 0,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 611,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "IP",
+    "total_seats": 9,
+    "allotment": 7,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 612,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "IT",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 613,
+    "college_name": "Shri G.S. Institute of Technology & Science, Indore (M.P. (1952)",
+    "college_type": "GOVT",
+    "branch": "MECH",
+    "total_seats": 9,
+    "allotment": 9,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 614,
+    "college_name": "Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 47,
+    "allotment": 6,
+    "remaining": 41,
+    "year": 2025
+  },
+  {
+    "s_no": 615,
+    "college_name": "Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 26,
+    "allotment": 9,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 616,
+    "college_name": "Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 52,
+    "allotment": 2,
+    "remaining": 50,
+    "year": 2025
+  },
+  {
+    "s_no": 617,
+    "college_name": "Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 53,
+    "allotment": 14,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 618,
+    "college_name": "Shri Ram College of Engineering & Management, Banmore (1998)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 0,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 619,
+    "college_name": "Shri Ram College of Engineering & Management, Banmore (1998)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 1,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 620,
+    "college_name": "Shri Ram College of Engineering & Management, Banmore (1998)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 621,
+    "college_name": "Shri Ram College of Engineering & Management, Banmore (1998)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 622,
+    "college_name": "SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 26,
+    "allotment": 26,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 623,
+    "college_name": "SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 27,
+    "allotment": 0,
+    "remaining": 27,
+    "year": 2025
+  },
+  {
+    "s_no": 624,
+    "college_name": "SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 30,
+    "allotment": 0,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 625,
+    "college_name": "SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 60,
+    "allotment": 0,
+    "remaining": 60,
+    "year": 2025
+  },
+  {
+    "s_no": 626,
+    "college_name": "SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 59,
+    "allotment": 59,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 627,
+    "college_name": "SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 24,
+    "allotment": 1,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 628,
+    "college_name": "SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 4,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 629,
+    "college_name": "SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING",
+    "college_type": "PRIVATE",
+    "branch": "SEALADS",
+    "total_seats": 25,
+    "allotment": 1,
+    "remaining": 24,
+    "year": 2025
+  },
+  {
+    "s_no": 630,
+    "college_name": "SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 7,
+    "allotment": 7,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 631,
+    "college_name": "SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 17,
+    "allotment": 3,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 632,
+    "college_name": "SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 21,
+    "allotment": 17,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 634,
+    "college_name": "Shri Ram Institute of Information Technology, Banmore, Morena",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 4,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 635,
+    "college_name": "Shri Ram Institute of Information Technology, Banmore, Morena",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 6,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 637,
+    "college_name": "Shri Ram Institute of Information Technology, Banmore, Morena",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 5,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 638,
+    "college_name": "Shri Ram Institute of Science & Technology, Jabalpur (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 639,
+    "college_name": "Shri Ram Institute of Science & Technology, Jabalpur (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 2,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 640,
+    "college_name": "Shri Ram Institute of Science & Technology, Jabalpur (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 641,
+    "college_name": "Shri Ram Institute of Science & Technology, Jabalpur (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEITCS",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 642,
+    "college_name": "Shri Ram Institute of Science & Technology, Jabalpur (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 643,
+    "college_name": "Shri Ram Institute of Science & Technology, Jabalpur (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 644,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CENG",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 645,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 646,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "/CSBS",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 647,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 6,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 648,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 649,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 12,
+    "allotment": 3,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 650,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 651,
+    "college_name": "Shri Ram Institute of Technology, Jabalpur (2001)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 1,
+    "remaining": 5,
+    "year": 2025
+  },
+  {
+    "s_no": 652,
+    "college_name": "SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 58,
+    "allotment": 4,
+    "remaining": 54,
+    "year": 2025
+  },
+  {
+    "s_no": 653,
+    "college_name": "SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 45,
+    "allotment": 0,
+    "remaining": 45,
+    "year": 2025
+  },
+  {
+    "s_no": 654,
+    "college_name": "SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 56,
+    "allotment": 1,
+    "remaining": 55,
+    "year": 2025
+  },
+  {
+    "s_no": 655,
+    "college_name": "SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 55,
+    "allotment": 2,
+    "remaining": 53,
+    "year": 2025
+  },
+  {
+    "s_no": 656,
+    "college_name": "SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 61,
+    "allotment": 2,
+    "remaining": 59,
+    "year": 2025
+  },
+  {
+    "s_no": 657,
+    "college_name": "SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND",
+    "college_type": "PRIVATE",
+    "branch": "MINING",
+    "total_seats": 61,
+    "allotment": 16,
+    "remaining": 45,
+    "year": 2025
+  },
+  {
+    "s_no": 658,
+    "college_name": "Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 28,
+    "allotment": 0,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 659,
+    "college_name": "Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 660,
+    "college_name": "Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 19,
+    "allotment": 0,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 661,
+    "college_name": "Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 662,
+    "college_name": "Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 22,
+    "allotment": 22,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 663,
+    "college_name": "Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 664,
+    "college_name": "Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 665,
+    "college_name": "Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 24,
+    "allotment": 8,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 666,
+    "college_name": "Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 9,
+    "allotment": 1,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 667,
+    "college_name": "Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 28,
+    "allotment": 1,
+    "remaining": 27,
+    "year": 2025
+  },
+  {
+    "s_no": 668,
+    "college_name": "SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 669,
+    "college_name": "SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 670,
+    "college_name": "SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM",
+    "college_type": "PRIVATE",
+    "branch": "EV",
+    "total_seats": 6,
+    "allotment": 2,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 671,
+    "college_name": "SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 672,
+    "college_name": "SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 4,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 673,
+    "college_name": "Sri Aurobindo Institute of Technology, Indore (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 2,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 674,
+    "college_name": "Sri Aurobindo Institute of Technology, Indore (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 2,
+    "remaining": 16,
+    "year": 2025
+  },
+  {
+    "s_no": 675,
+    "college_name": "Sri Aurobindo Institute of Technology, Indore (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 676,
+    "college_name": "Sri Aurobindo Institute of Technology, Indore (2009)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 677,
+    "college_name": "Sri Aurobindo Institute of Technology, Indore (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 678,
+    "college_name": "Sri Aurobindo Institute of Technology, Indore (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 3,
+    "allotment": 1,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 679,
+    "college_name": "Sri Parashuram Institute of Technology & Research, Khandwa (2013)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 32,
+    "allotment": 32,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 680,
+    "college_name": "Sri Parashuram Institute of Technology & Research, Khandwa (2013)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 29,
+    "allotment": 0,
+    "remaining": 29,
+    "year": 2025
+  },
+  {
+    "s_no": 681,
+    "college_name": "Sri Parashuram Institute of Technology & Research, Khandwa (2013)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 32,
+    "allotment": 32,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 682,
+    "college_name": "Sri Parashuram Institute of Technology & Research, Khandwa (2013)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 32,
+    "allotment": 32,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 683,
+    "college_name": "ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 31,
+    "allotment": 31,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 684,
+    "college_name": "ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 57,
+    "allotment": 11,
+    "remaining": 46,
+    "year": 2025
+  },
+  {
+    "s_no": 685,
+    "college_name": "ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 31,
+    "allotment": 8,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 686,
+    "college_name": "ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "DS",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 687,
+    "college_name": "ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 2,
+    "allotment": 1,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 688,
+    "college_name": "ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 16,
+    "allotment": 37,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 689,
+    "college_name": "Surabhi College of Engineering & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 26,
+    "allotment": 26,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 690,
+    "college_name": "Surabhi College of Engineering & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 26,
+    "allotment": 2,
+    "remaining": 24,
+    "year": 2025
+  },
+  {
+    "s_no": 691,
+    "college_name": "Surabhi College of Engineering & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 24,
+    "allotment": 18,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 692,
+    "college_name": "Surabhi College of Engineering & Technology, Bhopal (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 31,
+    "allotment": 3,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 693,
+    "college_name": "Sushila Devi Bansal College of Engineering, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 20,
+    "allotment": 20,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 694,
+    "college_name": "Sushila Devi Bansal College of Engineering, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 1,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 695,
+    "college_name": "Sushila Devi Bansal College of Engineering, Indore \",[ (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 696,
+    "college_name": "Sushila Devi Bansal College of Engineering, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 6,
+    "allotment": 5,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 697,
+    "college_name": "Sushila Devi Bansal College of Engineering, Indore (2006)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 21,
+    "allotment": 2,
+    "remaining": 19,
+    "year": 2025
+  },
+  {
+    "s_no": 698,
+    "college_name": "Sushila Devi Bansal College of Technology, indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 16,
+    "allotment": 7,
+    "remaining": 9,
+    "year": 2025
+  },
+  {
+    "s_no": 699,
+    "college_name": "Sushila Devi Bansal College of Technology, indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 10,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 700,
+    "college_name": "Sushila Devi Bansal College of Technology, indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 2,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 701,
+    "college_name": "Sushila Devi Bansal College of Technology, indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 2,
+    "allotment": 65,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 702,
+    "college_name": "Sushila Devi Bansal College of Technology, indore (2005)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 52,
+    "allotment": 14,
+    "remaining": 38,
+    "year": 2025
+  },
+  {
+    "s_no": 703,
+    "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 47,
+    "allotment": 47,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 704,
+    "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 5,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 705,
+    "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 18,
+    "allotment": 18,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 706,
+    "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 55,
+    "allotment": 55,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 707,
+    "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 708,
+    "college_name": "Swami Vivekanand College of Engineering, Indore (2004)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 40,
+    "allotment": 40,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 709,
+    "college_name": "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 32,
+    "allotment": 2,
+    "remaining": 30,
+    "year": 2025
+  },
+  {
+    "s_no": 710,
+    "college_name": "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "SE",
+    "total_seats": 27,
+    "allotment": 27,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 711,
+    "college_name": "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 713,
+    "college_name": "SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 27,
+    "allotment": 0,
+    "remaining": 27,
+    "year": 2025
+  },
+  {
+    "s_no": 714,
+    "college_name": "Synergy Institute of Technology, Dewas (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 29,
+    "allotment": 3,
+    "remaining": 26,
+    "year": 2025
+  },
+  {
+    "s_no": 715,
+    "college_name": "Synergy Institute of Technology, Dewas (2008)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 31,
+    "allotment": 13,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 716,
+    "college_name": "Synergy Institute of Technology, Dewas (2008)",
+    "college_type": "PRIVATE",
+    "branch": "TEC",
+    "total_seats": 6,
+    "allotment": 4,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 717,
+    "college_name": "Synergy Institute of Technology, Dewas (2008)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX/",
+    "total_seats": 28,
+    "allotment": 16,
+    "remaining": 12,
+    "year": 2025
+  },
+  {
+    "s_no": 718,
+    "college_name": "Synergy Institute of Technology, Dewas (2008)",
+    "college_type": "PRIVATE",
+    "branch": "MECH •",
+    "total_seats": 60,
+    "allotment": 31,
+    "remaining": 29,
+    "year": 2025
+  },
+  {
+    "s_no": 719,
+    "college_name": "Takshshila Institute of Engineering & Technology, Jabalpur (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL '",
+    "total_seats": 46,
+    "allotment": 17,
+    "remaining": 29,
+    "year": 2025
+  },
+  {
+    "s_no": 720,
+    "college_name": "Takshshila Institute of Engineering & Technology, Jabalpur (2004)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 45,
+    "allotment": 6,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 721,
+    "college_name": "Takshshila Institute of Engineering & Technology, Jabalpur (2004)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 60,
+    "allotment": 0,
+    "remaining": 60,
+    "year": 2025
+  },
+  {
+    "s_no": 722,
+    "college_name": "Takshshila Institute of Engineering & Technology, Jabalpur (2004)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 41,
+    "allotment": 1,
+    "remaining": 40,
+    "year": 2025
+  },
+  {
+    "s_no": 723,
+    "college_name": "Takshshila Institute of Engineering & Technology, Jabalpur (2004)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 70,
+    "allotment": 18,
+    "remaining": 52,
+    "year": 2025
+  },
+  {
+    "s_no": 724,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal \",[ (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 27,
+    "allotment": 10,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 725,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 18,
+    "allotment": 5,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 726,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "SEAT",
+    "total_seats": 54,
+    "allotment": 0,
+    "remaining": 54,
+    "year": 2025
+  },
+  {
+    "s_no": 727,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 36,
+    "allotment": 1,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 728,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal \",[ (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 22,
+    "allotment": 2,
+    "remaining": 20,
+    "year": 2025
+  },
+  {
+    "s_no": 729,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 24,
+    "allotment": 11,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 730,
+    "college_name": "Technocrats Institute of Technology & Science, Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 17,
+    "allotment": 14,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 731,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 732,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 10,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 733,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEAI",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 734,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSECS",
+    "total_seats": 28,
+    "allotment": 28,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 735,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 18,
+    "allotment": 0,
+    "remaining": 18,
+    "year": 2025
+  },
+  {
+    "s_no": 736,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 737,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 19,
+    "allotment": 5,
+    "remaining": 14,
+    "year": 2025
+  },
+  {
+    "s_no": 738,
+    "college_name": "Technocrats Institute of Technology (Excellence), Bhopal (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 5,
+    "allotment": 2,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 739,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 48,
+    "allotment": 1,
+    "remaining": 47,
+    "year": 2025
+  },
+  {
+    "s_no": 740,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 24,
+    "allotment": 7,
+    "remaining": 17,
+    "year": 2025
+  },
+  {
+    "s_no": 741,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CSEAL",
+    "total_seats": 24,
+    "allotment": 0,
+    "remaining": 24,
+    "year": 2025
+  },
+  {
+    "s_no": 742,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "RCSEAIADS",
+    "total_seats": 12,
+    "allotment": 4,
+    "remaining": 8,
+    "year": 2025
+  },
+  {
+    "s_no": 743,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CSEDS",
+    "total_seats": 115,
+    "allotment": 115,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 744,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 24,
+    "allotment": 9,
+    "remaining": 15,
+    "year": 2025
+  },
+  {
+    "s_no": 745,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 23,
+    "allotment": 19,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 746,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "TELECT ELEX",
+    "total_seats": 42,
+    "allotment": 3,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 747,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 59,
+    "allotment": 3,
+    "remaining": 56,
+    "year": 2025
+  },
+  {
+    "s_no": 748,
+    "college_name": "TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 40,
+    "allotment": 1,
+    "remaining": 39,
+    "year": 2025
+  },
+  {
+    "s_no": 749,
+    "college_name": "ENGINEERING, BHOPAL (FORMERLY TECHNOCRATES INSTITUTE OF",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 63,
+    "allotment": 8,
+    "remaining": 55,
+    "year": 2025
+  },
+  {
+    "s_no": 750,
+    "college_name": "ENGINEERING, BHOPAL (FORMERLY TECHNOCRATES INSTITUTE OF",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 105,
+    "allotment": 0,
+    "remaining": 105,
+    "year": 2025
+  },
+  {
+    "s_no": 751,
+    "college_name": "ENGINEERING, BHOPAL (FORMERLY TECHNOCRATES INSTITUTE OF",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 25,
+    "allotment": 25,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 753,
+    "college_name": "Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur (2011)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 8,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 754,
+    "college_name": "Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 3,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 756,
+    "college_name": "Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 64,
+    "allotment": 3,
+    "remaining": 61,
+    "year": 2025
+  },
+  {
+    "s_no": 759,
+    "college_name": "Truba Institute of Engineering & Information Technology, Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 108,
+    "allotment": 16,
+    "remaining": 92,
+    "year": 2025
+  },
+  {
+    "s_no": 760,
+    "college_name": "Truba Institute of Engineering & Information Technology, Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 60,
+    "allotment": 2,
+    "remaining": 58,
+    "year": 2025
+  },
+  {
+    "s_no": 761,
+    "college_name": "Truba Institute of Engineering & Information Technology, Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 27,
+    "allotment": 24,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 762,
+    "college_name": "Truba Institute of Engineering & Information Technology, Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 23,
+    "allotment": 0,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 763,
+    "college_name": "Truba Institute of Engineering & Information Technology, Bhopal",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 27,
+    "allotment": 23,
+    "remaining": 4,
+    "year": 2025
+  },
+  {
+    "s_no": 764,
+    "college_name": "Truba Institute of Engineering & Information Technology, Bhopal",
+    "college_type": "GOVT",
+    "branch": "CHEM",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 765,
+    "college_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY",
+    "college_type": "GOVT",
+    "branch": ". ENGG. COLLEGEGOVT CIVIL",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 766,
+    "college_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY",
+    "college_type": "GOVT",
+    "branch": ". ENGG. COLLEGEGOVT CSE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 767,
+    "college_name": "WAIN ENGINEERING COLLEGE (FORMERLY",
+    "college_type": "GOVT",
+    "branch": ". ENGG. COLLEGEGOVT EC",
+    "total_seats": 6,
+    "allotment": 3,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 768,
+    "college_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY",
+    "college_type": "GOVT",
+    "branch": ". ENGG. COLLEGEESTB. IN )GOVT EE",
+    "total_seats": 1966,
+    "allotment": 6,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 769,
+    "college_name": "UJJAIN ENGINEERING COLLEGE (FORMERLY",
+    "college_type": "GOVT",
+    "branch": ". ENGG. COLLEGEGOVT MECH",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 770,
+    "college_name": "University Institute of Technology Barkatullah University, Bhopal (1997)",
+    "college_type": "S.F.I.",
+    "branch": "CIVIL",
+    "total_seats": 55,
+    "allotment": 11,
+    "remaining": 44,
+    "year": 2025
+  },
+  {
+    "s_no": 771,
+    "college_name": "University Institute of Technology Barkatullah University, Bhopal (1997)",
+    "college_type": "S.F.I.",
+    "branch": "CSE",
+    "total_seats": 9,
+    "allotment": 9,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 773,
+    "college_name": "University Institute of Technology Barkatullah University, Bhopal",
+    "college_type": "S.F.I.",
+    "branch": "IT",
+    "total_seats": 11,
+    "allotment": 11,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 774,
+    "college_name": "University Institute of Technology Barkatullah University, Bhopal (1997)",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 54,
+    "allotment": 6,
+    "remaining": 48,
+    "year": 2025
+  },
+  {
+    "s_no": 775,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "AUTO",
+    "total_seats": 31,
+    "allotment": 3,
+    "remaining": 28,
+    "year": 2025
+  },
+  {
+    "s_no": 776,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 778,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "EC",
+    "total_seats": 12,
+    "allotment": 11,
+    "remaining": 1,
+    "year": 2025
+  },
+  {
+    "s_no": 779,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "ELECT ELEX",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 780,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "IT",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 781,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 782,
+    "college_name": "University Institute of Technology RGPV, Bhopal (1986)",
+    "college_type": "S.F.I.",
+    "branch": "PCT",
+    "total_seats": 53,
+    "allotment": 5,
+    "remaining": 48,
+    "year": 2025
+  },
+  {
+    "s_no": 783,
+    "college_name": "UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI",
+    "college_type": "S.F.I.",
+    "branch": "CIVIL",
+    "total_seats": 47,
+    "allotment": 3,
+    "remaining": 44,
+    "year": 2025
+  },
+  {
+    "s_no": 784,
+    "college_name": "UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI\",|",
+    "college_type": "S.F.I.",
+    "branch": "CSE",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 785,
+    "college_name": "UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI",
+    "college_type": "S.F.I.",
+    "branch": "ELECT ELEX",
+    "total_seats": 27,
+    "allotment": 5,
+    "remaining": 22,
+    "year": 2025
+  },
+  {
+    "s_no": 786,
+    "college_name": "UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 35,
+    "allotment": 1,
+    "remaining": 34,
+    "year": 2025
+  },
+  {
+    "s_no": 787,
+    "college_name": "UNIVERSITY INSTITUTE OF TECHNOLOGY, SHAHDOL (CONSTITUENT",
+    "college_type": "S.F.I.",
+    "branch": "MECH",
+    "total_seats": 19,
+    "allotment": 13,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 788,
+    "college_name": "UNIVERSITY INSTITUTE OF TECHNOLOGY, SHAHDOL (CONSTITUENT",
+    "college_type": "S.F.I.",
+    "branch": "MINING",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 789,
+    "college_name": "Vaishnavi Institutes of Technology and Science, Raisen (2010)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 36,
+    "allotment": 36,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 790,
+    "college_name": "Vaishnavi Institutes of Technology and Science, Raisen (2010)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 7,
+    "allotment": 5,
+    "remaining": 2,
+    "year": 2025
+  },
+  {
+    "s_no": 791,
+    "college_name": "Vaishnavi Institutes of Technology and Science, Raisen (2010)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 98,
+    "allotment": 3,
+    "remaining": 95,
+    "year": 2025
+  },
+  {
+    "s_no": 792,
+    "college_name": "Vaishnavi Institutes of Technology and Science, Raisen (2010)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 12,
+    "allotment": 5,
+    "remaining": 7,
+    "year": 2025
+  },
+  {
+    "s_no": 793,
+    "college_name": "Vaishnavi Institutes of Technology and Science, Raisen (2010)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 42,
+    "allotment": 7,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 794,
+    "college_name": "Vidhyapeeth Institute of Science & Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 52,
+    "allotment": 32,
+    "remaining": 20,
+    "year": 2025
+  },
+  {
+    "s_no": 795,
+    "college_name": "Vidhyapeeth Institute of Science & Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 43,
+    "allotment": 8,
+    "remaining": 35,
+    "year": 2025
+  },
+  {
+    "s_no": 796,
+    "college_name": "Vidhyapeeth Institute of Science & Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "CSEIML",
+    "total_seats": 46,
+    "allotment": 3,
+    "remaining": 43,
+    "year": 2025
+  },
+  {
+    "s_no": 797,
+    "college_name": "Vidhyapeeth Institute of Science & Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 23,
+    "allotment": 10,
+    "remaining": 13,
+    "year": 2025
+  },
+  {
+    "s_no": 798,
+    "college_name": "Vidhyapeeth Institute of Science & Technology, Bhopal \",[ (2009)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 49,
+    "allotment": 18,
+    "remaining": 31,
+    "year": 2025
+  },
+  {
+    "s_no": 799,
+    "college_name": "Vidhyapeeth Institute of Science & Technology, Bhopal (2009)",
+    "college_type": "PRIVATE",
+    "branch": "MECH'",
+    "total_seats": 90,
+    "allotment": 17,
+    "remaining": 73,
+    "year": 2025
+  },
+  {
+    "s_no": 800,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 58,
+    "allotment": 1,
+    "remaining": 57,
+    "year": 2025
+  },
+  {
+    "s_no": 801,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 15,
+    "allotment": 4,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 802,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 64,
+    "allotment": 1,
+    "remaining": 63,
+    "year": 2025
+  },
+  {
+    "s_no": 803,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 63,
+    "allotment": 4,
+    "remaining": 59,
+    "year": 2025
+  },
+  {
+    "s_no": 804,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "FTS",
+    "total_seats": 21,
+    "allotment": 10,
+    "remaining": 11,
+    "year": 2025
+  },
+  {
+    "s_no": 805,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "IT",
+    "total_seats": 24,
+    "allotment": 1,
+    "remaining": 23,
+    "year": 2025
+  },
+  {
+    "s_no": 806,
+    "college_name": "Vikrant Institute of Technology & Management Indore (2007)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 119,
+    "allotment": 12,
+    "remaining": 117,
+    "year": 2025
+  },
+  {
+    "s_no": 807,
+    "college_name": "VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)",
+    "college_type": "PRIVATE",
+    "branch": "CSE",
+    "total_seats": 12,
+    "allotment": 12,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 808,
+    "college_name": "VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)",
+    "college_type": "PRIVATE",
+    "branch": "EE",
+    "total_seats": 42,
+    "allotment": 10,
+    "remaining": 32,
+    "year": 2025
+  },
+  {
+    "s_no": 809,
+    "college_name": "VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 109,
+    "allotment": 15,
+    "remaining": 94,
+    "year": 2025
+  },
+  {
+    "s_no": 810,
+    "college_name": "VNS GROUP OF INSTITUTIONS, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "AIML",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 811,
+    "college_name": "VNS GROUP OF INSTITUTIONS, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "CIVIL",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  },
+  {
+    "s_no": 813,
+    "college_name": "VNS GROUP OF INSTITUTIONS, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "EC",
+    "total_seats": 3,
+    "allotment": 0,
+    "remaining": 3,
+    "year": 2025
+  },
+  {
+    "s_no": 814,
+    "college_name": "VNS GROUP OF INSTITUTIONS, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "ELECT ELEX",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 815,
+    "college_name": "VNS GROUP OF INSTITUTIONS, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "MECH",
+    "total_seats": 6,
+    "allotment": 0,
+    "remaining": 6,
+    "year": 2025
+  },
+  {
+    "s_no": 816,
+    "college_name": "VNS GROUP OF INSTITUTIONS, BHOPAL (2006)",
+    "college_type": "PRIVATE",
+    "branch": "MINING",
+    "total_seats": 6,
+    "allotment": 6,
+    "remaining": 0,
+    "year": 2025
+  }
+]

@@ -1,6 +1,7 @@
 """Optional user accounts — session-based auth with cloud shortlist."""
 import json
 import os
+import uuid
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -33,15 +34,24 @@ def init_auth(app):
 
 def login_user(user: User):
     session.permanent = False  # Session dies when browser closes
+    token = str(uuid.uuid4())
+    user.current_session_token = token
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        
     session["user_id"] = user.id
     session["user_email"] = user.email
     session["user_name"] = user.display_name or user.email.split("@")[0]
+    session["session_token"] = token
 
 
 def logout_user():
     session.pop("user_id", None)
     session.pop("user_email", None)
     session.pop("user_name", None)
+    session.pop("session_token", None)
 
 
 def current_user():
@@ -49,20 +59,46 @@ def current_user():
     if not uid:
         return None
     user = db.session.get(User, uid)
-    if user:
-        from datetime import date
-        today_str = date.today().isoformat()
-        if user.last_prediction_date != today_str:
-            user.last_prediction_date = today_str
-            user.predictions_today = 0
+    if not user:
+        session.clear()
+        return None
+
+    # Single Device Session Validation
+    stoken = session.get("session_token")
+    if not user.current_session_token:
+        # Assign a token if user doesn't have one in DB yet
+        token = str(uuid.uuid4())
+        user.current_session_token = token
+        try:
             db.session.commit()
+        except Exception:
+            db.session.rollback()
+        session["session_token"] = token
+    elif stoken != user.current_session_token:
+        # Token mismatch! Account logged in on another device.
+        session.clear()
+        session["logged_out_reason"] = "other_device"
+        return None
+
+    from datetime import date
+    today_str = date.today().isoformat()
+    if user.last_prediction_date != today_str:
+        user.last_prediction_date = today_str
+        user.predictions_today = 0
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
     return user
 
 
 def login_required(f):
     @wraps(f)
     def wrapped(*args, **kwargs):
-        if not session.get("user_id"):
+        user = current_user()
+        if not user:
+            if session.pop("logged_out_reason", None) == "other_device":
+                return redirect(url_for('account_page', reason="logged_out_other_device"))
             if request.path.startswith("/api/"):
                 return jsonify({"error": "Login required"}), 401
             return redirect(url_for("account_page", next=request.path))
