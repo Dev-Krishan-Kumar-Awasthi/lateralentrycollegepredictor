@@ -6,14 +6,11 @@
 {% block content %}
 <div class="mp-container" style="max-width: 1200px; margin: 30px auto; padding: 15px; box-sizing: border-box; width: 100%; overflow: hidden;">
     
-    <!-- Hero Header -->
-    <div style="text-align: center; margin-bottom: 30px;">
-        <span style="background: rgba(37, 99, 235, 0.1); color: #2563eb; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">
-            <i class="fas fa-university"></i> Official Reference Slips
-        </span>
-        <h1 style="color: #1e3a8a; margin: 12px 0 8px; font-size: 2.2rem; font-weight: 800; tracking-spacing: -0.5px;">DTE Choice Vault</h1>
-        <p style="color: #475569; font-size: 1rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">
-            Past students ki actual choice filling slips dekhein aur preferences arrange karne ki strategy samjhein.
+    <!-- Compact Hero Header -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="color: #1e3a8a; margin: 0 0 6px; font-size: 1.8rem; font-weight: 800; tracking-spacing: -0.5px;">DTE Choice Vault</h1>
+        <p style="color: #475569; font-size: 0.9rem; max-width: 600px; margin: 0 auto; line-height: 1.4;">
+            View real choice lists and strategy summaries of successful past candidates.
         </p>
     </div>
 
@@ -41,226 +38,124 @@
         <div class="sidebar-panel" style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); height: 750px; display: flex; flex-direction: column;">
             
             <!-- Sidebar Header & Search -->
-            <div style="margin-bottom: 15px;">
-                <h3 style="margin: 0 0 12px; font-size: 1.15rem; color: #0f172a; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-users" style="color: #2563eb;"></i> Students List
+            <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px;">
+                <h3 style="margin: 0; font-size: 1.15rem; color: #0f172a; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-users" style="color: #2563eb;"></i> Candidates List
                 </h3>
                 <div style="position: relative;">
                     <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem;"></i>
-                    <input type="text" id="student-search" placeholder="Search by name, CGPA..." oninput="filterStudents(this.value)" style="
+                    <input type="text" id="student-search" placeholder="Search candidates..." oninput="filterAll(this.value)" style="
                         width: 100%;
-                        padding: 10px 10px 10px 36px;
-                        border: 1.5px solid #e2e8f0;
-                        border-radius: 10px;
-                        font-size: 0.9rem;
+                        padding: 8px 10px 8px 34px;
+                        border: 1.5px solid #cbd5e1;
+                        border-radius: 8px;
+                        font-size: 0.85rem;
                         outline: none;
-                        transition: all 0.2s;
-                    " onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#e2e8f0';">
+                        box-sizing: border-box;
+                    " onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#cbd5e1';">
                 </div>
             </div>
 
             <!-- Scrollable Student Cards Container -->
-            <div id="student-cards-container" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
-                {% for slip in slips %}
-                <div class="student-card {% if loop.first %}active{% endif %}" onclick="selectStudent({{ slip.id }})" id="student-card-{{ slip.id }}" style="
-                    border: 1.5px solid #e2e8f0;
-                    border-radius: 12px;
-                    padding: 14px;
-                    background: #fff;
-                    cursor: pointer;
-                    transition: all 0.25s ease;
-                    position: relative;
-                ">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 10px;">
-                        <span class="student-name" style="font-weight: 700; color: #0f172a; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            {{ slip.name }}
-                        </span>
-                        <span style="background: #eff6ff; color: #2563eb; font-weight: 700; font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; border: 1px solid #dbeafe;">
-                            CGPA: {{ slip.cgpa }}
-                        </span>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">
-                        <i class="fas fa-bullseye"></i> {{ slip.focus }}
-                    </div>
-                    <div style="font-size: 0.75rem; color: #94a3b8; font-family: monospace;">
-                        Roll: {{ slip.roll_no }}
-                    </div>
-                </div>
-                {% endfor %}
+            <div id="student-cards-container" data-lenis-prevent style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
             </div>
         </div>
 
-        <!-- Mobile-Only Carousel Panel (Unique horizontally scrollable capsules + dynamic search toggle) -->
-        <div class="mobile-carousel-panel" style="display: none; background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 15px; min-width: 0; overflow: hidden; width: 100%;">
-            
-            <!-- Mobile Selector Header Row -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 0.85rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.3px;">
-                    <i class="fas fa-hand-pointer" style="color: #2563eb;"></i> Swipe &amp; Select Student
-                </span>
-                <button onclick="toggleMobileSearch()" id="mobile-search-toggle" style="
-                    background: #f1f5f9;
-                    border: none;
-                    border-radius: 8px;
-                    width: 34px;
-                    height: 34px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    color: #475569;
-                    transition: all 0.2s;
-                ">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-
-            <!-- Mobile Search Bar (Collapsible) -->
-            <div id="mobile-search-wrapper" style="display: none; margin-bottom: 12px; position: relative;">
-                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.8rem;"></i>
-                <input type="text" id="mobile-student-search" placeholder="Search student name or CGPA..." oninput="filterStudents(this.value)" style="
-                    width: 100%;
-                    padding: 8px 10px 8px 34px;
-                    border: 1.5px solid #cbd5e1;
-                    border-radius: 8px;
-                    font-size: 0.88rem;
-                    outline: none;
-                ">
-            </div>
-
-            <!-- Horizontal Scrollable Row of Pill Capsules -->
-            <div class="mobile-pill-list" style="
-                display: flex;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                gap: 8px;
-                padding-bottom: 6px;
-                -webkit-overflow-scrolling: touch;
-            ">
-                {% for slip in slips %}
-                <div class="mobile-pill-card {% if loop.first %}active{% endif %}" onclick="selectStudent({{ slip.id }})" id="mobile-pill-{{ slip.id }}" style="
-                    flex: 0 0 auto;
-                    scroll-snap-align: start;
-                    padding: 10px 18px;
-                    background: #fff;
-                    border: 1.5px solid #e2e8f0;
-                    border-radius: 50px;
-                    font-size: 0.88rem;
-                    font-weight: 700;
-                    color: #475569;
-                    cursor: pointer;
-                    transition: all 0.25s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-                ">
-                    <span class="pill-title">{{ slip.name }}</span>
-                    <span style="font-size: 0.75rem; opacity: 0.8; font-weight: 800; background: rgba(37,99,235,0.08); padding: 1px 6px; border-radius: 10px; color: #2563eb;">{{ slip.cgpa }}</span>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Right Panel: Scanned Slip Viewer -->
-        <div class="viewer-panel" style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 750px; min-width: 0; overflow: hidden; width: 100%; position: relative;">
-            
-            {% if is_premium %}
-            <!-- Details Header -->
-            <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; flex-wrap: wrap;">
-                <div>
-                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <h2 id="active-name" style="margin: 0; color: #0f172a; font-size: 1.35rem; font-weight: 800;">Loading...</h2>
-                        <span id="active-cgpa-badge" style="background: #2563eb; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px;">
-                            CGPA: —
-                        </span>
-                        <span id="active-focus-badge" style="background: #f1f5f9; color: #475569; font-size: 0.75rem; font-weight: 700; padding: 2px 10px; border-radius: 6px;">
-                            —
-                        </span>
-                    </div>
-                    <div style="display: flex; gap: 15px; align-items: center; margin-top: 6px; font-size: 0.82rem; color: #64748b;">
-                        <span><i class="fas fa-fingerprint"></i> Roll No: <strong id="active-roll" style="font-family: monospace;">—</strong></span>
-                    </div>
-                </div>
-                <div style="font-size: 0.9rem; color: #475569; line-height: 1.4; max-width: 450px;">
-                    <i class="fas fa-info-circle" style="color:#2563eb;"></i> <strong>Strategy:</strong> <span id="active-summary">—</span>
-                </div>
-            </div>
-
-            <!-- Viewer controls toolbar -->
-            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 10px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-                <div style="display: flex; gap: 6px; align-items: center;">
-                    <button onclick="zoomOut()" style="width: 34px; height: 34px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; color: #334155; display: flex; align-items: center; justify-content: center;" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
-                    <span id="zoom-level" style="font-family: monospace; font-weight: 700; font-size: 0.85rem; min-width: 46px; text-align: center;">100%</span>
-                    <button onclick="zoomIn()" style="width: 34px; height: 34px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; color: #334155; display: flex; align-items: center; justify-content: center;" title="Zoom In"><i class="fas fa-search-plus"></i></button>
-                    <button onclick="resetZoom()" style="height: 34px; padding: 0 10px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; color: #334155; font-size: 0.8rem; font-weight: 600;" title="Reset View">Reset</button>
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <button onclick="openFullsize()" style="height: 34px; padding: 0 12px; border-radius: 6px; border: 1px solid #2563eb; background: #2563eb; color: #fff; cursor: pointer; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px;" title="Open Image in New Tab"><i class="fas fa-external-link-alt"></i> Fullscreen</button>
-                </div>
-            </div>
-
-            <!-- Viewer Container Frame -->
-            <div id="image-viewer-frame" style="
-                flex-grow: 1;
-                border: 1px solid #f1f5f9;
-                background: #f8fafc;
+        <!-- Mobile-Only Selector Trigger Button -->
+        <div class="mobile-selector-trigger-wrapper" style="display: none; width: 100%; margin-bottom: 15px; box-sizing: border-box;">
+            <button onclick="openBottomSheet()" style="
+                width: 100%;
+                background: linear-gradient(135deg, #1e3a8a, #2563eb);
+                color: #fff;
+                border: none;
                 border-radius: 12px;
-                overflow: hidden;
+                padding: 14px 20px;
+                font-size: 1rem;
+                font-weight: 800;
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                cursor: grab;
-                position: relative;
-            " onmousedown="startDrag(event)" onmousemove="drag(event)" onmouseup="endDrag()" onmouseleave="endDrag()">
-                <!-- Floating Instructions -->
-                <div class="drag-info-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(15, 23, 42, 0.75); color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; pointer-events: none; backdrop-filter: blur(4px); display: flex; align-items: center; gap: 5px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); z-index: 10;">
-                    <i class="fas fa-arrows-alt"></i> Drag to pan | Wheel/Pinch to zoom
-                </div>
-                <!-- Slip Image Viewport -->
-                <img id="slip-image" src="" alt="Choice Slip" style="
-                    max-width: 95%;
-                    max-height: 95%;
-                    object-fit: contain;
-                    transform-origin: center center;
-                    transition: transform 0.1s ease-out;
-                    user-select: none;
-                    pointer-events: none;
-                    transform: scale(1) translate(0px, 0px);
-                    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-                ">
-            </div>
+                justify-content: space-between;
+                box-shadow: 0 4px 12px rgba(37,99,235,0.2);
+                cursor: pointer;
+                transition: all 0.2s;
+            ">
+                <span style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-trophy" style="color: #fbbf24;"></i>
+                    <span id="mobile-trigger-text">Select Candidate (Active: —)</span>
+                </span>
+                <span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;">
+                    Browse All <i class="fas fa-chevron-down"></i>
+                </span>
+            </button>
+        </div>
 
+        <!-- Mobile Bottom Sheet Drawer overlay -->
+        <div id="mobile-bottom-sheet-backdrop" class="bottom-sheet-backdrop" onclick="closeBottomSheet()"></div>
+        <div id="mobile-bottom-sheet" class="bottom-sheet-drawer" data-lenis-prevent>
+            <div class="bottom-sheet-header">
+                <div class="bottom-sheet-drag-handle"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 10px;">
+                    <h4 style="margin: 0; font-size: 1.1rem; color: #0f172a; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-users" style="color: #2563eb;"></i> Select Rank List
+                    </h4>
+                    <button onclick="closeBottomSheet()" style="background: #f1f5f9; border: none; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #475569; font-weight: bold;"><i class="fas fa-times"></i></button>
+                </div>
+                <!-- Prominent Drawer Search -->
+                <div style="position: relative; margin-top: 12px; width: 100%;">
+                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem;"></i>
+                    <input type="text" id="mobile-sheet-search" placeholder="Search toppers..." oninput="filterAll(this.value)" style="
+                        width: 100%;
+                        padding: 10px 10px 10px 36px;
+                        border: 1.5px solid #cbd5e1;
+                        border-radius: 10px;
+                        font-size: 0.9rem;
+                        outline: none;
+                        box-sizing: border-box;
+                    " onfocus="this.style.borderColor='#2563eb';" onblur="this.style.borderColor='#cbd5e1';">
+                </div>
+            </div>
+            
+            <div class="bottom-sheet-content">
+                <div id="sheet-cards-container" style="display: flex; flex-direction: column; gap: 10px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Scanned Slip Viewer Feed -->
+        <div id="slips-feed-container" data-lenis-prevent style="background: transparent; display: flex; flex-direction: column; gap: 24px; min-width: 0; width: 100%; height: 750px; overflow-y: auto; padding-right: 4px; box-sizing: border-box; scroll-behavior: smooth;">
+            
+            {% if is_premium %}
+            <!-- Cards will be dynamically loaded here progressively via JS -->
             {% else %}
             <!-- ===== PREMIUM GATE — Choice Vault Viewer ===== -->
-            <!-- Blurred demo image -->
-            <div style="flex-grow:1; position:relative; border-radius:12px; overflow:hidden; background:#f8fafc; border:1px solid #e2e8f0;">
-                <!-- Fake blurred slip preview -->
-                <div style="width:100%; height:100%; filter:blur(10px); opacity:0.35; background: repeating-linear-gradient(0deg, #e2e8f0 0px, #e2e8f0 1px, transparent 1px, transparent 28px), repeating-linear-gradient(90deg, #e2e8f0 0px, #e2e8f0 1px, transparent 1px, transparent 180px); display:flex; align-items:center; justify-content:center;">
-                    <div style="font-size:0.85rem;color:#94a3b8;font-family:monospace;text-align:center;padding:20px;">
-                        <div style="margin-bottom:8px;font-size:1.2rem;">📋📋📋</div>
-                        Choice Slip Data Hidden
+            <div style="background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; height: 100%; min-height: 500px; width: 100%; position: relative; box-sizing: border-box; overflow: hidden;">
+                <!-- Blurred demo image -->
+                <div style="flex-grow:1; position:relative; border-radius:12px; overflow:hidden; background:#f8fafc; border:1px solid #e2e8f0;">
+                    <!-- Fake blurred slip preview -->
+                    <div style="width:100%; height:100%; filter:blur(10px); opacity:0.35; background: repeating-linear-gradient(0deg, #e2e8f0 0px, #e2e8f0 1px, transparent 1px, transparent 28px), repeating-linear-gradient(90deg, #e2e8f0 0px, #e2e8f0 1px, transparent 1px, transparent 180px); display:flex; align-items:center; justify-content:center;">
+                        <div style="font-size:0.85rem;color:#94a3b8;font-family:monospace;text-align:center;padding:20px;">
+                            <div style="margin-bottom:8px;font-size:1.2rem;">📋📋📋</div>
+                            Choice Slip Data Hidden
+                        </div>
                     </div>
-                </div>
-                <!-- Premium overlay -->
-                <div style="position:absolute;inset:0; background:linear-gradient(135deg,rgba(11,42,92,0.92) 0%,rgba(30,64,175,0.88) 50%,rgba(124,58,237,0.88) 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px;">
-                    <div style="font-size:2.8rem;margin-bottom:16px;">🔒</div>
-                    <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#fbbf24;font-size:0.8rem;font-weight:700;padding:5px 16px;border-radius:50px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;"><i class="fas fa-crown"></i> Premium Feature</div>
-                    <h3 style="color:#fff;font-size:1.5rem;font-weight:800;margin:0 0 10px;line-height:1.3;">View Choice Slips with Premium</h3>
-                    <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin:0 0 22px;max-width:360px;line-height:1.6;">See real DTE choice filling slips from past successful students. Learn how toppers arranged their preferences.</p>
-                    <a href="/premium" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1a1a;font-weight:800;font-size:0.95rem;padding:12px 30px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(251,191,36,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                        <i class="fas fa-crown"></i> Upgrade — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
-                    </a>
-                    <div style="margin-top:18px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-                        <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> {{ slips|length }} Real Choice Slips</span>
-                        <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> Zoom & Fullscreen View</span>
-                        <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> Topper Strategies</span>
+                    <!-- Premium overlay -->
+                    <div style="position:absolute;inset:0; background:linear-gradient(135deg,rgba(11,42,92,0.92) 0%,rgba(30,64,175,0.88) 50%,rgba(124,58,237,0.88) 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:30px;">
+                        <div style="font-size:2.8rem;margin-bottom:16px;">🔒</div>
+                        <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#fbbf24;font-size:0.8rem;font-weight:700;padding:5px 16px;border-radius:50px;margin-bottom:16px;text-transform:uppercase;letter-spacing:0.5px;"><i class="fas fa-crown"></i> Premium Feature</div>
+                        <h3 style="color:#fff;font-size:1.5rem;font-weight:800;margin:0 0 10px;line-height:1.3;">View Choice Slips with Premium</h3>
+                        <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;margin:0 0 22px;max-width:360px;line-height:1.6;">See real DTE choice filling slips from past successful students. Learn how toppers arranged their preferences.</p>
+                        <a href="/premium" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a1a1a;font-weight:800;font-size:0.95rem;padding:12px 30px;border-radius:50px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(251,191,36,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fas fa-crown"></i> Upgrade — ₹<del style="opacity:0.5;">399</del> <strong>₹199</strong>
+                        </a>
+                        <div style="margin-top:18px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+                            <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> {{ slips|length }} Real Choice Slips</span>
+                            <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> Zoom & Fullscreen View</span>
+                            <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;"><i class="fas fa-check" style="color:#34d399;"></i> Topper Strategies</span>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endif %}
-
-        </div>
 
     </div>
     {% endif %}
@@ -276,9 +171,10 @@
             name: {{ slip.name | tojson }},
             cgpa: {{ slip.cgpa | tojson }},
             roll_no: {{ slip.roll_no | tojson }},
-            image: {{ slip.image_url | tojson }},
+            image: {% if is_premium %}{{ slip.image_url | tojson }}{% else %}""{% endif %},
             focus: {{ slip.focus | tojson }},
-            summary: {{ slip.summary | tojson }}
+            summary: {{ slip.summary | tojson }},
+            rank: {% if slip.rank is defined and slip.rank %}{{ slip.rank | tojson }}{% else %}null{% endif %}
         }{% if not loop.last %},{% endif %}
         {% endfor %}
     ];
@@ -386,218 +282,777 @@
             display: none !important; /* Hide floating badge to save viewport area */
         }
     }
+
+    /* Desktop vs Mobile toolbar */
+    @media (max-width: 768px) {
+        .desktop-toolbar {
+            display: none !important;
+        }
+        .mobile-selector-trigger-wrapper {
+            display: block !important;
+        }
+        #image-viewer-frame {
+            height: 58vh !important;
+            min-height: 420px;
+        }
+    }
+    @media (min-width: 769px) {
+        .desktop-toolbar {
+            display: flex !important;
+        }
+        .mobile-selector-trigger-wrapper {
+            display: none !important;
+        }
+        .mobile-zoom-overlay {
+            display: none !important;
+        }
+    }
+    
+    /* Bottom Sheet Drawer Styles */
+    .bottom-sheet-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .bottom-sheet-backdrop.active {
+        display: block;
+        opacity: 1;
+    }
+    
+    .bottom-sheet-drawer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 75vh;
+        background: #fff;
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+    
+    .bottom-sheet-drawer.active {
+        transform: translateY(0);
+    }
+    
+    .bottom-sheet-header {
+        padding: 16px 20px 10px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    
+    .bottom-sheet-drag-handle {
+        width: 40px;
+        height: 5px;
+        background: #cbd5e1;
+        border-radius: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .bottom-sheet-content {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 15px 20px 30px;
+    }
+    
+    /* Sheet Student Cards */
+    .sheet-student-card {
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+    }
+    
+    .sheet-student-card:hover, .sheet-student-card.active {
+        border-color: #2563eb;
+        background: #eff6ff;
+    }
+    
+    .sheet-student-card.active {
+        box-shadow: 0 4px 12px rgba(37,99,235,0.08);
+    }
+    
+    .rank-badge-pill {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #b45309;
+        font-weight: 800;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        border-radius: 20px;
+        border: 1px solid #fcd34d;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .cgpa-badge-pill {
+        background: #eff6ff;
+        color: #2563eb;
+        font-weight: 700;
+        font-size: 0.75rem;
+        padding: 2px 8px;
+        border-radius: 20px;
+        border: 1px solid #dbeafe;
+    }
+    
+    /* Floating mobile zoom controls */
+    .mobile-zoom-overlay {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 50px;
+        padding: 6px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+    }
+    
+    .mobile-zoom-overlay button {
+        background: transparent;
+        border: none;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: #334155;
+        cursor: pointer;
+    }
+    
+    .mobile-zoom-overlay #mobile-zoom-level {
+        font-family: monospace;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: #0f172a;
+        min-width: 40px;
+        text-align: center;
+    }
+    
+    /* Strategy Styles mobile-first accordion */
+    .strategy-container {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    .strategy-header {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        padding: 10px 14px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #1e40af;
+        cursor: pointer;
+    }
+    
+    .strategy-header span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    #strategy-chevron {
+        transition: transform 0.2s;
+    }
+    
+    #strategy-chevron.rotated {
+        transform: rotate(180deg);
+    }
+
+    @media (min-width: 769px) {
+        #strategy-body {
+            display: block !important;
+            border: none !important;
+            padding: 8px 0 0 0 !important;
+            background: transparent !important;
+        }
+        .strategy-header {
+            display: none !important; /* Hide accordion header on desktop */
+        }
+        .strategy-container::before {
+            content: '💡 Strategy: ';
+            font-weight: 800;
+            color: #2563eb;
+            font-size: 0.9rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .strategy-container {
+            max-width: 100% !important;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .strategy-header {
+            display: flex !important;
+        }
+    }
+
+    /* Infinite Feed CSS Rules */
+    .feed-card {
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .feed-image-frame {
+        width: 100%;
+        height: 480px;
+        overflow: auto;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .feed-image-frame img {
+        max-width: 95%;
+        max-height: 95%;
+        object-fit: contain;
+        transition: all 0.25s ease-in-out;
+        user-select: none;
+    }
+
+    .feed-image-frame img.zoomed {
+        max-width: 250% !important;
+        max-height: none !important;
+        width: 220%;
+        object-fit: fill;
+    }
 </style>
 
 <script>
+    const isPremiumUser = {{ is_premium | tojson }};
     let currentSlipId = null;
-    let currentZoom = 1;
-    let isDragging = false;
-    let startX = 0, startY = 0;
-    let translateX = 0, translateY = 0;
 
-    const slipImage = document.getElementById('slip-image');
-    const zoomLevelEl = document.getElementById('zoom-level');
-    const viewerFrame = document.getElementById('image-viewer-frame');
+    let currentDesktopIndex = 0;
+    let currentMobileIndex = 0;
+    let currentFeedIndex = 0;
+    
+    const BATCH_SIZE = 30;
+    const FEED_BATCH_SIZE = 5;
 
-    // UI elements to update dynamically
-    const activeName = document.getElementById('active-name');
-    const activeCgpa = document.getElementById('active-cgpa-badge');
-    const activeFocus = document.getElementById('active-focus-badge');
-    const activeRoll = document.getElementById('active-roll');
-    const activeSummary = document.getElementById('active-summary');
+    let filteredDesktopSlips = [];
+    let filteredMobileSlips = [];
+    let filteredFeedSlips = [];
 
     // Image URL Resolver helper supporting hosted external urls or local static files
     function getImageUrl(img) {
         if (!img) return '';
-        if (img.startsWith('http://') || img.startsWith('https://')) {
+        if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('/choice-vault-images/')) {
             return img;
         }
         return `/static/img/${img}`;
     }
 
-    // Mobile Search State Toggle
-    function toggleMobileSearch() {
-        const wrapper = document.getElementById('mobile-search-wrapper');
-        const searchBtn = document.getElementById('mobile-search-toggle');
-        if (!wrapper || !searchBtn) return;
-        if (wrapper.style.display === 'none' || !wrapper.style.display) {
-            wrapper.style.display = 'block';
-            searchBtn.style.background = '#2563eb';
-            searchBtn.style.color = '#fff';
-            document.getElementById('mobile-student-search').focus();
-        } else {
-            wrapper.style.display = 'none';
-            searchBtn.style.background = '#f1f5f9';
-            searchBtn.style.color = '#475569';
-            document.getElementById('mobile-student-search').value = '';
-            filterStudents('');
-        }
-    }
-
-    // Search filtering for student cards (syncs desktop sidebar and mobile pills)
-    function filterStudents(val) {
-        const query = val.toLowerCase().trim();
-        
-        // Sync inputs
+    // Unified search filter coordinating sidebar list, bottom sheet, and image feed
+    function filterAll(val) {
         const desktopSearch = document.getElementById('student-search');
-        const mobileSearch = document.getElementById('mobile-student-search');
+        const mobileSearch = document.getElementById('mobile-sheet-search');
         if (desktopSearch && desktopSearch.value !== val) desktopSearch.value = val;
         if (mobileSearch && mobileSearch.value !== val) mobileSearch.value = val;
 
-        // 1. Filter Desktop cards
-        const cards = document.querySelectorAll('.student-card');
-        cards.forEach(card => {
-            const name = card.querySelector('.student-name').textContent.toLowerCase();
-            const textContent = card.textContent.toLowerCase();
-            if (name.includes(query) || textContent.includes(query)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
+        filterStudents(val);
+        filterSheetStudents(val);
+
+        const query = val.toLowerCase().trim();
+        filteredFeedSlips = slipsData.filter(slip => {
+            const name = slip.name.toLowerCase();
+            const focus = slip.focus.toLowerCase();
+            const summary = slip.summary.toLowerCase();
+            const roll = slip.roll_no.toLowerCase();
+            const rankStr = slip.rank ? String(slip.rank) : '';
+            return name.includes(query) || focus.includes(query) || summary.includes(query) || roll.includes(query) || rankStr.includes(query);
         });
 
-        // 2. Filter Mobile Pills
-        const pills = document.querySelectorAll('.mobile-pill-card');
-        pills.forEach(pill => {
-            const name = pill.querySelector('.pill-title').textContent.toLowerCase();
-            const textContent = pill.textContent.toLowerCase();
-            if (name.includes(query) || textContent.includes(query)) {
-                pill.style.display = 'flex';
-            } else {
-                pill.style.display = 'none';
-            }
-        });
+        const container = document.getElementById('slips-feed-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        
+        currentFeedIndex = 0;
+        appendFeedBatch();
     }
 
-    // Select and load a student choice slip
+    // Search filtering for desktop student cards
+    function filterStudents(val) {
+        const query = val.toLowerCase().trim();
+
+        filteredDesktopSlips = slipsData.filter(slip => {
+            const name = slip.name.toLowerCase();
+            const focus = slip.focus.toLowerCase();
+            const summary = slip.summary.toLowerCase();
+            const roll = slip.roll_no.toLowerCase();
+            const rankStr = slip.rank ? String(slip.rank) : '';
+            return name.includes(query) || focus.includes(query) || summary.includes(query) || roll.includes(query) || rankStr.includes(query);
+        });
+
+        const container = document.getElementById('student-cards-container');
+        if (container) {
+            container.innerHTML = '';
+            const spinner = document.createElement('div');
+            spinner.id = 'desktop-list-spinner';
+            spinner.style.cssText = 'text-align: center; padding: 15px; display: none; color: #2563eb; font-weight: bold; width: 100%;';
+            spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            container.appendChild(spinner);
+        }
+        
+        currentDesktopIndex = 0;
+        appendDesktopBatch();
+    }
+
+    // Progressive append for desktop sidebar list
+    function appendDesktopBatch() {
+        const container = document.getElementById('student-cards-container');
+        if (!container) return;
+        
+        const spinner = document.getElementById('desktop-list-spinner');
+        if (spinner) spinner.style.display = 'none';
+        
+        const end = Math.min(currentDesktopIndex + BATCH_SIZE, filteredDesktopSlips.length);
+        if (currentDesktopIndex >= end) return;
+        
+        let html = '';
+        for (let i = currentDesktopIndex; i < end; i++) {
+            const slip = filteredDesktopSlips[i];
+            const isActive = slip.id === currentSlipId ? 'active' : '';
+            
+            let badgeHtml = '';
+            if (slip.rank) {
+                badgeHtml = `
+                    <span style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #b45309; font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; border: 1px solid #fcd34d; display: inline-flex; align-items: center; gap: 4px;">
+                        <i class="fas fa-trophy" style="font-size: 0.7rem;"></i> Rank ${slip.rank}
+                    </span>`;
+            } else {
+                badgeHtml = `
+                    <span style="background: #eff6ff; color: #2563eb; font-weight: 700; font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; border: 1px solid #dbeafe;">
+                        CGPA: ${slip.cgpa}
+                    </span>`;
+            }
+            
+            html += `
+                <div class="student-card ${isActive}" onclick="selectStudent(${slip.id})" id="student-card-${slip.id}" style="
+                    border: 1.5px solid #e2e8f0;
+                    border-radius: 12px;
+                    padding: 14px;
+                    background: #fff;
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    position: relative;
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; gap: 10px;">
+                        <span class="student-name" style="font-weight: 700; color: #0f172a; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            ${slip.name}
+                        </span>
+                        ${badgeHtml}
+                    </div>
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">
+                        <i class="fas fa-bullseye"></i> ${slip.focus}
+                    </div>
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-family: monospace;">
+                        Roll: ${slip.roll_no}
+                    </div>
+                </div>
+            `;
+        }
+        
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        while (tempDiv.firstChild) {
+            container.appendChild(tempDiv.firstChild);
+        }
+        
+        currentDesktopIndex = end;
+        
+        const activeCard = document.getElementById(`student-card-${currentSlipId}`);
+        if (activeCard) activeCard.classList.add('active');
+    }
+
+    // Search filtering for mobile drawer sheet
+    function filterSheetStudents(val) {
+        const query = val.toLowerCase().trim();
+        
+        filteredMobileSlips = slipsData.filter(slip => {
+            const name = slip.name.toLowerCase();
+            const focus = slip.focus.toLowerCase();
+            const summary = slip.summary.toLowerCase();
+            const roll = slip.roll_no.toLowerCase();
+            const rankStr = slip.rank ? String(slip.rank) : '';
+            return name.includes(query) || focus.includes(query) || summary.includes(query) || roll.includes(query) || rankStr.includes(query);
+        });
+
+        const container = document.getElementById('sheet-cards-container');
+        if (container) {
+            container.innerHTML = '';
+            const spinner = document.createElement('div');
+            spinner.id = 'sheet-list-spinner';
+            spinner.style.cssText = 'text-align: center; padding: 15px; display: none; color: #2563eb; font-weight: bold; width: 100%;';
+            spinner.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            container.appendChild(spinner);
+        }
+        
+        currentMobileIndex = 0;
+        appendMobileBatch();
+    }
+
+    // Progressive append for mobile bottom sheet list
+    function appendMobileBatch() {
+        const container = document.getElementById('sheet-cards-container');
+        if (!container) return;
+        
+        const spinner = document.getElementById('sheet-list-spinner');
+        if (spinner) spinner.style.display = 'none';
+        
+        const end = Math.min(currentMobileIndex + BATCH_SIZE, filteredMobileSlips.length);
+        if (currentMobileIndex >= end) return;
+        
+        let html = '';
+        for (let i = currentMobileIndex; i < end; i++) {
+            const slip = filteredMobileSlips[i];
+            const isActive = slip.id === currentSlipId ? 'active' : '';
+            
+            let badgeHtml = '';
+            if (slip.rank) {
+                badgeHtml = `
+                    <span class="rank-badge-pill">
+                        <i class="fas fa-trophy"></i> Rank ${slip.rank}
+                    </span>`;
+            } else {
+                badgeHtml = `
+                    <span class="cgpa-badge-pill">
+                        CGPA: ${slip.cgpa}
+                    </span>`;
+            }
+            
+            html += `
+                <div class="sheet-student-card ${isActive}" onclick="selectStudent(${slip.id}); closeBottomSheet();" id="sheet-card-${slip.id}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span class="sheet-student-name" style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">
+                            ${slip.name}
+                        </span>
+                        ${badgeHtml}
+                    </div>
+                    <div style="font-size: 0.8rem; color: #475569; font-weight: 600; margin-bottom: 4px;">
+                        <i class="fas fa-bullseye" style="color: #2563eb;"></i> ${slip.focus}
+                    </div>
+                    <div style="font-size: 0.78rem; color: #64748b; line-height: 1.3;">
+                        ${slip.summary}
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; font-family: monospace; margin-top: 4px;">
+                        Roll: ${slip.roll_no}
+                    </div>
+                </div>
+            `;
+        }
+        
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        while (tempDiv.firstChild) {
+            container.appendChild(tempDiv.firstChild);
+        }
+        
+        currentMobileIndex = end;
+        
+        const activeSheetCard = document.getElementById(`sheet-card-${currentSlipId}`);
+        if (activeSheetCard) activeSheetCard.classList.add('active');
+    }
+
+    // Appending slips feed cards progressively
+    function appendFeedBatch(customSize = null) {
+        const container = document.getElementById('slips-feed-container');
+        if (!container) return;
+
+        const size = customSize || FEED_BATCH_SIZE;
+        const end = Math.min(currentFeedIndex + size, filteredFeedSlips.length);
+        if (currentFeedIndex >= end) return;
+
+        let html = '';
+        for (let i = currentFeedIndex; i < end; i++) {
+            const slip = filteredFeedSlips[i];
+            
+            let badgeHtml = '';
+            if (slip.rank) {
+                badgeHtml = `
+                    <span style="background: linear-gradient(135deg, #fef3c7, #fde68a); color: #b45309; font-size: 0.8rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; border: 1px solid #fcd34d; display: inline-flex; align-items: center; gap: 4px;">
+                        <i class="fas fa-trophy" style="font-size: 0.75rem;"></i> Rank ${slip.rank} Choice Filling
+                    </span>`;
+            } else {
+                badgeHtml = `
+                    <span style="background: #eff6ff; color: #2563eb; font-size: 0.8rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid #dbeafe;">
+                        CGPA: ${slip.cgpa}
+                    </span>`;
+            }
+
+            html += `
+                <div class="feed-card" id="slip-feed-item-${slip.id}">
+                    <!-- Card Top Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; flex-wrap: wrap;">
+                        <div>
+                            <h3 style="margin: 0; color: #0f172a; font-size: 1.25rem; font-weight: 800;">${slip.name}</h3>
+                            <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px; font-size: 0.8rem; color: #64748b;">
+                                <span><i class="fas fa-fingerprint"></i> Roll: ${slip.roll_no}</span>
+                                <span>•</span>
+                                <span style="color: #2563eb; font-weight: 700; background: #eff6ff; padding: 1px 8px; border-radius: 4px;">${slip.focus}</span>
+                            </div>
+                        </div>
+                        <div>
+                            ${badgeHtml}
+                        </div>
+                    </div>
+
+                    <!-- Strategy accordion inside card -->
+                    <div class="strategy-container">
+                        <div class="strategy-header" onclick="toggleFeedStrategyCollapse(${slip.id})" style="display: flex; align-items: center; justify-content: space-between; background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; color: #1e40af; cursor: pointer; border-radius: 8px;">
+                            <span>
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Choice Strategy Summary</span>
+                            </span>
+                            <i id="feed-strategy-chevron-${slip.id}" class="fas fa-chevron-down" style="transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="feed-strategy-body-${slip.id}" style="display: block; padding: 12px; border: 1px solid #bfdbfe; border-top: none; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; background: #f8fafc; font-size: 0.85rem; color: #334155; line-height: 1.5;">
+                            ${slip.summary}
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Frame displaying slip image -->
+                    <div style="position: relative; width: 100%;">
+                        ${isPremiumUser ? `
+                        <div class="feed-image-frame">
+                            <div style="position: absolute; bottom: 12px; right: 12px; display: flex; gap: 6px; z-index: 10;">
+                                <button onclick="toggleCardZoom(${slip.id})" style="background: rgba(255,255,255,0.9); border: 1px solid #cbd5e1; border-radius: 6px; height: 32px; padding: 0 10px; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; color: #334155; box-shadow: 0 2px 8px rgba(0,0,0,0.05);"><i class="fas fa-search-plus"></i> <span id="card-zoom-text-${slip.id}">Zoom</span></button>
+                                <a href="${getImageUrl(slip.image)}" target="_blank" style="background: #2563eb; color: #fff; text-decoration: none; border-radius: 6px; height: 32px; padding: 0 10px; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(37,99,235,0.15); justify-content: center;"><i class="fas fa-external-link-alt"></i> Full</a>
+                            </div>
+                            <img id="feed-image-${slip.id}" src="${getImageUrl(slip.image)}" loading="lazy" alt="Choice Filling Slip">
+                        </div>
+                        ` : `
+                        <div class="feed-image-frame" style="position: relative; filter: blur(4px); pointer-events: none; height: 280px; justify-content: center; align-items: center;">
+                            <i class="fas fa-file-invoice" style="font-size: 5rem; color: #cbd5e1;"></i>
+                        </div>
+                        <div style="position: absolute; inset: 0; background: rgba(15, 23, 42, 0.75); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; border-radius: 12px; z-index: 5; box-sizing: border-box; backdrop-filter: blur(4px);">
+                            <span style="font-size: 2rem; margin-bottom: 8px;">🔒</span>
+                            <h4 style="color: #fff; margin: 0 0 8px; font-weight: 800; font-size: 1.05rem;">Choice Slip Locked</h4>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.8rem; margin: 0 0 16px; max-width: 280px; line-height: 1.4;">Upgrade to Premium to view the actual choice filling reference slip of Rank ${slip.rank || 'N/A'}.</p>
+                            <a href="/premium" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1a1a1a; font-weight: 800; font-size: 0.8rem; padding: 8px 20px; border-radius: 20px; text-decoration: none; box-shadow: 0 4px 12px rgba(251,191,36,0.3); display: inline-flex; align-items: center; gap: 6px; justify-content: center;"><i class="fas fa-crown"></i> Unlock Now</a>
+                        </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        
+        // Append cards and register in intersection observer for auto highlights
+        while (tempDiv.firstChild) {
+            const child = tempDiv.firstChild;
+            container.appendChild(child);
+            if (child.classList && child.classList.contains('feed-card')) {
+                observer.observe(child);
+            }
+        }
+
+        currentFeedIndex = end;
+    }
+
+    // Scroll helper: scrolls feed to a target card
     function selectStudent(id) {
         id = parseInt(id);
         currentSlipId = id;
-        
-        // Find student slip object
-        const slip = slipsData.find(item => item.id === id);
-        if (!slip) return;
 
-        // 1. Update active card in desktop sidebar
+        const targetIndex = slipsData.findIndex(item => item.id === id);
+        if (targetIndex !== -1 && targetIndex >= currentFeedIndex) {
+            // Load feed elements up to the selected slip index
+            const sizeNeeded = (targetIndex + 1) - currentFeedIndex;
+            appendFeedBatch(sizeNeeded);
+        }
+
+        const targetElement = document.getElementById(`slip-feed-item-${id}`);
+        if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        highlightListOnly(id);
+    }
+
+    // Helper to toggle sidebar highlights
+    function highlightListOnly(id) {
         document.querySelectorAll('.student-card').forEach(card => card.classList.remove('active'));
         const activeCard = document.getElementById(`student-card-${id}`);
         if (activeCard) activeCard.classList.add('active');
 
-        // 2. Update active pill in mobile carousel & center it
-        document.querySelectorAll('.mobile-pill-card').forEach(pill => pill.classList.remove('active'));
-        const activePill = document.getElementById(`mobile-pill-${id}`);
-        if (activePill) {
-            activePill.classList.add('active');
-            activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
+        document.querySelectorAll('.sheet-student-card').forEach(card => card.classList.remove('active'));
+        const activeSheetCard = document.getElementById(`sheet-card-${id}`);
+        if (activeSheetCard) activeSheetCard.classList.add('active');
 
-        // 3. Update details in right panel
-        if (activeName) activeName.textContent = slip.name;
-        if (activeCgpa) activeCgpa.textContent = `CGPA: ${slip.cgpa}`;
-        if (activeFocus) activeFocus.textContent = slip.focus;
-        if (activeRoll) activeRoll.textContent = slip.roll_no;
-        if (activeSummary) activeSummary.textContent = slip.summary;
-
-        // 4. Load corresponding image
-        if (slipImage) slipImage.src = getImageUrl(slip.image);
-
-        // 5. Reset zoom/pan parameters
-        resetZoom();
-    }
-
-    // Zoom & Pan Logics
-    function updateTransform() {
-        if (!slipImage) return;
-        slipImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
-        if (zoomLevelEl) zoomLevelEl.textContent = `${Math.round(currentZoom * 100)}%`;
-    }
-
-    function zoomIn() {
-        if (currentZoom < 4) {
-            currentZoom += 0.25;
-            updateTransform();
-        }
-    }
-
-    function zoomOut() {
-        if (currentZoom > 0.5) {
-            currentZoom -= 0.25;
-            updateTransform();
-        }
-    }
-
-    function resetZoom() {
-        currentZoom = 1;
-        translateX = 0;
-        translateY = 0;
-        updateTransform();
-    }
-
-    function openFullsize() {
-        const slip = slipsData.find(item => item.id === currentSlipId);
+        const slip = slipsData.find(item => item.id === id);
         if (slip) {
-            window.open(getImageUrl(slip.image), '_blank');
+            const mobileTriggerText = document.getElementById('mobile-trigger-text');
+            if (mobileTriggerText) {
+                mobileTriggerText.textContent = slip.rank ? `Active: Rank ${slip.rank}` : `Active: ${slip.name}`;
+            }
         }
     }
 
-    // Drag-to-Pan Handlers
-    function startDrag(e) {
-        isDragging = true;
-        if (viewerFrame) viewerFrame.style.cursor = 'grabbing';
-        
-        // Compute position based on scale
-        startX = e.clientX - translateX * currentZoom;
-        startY = e.clientY - translateY * currentZoom;
-        
-        e.preventDefault();
+    // Spying observer to highlight lists automatically on scrolling
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = parseInt(entry.target.id.replace('slip-feed-item-', ''));
+                highlightListOnly(id);
+            }
+        });
+    }, {
+        root: document.getElementById('slips-feed-container'),
+        threshold: 0.35
+    });
+
+    // Expand strategy details inside the feed card
+    function toggleFeedStrategyCollapse(id) {
+        const body = document.getElementById(`feed-strategy-body-${id}`);
+        const chevron = document.getElementById(`feed-strategy-chevron-${id}`);
+        if (!body) return;
+
+        if (body.style.display === 'none' || !body.style.display) {
+            body.style.display = 'block';
+            if (chevron) chevron.classList.add('rotated');
+        } else {
+            body.style.display = 'none';
+            if (chevron) chevron.classList.remove('rotated');
+        }
     }
 
-    function drag(e) {
-        if (!isDragging) return;
-        
-        translateX = (e.clientX - startX) / currentZoom;
-        translateY = (e.clientY - startY) / currentZoom;
-        
-        updateTransform();
+    // Toggle card image zoom within container
+    function toggleCardZoom(id) {
+        const img = document.getElementById(`feed-image-${id}`);
+        const btnText = document.getElementById(`card-zoom-text-${id}`);
+        if (!img) return;
+
+        if (img.classList.contains('zoomed')) {
+            img.classList.remove('zoomed');
+            if (btnText) btnText.textContent = 'Zoom';
+        } else {
+            img.classList.add('zoomed');
+            if (btnText) btnText.textContent = 'Reset';
+        }
     }
 
-    function endDrag() {
-        isDragging = false;
-        if (viewerFrame) viewerFrame.style.cursor = 'grab';
+    // Bottom Sheet Controls
+    function openBottomSheet() {
+        const sheet = document.getElementById('mobile-bottom-sheet');
+        const backdrop = document.getElementById('mobile-bottom-sheet-backdrop');
+        if (sheet && backdrop) {
+            backdrop.style.display = 'block';
+            setTimeout(() => {
+                sheet.classList.add('active');
+                backdrop.classList.add('active');
+            }, 10);
+        }
     }
 
-    if (viewerFrame) {
-        // Wheel listener for easy desk zooming
-        viewerFrame.addEventListener('wheel', function(e) {
-            e.preventDefault();
-            if (e.deltaY < 0) {
-                if (currentZoom < 4) {
-                    currentZoom += 0.1;
-                    updateTransform();
-                }
-            } else {
-                if (currentZoom > 0.5) {
-                    currentZoom -= 0.1;
-                    updateTransform();
+    function closeBottomSheet() {
+        const sheet = document.getElementById('mobile-bottom-sheet');
+        const backdrop = document.getElementById('mobile-bottom-sheet-backdrop');
+        if (sheet && backdrop) {
+            sheet.classList.remove('active');
+            backdrop.classList.remove('active');
+            setTimeout(() => {
+                backdrop.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    // Set up infinite scroll listeners
+    const desktopContainer = document.getElementById('student-cards-container');
+    if (desktopContainer) {
+        desktopContainer.addEventListener('scroll', () => {
+            if (desktopContainer.scrollTop + desktopContainer.clientHeight >= desktopContainer.scrollHeight - 80) {
+                const spinner = document.getElementById('desktop-list-spinner');
+                if (spinner && spinner.style.display === 'none' && currentDesktopIndex < filteredDesktopSlips.length) {
+                    spinner.style.display = 'block';
+                    desktopContainer.appendChild(spinner);
+                    setTimeout(appendDesktopBatch, 120);
                 }
             }
-        }, { passive: false });
+        });
+    }
 
-        // Touch support (simple double tap to zoom reset)
-        let lastTap = 0;
-        viewerFrame.addEventListener('touchend', function(e) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
-            if (tapLength < 300 && tapLength > 0) {
-                resetZoom();
-                e.preventDefault();
+    const sheetContent = document.querySelector('.bottom-sheet-content');
+    if (sheetContent) {
+        sheetContent.addEventListener('scroll', () => {
+            if (sheetContent.scrollTop + sheetContent.clientHeight >= sheetContent.scrollHeight - 80) {
+                const spinner = document.getElementById('sheet-list-spinner');
+                if (spinner && spinner.style.display === 'none' && currentMobileIndex < filteredMobileSlips.length) {
+                    spinner.style.display = 'block';
+                    const listContainer = document.getElementById('sheet-cards-container');
+                    if (listContainer) listContainer.appendChild(spinner);
+                    setTimeout(appendMobileBatch, 120);
+                }
             }
-            lastTap = currentTime;
+        });
+    }
+
+    // Scroll listener on main slips feed
+    const feedContainer = document.getElementById('slips-feed-container');
+    if (feedContainer) {
+        feedContainer.addEventListener('scroll', () => {
+            if (feedContainer.scrollTop + feedContainer.clientHeight >= feedContainer.scrollHeight - 150) {
+                if (currentFeedIndex < filteredFeedSlips.length) {
+                    appendFeedBatch();
+                }
+            }
         });
     }
 
     // Auto-initialize first student on load
     document.addEventListener('DOMContentLoaded', () => {
+        filteredDesktopSlips = [...slipsData];
+        filteredMobileSlips = [...slipsData];
+        filteredFeedSlips = [...slipsData];
+        
+        filterStudents('');
+        filterSheetStudents('');
+        
+        // Load initial feed batch
+        appendFeedBatch();
+        
         if (slipsData && slipsData.length > 0) {
             selectStudent(slipsData[0].id);
         }

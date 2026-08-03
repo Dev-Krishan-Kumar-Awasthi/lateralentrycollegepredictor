@@ -977,7 +977,84 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
         doc.text('MP DTE LATERAL ENTRY — CHOICE LIST', 40, 38);
 
         let y = 95; // Pushed down to clear the page 1 header copyright box
+
+        // Build branch display text
+        const branchVal = `{% if 'All' in data.branch %}All Branches{% elif data.branch is string %}{{ data.branch | branch_name }} ({{ data.branch }}){% else %}{% for b in data.branch %}{{ b | branch_name }} ({{ b }}){% if not loop.last %}, {% endif %}{% endfor %}{% endif %}`;
+
+        // Add Prediction Criteria Table
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(33, 43, 54);
+        doc.text('Prediction Criteria', 30, y);
+        y += 10;
+
+        const criteriaRows = [
+            ['CGPA', '{{ data.cgpa }}'],
+            ['Category', '{{ data.category }}'],
+            ['Gender', "{{ 'Female' if data.gender == 'F' else 'Male' }}"],
+            ['College Type', "{{ data.college_type if data.college_type != 'GOVT+SFI' else 'Govt + Semi-Govt' }}"],
+            ['Branch', branchVal],
+            ['Domicile', "{{ 'MP Resident' if data.domicile == 'Y' else 'Non-MP' }}"]
+        ];
+
+        doc.autoTable({
+            startY: y,
+            body: criteriaRows,
+            theme: 'grid',
+            styles: {
+                fontSize: 9,
+                cellPadding: 4,
+                textColor: [33, 43, 54],
+                lineColor: [200, 200, 200],
+                lineWidth: 0.5
+            },
+            columnStyles: {
+                0: { cellWidth: 100, fontStyle: 'bold', fillColor: [245, 247, 250] },
+                1: { cellWidth: 682 }
+            },
+            margin: { left: 30, right: 30 }
+        });
+
+        y = doc.lastAutoTable.finalY + 25;
+
         document.querySelectorAll('[id^="results-table-"]').forEach(table => {
+            const year = table.id.replace('results-table-', '');
+            
+            // Extract Estimated Merit Rank Range from the prediction box preceding the table wrapper
+            const wrapper = table.closest('.table-wrapper');
+            let rankRangeText = '';
+            if (wrapper) {
+                const predBox = wrapper.previousElementSibling;
+                if (predBox && predBox.classList.contains('prediction-box')) {
+                    rankRangeText = predBox.innerText.trim();
+                }
+            }
+
+            // Check if we need to add a page or if we have enough space.
+            const pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+            if (y > pageHeight - 150) {
+                doc.addPage();
+                y = 95; // start below the copyright box of the new page
+            }
+
+            // Draw Year Heading
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.setTextColor(15, 40, 90);
+            doc.text(`Year ${year}`, 30, y);
+            y += 14;
+
+            // Draw Rank Range (if any)
+            if (rankRangeText) {
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(100, 116, 139); // Muted slate color
+                doc.text(rankRangeText, 30, y);
+                y += 12;
+            }
+
+            y += 6; // small gap before the table
+
             const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr => {
                 return Array.from(tr.querySelectorAll('td')).slice(1).map((td, index) => {
                     let text = td.innerText.trim();
@@ -1074,6 +1151,47 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
         doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(255);
         doc.text('My Shortlisted Colleges', 40, 38);
 
+        let y = 95; // Pushed down to clear the page 1 header copyright box
+
+        // Build branch display text
+        const branchVal = `{% if 'All' in data.branch %}All Branches{% elif data.branch is string %}{{ data.branch | branch_name }} ({{ data.branch }}){% else %}{% for b in data.branch %}{{ b | branch_name }} ({{ b }}){% if not loop.last %}, {% endif %}{% endfor %}{% endif %}`;
+
+        // Add Prediction Criteria Table
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(33, 43, 54);
+        doc.text('Prediction Criteria', 30, y);
+        y += 10;
+
+        const criteriaRows = [
+            ['CGPA', '{{ data.cgpa }}'],
+            ['Category', '{{ data.category }}'],
+            ['Gender', "{{ 'Female' if data.gender == 'F' else 'Male' }}"],
+            ['College Type', "{{ data.college_type if data.college_type != 'GOVT+SFI' else 'Govt + Semi-Govt' }}"],
+            ['Branch', branchVal],
+            ['Domicile', "{{ 'MP Resident' if data.domicile == 'Y' else 'Non-MP' }}"]
+        ];
+
+        doc.autoTable({
+            startY: y,
+            body: criteriaRows,
+            theme: 'grid',
+            styles: {
+                fontSize: 9,
+                cellPadding: 4,
+                textColor: [33, 43, 54],
+                lineColor: [200, 200, 200],
+                lineWidth: 0.5
+            },
+            columnStyles: {
+                0: { cellWidth: 100, fontStyle: 'bold', fillColor: [245, 247, 250] },
+                1: { cellWidth: 682 }
+            },
+            margin: { left: 30, right: 30 }
+        });
+
+        y = doc.lastAutoTable.finalY + 25;
+
         const rows = Array.from(document.querySelectorAll('.shortlist-check:checked')).map(cb => {
             return Array.from(cb.closest('tr').querySelectorAll('td')).slice(2).map((td, index) => {
                 let text = td.innerText.trim();
@@ -1088,7 +1206,7 @@ entry predictor, diploma to btech counseling mp, dte mp online lateral entry, mp
         });
 
         doc.autoTable({
-            startY: 95, // Pushed down to clear the page 1 header copyright box
+            startY: y,
             head: [['College Name', 'Branch', 'Type', 'Open Rank', 'Close Rank', 'Quota', 'Resident', 'Seats', 'Fee (approx)', 'Distance', 'Chance']],
             body: rows,
             theme: 'grid',

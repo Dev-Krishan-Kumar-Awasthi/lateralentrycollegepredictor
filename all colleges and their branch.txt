@@ -1,0 +1,1623 @@
+S.No.	College Code	College Name	Branch	Institute Type	Select / Remove
+1	1-36086671	Indira Gandhi Engineering College, Sagar (IGEC) (1981)
+Information Technology	GOVERNMENT AUTONOMOUS	
+2	1-36086671	Indira Gandhi Engineering College, Sagar (IGEC) (1981)
+Mechanical Engineering	GOVERNMENT AUTONOMOUS	
+3	1-36086671	Indira Gandhi Engineering College, Sagar (IGEC) (1981)
+Electronics and Communication Engineering	GOVERNMENT AUTONOMOUS	
+4	1-36086671	Indira Gandhi Engineering College, Sagar (IGEC) (1981)
+Electrical Engineering	GOVERNMENT AUTONOMOUS	
+5	1-36086671	Indira Gandhi Engineering College, Sagar (IGEC) (1981)
+Civil Engineering	GOVERNMENT AUTONOMOUS	
+6	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Civil Engineering	GOVERNMENT AUTONOMOUS	
+7	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Artificial Intelligence (AI) and Data Science	GOVERNMENT AUTONOMOUS	
+8	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Computer Science and Engineering	GOVERNMENT AUTONOMOUS	
+9	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Electrical Engineering	GOVERNMENT AUTONOMOUS	
+10	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Electronics and Communication Engineering	GOVERNMENT AUTONOMOUS	
+11	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Information Technology	GOVERNMENT AUTONOMOUS	
+12	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Industrial & Production Engineering	GOVERNMENT AUTONOMOUS	
+13	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+Mechanical Engineering	GOVERNMENT AUTONOMOUS	
+14	1-19904303	JABALPUR ENGINEERING COLLEGE, JABALPUR, (JEC) (1947)
+MECHATRONICS ENGINEERING	GOVERNMENT AUTONOMOUS	
+15	1-1230746451	Nowgong Engineering College, Nowgong (NEC) (2012)
+Mechanical Engineering	GOVERNMENT AUTONOMOUS	
+16	1-1230746451	Nowgong Engineering College, Nowgong (NEC) (2012)
+Civil Engineering	GOVERNMENT AUTONOMOUS	
+17	1-1230746451	Nowgong Engineering College, Nowgong (NEC) (2012)
+Electronics & Instrumentation	GOVERNMENT AUTONOMOUS	
+18	1-1230746451	Nowgong Engineering College, Nowgong (NEC) (2012)
+Electrical Engineering	GOVERNMENT AUTONOMOUS	
+19	1-22432791	Rewa Engineering College, Rewa (REC) (1964)
+Mechanical Engineering	GOVERNMENT AUTONOMOUS	
+20	1-22432791	Rewa Engineering College, Rewa (REC) (1964)
+Computer Science and Engineering	GOVERNMENT AUTONOMOUS	
+21	1-22432791	Rewa Engineering College, Rewa (REC) (1964)
+Civil Engineering	GOVERNMENT AUTONOMOUS	
+22	1-22432791	Rewa Engineering College, Rewa (REC) (1964)
+Electrical Engineering	GOVERNMENT AUTONOMOUS	
+23	1-22432791	Rewa Engineering College, Rewa (REC) (1964)
+Electronics and Communication Engineering	GOVERNMENT AUTONOMOUS	
+24	1-17122811	UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)
+Computer Science and Engineering	GOVERNMENT AUTONOMOUS	
+25	1-17122811	UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)
+Chemical Engineering	GOVERNMENT AUTONOMOUS	
+26	1-17122811	UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)
+Civil Engineering	GOVERNMENT AUTONOMOUS	
+27	1-17122811	UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)
+Electronics and Communication Engineering	GOVERNMENT AUTONOMOUS	
+28	1-17122811	UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)
+Electrical Engineering	GOVERNMENT AUTONOMOUS	
+29	1-17122811	UJJAIN ENGINEERING COLLEGE (FORMERLY GOVT. ENGG. COLLEGE ESTB. IN 1966)
+Mechanical Engineering	GOVERNMENT AUTONOMOUS	
+30	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Mechanical Engineering	GOVERNMENT AIDED	
+31	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+MATHEMATICS AND COMPUTING	GOVERNMENT AIDED	
+32	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+INFORMATION TECHNOLOGY(ARTIFICIAL INTELLIGENCE AND ROBOTICS)	GOVERNMENT AIDED	
+33	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+INTERNET OF THINGS(IOT)	GOVERNMENT AIDED	
+34	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Information Technology	GOVERNMENT AIDED [BRANCH TYPE-SELF FINANCE]	
+35	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+ELECTRICAL AND COMPUTER ENGINEERING	GOVERNMENT AIDED	
+36	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Computer Science and Technology	GOVERNMENT AIDED	
+37	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Electronics	GOVERNMENT AIDED	
+38	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Electronics and Telecommunications	GOVERNMENT AIDED	
+39	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Electrical Engineering	GOVERNMENT AIDED	
+40	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Chemical Engineering	GOVERNMENT AIDED [BRANCH TYPE-SELF FINANCE]	
+41	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+ARTIFICIAL INTELLIGENCE	GOVERNMENT AIDED	
+42	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Artificial Intelligence (AI) and Data Science	GOVERNMENT AIDED	
+43	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	GOVERNMENT AIDED	
+44	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Civil Engineering	GOVERNMENT AIDED	
+45	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+COMPUTER SCIENCE AND BUSINESS SYSTEM	GOVERNMENT AIDED	
+46	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Computer Science and Design	GOVERNMENT AIDED	
+47	1-10746341	Madhav Institute of Technology and Science, Gwalior (1957) (Deemed University)
+Computer Science and Engineering	GOVERNMENT AIDED	
+48	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Mechanical Engineering	GOVERNMENT AIDED	
+49	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Information Technology	GOVERNMENT AIDED	
+50	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Computer Science and Engineering	GOVERNMENT AIDED	
+51	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Civil Engineering	GOVERNMENT AIDED	
+52	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+COMPUTER SCIENCE AND ENGINEERING(IOT)	GOVERNMENT AIDED	
+53	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	GOVERNMENT AIDED	
+54	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	GOVERNMENT AIDED	
+55	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+COMPUTER SCIENCE AND ENGINEERING (BLOCK CHAIN)	GOVERNMENT AIDED	
+56	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	GOVERNMENT AIDED	
+57	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Electrical Engineering	GOVERNMENT AIDED	
+58	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Electronics and Communication Engineering	GOVERNMENT AIDED	
+59	1-3817141	Samrat Ashok Technological Institute, Vidisha (1960)
+Electronics & Instrumentation	GOVERNMENT AIDED	
+60	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Mechanical Engineering	GOVERNMENT AIDED	
+61	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Industrial & Production Engineering	GOVERNMENT AIDED	
+62	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Information Technology	GOVERNMENT AIDED [BRANCH TYPE-SELF FINANCE]	
+63	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Electrical Engineering	GOVERNMENT AIDED	
+64	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Electronics and Telecommunications	GOVERNMENT AIDED	
+65	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Electronics & Instrumentation	GOVERNMENT AIDED	
+66	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Civil Engineering	GOVERNMENT AIDED	
+67	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Biomedical Engineering (Indian Language-Hindi)	GOVERNMENT AIDED	
+68	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Bio-Medical Engineering	GOVERNMENT AIDED	
+69	1-10540411	Shri G.S. Institute of Technology & Science, Indore (M.P.) (1952)
+Computer Science and Engineering	GOVERNMENT AIDED	
+70	RGPV-14013	DR. A.P.J. ABDUL KALAM UIT, JHABUA
+Computer Science and Engineering	UNIVERSITY OWNED	
+71	RGPV-14013	DR. A.P.J. ABDUL KALAM UIT, JHABUA
+Mechanical Engineering	UNIVERSITY OWNED	
+72	1-6364391	Institute of Engineering and Technology, DAVV, Indore (1996)
+Civil Engineering	UNIVERSITY OWNED	
+73	1-6364391	Institute of Engineering and Technology, DAVV, Indore (1996)
+Computer Science and Engineering	UNIVERSITY OWNED	
+74	1-6364391	Institute of Engineering and Technology, DAVV, Indore (1996)
+Electronics & Instrumentation	UNIVERSITY OWNED	
+75	1-6364391	Institute of Engineering and Technology, DAVV, Indore (1996)
+Electronics and Telecommunications	UNIVERSITY OWNED	
+76	1-6364391	Institute of Engineering and Technology, DAVV, Indore (1996)
+Information Technology	UNIVERSITY OWNED	
+77	1-6364391	Institute of Engineering and Technology, DAVV, Indore (1996)
+Mechanical Engineering	UNIVERSITY OWNED	
+78	1-487692541	INSTITUTE OF ENGINEERING JIWAJI UNIVERSITY, GWALIOR (1996)
+Electronics	UNIVERSITY OWNED	
+79	1-487692541	INSTITUTE OF ENGINEERING JIWAJI UNIVERSITY, GWALIOR (1996)
+Computer Science and Engineering	UNIVERSITY OWNED	
+80	1-487692541	INSTITUTE OF ENGINEERING JIWAJI UNIVERSITY, GWALIOR (1996)
+Chemical Engineering	UNIVERSITY OWNED	
+81	1-513962641	SCHOOL OF ENGINEERING AND TECHNOLOGY, SAMRAT VIKRAMADITYA VISHWAVIDYALAYA, UJJAIN (2011)
+Civil Engineering	UNIVERSITY OWNED	
+82	1-513962641	SCHOOL OF ENGINEERING AND TECHNOLOGY, SAMRAT VIKRAMADITYA VISHWAVIDYALAYA, UJJAIN (2011)
+AGRICULTURAL ENGINEERING	UNIVERSITY OWNED	
+83	1-513962641	SCHOOL OF ENGINEERING AND TECHNOLOGY, SAMRAT VIKRAMADITYA VISHWAVIDYALAYA, UJJAIN (2011)
+Electrical Engineering	UNIVERSITY OWNED	
+84	1-513962641	SCHOOL OF ENGINEERING AND TECHNOLOGY, SAMRAT VIKRAMADITYA VISHWAVIDYALAYA, UJJAIN (2011)
+ELECTRONICS AND COMPUTER SCIENCE	UNIVERSITY OWNED	
+85	1-513962641	SCHOOL OF ENGINEERING AND TECHNOLOGY, SAMRAT VIKRAMADITYA VISHWAVIDYALAYA, UJJAIN (2011)
+Electronics and Communication Engineering	UNIVERSITY OWNED	
+86	1-513962641	SCHOOL OF ENGINEERING AND TECHNOLOGY, SAMRAT VIKRAMADITYA VISHWAVIDYALAYA, UJJAIN (2011)
+Mechanical Engineering	UNIVERSITY OWNED	
+87	1-3681041691	SCHOOL OF INFORMATION TECHNOLOGY, RGPV BHOPAL
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	UNIVERSITY OWNED	
+88	1-3681041691	SCHOOL OF INFORMATION TECHNOLOGY, RGPV BHOPAL
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	UNIVERSITY OWNED	
+89	1-3681041691	SCHOOL OF INFORMATION TECHNOLOGY, RGPV BHOPAL
+COMPUTER SCIENCE AND BUSINESS SYSTEM	UNIVERSITY OWNED	
+90	1-6049211	University Institute of Technology Barkatullah University, Bhopal (1997)
+Mechanical Engineering	UNIVERSITY OWNED	
+91	1-6049211	University Institute of Technology Barkatullah University, Bhopal (1997)
+Information Technology	UNIVERSITY OWNED	
+92	1-6049211	University Institute of Technology Barkatullah University, Bhopal (1997)
+Electronics and Communication Engineering	UNIVERSITY OWNED	
+93	1-6049211	University Institute of Technology Barkatullah University, Bhopal (1997)
+Electrical & Electronics Engineering	UNIVERSITY OWNED	
+94	1-6049211	University Institute of Technology Barkatullah University, Bhopal (1997)
+Civil Engineering	UNIVERSITY OWNED	
+95	1-6049211	University Institute of Technology Barkatullah University, Bhopal (1997)
+Computer Science and Engineering	UNIVERSITY OWNED	
+96	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Computer Science and Engineering	UNIVERSITY OWNED	
+97	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Civil Engineering	UNIVERSITY OWNED	
+98	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Automobile Engineering	UNIVERSITY OWNED	
+99	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Electrical & Electronics Engineering	UNIVERSITY OWNED	
+100	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Electronics and Communication Engineering	UNIVERSITY OWNED	
+101	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Information Technology	UNIVERSITY OWNED	
+102	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Mechanical Engineering	UNIVERSITY OWNED	
+103	1-10850721	University Institute of Technology RGPV, Bhopal (1986)
+Petrochemical Technology	UNIVERSITY OWNED	
+104	1-7161797003	UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI
+Mechanical Engineering	UNIVERSITY OWNED	
+105	1-7161797003	UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI
+Electrical & Electronics Engineering	UNIVERSITY OWNED	
+106	1-7161797003	UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI
+Computer Science and Engineering	UNIVERSITY OWNED	
+107	1-7161797003	UNIVERSITY INSTITUTE OF TECHNOLOGY RGPV, SHIVPURI
+Civil Engineering	UNIVERSITY OWNED	
+108	RGPV-14014	UNIVERSITY INSTITUTE OF TECHNOLOGY, SHAHDOL (CONSTITUENT COLLEGE OF RGPV)* (2015)
+Mechanical Engineering	UNIVERSITY OWNED	
+109	RGPV-14014	UNIVERSITY INSTITUTE OF TECHNOLOGY, SHAHDOL (CONSTITUENT COLLEGE OF RGPV)* (2015)
+MINING Eng	UNIVERSITY OWNED	
+110	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Civil Engineering	PRIVATE	
+111	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Computer Science and Engineering	PRIVATE	
+112	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+113	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+114	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Computer Science and Engineering-Indian language (Hindi)	PRIVATE	
+115	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+116	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Computer Science and Information Technology	PRIVATE	
+117	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Electronics and Communication Engineering	PRIVATE	
+118	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Electronics and Communication (Advanced Communication Technology)	PRIVATE	
+119	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+ELECTRONICS ENGINEERING (VLSI DESIGN AND TECHNOLOGY)	PRIVATE	
+120	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Information Technology	PRIVATE	
+121	1-4304071	Acropolis Institute of Technology & Research, Indore (2005)
+Mechanical Engineering	PRIVATE	
+122	1-6706611	ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)
+Mechanical Engineering	PRIVATE	
+123	1-6706611	ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)
+Electrical & Electronics Engineering	PRIVATE	
+124	1-6706611	ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)
+Computer Science and Engineering	PRIVATE	
+125	1-6706611	ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE)	PRIVATE	
+126	1-6706611	ADINA INSTITUTE OF SCIENCE & TECHNOLOGY, SAGAR (2009)
+Civil Engineering	PRIVATE	
+127	1-12200161	Aditya College of Technology & Science, Satna (2007)
+Civil Engineering	PRIVATE	
+128	1-12200161	Aditya College of Technology & Science, Satna (2007)
+Agri. Tech.	PRIVATE	
+129	1-12200161	Aditya College of Technology & Science, Satna (2007)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+130	1-12200161	Aditya College of Technology & Science, Satna (2007)
+Computer Science and Engineering	PRIVATE	
+131	1-12200161	Aditya College of Technology & Science, Satna (2007)
+Fire Tech & Safety	PRIVATE	
+132	1-12200161	Aditya College of Technology & Science, Satna (2007)
+Electrical & Electronics Engineering	PRIVATE	
+133	1-12200161	Aditya College of Technology & Science, Satna (2007)
+Mechanical Engineering	PRIVATE	
+134	1-12200161	Aditya College of Technology & Science, Satna (2007)
+MINING Eng	PRIVATE	
+135	1-35023771	All Saints College of Technology, Bhopal (2002)
+Mechanical Engineering	PRIVATE	
+136	1-35023771	All Saints College of Technology, Bhopal (2002)
+Electrical & Electronics Engineering	PRIVATE	
+137	1-35023771	All Saints College of Technology, Bhopal (2002)
+Electronics and Communication Engineering	PRIVATE	
+138	1-35023771	All Saints College of Technology, Bhopal (2002)
+Computer Science and Engineering	PRIVATE	
+139	1-35023771	All Saints College of Technology, Bhopal (2002)
+Civil Engineering	PRIVATE	
+140	1-5883793	Alpine Institute of Technology, Ujjain (2007)
+Civil Engineering	PRIVATE	
+141	1-5883793	Alpine Institute of Technology, Ujjain (2007)
+Computer Science and Engineering	PRIVATE	
+142	1-5883793	Alpine Institute of Technology, Ujjain (2007)
+Electrical Engineering	PRIVATE	
+143	1-5883793	Alpine Institute of Technology, Ujjain (2007)
+Mechanical Engineering	PRIVATE	
+144	1-1606601981	Annie Institute of Technology and Research Centre, Chhindwara (2013)
+Mechanical Engineering	PRIVATE	
+145	1-1606601981	Annie Institute of Technology and Research Centre, Chhindwara (2013)
+Electronics and Communication Engineering	PRIVATE	
+146	1-1606601981	Annie Institute of Technology and Research Centre, Chhindwara (2013)
+Civil Engineering	PRIVATE	
+147	1-1606601981	Annie Institute of Technology and Research Centre, Chhindwara (2013)
+Computer Science and Engineering	PRIVATE	
+148	1-1606601981	Annie Institute of Technology and Research Centre, Chhindwara (2013)
+Automobile Engineering	PRIVATE	
+149	1-10137131	Astral Institute of Technology & Research, Indore (2006)
+Civil Engineering	PRIVATE	
+150	1-10137131	Astral Institute of Technology & Research, Indore (2006)
+Computer Science and Engineering	PRIVATE	
+151	1-10137131	Astral Institute of Technology & Research, Indore (2006)
+Electronics and Communication Engineering	PRIVATE	
+152	1-10137131	Astral Institute of Technology & Research, Indore (2006)
+Mechanical Engineering	PRIVATE	
+153	1-10137131	Astral Institute of Technology & Research, Indore (2006)
+Information Technology	PRIVATE	
+154	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+Mechanical Engineering	PRIVATE	
+155	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+Electronics and Communication Engineering	PRIVATE	
+156	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+157	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+158	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+Electrical & Electronics Engineering	PRIVATE	
+159	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+Computer Science and Engineering	PRIVATE	
+160	1-4266721	Babulal Tarabai Institute of Research & Technology, Sagar (2008)
+Civil Engineering	PRIVATE	
+161	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+Civil Engineering	PRIVATE	
+162	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+COMPUTER SCIENCE	PRIVATE	
+163	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+Computer Science and Engineering	PRIVATE	
+164	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+165	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+166	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+Electronics and Communication Engineering	PRIVATE	
+167	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+168	1-3130963	BADERIA GLOBAL INSTITUTE OF ENGINEERING &amp; MANAGEMENT, JABALPUR
+Mechanical Engineering	PRIVATE	
+169	1-2557985	Bansal College of Engineering, Obedullaganj, Raisen (2002)
+Mechanical Engineering	PRIVATE	
+170	1-2557985	Bansal College of Engineering, Obedullaganj, Raisen (2002)
+Electronics and Communication Engineering	PRIVATE	
+171	1-2557985	Bansal College of Engineering, Obedullaganj, Raisen (2002)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+172	1-2557985	Bansal College of Engineering, Obedullaganj, Raisen (2002)
+Electrical & Electronics Engineering	PRIVATE	
+173	1-2557985	Bansal College of Engineering, Obedullaganj, Raisen (2002)
+Computer Science and Engineering	PRIVATE	
+174	1-2557985	Bansal College of Engineering, Obedullaganj, Raisen (2002)
+Civil Engineering	PRIVATE	
+175	1-5931951	Bansal Institute of Research & Technology, Bhopal (2007)
+Civil Engineering	PRIVATE	
+176	1-5931951	Bansal Institute of Research & Technology, Bhopal (2007)
+Computer Science and Engineering	PRIVATE	
+177	1-5931951	Bansal Institute of Research & Technology, Bhopal (2007)
+Electrical & Electronics Engineering	PRIVATE	
+178	1-5931951	Bansal Institute of Research & Technology, Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+179	1-5931951	Bansal Institute of Research & Technology, Bhopal (2007)
+Electronics and Communication Engineering	PRIVATE	
+180	1-5931951	Bansal Institute of Research & Technology, Bhopal (2007)
+Mechanical Engineering	PRIVATE	
+181	1-9760743	Bansal Institute of Research Technology & Science, Bhopal (2008)
+Mechanical Engineering	PRIVATE	
+182	1-9760743	Bansal Institute of Research Technology & Science, Bhopal (2008)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+183	1-9760743	Bansal Institute of Research Technology & Science, Bhopal (2008)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+184	1-9760743	Bansal Institute of Research Technology & Science, Bhopal (2008)
+Civil Engineering	PRIVATE	
+185	1-9760743	Bansal Institute of Research Technology & Science, Bhopal (2008)
+Computer Science and Engineering	PRIVATE	
+186	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+Computer Science and Engineering	PRIVATE	
+187	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+Civil Engineering	PRIVATE	
+188	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+189	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+Electronics and Communication Engineering	PRIVATE	
+190	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+Electrical & Electronics Engineering	PRIVATE	
+191	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+Mechanical Engineering	PRIVATE	
+192	1-9275063	Bansal Institute of Science & Technology, Bhopal (2000)
+Information Technology	PRIVATE	
+193	1-465688831	Bethesda Institute of Technology and Science, Gwalior (2011)
+Mechanical Engineering	PRIVATE	
+194	1-465688831	Bethesda Institute of Technology and Science, Gwalior (2011)
+Electrical & Electronics Engineering	PRIVATE	
+195	1-465688831	Bethesda Institute of Technology and Science, Gwalior (2011)
+Electronics and Communication Engineering	PRIVATE	
+196	1-465688831	Bethesda Institute of Technology and Science, Gwalior (2011)
+Civil Engineering	PRIVATE	
+197	1-465688831	Bethesda Institute of Technology and Science, Gwalior (2011)
+Computer Science and Engineering	PRIVATE	
+198	1-10066704	BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL (2009)
+Computer Science and Engineering	PRIVATE	
+199	1-10066704	BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL (2009)
+Electrical & Electronics Engineering	PRIVATE	
+200	1-10066704	BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL (2009)
+Electronics and Communication Engineering	PRIVATE	
+201	1-10066704	BHOPAL INSTITUTE OF TECHNOLOGY & MANAGEMENT, BHOPAL (2009)
+Mechanical Engineering	PRIVATE	
+202	1-9995654	BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)
+Mechanical Engineering	PRIVATE	
+203	1-9995654	BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)
+Electronics and Communication Engineering	PRIVATE	
+204	1-9995654	BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)
+Electrical & Electronics Engineering	PRIVATE	
+205	1-9995654	BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)
+Computer Science and Engineering	PRIVATE	
+206	1-9995654	BHOPAL INSTITUTE OF TECHNOLOGY & SCIENCE, BHOPAL (2002)
+Civil Engineering	PRIVATE	
+207	1-10064214	BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Computer Science and Engineering	PRIVATE	
+208	1-10064214	BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Electrical & Electronics Engineering	PRIVATE	
+209	1-10064214	BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Electronics and Communication Engineering	PRIVATE	
+210	1-10064214	BHOPAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Mechanical Engineering	PRIVATE	
+211	1-2596391	BM College of Technology, Indore (2007)
+Information Technology	PRIVATE	
+212	1-2596391	BM College of Technology, Indore (2007)
+Mechanical Engineering	PRIVATE	
+213	1-2596391	BM College of Technology, Indore (2007)
+Electronics and Communication Engineering	PRIVATE	
+214	1-2596391	BM College of Technology, Indore (2007)
+Electrical & Electronics Engineering	PRIVATE	
+215	1-2596391	BM College of Technology, Indore (2007)
+Computer Science and Engineering	PRIVATE	
+216	1-2596391	BM College of Technology, Indore (2007)
+Civil Engineering	PRIVATE	
+217	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+218	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+Computer Science and Engineering	PRIVATE	
+219	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+Civil Engineering	PRIVATE	
+220	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+221	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+222	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+Mechanical Engineering	PRIVATE	
+223	1-416758821	Chameli Devi Group of Institutions, Indore (2006)
+Information Technology	PRIVATE	
+224	1-4590251	Corporate Institute of Science & Technology, Bhopal (2008)
+Mechanical Engineering	PRIVATE	
+225	1-4590251	Corporate Institute of Science & Technology, Bhopal (2008)
+Electronics and Communication Engineering	PRIVATE	
+226	1-4590251	Corporate Institute of Science & Technology, Bhopal (2008)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+227	1-4590251	Corporate Institute of Science & Technology, Bhopal (2008)
+Electrical & Electronics Engineering	PRIVATE	
+228	1-4590251	Corporate Institute of Science & Technology, Bhopal (2008)
+Computer Science and Engineering	PRIVATE	
+229	1-4590251	Corporate Institute of Science & Technology, Bhopal (2008)
+Civil Engineering	PRIVATE	
+230	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+Mechanical Engineering	PRIVATE	
+231	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+Computer Science and Engineering	PRIVATE	
+232	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+233	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+AUTOMATION AND ROBOTICS	PRIVATE	
+234	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+Electrical Engineering	PRIVATE	
+235	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+CYBER SECURITY	PRIVATE	
+236	1-43367278998	DR. BHAGAT SINGH RAI INSTITUTE OF TECHNOLOGY, SEONI
+DATA SCIENCE	PRIVATE	
+237	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+Electrical & Electronics Engineering	PRIVATE	
+238	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+BIO-TECHNOLOGY	PRIVATE	
+239	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+AGRICULTURE ENGINEERING	PRIVATE	
+240	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+241	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+Civil Engineering	PRIVATE	
+242	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+Computer Science and Engineering	PRIVATE	
+243	1-40403351	Guru Ramdas Khalsa Institute of Science & Technology, Jabalpur (1997)
+Mechanical Engineering	PRIVATE	
+244	1-6139181	Gwalior Institute of Information Technology, Gwalior (2008)
+Mechanical Engineering	PRIVATE	
+245	1-6139181	Gwalior Institute of Information Technology, Gwalior (2008)
+Information Technology	PRIVATE	
+246	1-6139181	Gwalior Institute of Information Technology, Gwalior (2008)
+Computer Science and Engineering	PRIVATE	
+247	1-6139181	Gwalior Institute of Information Technology, Gwalior (2008)
+Civil Engineering	PRIVATE	
+248	1-6139181	Gwalior Institute of Information Technology, Gwalior (2008)
+Electronics and Communication Engineering	PRIVATE	
+249	1-8424969	Gyan Ganga College of Technology, Jabalpur (2006)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+250	1-8424969	Gyan Ganga College of Technology, Jabalpur (2006)
+Artificial Intelligence (AI) and Data Science	PRIVATE	
+251	1-8424969	Gyan Ganga College of Technology, Jabalpur (2006)
+Computer Science and Engineering	PRIVATE	
+252	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+COMPUTER SCIENCE AND BUSINESS SYSTEM	PRIVATE	
+253	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+Computer Science and Engineering	PRIVATE	
+254	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+ARTIFICIAL INTELLIGENCE AND ROBOTICS	PRIVATE	
+255	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+Civil Engineering	PRIVATE	
+256	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+257	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+258	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+259	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+Electrical & Electronics Engineering	PRIVATE	
+260	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+Electrical Engineering	PRIVATE	
+261	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+Electronics and Communication Engineering	PRIVATE	
+262	1-8088311	GYAN GANGA INSTITUTE OF TECHNOLOGY & SCIENCE, JABALPUR (2003)
+Mechanical Engineering	PRIVATE	
+263	1-2558221	Gyan Sagar College of Engineering, Sagar (2009)
+Mechanical Engineering	PRIVATE	
+264	1-2558221	Gyan Sagar College of Engineering, Sagar (2009)
+Electrical & Electronics Engineering	PRIVATE	
+265	1-2558221	Gyan Sagar College of Engineering, Sagar (2009)
+Civil Engineering	PRIVATE	
+266	1-2558221	Gyan Sagar College of Engineering, Sagar (2009)
+Computer Science and Engineering	PRIVATE	
+267	1-2558221	Gyan Sagar College of Engineering, Sagar (2009)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE)	PRIVATE	
+268	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+Computer Science and Engineering	PRIVATE	
+269	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+Civil Engineering	PRIVATE	
+270	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+Electrical & Electronics Engineering	PRIVATE	
+271	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+Electronics and Communication Engineering	PRIVATE	
+272	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+273	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+274	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+Mechanical Engineering	PRIVATE	
+275	1-17257771	Hitkarni College of Engineering & Technology, Jabalpur (1997)
+Information Technology	PRIVATE	
+276	1-28713251	IASSCOM fortune Institute of Technology, Bhopal (2008)
+Mechanical Engineering	PRIVATE	
+277	1-28713251	IASSCOM fortune Institute of Technology, Bhopal (2008)
+Electronics and Communication Engineering	PRIVATE	
+278	1-28713251	IASSCOM fortune Institute of Technology, Bhopal (2008)
+Civil Engineering	PRIVATE	
+279	1-28713251	IASSCOM fortune Institute of Technology, Bhopal (2008)
+Computer Science and Engineering	PRIVATE	
+280	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+Computer Science and Engineering	PRIVATE	
+281	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+Civil Engineering	PRIVATE	
+282	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+Artificial Intelligence (AI) and Data Science	PRIVATE	
+283	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+Electronics and Communication Engineering	PRIVATE	
+284	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+Electrical & Electronics Engineering	PRIVATE	
+285	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+286	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+287	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+288	1-7650521	IES COLLEGE OF TECHNOLOGY, BHOPAL (2007)
+Mechanical Engineering	PRIVATE	
+289	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+290	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+ARTIFICIAL INTELLIGENCE AND ROBOTICS	PRIVATE	
+291	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+Computer Science and Engineering	PRIVATE	
+292	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+Civil Engineering	PRIVATE	
+293	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+ELECTRONICS AND COMPUTER SCIENCE	PRIVATE	
+294	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+Electronics and Communication Engineering	PRIVATE	
+295	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+296	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+Information Technology	PRIVATE	
+297	1-4279771	Indore Institute of Science & Technology, Indore (2003)
+Mechanical Engineering	PRIVATE	
+298	1-11448494	Infinity Management & Engineering College, Sagar (2008)
+Mechanical Engineering	PRIVATE	
+299	1-11448494	Infinity Management & Engineering College, Sagar (2008)
+Electronics and Communication Engineering	PRIVATE	
+300	1-11448494	Infinity Management & Engineering College, Sagar (2008)
+Electrical Engineering	PRIVATE	
+301	1-11448494	Infinity Management & Engineering College, Sagar (2008)
+Computer Science and Engineering	PRIVATE	
+302	1-11448494	Infinity Management & Engineering College, Sagar (2008)
+Civil Engineering	PRIVATE	
+303	1-11448494	Infinity Management & Engineering College, Sagar (2008)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+304	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+Computer Science and Engineering	PRIVATE	
+305	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+Civil Engineering	PRIVATE	
+306	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+307	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+308	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+309	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+Electronics and Communication Engineering	PRIVATE	
+310	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+Mechanical Engineering	PRIVATE	
+311	1-414297071	INSTITUTE OF TECHNOLOGY AND MANAGEMENT, GWALIOR (1997)
+Information Technology	PRIVATE	
+312	1-43880738564	IPS Academy Institute of Engineering and Science, Indore Off Campus-1
+Computer Science and Information Technology	PRIVATE	
+313	1-43880738564	IPS Academy Institute of Engineering and Science, Indore Off Campus-1
+Computer Science and Engineering	PRIVATE	
+314	1-43880738564	IPS Academy Institute of Engineering and Science, Indore Off Campus-1
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+315	1-43880738564	IPS Academy Institute of Engineering and Science, Indore Off Campus-1
+Computer Engineering	PRIVATE	
+316	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Chemical Engineering	PRIVATE	
+317	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Civil Engineering	PRIVATE	
+318	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Computer Science and Engineering	PRIVATE	
+319	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Computer Science and Information Technology	PRIVATE	
+320	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Computer Science & Engineering (Regional Courses)	PRIVATE	
+321	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+322	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+COMPUTER SCIENCE AND ENGINEERING(IOT)	PRIVATE	
+323	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+324	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+325	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Electrical & Electronics Engineering	PRIVATE	
+326	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Fire Tech & Safety	PRIVATE	
+327	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Electronics and Communication Engineering	PRIVATE	
+328	1-5746611	IPS Academy, Institute of Engineering and Science, Indore (1999)
+Mechanical Engineering	PRIVATE	
+329	1-4278461	IPS College of Technology & Management, Gwalior (2007)
+Mechanical Engineering	PRIVATE	
+330	1-4278461	IPS College of Technology & Management, Gwalior (2007)
+Electrical Engineering	PRIVATE	
+331	1-4278461	IPS College of Technology & Management, Gwalior (2007)
+Electronics and Communication Engineering	PRIVATE	
+332	1-4278461	IPS College of Technology & Management, Gwalior (2007)
+Computer Science and Engineering	PRIVATE	
+333	1-4278461	IPS College of Technology & Management, Gwalior (2007)
+Civil Engineering	PRIVATE	
+334	1-6050421	Jai Narain College of Technology, Bhopal (2003)
+Mechanical Engineering	PRIVATE	
+335	1-6050421	Jai Narain College of Technology, Bhopal (2003)
+Electrical & Electronics Engineering	PRIVATE	
+336	1-6050421	Jai Narain College of Technology, Bhopal (2003)
+Electronics and Communication Engineering	PRIVATE	
+337	1-6050421	Jai Narain College of Technology, Bhopal (2003)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+338	1-6050421	Jai Narain College of Technology, Bhopal (2003)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	PRIVATE	
+339	1-6050421	Jai Narain College of Technology, Bhopal (2003)
+Computer Science and Engineering	PRIVATE	
+340	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+Computer Science and Engineering	PRIVATE	
+341	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+AGRICULTURE ENGINEERING	PRIVATE	
+342	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+Civil Engineering	PRIVATE	
+343	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+344	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+345	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+346	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+Electronics and Communication Engineering	PRIVATE	
+347	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+Electrical & Electronics Engineering	PRIVATE	
+348	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+Mechanical Engineering	PRIVATE	
+349	1-6088380	Jawaharlal Institute of Technology, Borawan, Khargone (1997)
+Information Technology	PRIVATE	
+350	1-6739959	Jawaharlal Nehru College of Technology, Rewa (2007)
+Mechanical Engineering	PRIVATE	
+351	1-6739959	Jawaharlal Nehru College of Technology, Rewa (2007)
+MINING Eng	PRIVATE	
+352	1-6739959	Jawaharlal Nehru College of Technology, Rewa (2007)
+Electrical & Electronics Engineering	PRIVATE	
+353	1-6739959	Jawaharlal Nehru College of Technology, Rewa (2007)
+Electronics and Communication Engineering	PRIVATE	
+354	1-6739959	Jawaharlal Nehru College of Technology, Rewa (2007)
+Civil Engineering	PRIVATE	
+355	1-6739959	Jawaharlal Nehru College of Technology, Rewa (2007)
+Computer Science and Engineering	PRIVATE	
+356	1-7073935	Kailash Narayan Patidar College of Science & Technology, Bhopal (2008)
+Computer Science and Engineering	PRIVATE	
+357	1-7073935	Kailash Narayan Patidar College of Science & Technology, Bhopal (2008)
+Civil Engineering	PRIVATE	
+358	1-7073935	Kailash Narayan Patidar College of Science & Technology, Bhopal (2008)
+Electronics and Communication Engineering	PRIVATE	
+359	1-7073935	Kailash Narayan Patidar College of Science & Technology, Bhopal (2008)
+Electrical Engineering	PRIVATE	
+360	1-7073935	Kailash Narayan Patidar College of Science & Technology, Bhopal (2008)
+Mechanical Engineering	PRIVATE	
+361	1-11885876	Lakshmi Narain College of Technology & Science (RIT), Indore (2002)
+Mechanical Engineering	PRIVATE	
+362	1-11885876	Lakshmi Narain College of Technology & Science (RIT), Indore (2002)
+Electronics and Communication Engineering	PRIVATE	
+363	1-11885876	Lakshmi Narain College of Technology & Science (RIT), Indore (2002)
+Civil Engineering	PRIVATE	
+364	1-11885876	Lakshmi Narain College of Technology & Science (RIT), Indore (2002)
+Computer Science and Engineering	PRIVATE	
+365	1-5931131	Lakshmi Narain College of Technology & Science, Bhopal (2006)
+Computer Science and Engineering	PRIVATE	
+366	1-5931131	Lakshmi Narain College of Technology & Science, Bhopal (2006)
+Civil Engineering	PRIVATE	
+367	1-5931131	Lakshmi Narain College of Technology & Science, Bhopal (2006)
+Electronics and Communication Engineering	PRIVATE	
+368	1-5931131	Lakshmi Narain College of Technology & Science, Bhopal (2006)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+369	1-5931131	Lakshmi Narain College of Technology & Science, Bhopal (2006)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+370	1-5931131	Lakshmi Narain College of Technology & Science, Bhopal (2006)
+Mechanical Engineering	PRIVATE	
+371	1-6486163	Lakshmi Narain College of Technology Excellence, Bhopal (2007)
+Mechanical Engineering	PRIVATE	
+372	1-6486163	Lakshmi Narain College of Technology Excellence, Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+373	1-6486163	Lakshmi Narain College of Technology Excellence, Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+374	1-6486163	Lakshmi Narain College of Technology Excellence, Bhopal (2007)
+Electronics and Communication Engineering	PRIVATE	
+375	1-6486163	Lakshmi Narain College of Technology Excellence, Bhopal (2007)
+Electronics and Communication (Advanced Communication Technology)	PRIVATE	
+376	1-6486163	Lakshmi Narain College of Technology Excellence, Bhopal (2007)
+Computer Science and Engineering	PRIVATE	
+377	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+Computer Science and Engineering	PRIVATE	
+378	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+Civil Engineering	PRIVATE	
+379	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+Electronics and Communication (Advanced Communication Technology)	PRIVATE	
+380	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+Electrical & Electronics Engineering	PRIVATE	
+381	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+Electronics and Communication Engineering	PRIVATE	
+382	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	PRIVATE	
+383	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+384	1-5800621	Lakshmi Narain College of Technology, Bhopal (1994)
+Mechanical Engineering	PRIVATE	
+385	1-10912721	Lakshmi Narain College of Technology, Indore (2004)
+Mechanical Engineering	PRIVATE	
+386	1-10912721	Lakshmi Narain College of Technology, Indore (2004)
+Electronics and Communication Engineering	PRIVATE	
+387	1-10912721	Lakshmi Narain College of Technology, Indore (2004)
+Electrical & Electronics Engineering	PRIVATE	
+388	1-10912721	Lakshmi Narain College of Technology, Indore (2004)
+Computer Science and Engineering	PRIVATE	
+389	1-6244931	Lakshmi Narain College of Technology, Jabalpur (2008)
+Computer Science and Engineering	PRIVATE	
+390	1-6244931	Lakshmi Narain College of Technology, Jabalpur (2008)
+Civil Engineering	PRIVATE	
+391	1-6244931	Lakshmi Narain College of Technology, Jabalpur (2008)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+392	1-6244931	Lakshmi Narain College of Technology, Jabalpur (2008)
+Mechanical Engineering	PRIVATE	
+393	1-6244931	Lakshmi Narain College of Technology, Jabalpur (2008)
+MINING AND MINERAL PROCESSING	PRIVATE	
+394	1-5367771	LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)
+Mechanical Engineering	PRIVATE	
+395	1-5367771	LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)
+Electronics and Communication Engineering	PRIVATE	
+396	1-5367771	LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)
+Electrical & Electronics Engineering	PRIVATE	
+397	1-5367771	LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)
+Civil Engineering	PRIVATE	
+398	1-5367771	LAXMIPATI INSTITUTE OF SCIENCE & TECHNOLOGY, BHOPAL (2008)
+Computer Science and Engineering	PRIVATE	
+399	1-5726191	LNCT (BHOPAL) INDORE CAMPUS (2006)
+Computer Science and Engineering	PRIVATE	
+400	1-5726191	LNCT (BHOPAL) INDORE CAMPUS (2006)
+Civil Engineering	PRIVATE	
+401	1-5726191	LNCT (BHOPAL) INDORE CAMPUS (2006)
+Electronics and Communication Engineering	PRIVATE	
+402	1-5726191	LNCT (BHOPAL) INDORE CAMPUS (2006)
+Mechanical Engineering	PRIVATE	
+403	1-6220393	Mahakal Institute Technology & Management, Ujjain (2007)
+Civil Engineering	PRIVATE	
+404	1-6220393	Mahakal Institute Technology & Management, Ujjain (2007)
+Computer Science and Engineering	PRIVATE	
+405	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Computer Science and Engineering	PRIVATE	
+406	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Artificial Intelligence (AI) and Data Science	PRIVATE	
+407	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Civil Engineering	PRIVATE	
+408	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Electrical & Electronics Engineering	PRIVATE	
+409	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+410	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Electronics and Communication Engineering	PRIVATE	
+411	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Information Technology	PRIVATE	
+412	1-6020731	Mahakal Instute of Technology, Ujjain (2001)
+Mechanical Engineering	PRIVATE	
+413	1-8617021	Maharana Pratap College of Technology, Gwalior (1996)
+Mechanical Engineering	PRIVATE	
+414	1-8617021	Maharana Pratap College of Technology, Gwalior (1996)
+Information Technology	PRIVATE	
+415	1-8617021	Maharana Pratap College of Technology, Gwalior (1996)
+Electronics and Communication Engineering	PRIVATE	
+416	1-8617021	Maharana Pratap College of Technology, Gwalior (1996)
+Electrical Engineering	PRIVATE	
+417	1-8617021	Maharana Pratap College of Technology, Gwalior (1996)
+Civil Engineering	PRIVATE	
+418	1-8617021	Maharana Pratap College of Technology, Gwalior (1996)
+Computer Science and Engineering	PRIVATE	
+419	1-2018111	Malwa Institute of Science & Technology, Indore (2008)
+Computer Science and Engineering	PRIVATE	
+420	1-2018111	Malwa Institute of Science & Technology, Indore (2008)
+Civil Engineering	PRIVATE	
+421	1-2018111	Malwa Institute of Science & Technology, Indore (2008)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+422	1-2018111	Malwa Institute of Science & Technology, Indore (2008)
+Electronics and Communication Engineering	PRIVATE	
+423	1-2018111	Malwa Institute of Science & Technology, Indore (2008)
+Information Technology	PRIVATE	
+424	1-2018111	Malwa Institute of Science & Technology, Indore (2008)
+Mechanical Engineering	PRIVATE	
+425	1-10811151	Malwa Institute of Technology, Indore (2004)
+Mechanical Engineering	PRIVATE	
+426	1-10811151	Malwa Institute of Technology, Indore (2004)
+Information Technology	PRIVATE	
+427	1-10811151	Malwa Institute of Technology, Indore (2004)
+Electronics and Communication Engineering	PRIVATE	
+428	1-10811151	Malwa Institute of Technology, Indore (2004)
+Electrical & Electronics Engineering	PRIVATE	
+429	1-10811151	Malwa Institute of Technology, Indore (2004)
+Automobile Engineering	PRIVATE	
+430	1-10811151	Malwa Institute of Technology, Indore (2004)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+431	1-10811151	Malwa Institute of Technology, Indore (2004)
+Civil Engineering	PRIVATE	
+432	1-10811151	Malwa Institute of Technology, Indore (2004)
+Computer Science and Engineering	PRIVATE	
+433	1-5755071	Mathura Devi Institute of Technology & Management, Indore (2007)
+Computer Science and Engineering	PRIVATE	
+434	1-5755071	Mathura Devi Institute of Technology & Management, Indore (2007)
+Civil Engineering	PRIVATE	
+435	1-5755071	Mathura Devi Institute of Technology & Management, Indore (2007)
+Mechanical Engineering	PRIVATE	
+436	1-9569051	Millenium Institute of Technology and Science, Bhopal (2007)
+Mechanical Engineering	PRIVATE	
+437	1-9569051	Millenium Institute of Technology and Science, Bhopal (2007)
+Civil Engineering	PRIVATE	
+438	1-9569051	Millenium Institute of Technology and Science, Bhopal (2007)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+439	1-9569051	Millenium Institute of Technology and Science, Bhopal (2007)
+Computer Science and Engineering	PRIVATE	
+440	1-9569051	Millenium Institute of Technology and Science, Bhopal (2007)
+Electrical & Electronics Engineering	PRIVATE	
+441	1-9569051	Millenium Institute of Technology and Science, Bhopal (2007)
+Electronics and Communication Engineering	PRIVATE	
+442	1-11405511	Millenium Institute of Technology, Bhopal (2009)
+Computer Science and Engineering	PRIVATE	
+443	1-11405511	Millenium Institute of Technology, Bhopal (2009)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+444	1-11405511	Millenium Institute of Technology, Bhopal (2009)
+AIRCRAFT MAINTENANCE ENGINEERING	PRIVATE	
+445	1-11405511	Millenium Institute of Technology, Bhopal (2009)
+Civil Engineering	PRIVATE	
+446	1-11405511	Millenium Institute of Technology, Bhopal (2009)
+Mechanical Engineering	PRIVATE	
+447	1-10261013	MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Mechanical Engineering	PRIVATE	
+448	1-10261013	MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Civil Engineering	PRIVATE	
+449	1-10261013	MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Computer Science and Engineering	PRIVATE	
+450	1-10261013	MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Electronics and Communication Engineering	PRIVATE	
+451	1-10261013	MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	PRIVATE	
+452	1-10261013	MITTAL INSTITUTE OF TECHNOLOGY, BHOPAL (2007)
+Electrical Engineering	PRIVATE	
+453	1-6343661	Nagaji Institute of Technology & Management, Gwalior (2003)
+Electrical Engineering	PRIVATE	
+454	1-6343661	Nagaji Institute of Technology & Management, Gwalior (2003)
+Electronics and Communication Engineering	PRIVATE	
+455	1-6343661	Nagaji Institute of Technology & Management, Gwalior (2003)
+Computer Science and Engineering	PRIVATE	
+456	1-6343661	Nagaji Institute of Technology & Management, Gwalior (2003)
+Civil Engineering	PRIVATE	
+457	1-6343661	Nagaji Institute of Technology & Management, Gwalior (2003)
+Mechanical Engineering	PRIVATE	
+458	1-6343661	Nagaji Institute of Technology & Management, Gwalior (2003)
+Information Technology	PRIVATE	
+459	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Electrical & Electronics Engineering	PRIVATE	
+460	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Electronics and Communication Engineering	PRIVATE	
+461	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Computer Science and Information Technology	PRIVATE	
+462	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+463	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Computer Science and Engineering	PRIVATE	
+464	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Civil Engineering	PRIVATE	
+465	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Information Technology	PRIVATE	
+466	1-5936076	NRI Institute of Information Science & Technology, Bhopal (2001)
+Mechanical Engineering	PRIVATE	
+467	1-5171171	Oriental College of Technology, Bhopal (2002)
+Mechanical Engineering	PRIVATE	
+468	1-5171171	Oriental College of Technology, Bhopal (2002)
+Civil Engineering	PRIVATE	
+469	1-5171171	Oriental College of Technology, Bhopal (2002)
+Computer Science and Engineering	PRIVATE	
+470	1-5171171	Oriental College of Technology, Bhopal (2002)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+471	1-5171171	Oriental College of Technology, Bhopal (2002)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+472	1-5171171	Oriental College of Technology, Bhopal (2002)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+473	1-5171171	Oriental College of Technology, Bhopal (2002)
+Electrical & Electronics Engineering	PRIVATE	
+474	1-5171171	Oriental College of Technology, Bhopal (2002)
+Electronics and Communication Engineering	PRIVATE	
+475	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+Electrical & Electronics Engineering	PRIVATE	
+476	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+477	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+478	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+Electronics and Communication Engineering	PRIVATE	
+479	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+Computer Science and Engineering	PRIVATE	
+480	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+Civil Engineering	PRIVATE	
+481	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+Mechanical Engineering	PRIVATE	
+482	1-3589034	Oriental Institute of Science & Technology, Bhopal (1995)
+Information Technology	PRIVATE	
+483	1-9131301	PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)
+Mechanical Engineering	PRIVATE	
+484	1-9131301	PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)
+Civil Engineering	PRIVATE	
+485	1-9131301	PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)
+Computer Science and Engineering	PRIVATE	
+486	1-9131301	PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)
+Electronics and Communication Engineering	PRIVATE	
+487	1-9131301	PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+488	1-9131301	PATEL COLLEGE OF SCIENCE & TECHNOLOGY, INDORE (2005)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+489	1-5725961	Prashantee Institute of Technology & Science, Ujjain (2008)
+Electronics and Communication Engineering	PRIVATE	
+490	1-5725961	Prashantee Institute of Technology & Science, Ujjain (2008)
+Computer Science and Engineering	PRIVATE	
+491	1-5725961	Prashantee Institute of Technology & Science, Ujjain (2008)
+Artificial Intelligence (AI) and Data Science	PRIVATE	
+492	1-5725961	Prashantee Institute of Technology & Science, Ujjain (2008)
+Civil Engineering	PRIVATE	
+493	1-5725961	Prashantee Institute of Technology & Science, Ujjain (2008)
+Mechanical Engineering	PRIVATE	
+494	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+LOGISTICS	PRIVATE	
+495	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+Mechanical Engineering	PRIVATE	
+496	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+Civil Engineering	PRIVATE	
+497	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+498	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+AUTOMATION AND ROBOTICS	PRIVATE	
+499	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+CIVIL ENGINEERING WITH COMPUTER APPLICATION	PRIVATE	
+500	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+Computer Science and Engineering	PRIVATE	
+501	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+Electronics and Communication Engineering	PRIVATE	
+502	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+ELECTRICAL AND POWER ENGINEERING	PRIVATE	
+503	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+504	1-9559201	Prestige Institute of Engineering Management and Research, Indore (2008)
+Electrical Engineering	PRIVATE	
+505	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+Electrical & Electronics Engineering	PRIVATE	
+506	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+Electronics and Communication Engineering	PRIVATE	
+507	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+508	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+509	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+Computer Science and Engineering	PRIVATE	
+510	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+Civil Engineering	PRIVATE	
+511	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+Mechanical Engineering	PRIVATE	
+512	1-9093771	PRESTIGE INSTITUTE OF MANAGEMENT AND RESEARCH, BHOPAL
+MECHATRONICS ENGINEERING	PRIVATE	
+513	1-13845051	PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur (2010)
+Mechanical Engineering	PRIVATE	
+514	1-13845051	PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur (2010)
+Information Technology	PRIVATE	
+515	1-13845051	PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur (2010)
+Civil Engineering	PRIVATE	
+516	1-13845051	PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur (2010)
+Computer Science and Engineering	PRIVATE	
+517	1-13845051	PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur (2010)
+Electronics and Communication Engineering	PRIVATE	
+518	1-13845051	PT. DEVPRABHAKAR SHASTRI COLLEGE OF TECHNOLOGY, Chhatarpur (2010)
+Electrical Engineering	PRIVATE	
+519	1-2615181	Radha Raman Institute of Technology, & Science, Bhopal (2003)
+Electrical & Electronics Engineering	PRIVATE	
+520	1-2615181	Radha Raman Institute of Technology, & Science, Bhopal (2003)
+Electronics and Communication Engineering	PRIVATE	
+521	1-2615181	Radha Raman Institute of Technology, & Science, Bhopal (2003)
+Computer Science and Engineering	PRIVATE	
+522	1-2615181	Radha Raman Institute of Technology, & Science, Bhopal (2003)
+Civil Engineering	PRIVATE	
+523	1-2615181	Radha Raman Institute of Technology, & Science, Bhopal (2003)
+Mechanical Engineering	PRIVATE	
+524	1-10728988	RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)
+Mechanical Engineering	PRIVATE	
+525	1-10728988	RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)
+Computer Science and Engineering	PRIVATE	
+526	1-10728988	RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)
+Civil Engineering	PRIVATE	
+527	1-10728988	RADHARAMAN ENGINEERING COLLEGE, BHOPAL (2006)
+Electrical & Electronics Engineering	PRIVATE	
+528	1-6213193	Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)
+Electrical Engineering	PRIVATE	
+529	1-6213193	Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)
+Electronics and Communication Engineering	PRIVATE	
+530	1-6213193	Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)
+Civil Engineering	PRIVATE	
+531	1-6213193	Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)
+Computer Science and Engineering	PRIVATE	
+532	1-6213193	Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)
+Mechanical Engineering	PRIVATE	
+533	1-3913254	Rewa Institute of Technology, Rewa (2003)
+Electrical Engineering	PRIVATE	
+534	1-3913254	Rewa Institute of Technology, Rewa (2003)
+Electronics and Communication Engineering	PRIVATE	
+535	1-3913254	Rewa Institute of Technology, Rewa (2003)
+Civil Engineering	PRIVATE	
+536	1-3913254	Rewa Institute of Technology, Rewa (2003)
+Computer Science and Engineering	PRIVATE	
+537	1-3913254	Rewa Institute of Technology, Rewa (2003)
+Mechanical Engineering	PRIVATE	
+538	1-3913254	Rewa Institute of Technology, Rewa (2003)
+Information Technology	PRIVATE	
+539	1-4898041	Sagar Institute of Research & Technology - Excellence, Bhopal (2008)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+540	1-4898041	Sagar Institute of Research & Technology - Excellence, Bhopal (2008)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+541	1-4898041	Sagar Institute of Research & Technology - Excellence, Bhopal (2008)
+Civil Engineering	PRIVATE	
+542	1-4898041	Sagar Institute of Research & Technology - Excellence, Bhopal (2008)
+Computer Science and Engineering	PRIVATE	
+543	1-4898041	Sagar Institute of Research & Technology - Excellence, Bhopal (2008)
+Mechanical Engineering	PRIVATE	
+544	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+Mechanical Engineering	PRIVATE	
+545	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+Computer Science and Engineering	PRIVATE	
+546	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+COMPUTER SCIENCE AND BUSINESS SYSTEM	PRIVATE	
+547	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+Civil Engineering	PRIVATE	
+548	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+549	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+Computer Science and Information Technology	PRIVATE	
+550	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+551	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+Electronics and Communication Engineering	PRIVATE	
+552	1-4897321	Sagar Institute of Research & Technology, Bhopal (2003)
+Electrical & Electronics Engineering	PRIVATE	
+553	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+Electrical & Electronics Engineering	PRIVATE	
+554	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+Electronics and Communication Engineering	PRIVATE	
+555	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+556	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	PRIVATE	
+557	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+Computer Science and Information Technology	PRIVATE	
+558	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+Civil Engineering	PRIVATE	
+559	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+Computer Science and Engineering	PRIVATE	
+560	1-2600510	Sagar Institute of Science & Technology (SISTEC) Bhopal
+Mechanical Engineering	PRIVATE	
+561	1-2608694	Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal (2009)
+Mechanical Engineering	PRIVATE	
+562	1-2608694	Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal (2009)
+Computer Science and Engineering	PRIVATE	
+563	1-2608694	Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal (2009)
+Civil Engineering	PRIVATE	
+564	1-2608694	Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal (2009)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+565	1-2608694	Sagar Institute of Science Technology & Research, (SISTec-R), Bhopal (2009)
+Electronics and Communication Engineering	PRIVATE	
+566	1-2739834	Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal (2009)
+Electronics and Communication Engineering	PRIVATE	
+567	1-2739834	Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal (2009)
+Electrical Engineering	PRIVATE	
+568	1-2739834	Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal (2009)
+COMPUTER SCIENCE AND ENGINEERING(IOT)	PRIVATE	
+569	1-2739834	Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal (2009)
+Computer Science and Engineering	PRIVATE	
+570	1-2739834	Sagar Institute of Science, Technology & Engineering(SISTec-E), Bhopal (2009)
+Mechanical Engineering	PRIVATE	
+571	1-5171073	Sanghvi Institute of management & Science, Indore (2006)
+Electronics and Communication Engineering	PRIVATE	
+572	1-5171073	Sanghvi Institute of management & Science, Indore (2006)
+Civil Engineering	PRIVATE	
+573	1-5171073	Sanghvi Institute of management & Science, Indore (2006)
+Computer Science and Engineering	PRIVATE	
+574	1-5171073	Sanghvi Institute of management & Science, Indore (2006)
+Information Technology	PRIVATE	
+575	1-5171073	Sanghvi Institute of management & Science, Indore (2006)
+Mechanical Engineering	PRIVATE	
+576	1-44758934863	Sant Singaji Engineering College, Dewas
+Information Technology	PRIVATE	
+577	1-44758934863	Sant Singaji Engineering College, Dewas
+Computer Science and Engineering	PRIVATE	
+578	1-44758934863	Sant Singaji Engineering College, Dewas
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+579	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+AGRICULTURE ENGINEERING	PRIVATE	
+580	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+581	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+Civil Engineering	PRIVATE	
+582	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+Computer Science and Engineering	PRIVATE	
+583	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+Electrical & Electronics Engineering	PRIVATE	
+584	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+585	1-15254047	Saraswati Institute of Engineering & Technology, Jabalpur (2008)
+Mechanical Engineering	PRIVATE	
+586	1-3349937361	SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT
+Mechanical Engineering	PRIVATE	
+587	1-3349937361	SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT
+MINING Eng	PRIVATE	
+588	1-3349937361	SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT
+Electrical Engineering	PRIVATE	
+589	1-3349937361	SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT
+Computer Science and Engineering	PRIVATE	
+590	1-3349937361	SATPUDA COLLEGE OF ENGINEERING AND POLYTECHNIC, BALAGHAT
+Civil Engineering	PRIVATE	
+591	1-21231951	SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI
+Computer Science and Engineering	PRIVATE	
+592	1-21231951	SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI
+Civil Engineering	PRIVATE	
+593	1-21231951	SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI
+Electronics and Communication Engineering	PRIVATE	
+594	1-21231951	SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI
+Electrical Engineering	PRIVATE	
+595	1-21231951	SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI
+Mechanical Engineering	PRIVATE	
+596	1-21231951	SENDHWA INSTITUTE OF PROFESSIONAL STUDIES, BARWANI
+Fire Tech & Safety	PRIVATE	
+597	1-38471831	Sha-Shib College of Technology, Bhopal (2009)
+Mechanical Engineering	PRIVATE	
+598	1-38471831	Sha-Shib College of Technology, Bhopal (2009)
+Electronics and Communication Engineering	PRIVATE	
+599	1-38471831	Sha-Shib College of Technology, Bhopal (2009)
+Civil Engineering	PRIVATE	
+600	1-38471831	Sha-Shib College of Technology, Bhopal (2009)
+Computer Science and Engineering	PRIVATE	
+601	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Computer Science and Engineering	PRIVATE	
+602	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Civil Engineering	PRIVATE	
+603	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Electronics and Communication Engineering	PRIVATE	
+604	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Electrical & Electronics Engineering	PRIVATE	
+605	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Fire Tech & Safety	PRIVATE	
+606	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Mechanical Engineering	PRIVATE	
+607	1-6598721	Shiv Kumar Singh Institute of Technology & Science, Indore (2007)
+Information Technology	PRIVATE	
+608	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+Information Technology	PRIVATE	
+609	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+Mechanical Engineering	PRIVATE	
+610	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+DATA SCIENCE	PRIVATE	
+611	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+Electronics and Communication Engineering	PRIVATE	
+612	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+Computer Science and Information Technology	PRIVATE	
+613	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+Civil Engineering	PRIVATE	
+614	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+615	1-6078286	Shivajirao Kadam Institute of Technology and Management-Technical Campus, Indore (2009)
+Computer Science and Engineering	PRIVATE	
+616	1-9278111	Shreejee Institute of Technology and Management, Khargone (2010)
+Computer Science and Engineering	PRIVATE	
+617	1-9278111	Shreejee Institute of Technology and Management, Khargone (2010)
+Civil Engineering	PRIVATE	
+618	1-9278111	Shreejee Institute of Technology and Management, Khargone (2010)
+Electronics and Communication Engineering	PRIVATE	
+619	1-9278111	Shreejee Institute of Technology and Management, Khargone (2010)
+Electrical & Electronics Engineering	PRIVATE	
+620	1-9278111	Shreejee Institute of Technology and Management, Khargone (2010)
+Mechanical Engineering	PRIVATE	
+621	1-9292656	Shri Balaji Institute of Technology & Management, Betul (2009)
+Mechanical Engineering	PRIVATE	
+622	1-9292656	Shri Balaji Institute of Technology & Management, Betul (2009)
+Electrical & Electronics Engineering	PRIVATE	
+623	1-9292656	Shri Balaji Institute of Technology & Management, Betul (2009)
+Civil Engineering	PRIVATE	
+624	1-9292656	Shri Balaji Institute of Technology & Management, Betul (2009)
+Artificial Intelligence (AI) and Data Science	PRIVATE	
+625	1-9292656	Shri Balaji Institute of Technology & Management, Betul (2009)
+Computer Science and Engineering	PRIVATE	
+626	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+Computer Science and Engineering	PRIVATE	
+627	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+Civil Engineering	PRIVATE	
+628	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+Electrical & Electronics Engineering	PRIVATE	
+629	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+Electronics and Communication Engineering	PRIVATE	
+630	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+DATA SCIENCE	PRIVATE	
+631	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+Computer Science and Engineering-Indian language (Hindi)	PRIVATE	
+632	1-1728281	Shri Dadaji Institute of Technology & Science, khandwa
+Mechanical Engineering	PRIVATE	
+633	1-8110711	Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)
+Computer Science and Engineering	PRIVATE	
+634	1-8110711	Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)
+Civil Engineering	PRIVATE	
+635	1-8110711	Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)
+Electronics and Communication Engineering	PRIVATE	
+636	1-8110711	Shri Guru Sandipani Institute of Technology & Science, Ujjain (2009)
+Mechanical Engineering	PRIVATE	
+637	1-6933761	Shri Ram College of Engineering & Management, Banmore (1998)
+Mechanical Engineering	PRIVATE	
+638	1-6933761	Shri Ram College of Engineering & Management, Banmore (1998)
+Electronics and Communication Engineering	PRIVATE	
+639	1-6933761	Shri Ram College of Engineering & Management, Banmore (1998)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+640	1-6933761	Shri Ram College of Engineering & Management, Banmore (1998)
+Computer Science and Engineering	PRIVATE	
+641	1-10567201	SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)
+Computer Science and Engineering	PRIVATE	
+642	1-10567201	SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)
+Civil Engineering	PRIVATE	
+643	1-10567201	SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)
+Electronics and Communication Engineering	PRIVATE	
+644	1-10567201	SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)
+Electrical & Electronics Engineering	PRIVATE	
+645	1-10567201	SHRI RAM COLLEGE OF TECHNOLOGY, BHOPAL (2009)
+Mechanical Engineering	PRIVATE	
+646	1-7136301	SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING, PHARMACY, MBA, MCA), JABALPUR (2009)
+Mechanical Engineering	PRIVATE	
+647	1-7136301	SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING, PHARMACY, MBA, MCA), JABALPUR (2009)
+Electrical Engineering	PRIVATE	
+648	1-7136301	SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING, PHARMACY, MBA, MCA), JABALPUR (2009)
+Electronics and Communication Engineering	PRIVATE	
+649	1-7136301	SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING, PHARMACY, MBA, MCA), JABALPUR (2009)
+Civil Engineering	PRIVATE	
+650	1-7136301	SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING, PHARMACY, MBA, MCA), JABALPUR (2009)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	PRIVATE	
+651	1-7136301	SHRI RAM GROUP OF INSTITUTION (FACULTY OF ENGINEERING, PHARMACY, MBA, MCA), JABALPUR (2009)
+Computer Science and Engineering	PRIVATE	
+652	1-6848501	Shri Ram Institute of Information Technology, Banmore, Morena (2007)
+Computer Science and Engineering	PRIVATE	
+653	1-6848501	Shri Ram Institute of Information Technology, Banmore, Morena (2007)
+Civil Engineering	PRIVATE	
+654	1-6848501	Shri Ram Institute of Information Technology, Banmore, Morena (2007)
+Artificial Intelligence (AI) and Data Science	PRIVATE	
+655	1-6848501	Shri Ram Institute of Information Technology, Banmore, Morena (2007)
+Electronics and Communication Engineering	PRIVATE	
+656	1-6848501	Shri Ram Institute of Information Technology, Banmore, Morena (2007)
+Mechanical Engineering	PRIVATE	
+657	1-7039411	Shri Ram Institute of Science & Technology, Jabalpur (2007)
+Mechanical Engineering	PRIVATE	
+658	1-7039411	Shri Ram Institute of Science & Technology, Jabalpur (2007)
+COMPUTER SCIENCE AND ENGINEERING(INTERNET OF THINGS AND CYBER SECURITY INCLUDING BLOCK CHAIN TECHNOLOGY)	PRIVATE	
+659	1-7039411	Shri Ram Institute of Science & Technology, Jabalpur (2007)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+660	1-7039411	Shri Ram Institute of Science & Technology, Jabalpur (2007)
+Computer Science and Engineering	PRIVATE	
+661	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+Computer Science and Engineering	PRIVATE	
+662	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+COMPUTER SCIENCE AND BUSINESS SYSTEM	PRIVATE	
+663	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+Computer Engineering	PRIVATE	
+664	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+Civil Engineering	PRIVATE	
+665	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+666	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+Electronics and Communication Engineering	PRIVATE	
+667	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+Electrical Engineering	PRIVATE	
+668	1-14909641	Shri Ram Institute of Technology, Jabalpur (2001)
+Mechanical Engineering	PRIVATE	
+669	1-2857046271	SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND MANAGEMENT (SRKCESM), SATNA
+MINING Eng	PRIVATE	
+670	1-2857046271	SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND MANAGEMENT (SRKCESM), SATNA
+Mechanical Engineering	PRIVATE	
+671	1-2857046271	SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND MANAGEMENT (SRKCESM), SATNA
+Electrical Engineering	PRIVATE	
+672	1-2857046271	SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND MANAGEMENT (SRKCESM), SATNA
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+673	1-2857046271	SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND MANAGEMENT (SRKCESM), SATNA
+Civil Engineering	PRIVATE	
+674	1-2857046271	SHRI RAMA KRISHNA COLLEGE OF ENGINEERING SCIENCE AND MANAGEMENT (SRKCESM), SATNA
+Computer Science and Engineering	PRIVATE	
+675	1-16471761	Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)
+Computer Science and Engineering	PRIVATE	
+676	1-16471761	Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)
+Civil Engineering	PRIVATE	
+677	1-16471761	Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)
+Electronics and Communication Engineering	PRIVATE	
+678	1-16471761	Shri Rawatpura Sarkar Institute of Technology & Science, Datia (2002)
+Mechanical Engineering	PRIVATE	
+679	1-13636687	Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)
+Mechanical Engineering	PRIVATE	
+680	1-13636687	Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)
+Information Technology	PRIVATE	
+681	1-13636687	Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)
+Electronics and Communication Engineering	PRIVATE	
+682	1-13636687	Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)
+Electrical Engineering	PRIVATE	
+683	1-13636687	Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)
+Civil Engineering	PRIVATE	
+684	1-13636687	Shri Yogendra Sagar Institute of Technology & Science, Ratlam (2008)
+Computer Science and Engineering	PRIVATE	
+685	1-16255851	SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM (2009)
+Computer Science and Engineering	PRIVATE	
+686	1-16255851	SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM (2009)
+Civil Engineering	PRIVATE	
+687	1-16255851	SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM (2009)
+ELECTRIC VEHICLES	PRIVATE	
+688	1-16255851	SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM (2009)
+Information Technology	PRIVATE	
+689	1-16255851	SRAJAN INSTITUTE OF TECH., MANAGEMENT & SCIENCE, RATLAM (2009)
+Mechanical Engineering	PRIVATE	
+690	1-2943641	Sri Aurobindo Institute of Technology, Indore (2009)
+Mechanical Engineering	PRIVATE	
+691	1-2943641	Sri Aurobindo Institute of Technology, Indore (2009)
+Electronics and Communication Engineering	PRIVATE	
+692	1-2943641	Sri Aurobindo Institute of Technology, Indore (2009)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+693	1-2943641	Sri Aurobindo Institute of Technology, Indore (2009)
+Civil Engineering	PRIVATE	
+694	1-2943641	Sri Aurobindo Institute of Technology, Indore (2009)
+Computer Science and Engineering	PRIVATE	
+695	1-511689081	Sri Parashuram Institute of Technology & Research, Khandwa (2013)
+Computer Science and Engineering	PRIVATE	
+696	1-511689081	Sri Parashuram Institute of Technology & Research, Khandwa (2013)
+Civil Engineering	PRIVATE	
+697	1-511689081	Sri Parashuram Institute of Technology & Research, Khandwa (2013)
+Electrical & Electronics Engineering	PRIVATE	
+698	1-511689081	Sri Parashuram Institute of Technology & Research, Khandwa (2013)
+Mechanical Engineering	PRIVATE	
+699	1-2944881	ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)
+Mechanical Engineering	PRIVATE	
+700	1-2944881	ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)
+Electrical & Electronics Engineering	PRIVATE	
+701	1-2944881	ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)
+DATA SCIENCE	PRIVATE	
+702	1-2944881	ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)
+Computer Science and Engineering	PRIVATE	
+703	1-2944881	ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)
+Civil Engineering	PRIVATE	
+704	1-2944881	ST. ALOYSIUS INSTITUTE OF TECHNOLOGY, JABALPUR (2009)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+705	1-488049531	Surabhi College of Engineering & Technology, Bhopal (2008)
+Computer Science and Engineering	PRIVATE	
+706	1-488049531	Surabhi College of Engineering & Technology, Bhopal (2008)
+Civil Engineering	PRIVATE	
+707	1-488049531	Surabhi College of Engineering & Technology, Bhopal (2008)
+Electrical & Electronics Engineering	PRIVATE	
+708	1-488049531	Surabhi College of Engineering & Technology, Bhopal (2008)
+Mechanical Engineering	PRIVATE	
+709	1-10279691	Sushila Devi Bansal College of Engineering, Indore (2006)
+Mechanical Engineering	PRIVATE	
+710	1-10279691	Sushila Devi Bansal College of Engineering, Indore (2006)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+711	1-10279691	Sushila Devi Bansal College of Engineering, Indore (2006)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+712	1-10279691	Sushila Devi Bansal College of Engineering, Indore (2006)
+Civil Engineering	PRIVATE	
+713	1-10279691	Sushila Devi Bansal College of Engineering, Indore (2006)
+Computer Science and Engineering	PRIVATE	
+714	1-10444003	Sushila Devi Bansal College of Technology, indore (2005)
+Computer Science and Engineering	PRIVATE	
+715	1-10444003	Sushila Devi Bansal College of Technology, indore (2005)
+Civil Engineering	PRIVATE	
+716	1-10444003	Sushila Devi Bansal College of Technology, indore (2005)
+Electronics and Communication Engineering	PRIVATE	
+717	1-10444003	Sushila Devi Bansal College of Technology, indore (2005)
+Mechanical Engineering	PRIVATE	
+718	1-10444003	Sushila Devi Bansal College of Technology, indore (2005)
+Information Technology	PRIVATE	
+719	1-9858001	Swami Vivekanand College of Engineering, Indore (2004)
+Information Technology	PRIVATE	
+720	1-9858001	Swami Vivekanand College of Engineering, Indore (2004)
+Mechanical Engineering	PRIVATE	
+721	1-9858001	Swami Vivekanand College of Engineering, Indore (2004)
+Electronics and Communication Engineering	PRIVATE	
+722	1-9858001	Swami Vivekanand College of Engineering, Indore (2004)
+Electrical & Electronics Engineering	PRIVATE	
+723	1-9858001	Swami Vivekanand College of Engineering, Indore (2004)
+Civil Engineering	PRIVATE	
+724	1-9858001	Swami Vivekanand College of Engineering, Indore (2004)
+Computer Science and Engineering	PRIVATE	
+725	1-40098463	SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2006)
+Computer Science and Engineering	PRIVATE	
+726	1-40098463	SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2006)
+Civil Engineering	PRIVATE	
+727	1-40098463	SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2006)
+Electronics and Communication Engineering	PRIVATE	
+728	1-40098463	SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2006)
+Mechanical Engineering	PRIVATE	
+729	1-40098463	SWAMI VIVEKANAND COLLEGE OF SCIENCE & TECHNOLOGY, BHOPAL (2006)
+Information Technology	PRIVATE	
+730	1-4197331	Takshshila Institute of Engineering & Technology, Jabalpur (2004)
+Mechanical Engineering	PRIVATE	
+731	1-4197331	Takshshila Institute of Engineering & Technology, Jabalpur (2004)
+Electrical & Electronics Engineering	PRIVATE	
+732	1-4197331	Takshshila Institute of Engineering & Technology, Jabalpur (2004)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+733	1-4197331	Takshshila Institute of Engineering & Technology, Jabalpur (2004)
+Computer Science and Engineering	PRIVATE	
+734	1-4197331	Takshshila Institute of Engineering & Technology, Jabalpur (2004)
+Civil Engineering	PRIVATE	
+735	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+Computer Science and Engineering	PRIVATE	
+736	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE)	PRIVATE	
+737	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+Civil Engineering	PRIVATE	
+738	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+739	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+Electrical & Electronics Engineering	PRIVATE	
+740	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+Electronics and Communication Engineering	PRIVATE	
+741	1-9445501	Technocrats Institute of Technology & Science, Bhopal (2007)
+Mechanical Engineering	PRIVATE	
+742	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+Mechanical Engineering	PRIVATE	
+743	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+Electronics and Communication Engineering	PRIVATE	
+744	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+Electrical & Electronics Engineering	PRIVATE	
+745	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+746	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING(CYBER SECURITY)	PRIVATE	
+747	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+Civil Engineering	PRIVATE	
+748	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE)	PRIVATE	
+749	1-9406071	Technocrats Institute of Technology (Excellence), Bhopal (2007)
+Computer Science and Engineering	PRIVATE	
+750	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+Computer Science and Engineering	PRIVATE	
+751	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE)	PRIVATE	
+752	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+Civil Engineering	PRIVATE	
+753	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE AND DATA SCIENCE)	PRIVATE	
+754	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	PRIVATE	
+755	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+756	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+Electrical & Electronics Engineering	PRIVATE	
+757	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+Electronics and Communication Engineering	PRIVATE	
+758	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+Mechanical Engineering	PRIVATE	
+759	1-8726441	TECHNOCRATS INSTITUTE OF TECHNOLOGY, BHOPAL (2000)
+Information Technology	PRIVATE	
+760	1-9460541	TECHNOCRATS INSTITUTE OF TECHNOLOGY-COMPUTER SCIENCE AND ENGINEERING, BHOPAL (FORMERLY TECHNOCRATES INSTITUTE OF TECHNOLOGY-ADVANCE, BHOPAL (2008))
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+761	1-9460541	TECHNOCRATS INSTITUTE OF TECHNOLOGY-COMPUTER SCIENCE AND ENGINEERING, BHOPAL (FORMERLY TECHNOCRATES INSTITUTE OF TECHNOLOGY-ADVANCE, BHOPAL (2008))
+Civil Engineering	PRIVATE	
+762	1-9460541	TECHNOCRATS INSTITUTE OF TECHNOLOGY-COMPUTER SCIENCE AND ENGINEERING, BHOPAL (FORMERLY TECHNOCRATES INSTITUTE OF TECHNOLOGY-ADVANCE, BHOPAL (2008))
+Computer Science and Engineering	PRIVATE	
+763	1-478226261	Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur (2011)
+Computer Science and Engineering	PRIVATE	
+764	1-478226261	Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur (2011)
+Civil Engineering	PRIVATE	
+765	1-478226261	Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur (2011)
+Electronics and Communication Engineering	PRIVATE	
+766	1-478226261	Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur (2011)
+Electrical Engineering	PRIVATE	
+767	1-478226261	Thakur Shiv Kumar Singh Memorial Engineering College, Burhanpur (2011)
+Mechanical Engineering	PRIVATE	
+768	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+Mechanical Engineering	PRIVATE	
+769	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+Information Technology	PRIVATE	
+770	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+Electronics and Communication Engineering	PRIVATE	
+771	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+Electrical & Electronics Engineering	PRIVATE	
+772	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+Civil Engineering	PRIVATE	
+773	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+ARTIFICIAL INTELLIGENCE AND DATA SCIENCE	PRIVATE	
+774	1-5511241	Truba Institute of Engineering & Information Technology, Bhopal (2001)
+Computer Science and Engineering	PRIVATE	
+775	1-1344171	Vaishnavi Institutes of Technology and Science, Raisen (2010)
+Mechanical Engineering	PRIVATE	
+776	1-1344171	Vaishnavi Institutes of Technology and Science, Raisen (2010)
+Computer Science and Engineering	PRIVATE	
+777	1-1344171	Vaishnavi Institutes of Technology and Science, Raisen (2010)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+778	1-1344171	Vaishnavi Institutes of Technology and Science, Raisen (2010)
+Civil Engineering	PRIVATE	
+779	1-1344171	Vaishnavi Institutes of Technology and Science, Raisen (2010)
+Electrical Engineering	PRIVATE	
+780	1-5186471	Vidhyapeeth Institute of Science & Technology, Bhopal (2009)
+Electronics and Communication Engineering	PRIVATE	
+781	1-5186471	Vidhyapeeth Institute of Science & Technology, Bhopal (2009)
+Electrical & Electronics Engineering	PRIVATE	
+782	1-5186471	Vidhyapeeth Institute of Science & Technology, Bhopal (2009)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	PRIVATE	
+783	1-5186471	Vidhyapeeth Institute of Science & Technology, Bhopal (2009)
+Civil Engineering	PRIVATE	
+784	1-5186471	Vidhyapeeth Institute of Science & Technology, Bhopal (2009)
+Computer Science and Engineering	PRIVATE	
+785	1-5186471	Vidhyapeeth Institute of Science & Technology, Bhopal (2009)
+Mechanical Engineering	PRIVATE	
+786	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Mechanical Engineering	PRIVATE	
+787	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Information Technology	PRIVATE	
+788	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Computer Science and Engineering	PRIVATE	
+789	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Civil Engineering	PRIVATE	
+790	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Electrical & Electronics Engineering	PRIVATE	
+791	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Fire Tech & Safety	PRIVATE	
+792	1-10092973	Vikrant Institute of Technology & Management Indore (2007)
+Electronics and Communication Engineering	PRIVATE	
+793	1-5872421	VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)
+Electrical Engineering	PRIVATE	
+794	1-5872421	VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+795	1-5872421	VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)
+Computer Science and Engineering	PRIVATE	
+796	1-5872421	VINDHYA INSTITUTE OF TECHNOLOGY & SCIENCE, SATNA (2002)
+Mechanical Engineering	PRIVATE	
+797	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+Mechanical Engineering	PRIVATE	
+798	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+MINING Eng	PRIVATE	
+799	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+Computer Science and Engineering	PRIVATE	
+800	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING	PRIVATE	
+801	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+Civil Engineering	PRIVATE	
+802	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+Electronics and Communication Engineering	PRIVATE	
+803	1-419705601	VNS GROUP OF INSTITUTIONS, BHOPAL (2006)
+Electrical & Electronics Engineering	PRIVATE	
+804	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+Information Technology	SELF FINANCING (MANAGED BY BSF)	
+805	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+Mechanical Engineering	SELF FINANCING (MANAGED BY BSF)	
+806	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+Computer Science and Engineering	SELF FINANCING (MANAGED BY BSF)	
+807	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+Automobile Engineering	SELF FINANCING (MANAGED BY BSF)	
+808	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+COMPUTER SCIENCE AND ENGINEERING(ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING)	SELF FINANCING (MANAGED BY BSF)	
+809	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+COMPUTER SCIENCE AND ENGINEERING(DATA SCIENCE)	SELF FINANCING (MANAGED BY BSF)	
+810	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+Electronics and Communication Engineering	SELF FINANCING (MANAGED BY BSF)	
+811	1-467647771	Rustamji Institute of Technology, Tekanpur, Gwalior (1999)
+Electrical Engineering	SELF FINANCING (MANAGED BY BSF)

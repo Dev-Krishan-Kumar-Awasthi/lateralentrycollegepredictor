@@ -44,20 +44,20 @@
         </p>
 
         <!-- Quick Interactive Hero Predictor Widget -->
-        <div style="max-width: 580px; margin: 24px auto 30px; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border: 1.5px solid #bfdbfe; border-radius: 18px; padding: 20px 24px; box-shadow: 0 12px 30px rgba(37,99,235,0.15); text-align: left;">
-            <div style="font-size: 0.84rem; font-weight: 800; color: #1e3a8a; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+        <div class="quick-predictor-card">
+            <div class="quick-predictor-header">
                 <span><i class="fas fa-bolt" style="color: #f59e0b;"></i> Quick Admission Check</span>
-                <span style="background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem;">Instant Check</span>
+                <span class="quick-predictor-badge">Instant Check</span>
             </div>
-            <form action="/predictor" method="GET" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: center;">
-                <input type="number" name="cgpa" step="0.01" min="0" max="10" placeholder="Enter CGPA (e.g. 8.5)" required style="padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; width: 100%; box-sizing: border-box; outline: none;">
-                <select name="category" style="padding: 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; background: #fff; width: 100%; box-sizing: border-box; outline: none;">
+            <form action="/predictor" method="GET" class="hero-predictor-form">
+                <input type="number" name="cgpa" step="0.01" min="0" max="10" placeholder="Enter CGPA (e.g. 8.5)" required class="hero-predictor-input">
+                <select name="category" class="hero-predictor-select">
                     <option value="UR">UR (Unreserved)</option>
                     <option value="OBC">OBC</option>
                     <option value="SC">SC</option>
                     <option value="ST">ST</option>
                 </select>
-                <button type="submit" class="btn-primary" style="padding: 10px 20px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; background: linear-gradient(135deg, #1d4ed8, #1e3a8a); color: #fff; border: none; cursor: pointer;">
+                <button type="submit" class="hero-predictor-btn">
                     Check <i class="fas fa-arrow-right" style="font-size:0.8rem; margin-left:4px;"></i>
                 </button>
             </form>

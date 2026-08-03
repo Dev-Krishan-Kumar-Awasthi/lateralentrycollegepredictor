@@ -444,21 +444,29 @@ function renderChoices() {
         container.appendChild(item);
     });
 
-    // Initialize Sortable
-    new Sortable(container, {
-        animation: 150,
-        handle: '.drag-handle-vertical',
-        forceFallback: true, // Forces using fallback drag & drop mechanism, crucial for touch support on mobile
-        fallbackTolerance: 5, // Distinguish tap/scroll from drag on mobile touch screens
-        onEnd: function() {
-            const newOrder = [];
-            document.querySelectorAll('.choice-item-kanban').forEach(el => {
-                newOrder.push(choices[el.dataset.index]);
+    // Initialize Sortable safely
+    try {
+        if (typeof Sortable !== 'undefined') {
+            new Sortable(container, {
+                animation: 150,
+                handle: '.drag-handle-vertical',
+                forceFallback: true, // Forces using fallback drag & drop mechanism, crucial for touch support on mobile
+                fallbackTolerance: 5, // Distinguish tap/scroll from drag on mobile touch screens
+                onEnd: function() {
+                    const newOrder = [];
+                    document.querySelectorAll('.choice-item-kanban').forEach(el => {
+                        newOrder.push(choices[el.dataset.index]);
+                    });
+                    choices = newOrder;
+                    renderChoices();
+                }
             });
-            choices = newOrder;
-            renderChoices();
+        } else {
+            console.warn("Sortable library not loaded. Drag and drop reordering will be disabled.");
         }
-    });
+    } catch (e) {
+        console.error("Failed to initialize Sortable:", e);
+    }
 }
 
 function exportChoicesCsv() { DteExport.exportCsv(choices); }
@@ -772,8 +780,7 @@ function prepareSimulation() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const initialRaw = '{{ choices | tojson | safe if choices else "[]" }}';
-    let parsed = JSON.parse(initialRaw);
+    let parsed = {{ choices | tojson | safe if choices else "[]" }};
     if (!parsed.length) {
         const stored = localStorage.getItem('mp_dte_choices_list');
         if (stored) {
@@ -812,6 +819,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const interval = setInterval(() => {
         if (current < totalChoices && current < allottedChoiceNo) {
             const choice = choices[current];
+            if (!choice) {
+                current++;
+                return;
+            }
             const choiceNum = current + 1;
             
             if (choiceNum === allottedChoiceNo) {
@@ -819,8 +830,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 stepsBox.innerHTML += `<div style="color:#059669; font-weight:700;">Choice #${choiceNum}: [${choice.college_name}] - MATCHED!</div>`;
                 clearInterval(interval);
                 setTimeout(() => {
-                    processBox.style.display = 'none';
-                    resultBox.style.display = 'block';
+                    if (processBox) processBox.style.display = 'none';
+                    if (resultBox) resultBox.style.display = 'block';
                     const recCont = document.getElementById('recommendations-container');
                     if (recCont) recCont.style.display = 'block';
                 }, 1000);
@@ -833,8 +844,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // No match found in entire list
             clearInterval(interval);
             setTimeout(() => {
-                processBox.style.display = 'none';
-                resultBox.style.display = 'block';
+                if (processBox) processBox.style.display = 'none';
+                if (resultBox) resultBox.style.display = 'block';
                 const recCont = document.getElementById('recommendations-container');
                 if (recCont) recCont.style.display = 'block';
             }, 800);
@@ -843,9 +854,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-share-result]').forEach(function(shareBox) {
             if (typeof ShareUtils !== 'undefined') {
                 const links = ShareUtils.shareSimulatorResult(
-                    {% if result.success %}'{{ result.college | replace("'", "") }}'{% else %}null{% endif %},
-                    '{{ result.branch | branch_name if result.success else "" }}',
-                    {{ 'true' if result.success else 'false' }}
+                    {% if result and result.success %}'{{ result.college | replace("'", "") }}'{% else %}null{% endif %},
+                    '{{ (result.get("branch") | branch_name) if (result and result.success) else "" }}',
+                    {{ 'true' if result and result.success else 'false' }}
                 );
                 ShareUtils.bindShareButtons(shareBox, links);
             }

@@ -7,7 +7,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, request, redirect, jsonify, session, url_for, flash
+from flask import Flask, render_template, request, redirect, jsonify, session, url_for, flash, send_from_directory
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -1257,11 +1257,139 @@ def choice_filling_rules():
     return render_template('choice_filling_rules.html')
 
 
+def parse_slip_file(filename, is_subfolder=False):
+    name_without_ext = os.path.splitext(filename)[0]
+    rank = None
+    roll_no = "N/A"
+    
+    if '--' in name_without_ext:
+        parts = name_without_ext.split('--')
+        if len(parts) >= 2:
+            rank_str = parts[0].strip()
+            roll_no = parts[1].strip()
+            try:
+                rank = int(rank_str)
+            except ValueError:
+                pass
+                
+    # Determine image_url
+    if is_subfolder:
+        image_url = f"/choice-vault-images/ye niche dekhne chaiye upar bali choice se/{filename}"
+    else:
+        image_url = f"/choice-vault-images/{filename}"
+        
+    # Name, cgpa and details mapping
+    if rank is not None:
+        name = f"Candidate (Rank {rank})"
+        cgpa = "N/A"
+        focus = f"Rank {rank} Choice List"
+        summary = f"Official choice filling slip for Rank {rank}. Roll No: {roll_no}."
+    else:
+        # Fallback for DocScanner files
+        if "pages-1" in name_without_ext:
+            name = "Student #1"
+            cgpa = "8.48 (F)"
+            roll_no = "571136979331"
+            image_url = "choice_vault_1.jpg"
+            focus = "Govt/Univ CSE Focus"
+            summary = "11 preferences, strictly CSE/IT in Govt & University Owned Colleges in MP."
+        elif "pages-2" in name_without_ext:
+            name = "Student #3"
+            cgpa = "8.33"
+            roll_no = "571126268801"
+            image_url = "choice_vault_2.jpg"
+            focus = "Govt/Private Mix"
+            summary = "17 preferences, mixing CSE, IT, AI & Data Science, EC, EE, EI in Govt Aided & Private colleges."
+        elif "pages-3" in name_without_ext:
+            name = "Student #2"
+            cgpa = "8.88"
+            roll_no = "571142208900"
+            image_url = "choice_vault_3.jpg"
+            focus = "Govt/Private CSE/IT"
+            summary = "10 preferences, CSE/IT across premium Govt and top Private institutions (SGSITS, DAVV, RGPV, Acropolis)."
+        else:
+            name = "Reference Slip"
+            cgpa = "N/A"
+            focus = "Official Preference Slip"
+            summary = "Official DTE choice filling reference slip."
+            
+    return {
+        "rank": rank,
+        "cgpa": cgpa,
+        "roll_no": roll_no,
+        "image_url": image_url,
+        "name": name,
+        "focus": focus,
+        "summary": summary
+    }
+
+
+def get_choice_vault_slips():
+    base_dir = os.path.join(app.root_path, 'Choice_Vault')
+    if not os.path.exists(base_dir):
+        return []
+        
+    top_slips = []
+    subfolder_slips = []
+    
+    # 1. Scan top folder
+    for filename in os.listdir(base_dir):
+        filepath = os.path.join(base_dir, filename)
+        if os.path.isdir(filepath):
+            continue
+            
+        ext = os.path.splitext(filename)[1].lower()
+        if ext not in ['.png', '.jpg', '.jpeg']:
+            continue
+            
+        slip = parse_slip_file(filename, is_subfolder=False)
+        if slip:
+            top_slips.append(slip)
+            
+    # Sort top slips by rank: Rank None (DocScanner) first, then numeric rank ascending
+    top_slips.sort(key=lambda s: (0, s['rank']) if s['rank'] is not None else (1, s['name']))
+    
+    # 2. Scan subfolder
+    sub_dir = os.path.join(base_dir, 'ye niche dekhne chaiye upar bali choice se')
+    if os.path.exists(sub_dir) and os.path.isdir(sub_dir):
+        for filename in os.listdir(sub_dir):
+            filepath = os.path.join(sub_dir, filename)
+            if os.path.isdir(filepath):
+                continue
+                
+            ext = os.path.splitext(filename)[1].lower()
+            if ext not in ['.png', '.jpg', '.jpeg']:
+                continue
+                
+            slip = parse_slip_file(filename, is_subfolder=True)
+            if slip:
+                subfolder_slips.append(slip)
+                
+        # Sort subfolder slips by rank
+        subfolder_slips.sort(key=lambda s: (0, s['rank']) if s['rank'] is not None else (1, s['name']))
+        
+    # Combine (top slips first, subfolder slips second)
+    combined = top_slips + subfolder_slips
+    
+    # Assign sequential IDs
+    for idx, slip in enumerate(combined, start=1):
+        slip['id'] = idx
+        
+    return combined
+
+
+@app.route('/choice-vault-images/<path:filename>')
+@limiter.exempt
+def choice_vault_images(filename):
+    base_dir = os.path.join(app.root_path, 'Choice_Vault')
+    return send_from_directory(base_dir, filename)
+
+
 @app.route('/choice-vault')
 def choice_vault():
     user = current_user()
     is_premium = bool(user and user.has_unlimited_access)
-    slips = ChoiceVault.query.order_by(ChoiceVault.id.asc()).all()
+    slips = get_choice_vault_slips()
     return render_template('choice_vault.html', slips=slips, is_premium=is_premium)
 
 
@@ -1358,6 +1486,11 @@ def account_page():
             if err:
                 return render_template('account.html', error=err, prefill_reg=request.form)
 
+            coupon_code = request.form.get('coupon_code', '').strip()
+            coupon_used = None
+            referred_by_id = None
+            coupon_for_whom = None
+            referred_by_name = None
             coins_rewarded = 0
             if coupon_code:
                 # 1. Check Coupon Table

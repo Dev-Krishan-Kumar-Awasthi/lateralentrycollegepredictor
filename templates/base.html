@@ -184,7 +184,7 @@
                 <li class="nav-dropdown-item">
                     <a href="javascript:void(0)"
                         class="dropdown-trigger {% if request.endpoint in ['choice_vault', 'choice_builder', 'merit_insights', 'recommendation_list', 'checklist', 'registration_process', 'refer_share', 'schedule', 'vacant_seats', 'tentative_institutes', 'seat_matrix', 'dte_rules', 'choice_filling_rules', 'how_it_works', 'faq', 'about', 'contact', 'admin_users'] %}nav-active{% endif %}">
-                        <i class="fas fa-th-large"></i> More Tools <i class="fas fa-chevron-down"
+                        <i class="fas fa-th-large"></i> More Tools <span class="pulse-dot"></span> <i class="fas fa-chevron-down"
                             style="margin-left: 4px; font-size: 0.75rem;"></i>
                     </a>
                     <div class="nav-dropdown mega-dropdown" data-lenis-prevent>
@@ -194,28 +194,58 @@
                             </div>
                             <ul class="dropdown-list">
                                 <li>
-                                    <a href="/choice-vault" class="{% if request.endpoint == 'choice_vault' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-vault" style="color: #7c3aed;"></i> Choice Vault
+                                    <a href="/choice-vault" class="tool-card {% if request.endpoint == 'choice_vault' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper purple-bg">
+                                            <i class="fas fa-vault"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Choice Vault <span class="tool-badge hot">HOT</span></span>
+                                            <span class="tool-desc">Saved & locked choice lists</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/choice-builder" class="{% if request.endpoint == 'choice_builder' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-magic" style="color: #2563eb;"></i> Smart Choices
+                                    <a href="/choice-builder" class="tool-card {% if request.endpoint == 'choice_builder' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper blue-bg">
+                                            <i class="fas fa-magic"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Smart Choices <span class="tool-badge ai">AI</span></span>
+                                            <span class="tool-desc">Generate premium choices instantly</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/merit-insights" class="{% if request.endpoint == 'merit_insights' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-chart-pie" style="color: #059669;"></i> Merit Insights
+                                    <a href="/merit-insights" class="tool-card {% if request.endpoint == 'merit_insights' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper green-bg">
+                                            <i class="fas fa-chart-pie"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Merit Insights</span>
+                                            <span class="tool-desc">Rank trends and cutoff stats</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/recommendation-list" class="{% if request.endpoint == 'recommendation_list' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-list-ol" style="color: #d97706;"></i> Recommendation List
+                                    <a href="/recommendation-list" class="tool-card {% if request.endpoint == 'recommendation_list' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper amber-bg">
+                                            <i class="fas fa-list-ol"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Recommendation List <span class="tool-badge new">RECOMMENDED</span></span>
+                                            <span class="tool-desc">Expert-curated preference order</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/refer-share" class="{% if request.endpoint == 'refer_share' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-gift" style="color: #ec4899;"></i> Refer &amp; Share
+                                    <a href="/refer-share" class="tool-card {% if request.endpoint == 'refer_share' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper rose-bg">
+                                            <i class="fas fa-gift"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Refer &amp; Share <span class="tool-badge free">FREE COINS</span></span>
+                                            <span class="tool-desc">Earn coins to unlock Premium Pro</span>
+                                        </div>
                                     </a>
                                 </li>
                             </ul>
@@ -227,23 +257,47 @@
                             </div>
                             <ul class="dropdown-list">
                                 <li>
-                                    <a href="/vacant-seats" class="{% if request.endpoint == 'vacant_seats' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-chair" style="color: #10b981;"></i> Vacant Seats After Allotment
+                                    <a href="/vacant-seats" class="tool-card {% if request.endpoint == 'vacant_seats' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper green-bg">
+                                            <i class="fas fa-chair"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Vacant Seats <span class="tool-badge live">LIVE</span></span>
+                                            <span class="tool-desc">Check available seats after rounds</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/tentative-institutes" class="{% if request.endpoint == 'tentative_institutes' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-building" style="color: #3b82f6;"></i> Tentative Institutes 2026
+                                    <a href="/tentative-institutes" class="tool-card {% if request.endpoint == 'tentative_institutes' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper blue-bg">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Tentative Institutes</span>
+                                            <span class="tool-desc">List of colleges & seat capacity</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/seat-matrix" class="{% if request.endpoint == 'seat_matrix' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-table" style="color: #f59e0b;"></i> DTE Seat Matrix (Upcoming)
+                                    <a href="/seat-matrix" class="tool-card {% if request.endpoint == 'seat_matrix' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper amber-bg">
+                                            <i class="fas fa-table"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">DTE Seat Matrix <span class="tool-badge upcoming">SOON</span></span>
+                                            <span class="tool-desc">Detailed category-wise seat distribution</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/schedule" class="{% if request.endpoint == 'schedule' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-calendar-alt" style="color: #6366f1;"></i> Counselling Schedule
+                                    <a href="/schedule" class="tool-card {% if request.endpoint == 'schedule' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper purple-bg">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Counselling Schedule <span class="tool-badge new">UPDATED</span></span>
+                                            <span class="tool-desc">Key dates, registration & locking rounds</span>
+                                        </div>
                                     </a>
                                 </li>
                             </ul>
@@ -255,49 +309,103 @@
                             </div>
                             <ul class="dropdown-list">
                                 <li>
-                                    <a href="/dte-rules" class="{% if request.endpoint == 'dte_rules' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-gavel" style="color: #dc2626;"></i> Official DTE Rules
+                                    <a href="/dte-rules" class="tool-card {% if request.endpoint == 'dte_rules' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper red-bg">
+                                            <i class="fas fa-gavel"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Official DTE Rules</span>
+                                            <span class="tool-desc">Official brochure guidelines & eligibility</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/choice-filling-rules" class="{% if request.endpoint == 'choice_filling_rules' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-clipboard-check" style="color: #0284c7;"></i> Choice Filling Rules
+                                    <a href="/choice-filling-rules" class="tool-card {% if request.endpoint == 'choice_filling_rules' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper sky-bg">
+                                            <i class="fas fa-clipboard-check"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Choice Filling Rules</span>
+                                            <span class="tool-desc">Do's & don'ts of locking options</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/checklist" class="{% if request.endpoint == 'checklist' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-check-double" style="color: #16a34a;"></i> Document Checklist
+                                    <a href="/checklist" class="tool-card {% if request.endpoint == 'checklist' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper green-bg">
+                                            <i class="fas fa-check-double"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Document Checklist</span>
+                                            <span class="tool-desc">Required verification certificates</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/registration-process" class="{% if request.endpoint == 'registration_process' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-user-plus" style="color: #9333ea;"></i> Registration Process
+                                    <a href="/registration-process" class="tool-card {% if request.endpoint == 'registration_process' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper purple-bg">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Registration Process</span>
+                                            <span class="tool-desc">Step-by-step registration roadmap</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/how-it-works" class="{% if request.endpoint == 'how_it_works' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-book-open" style="color: #ea580c;"></i> Counselling Guide
+                                    <a href="/how-it-works" class="tool-card {% if request.endpoint == 'how_it_works' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper amber-bg">
+                                            <i class="fas fa-book-open"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Counselling Guide</span>
+                                            <span class="tool-desc">Learn how the system works</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/faq" class="{% if request.endpoint == 'faq' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-question-circle" style="color: #4f46e5;"></i> FAQs
+                                    <a href="/faq" class="tool-card {% if request.endpoint == 'faq' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper blue-bg">
+                                            <i class="fas fa-question-circle"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">FAQs</span>
+                                            <span class="tool-desc">Instant answers to common queries</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/about" class="{% if request.endpoint == 'about' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-info-circle" style="color: #0891b2;"></i> About Us
+                                    <a href="/about" class="tool-card {% if request.endpoint == 'about' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper sky-bg">
+                                            <i class="fas fa-info-circle"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">About Us</span>
+                                            <span class="tool-desc">Our vision and details about the platform</span>
+                                        </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/contact" class="{% if request.endpoint == 'contact' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-headset" style="color: #e11d48;"></i> Contact Support
+                                    <a href="/contact" class="tool-card {% if request.endpoint == 'contact' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper rose-bg">
+                                            <i class="fas fa-headset"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Contact Support</span>
+                                            <span class="tool-desc">Get assistance from our support desk</span>
+                                        </div>
                                     </a>
                                 </li>
                                 {% if is_admin %}
                                 <li>
-                                    <a href="/admin/users" class="{% if request.endpoint == 'admin_users' %}dropdown-active{% endif %}">
-                                        <i class="fas fa-user-cog" style="color: #475569;"></i> Admin Panel
+                                    <a href="/admin/users" class="tool-card {% if request.endpoint == 'admin_users' %}dropdown-active{% endif %}">
+                                        <div class="tool-icon-wrapper slate-bg">
+                                            <i class="fas fa-user-cog"></i>
+                                        </div>
+                                        <div class="tool-meta">
+                                            <span class="tool-title">Admin Panel</span>
+                                            <span class="tool-desc">Manage system users, statistics & database</span>
+                                        </div>
                                     </a>
                                 </li>
                                 {% endif %}
