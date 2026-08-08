@@ -54,8 +54,10 @@ def normalize_name(name: str) -> str:
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-INSTANCE_DB_PATH = os.path.join(BASE_DIR, 'instance', 'data.db')
-db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or f"sqlite:///{INSTANCE_DB_PATH}"
+INSTANCE_DB_PATH = os.path.join(BASE_DIR, 'instance', 'data.db').replace('\\', '/')
+if not INSTANCE_DB_PATH.startswith('/'):
+    INSTANCE_DB_PATH = '/' + INSTANCE_DB_PATH
+db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or f"sqlite://{INSTANCE_DB_PATH}"
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = db_url
