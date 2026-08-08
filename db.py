@@ -9,6 +9,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     if type(dbapi_connection).__module__.startswith("sqlite"):
         try:
             cursor = dbapi_connection.cursor()
+            cursor.execute("PRAGMA busy_timeout=5000")
             cursor.execute("PRAGMA journal_mode=DELETE")
             cursor.execute("PRAGMA synchronous=NORMAL")
             cursor.close()

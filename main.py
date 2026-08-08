@@ -144,9 +144,19 @@ def fetch_rank_maps_cache():
 
 def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
                  city='All', district='All', home_city='All', max_distance_km=None):
+    if not YEARS or not RANK_MAPS_CACHE:
+        try:
+            fetch_rank_maps_cache()
+        except Exception as e:
+            print("Lazy rank cache fetch failed:", e)
+            
     result = {}
     for year in YEARS:
-        cgpa_to_rank_map = RANK_MAPS_CACHE[year]
+        cgpa_to_rank_map = RANK_MAPS_CACHE.get(year)
+        if not cgpa_to_rank_map:
+            cgpa_to_rank_map = fetch_cgpa_to_rank_map(year)
+            RANK_MAPS_CACHE[year] = cgpa_to_rank_map
+            
         min_rank, max_rank = estimate_rank_range(cgpa_to_rank_map, cgpa)
         raw_colleges = fetch_colleges_from_rank(
             min_rank, max_rank, branch, category, gender, college_type, year, domicile
