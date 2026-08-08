@@ -12,6 +12,7 @@ from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from urllib.parse import quote as url_quote
+from sqlalchemy import text
 from db import db
 from predictor import (
     fetch_cgpa_to_rank_map, estimate_rank_range,
