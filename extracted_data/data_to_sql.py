@@ -1,13 +1,18 @@
 import csv
 import sqlite3
 import traceback
+import os
 from pathlib import Path
 
+# Resolve paths relative to this script's location
+SCRIPT_DIR = Path(__file__).parent
+ROOT_DIR = SCRIPT_DIR.parent
+DB_FILE = str(ROOT_DIR / "instance" / "data.db")
 
-DB_FILE = "data.db"
 CSV_FILES = [
-    "college2024.csv",
-    "college2025.csv",
+    str(SCRIPT_DIR / "college2024.csv"),
+    str(SCRIPT_DIR / "college2025.csv"),
+    str(SCRIPT_DIR / "college2026.csv"),
 ]
 
 
@@ -189,8 +194,9 @@ def load_csv_to_db(csv_file: str, cursor: sqlite3.Cursor) -> None:
 
 
 RANK_CSV_FILES = [
-    "rank2024.csv",
-    "rank2025.csv",
+    str(SCRIPT_DIR / "rank2024.csv"),
+    str(SCRIPT_DIR / "rank2025.csv"),
+    str(SCRIPT_DIR / "Rank2026.csv"),
 ]
 
 INSERT_CGPA_RANGE = """
@@ -265,6 +271,10 @@ def load_rank_csv_to_db(
 # -------------------------------------------------------------------
 
 def main() -> None:
+    # Ensure instance/ folder exists
+    os.makedirs(os.path.dirname(DB_FILE), exist_ok=True)
+    
+    print(f"Using database: {DB_FILE}")
     conn = sqlite3.connect(DB_FILE)
 
     try:
@@ -273,6 +283,12 @@ def main() -> None:
         # Create tables
         cursor.execute(CREATE_SEATINFO_TABLE)
         cursor.execute(CREATE_CGPA_TABLE)
+
+        # Clear existing data before reloading to avoid duplicates
+        print("Clearing existing SeatInfo data...")
+        cursor.execute("DELETE FROM SeatInfo")
+        print("Clearing existing CgpaRankRange data...")
+        cursor.execute("DELETE FROM CgpaRankRange")
 
         # Load CSV files
         for csv_file in CSV_FILES:
@@ -292,7 +308,15 @@ def main() -> None:
 
         # Save all changes
         conn.commit()
-        print("Database committed successfully.")
+        
+        # Print final counts
+        seat_count = cursor.execute("SELECT COUNT(*) FROM SeatInfo").fetchone()[0]
+        rank_count = cursor.execute("SELECT COUNT(*) FROM CgpaRankRange").fetchone()[0]
+        years = [r[0] for r in cursor.execute("SELECT DISTINCT year FROM SeatInfo ORDER BY year").fetchall()]
+        print(f"\nDONE! Database committed successfully!")
+        print(f"   SeatInfo rows: {seat_count}")
+        print(f"   CgpaRankRange rows: {rank_count}")
+        print(f"   Available years: {years}")
 
     except Exception as e:
         conn.rollback()
