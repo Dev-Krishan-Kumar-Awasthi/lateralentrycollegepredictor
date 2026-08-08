@@ -122,7 +122,7 @@ def inject_years():
 
 
 RANK_MAPS_CACHE = {}
-YEARS = [2025, 2024]
+YEARS = [2026, 2025, 2024]
 
 
 def refresh_years_list():
@@ -140,20 +140,21 @@ def refresh_years_list():
 
 def fetch_rank_maps_cache():
     refresh_years_list()
-    for year in YEARS:
+    for year in list(YEARS):
         RANK_MAPS_CACHE[year] = fetch_cgpa_to_rank_map(year)
 
 
 def get_colleges(cgpa, branch, category, gender, college_type, domicile='Y',
                  city='All', district='All', home_city='All', max_distance_km=None):
-    if not YEARS or not RANK_MAPS_CACHE:
+    refresh_years_list()
+    if not RANK_MAPS_CACHE or set(YEARS) - set(RANK_MAPS_CACHE.keys()):
         try:
             fetch_rank_maps_cache()
         except Exception as e:
             print("Lazy rank cache fetch failed:", e)
             
     result = {}
-    for year in YEARS:
+    for year in list(YEARS):
         cgpa_to_rank_map = RANK_MAPS_CACHE.get(year)
         if not cgpa_to_rank_map:
             cgpa_to_rank_map = fetch_cgpa_to_rank_map(year)
