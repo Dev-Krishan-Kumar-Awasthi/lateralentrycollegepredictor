@@ -3,7 +3,6 @@ __pycache__/
 *.pyo
 *.pyd
 .env
-instance/
 *.db-shm
 *.db-wal
 only take frontend of this/
