@@ -182,11 +182,19 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
     
     def _async_send():
         try:
+            import time
+            import uuid
+            from email.utils import formatdate
             smtp_port = int(smtp_port_str)
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"{otp} is your MP Polytechnic Predictor verification code"
-            msg["From"] = f"MP Polytechnic Predictor <{smtp_username}>"
+            msg["Subject"] = f"Your login code: {otp} - MP DTE Lateral Entry Predictor"
+            msg["From"] = f"MP DTE Predictor <{smtp_username}>"
             msg["To"] = to_email
+            msg["Date"] = formatdate(localtime=True)
+            msg["Message-ID"] = f"<{uuid.uuid4()}@lateralentrycollegepredictor.pythonanywhere.com>"
+            msg["X-Mailer"] = "MP-Lateral-Entry-Predictor/1.0"
+            msg["Reply-To"] = smtp_username
+            msg["Precedence"] = "transactional"
             
             # HTML template for beautiful email styling
             html = f"""
@@ -296,6 +304,18 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
             </body>
             </html>
             """
+            # Plain text fallback (critical for spam avoidance)
+            plain_text = f"""Your MP DTE Lateral Entry Predictor verification code is:
+
+{otp}
+
+This code expires in 10 minutes.
+
+If you did not request this, please ignore this email.
+
+-- MP DTE Lateral Entry College Predictor
+https://lateralentrycollegepredictor.pythonanywhere.com"""
+            msg.attach(MIMEText(plain_text, "plain"))  # plain first, then HTML
             msg.attach(MIMEText(html, "html"))
             
             if smtp_port == 465:
