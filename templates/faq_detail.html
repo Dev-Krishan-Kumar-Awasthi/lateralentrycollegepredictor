@@ -4,6 +4,7 @@
 {% block meta_keywords %}{{ faq.keywords }}, lateral entry MP 2025, BTech lateral entry Madhya Pradesh, DTE MP counselling{% endblock %}
 {% block og_title %}{{ faq.question }}{% endblock %}
 {% block og_description %}{{ faq.description }}{% endblock %}
+{% block canonical_url %}https://{{ request.host }}/faq/{{ faq.slug }}{% endblock %}
 {% block twitter_title %}{{ faq.question }}{% endblock %}
 {% block twitter_description %}{{ faq.description }}{% endblock %}
 

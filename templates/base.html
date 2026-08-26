@@ -24,12 +24,12 @@
     <meta name="keywords" content="b.tech lateral, b.tech lateral college, ltbe, ltbe college predictor, b.tech lateral entry list, btech lateral admission, polytechnic to btech colleges, lateral entry b.tech college predictor, b.tech lateral entry college predictor, dte lateral entry, mp dte lateral entry btech counselling, btech lateral entry, dte mp lateral entry choice building, mp lateral entry merit analysis, diploma to btech admission process, sgsits lateral entry cutoff, jec jabalpur lateral entry, iet davv lateral entry, rgpv lateral entry btech, btech lateral admission madhya pradesh">
 
     <!-- ═══ Canonical URL (prevents duplicate content penalty) ═══ -->
-    <link rel="canonical" href="https://{{ request.host }}{{ request.path }}">
+    <link rel="canonical" href="{% block canonical_url %}https://{{ request.host }}{{ request.path }}{% endblock %}">
 
     <!-- ═══ Open Graph / Facebook / WhatsApp ═══ -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="MP Lateral Entry College Predictor">
-    <meta property="og:url" content="https://{{ request.host }}{{ request.path }}">
+    <meta property="og:url" content="{% block og_url %}{{ self.canonical_url() }}{% endblock %}">
     <meta property="og:title"
         content="{% block og_title %}MP BTech Lateral Entry College Predictor 2025 — DTE MP{% endblock %}">
     <meta property="og:description"

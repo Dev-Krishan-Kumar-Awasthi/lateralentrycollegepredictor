@@ -4,6 +4,7 @@
 {% block meta_keywords %}{{ college_name }} cutoffs, {{ college_name }} lateral entry, {{ college_name }} average package, {{ college_name }} fees, MP DTE counselling{% endblock %}
 {% block og_title %}{{ college_name }} Admission & Placements — MP DTE Lateral Entry{% endblock %}
 {% block og_description %}Get cutoff history, seat heatmap, fee details, location routing, and placement package packages for {{ college_name }} on the MP DTE Lateral Entry Predictor.{% endblock %}
+{% block canonical_url %}https://{{ request.host }}/college?name={{ college_name | urlencode }}{% endblock %}
 {% block twitter_title %}{{ college_name }} Admission & Placements — MP DTE Lateral Entry{% endblock %}
 {% block twitter_description %}Cutoffs, seats, fee structures, maps, and placement stats for {{ college_name }}.{% endblock %}
 

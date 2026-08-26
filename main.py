@@ -3125,7 +3125,7 @@ def sitemap():
         'account'
     ]
     
-    base_url = request.url_root.rstrip('/')
+    base_url = f"https://{request.host}"
     
     xml_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -3177,13 +3177,15 @@ def sitemap():
     xml_lines.append('</urlset>')
     
     xml_content = '\n'.join(xml_lines)
-    return app.response_class(xml_content, mimetype='application/xml')
+    response = app.response_class(xml_content, mimetype='application/xml')
+    response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
 
 
 @app.route('/robots.txt', methods=['GET'])
 def robots():
     """Serve standard robots.txt file."""
-    base_url = request.url_root.rstrip('/')
+    base_url = f"https://{request.host}"
     content = f"""User-agent: *
 Allow: /
 Allow: /about
@@ -3204,7 +3206,9 @@ Disallow: /account
 
 Sitemap: {base_url}/sitemap.xml
 """
-    return app.response_class(content, mimetype='text/plain')
+    response = app.response_class(content, mimetype='text/plain')
+    response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
 
 
 @app.errorhandler(404)
