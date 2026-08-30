@@ -891,7 +891,7 @@ def college_detail_page():
         return redirect('/search')
     detail = get_college_detail(name)
     if not detail:
-        return render_template('college_detail.html', detail=None, college_name=name, is_premium=is_premium)
+        return render_template('college_detail.html', detail=None, college_name=name, is_premium=is_premium), 404
     home_city = request.args.get('home_city', 'All')
     bundle = get_college_info_bundle(name, detail['college_type'], home_city)
     latest_year = YEARS[0] if YEARS else 2025
