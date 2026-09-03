@@ -57,7 +57,16 @@ def normalize_name(name: str) -> str:
 app = Flask(__name__)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-db_path = os.path.join(BASE_DIR, 'instance', 'data.db')
+instance_db = os.path.join(BASE_DIR, 'instance', 'data.db')
+root_db = os.path.join(BASE_DIR, 'data.db')
+
+if os.path.exists(instance_db):
+    db_path = instance_db
+elif os.path.exists(root_db):
+    db_path = root_db
+else:
+    db_path = instance_db
+
 db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or f"sqlite:///{db_path}"
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
