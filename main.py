@@ -3219,6 +3219,13 @@ Sitemap: {base_url}/sitemap.xml
     return response
 
 
+@app.route('/google<string:verify_id>.html')
+def google_verify_file(verify_id):
+    """Serve Google Search Console HTML verification file."""
+    filename = f"google{verify_id}.html"
+    return f"google-site-verification: {filename}", 200, {'Content-Type': 'text/html; charset=utf-8'}
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
