@@ -3120,9 +3120,17 @@ def sitemap():
         'how-it-works',
         'compare',
         'search',
+        'rank_predictor',
+        'simulator',
+        'recommendation-list',
+        'vacant-seats',
+        'tentative-institutes',
+        'seat-matrix',
+        'registration-process',
+        'dte-rules',
+        'choice-filling-rules',
         'contact',
-        'faq',
-        'account'
+        'faq'
     ]
     
     base_url = f"https://{request.host}"
