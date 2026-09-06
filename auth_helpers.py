@@ -167,6 +167,12 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
     resend_api_key = os.environ.get("RESEND_API_KEY", "").strip()
     brevo_api_key = os.environ.get("BREVO_API_KEY", "").strip()
     
+    is_testing = False
+    try:
+        is_testing = current_app.config.get('TESTING', False) or current_app.testing
+    except Exception:
+        pass
+    
     # HTML template for beautiful email styling
     html = f"""
     <!DOCTYPE html>
