@@ -318,18 +318,43 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
             msg.attach(MIMEText(plain_text, "plain"))  # plain first, then HTML
             msg.attach(MIMEText(html, "html"))
             
-            if smtp_port == 465:
-                server = smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=10)
-            else:
-                server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
-                server.starttls()
+            clean_user = smtp_username.strip()
+            clean_pass = smtp_password.strip().replace(" ", "")
             
-            server.login(smtp_username, smtp_password)
-            server.sendmail(smtp_username, to_email, msg.as_string())
-            server.quit()
-            print(f"[SMTP SUCCESS] Verification email sent to {to_email} asynchronously.")
+            server = None
+            # Attempt primary port first, fallback to alternate SSL/TLS port if needed
+            ports_to_try = [smtp_port]
+            if smtp_port == 587 and 465 not in ports_to_try:
+                ports_to_try.append(465)
+            elif smtp_port == 465 and 587 not in ports_to_try:
+                ports_to_try.append(587)
+                
+            last_err = None
+            for p in ports_to_try:
+                try:
+                    if p == 465:
+                        server = smtplib.SMTP_SSL(smtp_server, p, timeout=12)
+                    else:
+                        server = smtplib.SMTP(smtp_server, p, timeout=12)
+                        server.starttls()
+                    server.login(clean_user, clean_pass)
+                    server.sendmail(clean_user, to_email, msg.as_string())
+                    server.quit()
+                    print(f"[SMTP SUCCESS] Verification email sent to {to_email} via port {p}.")
+                    last_err = None
+                    break
+                except Exception as port_err:
+                    last_err = port_err
+                    if server:
+                        try:
+                            server.quit()
+                        except Exception:
+                            pass
+            
+            if last_err:
+                print(f"[SMTP ERROR] Failed to send email to {to_email} asynchronously: {last_err}")
         except Exception as e:
-            print(f"[SMTP ERROR] Failed to send email to {to_email} asynchronously: {e}")
+            print(f"[SMTP ERROR] General email failure for {to_email}: {e}")
             
     threading.Thread(target=_async_send, name=f"EmailThread-{to_email}").start()
     return True, "Dispatching..."
@@ -786,7 +811,9 @@ def send_broadcast_email(recipients: list, subject: str, body_content: str, temp
             server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
             server.starttls()
             
-        server.login(smtp_username, smtp_password)
+        clean_user = smtp_username.strip()
+        clean_pass = smtp_password.strip().replace(" ", "")
+        server.login(clean_user, clean_pass)
         
         for item in recipients:
             if isinstance(item, str):
