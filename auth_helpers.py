@@ -296,6 +296,7 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
     if resend_api_key:
         try:
             import urllib.request
+            import urllib.error
             import json
             payload = json.dumps({
                 "from": os.environ.get("RESEND_FROM", "MP DTE Predictor <onboarding@resend.dev>"),
@@ -312,17 +313,23 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
                     "Content-Type": "application/json"
                 }
             )
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status in (200, 201):
                     print(f"[RESEND SUCCESS] Email sent to {to_email}")
-                    return True, "Email sent successfully via Resend API"
+                    return True, "Email sent successfully via Resend"
+        except urllib.error.HTTPError as he:
+            err_body = he.read().decode("utf-8", errors="ignore")
+            print(f"[RESEND HTTP ERROR {he.code}] {err_body}")
+            if "testing emails to your own email address" in err_body:
+                print("[RESEND WARNING] Resend free tier without custom domain only sends to your registered Resend email.")
         except Exception as e:
             print(f"[RESEND ERROR] {e}")
 
-    # 2. Option B: Brevo HTTP API (HTTPS Port 443 — 100% reliable on Railway & PythonAnywhere)
+    # 2. Option B: Brevo HTTP API (HTTPS Port 443 — sends to ANY recipient without domain restriction)
     if brevo_api_key:
         try:
             import urllib.request
+            import urllib.error
             import json
             sender_email = os.environ.get("SMTP_USERNAME", "admin@lateralentry.in")
             payload = json.dumps({
@@ -341,10 +348,13 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
                     "Accept": "application/json"
                 }
             )
-            with urllib.request.urlopen(req, timeout=6) as resp:
+            with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status in (200, 201):
                     print(f"[BREVO SUCCESS] Email sent to {to_email}")
-                    return True, "Email sent successfully via Brevo API"
+                    return True, "Email sent successfully via Brevo"
+        except urllib.error.HTTPError as he:
+            err_body = he.read().decode("utf-8", errors="ignore")
+            print(f"[BREVO HTTP ERROR {he.code}] {err_body}")
         except Exception as e:
             print(f"[BREVO ERROR] {e}")
 
@@ -357,7 +367,6 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
         return True, "Simulator Mode: OTP logged to console."
 
     # 4. Option C: Direct SMTP
-    import threading
     import uuid
     from email.utils import formatdate
     
@@ -377,33 +386,31 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
     msg.attach(MIMEText(plain_text, "plain"))
     msg.attach(MIMEText(html, "html"))
     
-    def _do_send():
-        ports_to_try = [465, 587] if smtp_port in (465, 587) else [smtp_port, 465, 587]
-        for p in ports_to_try:
-            server = None
-            try:
-                if p == 465:
-                    server = smtplib.SMTP_SSL(smtp_server, p, timeout=8)
-                else:
-                    server = smtplib.SMTP(smtp_server, p, timeout=8)
-                    server.starttls()
-                server.login(clean_user, clean_pass)
-                server.sendmail(clean_user, to_email, msg.as_string())
-                server.quit()
-                print(f"[SMTP SUCCESS] Verification email sent to {to_email} via port {p}.")
-                return True
-            except Exception as err:
-                print(f"[SMTP WARNING] Port {p} failed: {err}")
-                if server:
-                    try:
-                        server.quit()
-                    except Exception:
-                        pass
-        return False
+    ports_to_try = [465, 587] if smtp_port in (465, 587) else [smtp_port, 465, 587]
+    last_smtp_err = None
+    for p in ports_to_try:
+        server = None
+        try:
+            if p == 465:
+                server = smtplib.SMTP_SSL(smtp_server, p, timeout=6)
+            else:
+                server = smtplib.SMTP(smtp_server, p, timeout=6)
+                server.starttls()
+            server.login(clean_user, clean_pass)
+            server.sendmail(clean_user, to_email, msg.as_string())
+            server.quit()
+            print(f"[SMTP SUCCESS] Verification email sent to {to_email} via port {p}.")
+            return True, f"Sent via SMTP port {p}"
+        except Exception as err:
+            last_smtp_err = err
+            print(f"[SMTP WARNING] Port {p} failed: {err}")
+            if server:
+                try:
+                    server.quit()
+                except Exception:
+                    pass
 
-    # Attempt direct send, or background thread if needed
-    threading.Thread(target=_do_send, name=f"EmailThread-{to_email}").start()
-    return True, "Code dispatched"
+    return False, f"Email delivery failed: {last_smtp_err}"
 
 
 def pre_validate_registration(email: str, password: str, display_name: str = "",
