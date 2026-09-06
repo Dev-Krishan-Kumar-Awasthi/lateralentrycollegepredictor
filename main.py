@@ -1482,16 +1482,6 @@ def account_page():
                 nxt = '/account'
             return redirect(nxt or '/account')
         if action == 'register':
-            import time
-            now = time.time()
-            reg_attempts = session.get("reg_otp_sends", [])
-            reg_attempts = [t for t in reg_attempts if now - t < 3600]
-            if len(reg_attempts) >= 5:
-                return render_template(
-                    'account.html',
-                    error="Too many registration attempts. Please wait an hour before trying again."
-                )
-
             try:
                 cgpa_val = float(request.form.get('cgpa', '0').strip())
             except ValueError:
@@ -1541,100 +1531,43 @@ def account_page():
                             prefill_reg=request.form
                         )
 
-            sanitized["coupon_used"] = coupon_used
-            sanitized["referred_by_id"] = referred_by_id
-            sanitized["coupon_for_whom"] = coupon_for_whom
-            sanitized["referred_by_name"] = referred_by_name
-            sanitized["coins_rewarded"] = coins_rewarded
-            
-            import random
-            otp = str(random.randint(100000, 999999))
-            
-            session["pending_registration"] = sanitized
-            session["registration_otp"] = otp
-            session["registration_otp_expiry"] = time.time() + 600
-            session["registration_otp_attempts"] = 0
-            
-            success, msg = send_otp_email(sanitized["email"], otp)
-            if success:
-                reg_attempts.append(now)
-                session["reg_otp_sends"] = reg_attempts
-                return render_template('account.html', success=f"Verification OTP has been sent to {sanitized['email']}. Please check your inbox / spam folder. ({msg})")
-            else:
-                return render_template('account.html', error=f"Could not send OTP: {msg}")
-
-        elif action == 'verify_otp':
-            entered_otp = request.form.get('otp', '').strip()
-            pending_data = session.get("pending_registration")
-            saved_otp = session.get("registration_otp")
-            expiry = session.get("registration_otp_expiry", 0)
-            
-            import time
-            if not pending_data or not saved_otp:
-                return render_template('account.html', error="No pending registration found. Please try again.")
-            
-            if time.time() > expiry:
-                session.pop("pending_registration", None)
-                session.pop("registration_otp", None)
-                session.pop("registration_otp_expiry", None)
-                session.pop("registration_otp_attempts", None)
-                return render_template('account.html', error="OTP verification code expired. Please register again.")
-            
-            if entered_otp != saved_otp:
-                attempts = session.get("registration_otp_attempts", 0) + 1
-                session["registration_otp_attempts"] = attempts
-                if attempts >= 3:
-                    session.pop("pending_registration", None)
-                    session.pop("registration_otp", None)
-                    session.pop("registration_otp_expiry", None)
-                    session.pop("registration_otp_attempts", None)
-                    return render_template('account.html', error="Too many failed attempts. Please register again.")
-                return render_template('account.html', error=f"Incorrect OTP. Please try again. ({3 - attempts} attempts remaining)")
-            
             user, err = register_user(
-                email=pending_data["email"],
-                password=pending_data["password"],
-                display_name=pending_data["display_name"],
-                mobile_number=pending_data["mobile_number"],
-                polytechnic_college=pending_data["polytechnic_college"],
-                diploma_branch=pending_data["diploma_branch"],
-                cgpa=pending_data["cgpa"],
-                category=pending_data["category"],
-                gender=pending_data["gender"],
-                coupon_used=pending_data.get("coupon_used"),
-                referred_by_id=pending_data.get("referred_by_id")
+                email=sanitized["email"],
+                password=sanitized["password"],
+                display_name=sanitized["display_name"],
+                mobile_number=sanitized["mobile_number"],
+                polytechnic_college=sanitized["polytechnic_college"],
+                diploma_branch=sanitized["diploma_branch"],
+                cgpa=sanitized["cgpa"],
+                category=sanitized["category"],
+                gender=sanitized["gender"],
+                coupon_used=coupon_used,
+                referred_by_id=referred_by_id
             )
             if err:
-                return render_template('account.html', error=err)
-            
-            if pending_data.get("coupon_for_whom"):
-                session["registered_with_coupon_for"] = pending_data.get("coupon_for_whom")
-                session["registered_coins_rewarded"] = pending_data.get("coins_rewarded", 50)
-            elif pending_data.get("referred_by_name"):
-                session["registered_with_referral_by"] = pending_data.get("referred_by_name")
-                session["registered_coins_rewarded"] = pending_data.get("coins_rewarded", 50)
-            
+                return render_template('account.html', error=err, prefill_reg=request.form)
+
+            if coupon_for_whom:
+                session["registered_with_coupon_for"] = coupon_for_whom
+                session["registered_coins_rewarded"] = coins_rewarded
+            elif referred_by_name:
+                session["registered_with_referral_by"] = referred_by_name
+                session["registered_coins_rewarded"] = coins_rewarded
+
+            # Clear any pending registration sessions if existing
             session.pop("pending_registration", None)
             session.pop("registration_otp", None)
             session.pop("registration_otp_expiry", None)
             session.pop("registration_otp_attempts", None)
-            
+
+            # Automatically log in the newly registered user
             login_user(user)
+
             nxt = request.args.get('next') or ''
             if nxt and (nxt.startswith('http') or nxt.startswith('//') or not nxt.startswith('/')):
                 nxt = '/account'
             return redirect(nxt or '/account')
 
-        elif action == 'cancel_registration':
-            session.pop("pending_registration", None)
-            session.pop("registration_otp", None)
-            session.pop("registration_otp_expiry", None)
-            session.pop("registration_otp_attempts", None)
-            nxt = request.args.get('next') or ''
-            if nxt and (nxt.startswith('http') or nxt.startswith('//') or not nxt.startswith('/')):
-                nxt = '/account'
-            return redirect(nxt or '/account')
-            
         elif action == 'forgot_password':
             import time
             now = time.time()

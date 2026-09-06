@@ -187,7 +187,7 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
             from email.utils import formatdate
             smtp_port = int(smtp_port_str)
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"Your login code: {otp} - MP DTE Lateral Entry Predictor"
+            msg["Subject"] = f"Password Reset Code: {otp} - MP DTE Lateral Entry Predictor"
             msg["From"] = f"MP DTE Predictor <{smtp_username}>"
             msg["To"] = to_email
             msg["Date"] = formatdate(localtime=True)
@@ -202,7 +202,7 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
             <html>
             <head>
               <meta charset="utf-8">
-              <title>Verification Code</title>
+              <title>Password Reset Code</title>
             </head>
             <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased;">
               <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
@@ -213,7 +213,7 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
                       
                       <!-- Saffron Header Strip -->
                       <tr>
-                        <td style="background-color: #ff9933; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
+                        <td style="background-color: #d97706; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
                       </tr>
                       
                       <!-- Logo & Brand Header -->
@@ -222,12 +222,12 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
                           <table border="0" cellpadding="0" cellspacing="0">
                             <tr>
                               <td align="center" style="background-color: #1e3a8a; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
-                                <span style="font-size: 32px; line-height: 64px; display: block;">🎓</span>
+                                <span style="font-size: 32px; line-height: 64px; display: block;">🔐</span>
                               </td>
                             </tr>
                           </table>
                           <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">MP DTE Lateral Entry Predictor</h1>
-                          <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Diploma to B.Tech Counselling Support</p>
+                          <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Account Password Recovery</p>
                         </td>
                       </tr>
                       
@@ -237,9 +237,9 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
                           <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
                               <td align="center" style="padding-top: 10px; border-top: 1px solid #f1f5f9;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0;">Verify Your Email Address</h2>
+                                <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0;">Reset Your Password</h2>
                                 <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0; text-align: center;">
-                                  Welcome to the MP B.Tech Lateral Entry Predictor platform! To complete your registration and secure your account, please use the 6-digit verification code below:
+                                  We received a request to reset your password. Please use the 6-digit OTP code below to verify and choose a new password:
                                 </p>
                               </td>
                             </tr>
@@ -247,11 +247,11 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
                             <!-- OTP Box -->
                             <tr>
                               <td align="center">
-                                <table border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; border: 1.5px solid #e2e8f0; width: 100%;">
+                                <table border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); border-radius: 12px; border: 1.5px solid #fde68a; width: 100%;">
                                   <tr>
                                     <td align="center" style="padding: 22px 16px;">
-                                      <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #2563eb; font-family: 'Courier New', Courier, monospace; margin-left: 8px;">{otp}</div>
-                                      <div style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;">Verification Code</div>
+                                      <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #d97706; font-family: 'Courier New', Courier, monospace; margin-left: 8px;">{otp}</div>
+                                      <div style="font-size: 11px; color: #b45309; font-weight: 600; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;">Password Reset OTP</div>
                                     </td>
                                   </tr>
                                 </table>
@@ -273,7 +273,7 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
     
                             <tr>
                               <td style="padding-top: 24px; font-size: 13px; line-height: 1.5; color: #64748b; text-align: center;">
-                                If you did not request this verification, you can safely ignore this email. Someone may have typed your address by mistake.
+                                If you did not request a password reset, you can safely ignore this email. Your current password will remain unchanged.
                               </td>
                             </tr>
                           </table>
@@ -305,13 +305,13 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
             </html>
             """
             # Plain text fallback (critical for spam avoidance)
-            plain_text = f"""Your MP DTE Lateral Entry Predictor verification code is:
+            plain_text = f"""Your MP DTE Lateral Entry Predictor password reset code is:
 
 {otp}
 
 This code expires in 10 minutes.
 
-If you did not request this, please ignore this email.
+If you did not request a password reset, please ignore this email.
 
 -- MP DTE Lateral Entry College Predictor
 https://lateralentrycollegepredictor.pythonanywhere.com"""
