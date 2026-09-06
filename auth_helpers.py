@@ -164,148 +164,118 @@ def send_otp_email(to_email: str, otp: str) -> tuple:
     smtp_username = os.environ.get("SMTP_USERNAME")
     smtp_password = os.environ.get("SMTP_PASSWORD")
     
-    # Fallback/Simulator if SMTP credentials are not configured, in testing mode, or targeting test domain
-    is_testing = False
-    try:
-        is_testing = current_app.config.get('TESTING', False) or current_app.testing
-    except Exception:
-        pass
+    resend_api_key = os.environ.get("RESEND_API_KEY", "").strip()
+    brevo_api_key = os.environ.get("BREVO_API_KEY", "").strip()
+    
+    # HTML template for beautiful email styling
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Password Reset Code</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased;">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
+        <tr>
+          <td align="center">
+            <!-- Main Wrapper -->
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+              
+              <!-- Saffron Header Strip -->
+              <tr>
+                <td style="background-color: #d97706; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
+              </tr>
+              
+              <!-- Logo & Brand Header -->
+              <tr>
+                <td align="center" style="padding: 32px 24px 20px 24px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td align="center" style="background-color: #1e3a8a; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
+                        <span style="font-size: 32px; line-height: 64px; display: block;">🔐</span>
+                      </td>
+                    </tr>
+                  </table>
+                  <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">MP DTE Lateral Entry Predictor</h1>
+                  <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Account Password Recovery</p>
+                </td>
+              </tr>
+              
+              <!-- Content Body -->
+              <tr>
+                <td style="padding: 0 40px 24px 40px;">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                      <td align="center" style="padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                        <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0;">Reset Your Password</h2>
+                        <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0; text-align: center;">
+                          We received a request to reset your password. Please use the 6-digit OTP code below to verify and choose a new password:
+                        </p>
+                      </td>
+                    </tr>
+                    
+                    <!-- OTP Box -->
+                    <tr>
+                      <td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); border-radius: 12px; border: 1.5px solid #fde68a; width: 100%;">
+                          <tr>
+                            <td align="center" style="padding: 22px 16px;">
+                              <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #d97706; font-family: 'Courier New', Courier, monospace; margin-left: 8px;">{otp}</div>
+                              <div style="font-size: 11px; color: #b45309; font-weight: 600; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;">Password Reset OTP</div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    
+                    <!-- Expiry Note -->
+                    <tr>
+                      <td align="center" style="padding-top: 16px;">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td style="background-color: #fff1f2; border-radius: 20px; padding: 6px 14px; border: 1px solid #ffe4e6;">
+                              <span style="font-size: 12px; color: #e11d48; font-weight: 600;">⚠️ Code expires in 10 minutes</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
 
-    if not smtp_username or not smtp_password or is_testing or to_email.endswith('@example.com'):
-        print(f"\n=======================================================")
-        print(f"[SMTP SIMULATOR] Email verification code for {to_email} is: {otp}")
-        print(f"To configure live SMTP, set SMTP_USERNAME and SMTP_PASSWORD in your env.")
-        print(f"=======================================================\n")
-        return True, "Simulator Mode: OTP logged to console."
-    
-    import threading
-    
-    def _async_send():
-        try:
-            import time
-            import uuid
-            from email.utils import formatdate
-            smtp_port = int(smtp_port_str)
-            msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"Password Reset Code: {otp} - MP DTE Lateral Entry Predictor"
-            msg["From"] = f"MP DTE Predictor <{smtp_username}>"
-            msg["To"] = to_email
-            msg["Date"] = formatdate(localtime=True)
-            msg["Message-ID"] = f"<{uuid.uuid4()}@lateralentrycollegepredictor.pythonanywhere.com>"
-            msg["X-Mailer"] = "MP-Lateral-Entry-Predictor/1.0"
-            msg["Reply-To"] = smtp_username
-            msg["Precedence"] = "transactional"
-            
-            # HTML template for beautiful email styling
-            html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <meta charset="utf-8">
-              <title>Password Reset Code</title>
-            </head>
-            <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-font-smoothing: antialiased;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; padding: 40px 10px;">
-                <tr>
-                  <td align="center">
-                    <!-- Main Wrapper -->
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
-                      
-                      <!-- Saffron Header Strip -->
-                      <tr>
-                        <td style="background-color: #d97706; height: 5px; line-height: 5px; font-size: 1px;">&nbsp;</td>
-                      </tr>
-                      
-                      <!-- Logo & Brand Header -->
-                      <tr>
-                        <td align="center" style="padding: 32px 24px 20px 24px; background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);">
-                          <table border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td align="center" style="background-color: #1e3a8a; width: 64px; height: 64px; border-radius: 50%; text-align: center; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);">
-                                <span style="font-size: 32px; line-height: 64px; display: block;">🔐</span>
-                              </td>
-                            </tr>
-                          </table>
-                          <h1 style="margin: 16px 0 4px 0; font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.5px;">MP DTE Lateral Entry Predictor</h1>
-                          <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">Account Password Recovery</p>
-                        </td>
-                      </tr>
-                      
-                      <!-- Content Body -->
-                      <tr>
-                        <td style="padding: 0 40px 24px 40px;">
-                          <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                            <tr>
-                              <td align="center" style="padding-top: 10px; border-top: 1px solid #f1f5f9;">
-                                <h2 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 20px 0 12px 0;">Reset Your Password</h2>
-                                <p style="font-size: 14px; line-height: 1.6; color: #475569; margin: 0 0 24px 0; text-align: center;">
-                                  We received a request to reset your password. Please use the 6-digit OTP code below to verify and choose a new password:
-                                </p>
-                              </td>
-                            </tr>
-                            
-                            <!-- OTP Box -->
-                            <tr>
-                              <td align="center">
-                                <table border="0" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); border-radius: 12px; border: 1.5px solid #fde68a; width: 100%;">
-                                  <tr>
-                                    <td align="center" style="padding: 22px 16px;">
-                                      <div style="font-size: 36px; font-weight: 800; letter-spacing: 8px; color: #d97706; font-family: 'Courier New', Courier, monospace; margin-left: 8px;">{otp}</div>
-                                      <div style="font-size: 11px; color: #b45309; font-weight: 600; text-transform: uppercase; margin-top: 6px; letter-spacing: 0.5px;">Password Reset OTP</div>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </td>
-                            </tr>
-                            
-                            <!-- Expiry Note -->
-                            <tr>
-                              <td align="center" style="padding-top: 16px;">
-                                <table border="0" cellpadding="0" cellspacing="0">
-                                  <tr>
-                                    <td style="background-color: #fff1f2; border-radius: 20px; padding: 6px 14px; border: 1px solid #ffe4e6;">
-                                      <span style="font-size: 12px; color: #e11d48; font-weight: 600;">⚠️ Code expires in 10 minutes</span>
-                                    </td>
-                                  </tr>
-                                </table>
-                              </td>
-                            </tr>
-    
-                            <tr>
-                              <td style="padding-top: 24px; font-size: 13px; line-height: 1.5; color: #64748b; text-align: center;">
-                                If you did not request a password reset, you can safely ignore this email. Your current password will remain unchanged.
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      
-                      <!-- Divider -->
-                      <tr>
-                        <td style="padding: 0 40px;"><hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 0;"></td>
-                      </tr>
-                      
-                      <!-- Footer -->
-                      <tr>
-                        <td style="padding: 24px 40px 32px 40px; background-color: #fafafa; text-align: center;">
-                          <p style="margin: 0 0 8px 0; font-size: 12px; color: #94a3b8; font-weight: 500;">
-                            &copy; 2025 MP Lateral Entry College Predictor. All rights reserved.
-                          </p>
-                          <p style="margin: 0; font-size: 11px; color: #cbd5e1;">
-                            This is an automated security transmission. Please do not reply directly to this mail.
-                          </p>
-                        </td>
-                      </tr>
-                      
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </body>
-            </html>
-            """
-            # Plain text fallback (critical for spam avoidance)
-            plain_text = f"""Your MP DTE Lateral Entry Predictor password reset code is:
+                    <tr>
+                      <td style="padding-top: 24px; font-size: 13px; line-height: 1.5; color: #64748b; text-align: center;">
+                        If you did not request a password reset, you can safely ignore this email. Your current password will remain unchanged.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              
+              <!-- Divider -->
+              <tr>
+                <td style="padding: 0 40px;"><hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 0;"></td>
+              </tr>
+              
+              <!-- Footer -->
+              <tr>
+                <td style="padding: 24px 40px 32px 40px; background-color: #fafafa; text-align: center;">
+                  <p style="margin: 0 0 8px 0; font-size: 12px; color: #94a3b8; font-weight: 500;">
+                    &copy; 2025 MP Lateral Entry College Predictor. All rights reserved.
+                  </p>
+                  <p style="margin: 0; font-size: 11px; color: #cbd5e1;">
+                    This is an automated security transmission. Please do not reply directly to this mail.
+                  </p>
+                </td>
+              </tr>
+              
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+    """
+    plain_text = f"""Your MP DTE Lateral Entry Predictor password reset code is:
 
 {otp}
 
@@ -315,45 +285,119 @@ If you did not request a password reset, please ignore this email.
 
 -- MP DTE Lateral Entry College Predictor
 https://lateralentrycollegepredictor.pythonanywhere.com"""
-            msg.attach(MIMEText(plain_text, "plain"))  # plain first, then HTML
-            msg.attach(MIMEText(html, "html"))
-            
-            clean_user = smtp_username.strip()
-            clean_pass = smtp_password.strip().replace(" ", "")
-            
-            # Port 465 (Direct SSL) is prioritized first as cloud platforms (Railway, AWS) frequently filter port 587
-            ports_to_try = [465, 587] if smtp_port in (465, 587) else [smtp_port, 465, 587]
-                
-            last_err = None
-            for p in ports_to_try:
-                server = None
-                try:
-                    if p == 465:
-                        server = smtplib.SMTP_SSL(smtp_server, p, timeout=8)
-                    else:
-                        server = smtplib.SMTP(smtp_server, p, timeout=8)
-                        server.starttls()
-                    server.login(clean_user, clean_pass)
-                    server.sendmail(clean_user, to_email, msg.as_string())
-                    server.quit()
-                    print(f"[SMTP SUCCESS] Verification email sent to {to_email} via port {p}.")
-                    last_err = None
-                    break
-                except Exception as port_err:
-                    last_err = port_err
-                    if server:
-                        try:
-                            server.quit()
-                        except Exception:
-                            pass
-            
-            if last_err:
-                print(f"[SMTP ERROR] Failed to send email to {to_email}: {last_err}")
+
+    # 1. Option A: Resend HTTP API (HTTPS Port 443 — 100% reliable on Railway & PythonAnywhere)
+    if resend_api_key:
+        try:
+            import urllib.request
+            import json
+            payload = json.dumps({
+                "from": os.environ.get("RESEND_FROM", "MP DTE Predictor <onboarding@resend.dev>"),
+                "to": [to_email],
+                "subject": f"Password Reset Code: {otp} - MP DTE Lateral Entry Predictor",
+                "html": html,
+                "text": plain_text
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "https://api.resend.com/emails",
+                data=payload,
+                headers={
+                    "Authorization": f"Bearer {resend_api_key}",
+                    "Content-Type": "application/json"
+                }
+            )
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                if resp.status in (200, 201):
+                    print(f"[RESEND SUCCESS] Email sent to {to_email}")
+                    return True, "Email sent successfully via Resend API"
         except Exception as e:
-            print(f"[SMTP ERROR] General email failure for {to_email}: {e}")
-            
-    threading.Thread(target=_async_send, name=f"EmailThread-{to_email}").start()
-    return True, "Dispatching..."
+            print(f"[RESEND ERROR] {e}")
+
+    # 2. Option B: Brevo HTTP API (HTTPS Port 443 — 100% reliable on Railway & PythonAnywhere)
+    if brevo_api_key:
+        try:
+            import urllib.request
+            import json
+            sender_email = os.environ.get("SMTP_USERNAME", "admin@lateralentry.in")
+            payload = json.dumps({
+                "sender": {"name": "MP DTE Predictor", "email": sender_email},
+                "to": [{"email": to_email}],
+                "subject": f"Password Reset Code: {otp} - MP DTE Lateral Entry Predictor",
+                "htmlContent": html,
+                "textContent": plain_text
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=payload,
+                headers={
+                    "api-key": brevo_api_key,
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            )
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                if resp.status in (200, 201):
+                    print(f"[BREVO SUCCESS] Email sent to {to_email}")
+                    return True, "Email sent successfully via Brevo API"
+        except Exception as e:
+            print(f"[BREVO ERROR] {e}")
+
+    # 3. Fallback/Simulator if SMTP credentials are not configured
+    if not smtp_username or not smtp_password or is_testing or to_email.endswith('@example.com'):
+        print(f"\n=======================================================")
+        print(f"[SMTP SIMULATOR] Email verification code for {to_email} is: {otp}")
+        print(f"To configure live SMTP, set SMTP_USERNAME and SMTP_PASSWORD in your env.")
+        print(f"=======================================================\n")
+        return True, "Simulator Mode: OTP logged to console."
+
+    # 4. Option C: Direct SMTP
+    import threading
+    import uuid
+    from email.utils import formatdate
+    
+    clean_user = smtp_username.strip()
+    clean_pass = smtp_password.strip().replace(" ", "")
+    smtp_port = int(smtp_port_str)
+    
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"Password Reset Code: {otp} - MP DTE Lateral Entry Predictor"
+    msg["From"] = f"MP DTE Predictor <{clean_user}>"
+    msg["To"] = to_email
+    msg["Date"] = formatdate(localtime=True)
+    msg["Message-ID"] = f"<{uuid.uuid4()}@lateralentrycollegepredictor.pythonanywhere.com>"
+    msg["X-Mailer"] = "MP-Lateral-Entry-Predictor/1.0"
+    msg["Reply-To"] = clean_user
+    msg["Precedence"] = "transactional"
+    msg.attach(MIMEText(plain_text, "plain"))
+    msg.attach(MIMEText(html, "html"))
+    
+    def _do_send():
+        ports_to_try = [465, 587] if smtp_port in (465, 587) else [smtp_port, 465, 587]
+        for p in ports_to_try:
+            server = None
+            try:
+                if p == 465:
+                    server = smtplib.SMTP_SSL(smtp_server, p, timeout=8)
+                else:
+                    server = smtplib.SMTP(smtp_server, p, timeout=8)
+                    server.starttls()
+                server.login(clean_user, clean_pass)
+                server.sendmail(clean_user, to_email, msg.as_string())
+                server.quit()
+                print(f"[SMTP SUCCESS] Verification email sent to {to_email} via port {p}.")
+                return True
+            except Exception as err:
+                print(f"[SMTP WARNING] Port {p} failed: {err}")
+                if server:
+                    try:
+                        server.quit()
+                    except Exception:
+                        pass
+        return False
+
+    # Attempt direct send, or background thread if needed
+    threading.Thread(target=_do_send, name=f"EmailThread-{to_email}").start()
+    return True, "Code dispatched"
 
 
 def pre_validate_registration(email: str, password: str, display_name: str = "",
