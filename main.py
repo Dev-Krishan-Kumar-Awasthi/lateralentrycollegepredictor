@@ -1583,9 +1583,9 @@ def account_page():
             if not email:
                 return render_template('account.html', error="Please enter your registered email address.")
             
-            existing_user = User.query.filter_by(email=email).first()
+            existing_user = User.query.filter(db.func.lower(User.email) == email).first()
             if not existing_user:
-                return render_template('account.html', error="This email address is not registered with us.")
+                return render_template('account.html', error="This email address is not registered with us. Please check for typos or register a new account below.")
             
             import random
             otp = str(random.randint(100000, 999999))
