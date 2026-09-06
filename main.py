@@ -75,8 +75,11 @@ else:
         db_path = instance_db
 
 db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or f"sqlite:///{db_path}"
-if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+db_url = db_url.strip()
+if "postgresql://" in db_url:
+    db_url = "postgresql://" + db_url.split("postgresql://", 1)[1]
+elif "postgres://" in db_url:
+    db_url = "postgresql://" + db_url.split("postgres://", 1)[1]
 
 app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
