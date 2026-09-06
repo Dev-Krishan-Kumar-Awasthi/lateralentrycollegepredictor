@@ -321,21 +321,17 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
             clean_user = smtp_username.strip()
             clean_pass = smtp_password.strip().replace(" ", "")
             
-            server = None
-            # Attempt primary port first, fallback to alternate SSL/TLS port if needed
-            ports_to_try = [smtp_port]
-            if smtp_port == 587 and 465 not in ports_to_try:
-                ports_to_try.append(465)
-            elif smtp_port == 465 and 587 not in ports_to_try:
-                ports_to_try.append(587)
+            # Port 465 (Direct SSL) is prioritized first as cloud platforms (Railway, AWS) frequently filter port 587
+            ports_to_try = [465, 587] if smtp_port in (465, 587) else [smtp_port, 465, 587]
                 
             last_err = None
             for p in ports_to_try:
+                server = None
                 try:
                     if p == 465:
-                        server = smtplib.SMTP_SSL(smtp_server, p, timeout=12)
+                        server = smtplib.SMTP_SSL(smtp_server, p, timeout=8)
                     else:
-                        server = smtplib.SMTP(smtp_server, p, timeout=12)
+                        server = smtplib.SMTP(smtp_server, p, timeout=8)
                         server.starttls()
                     server.login(clean_user, clean_pass)
                     server.sendmail(clean_user, to_email, msg.as_string())
@@ -352,7 +348,7 @@ https://lateralentrycollegepredictor.pythonanywhere.com"""
                             pass
             
             if last_err:
-                print(f"[SMTP ERROR] Failed to send email to {to_email} asynchronously: {last_err}")
+                print(f"[SMTP ERROR] Failed to send email to {to_email}: {last_err}")
         except Exception as e:
             print(f"[SMTP ERROR] General email failure for {to_email}: {e}")
             
