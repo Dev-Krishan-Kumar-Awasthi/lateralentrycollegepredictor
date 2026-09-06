@@ -74,12 +74,30 @@ else:
         os.makedirs(os.path.join(BASE_DIR, 'instance'), exist_ok=True)
         db_path = instance_db
 
-db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or f"sqlite:///{db_path}"
-db_url = db_url.strip()
-if "postgresql://" in db_url:
-    db_url = "postgresql://" + db_url.split("postgresql://", 1)[1]
-elif "postgres://" in db_url:
-    db_url = "postgresql://" + db_url.split("postgres://", 1)[1]
+raw_db_url = (
+    os.getenv("DATABASE_URL")
+    or os.getenv("DATABASE_PRIVATE_URL")
+    or os.getenv("DATABASE_PUBLIC_URL")
+    or os.getenv("POSTGRES_URL")
+    or os.getenv("POSTGRESQL_URL")
+    or os.getenv("SQLALCHEMY_DATABASE_URI")
+    or ""
+).strip()
+
+if raw_db_url and not raw_db_url.startswith("${{"):
+    if "postgresql://" in raw_db_url:
+        db_url = "postgresql://" + raw_db_url.split("postgresql://", 1)[1]
+    elif "postgres://" in raw_db_url:
+        db_url = "postgresql://" + raw_db_url.split("postgres://", 1)[1]
+    else:
+        db_url = raw_db_url
+else:
+    db_url = f"sqlite:///{db_path}"
+
+if db_url.startswith("postgresql://"):
+    print("[DATABASE] Connected to persistent PostgreSQL database.")
+else:
+    print(f"[DATABASE WARNING] Running on ephemeral SQLite ({db_path}). Link Railway Postgres DATABASE_URL to keep user accounts permanently across redeploys.")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
