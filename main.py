@@ -57,15 +57,22 @@ def normalize_name(name: str) -> str:
 app = Flask(__name__)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-instance_db = os.path.join(BASE_DIR, 'instance', 'data.db')
-root_db = os.path.join(BASE_DIR, 'data.db')
 
-if os.path.exists(instance_db):
-    db_path = instance_db
-elif os.path.exists(root_db):
-    db_path = root_db
+# Check for persistent volume paths (Railway volume mount or custom data directory)
+custom_data_dir = os.getenv("DATA_DIR") or os.getenv("RAILWAY_VOLUME_MOUNT_PATH")
+if custom_data_dir:
+    os.makedirs(custom_data_dir, exist_ok=True)
+    db_path = os.path.join(custom_data_dir, 'data.db')
 else:
-    db_path = instance_db
+    instance_db = os.path.join(BASE_DIR, 'instance', 'data.db')
+    root_db = os.path.join(BASE_DIR, 'data.db')
+    if os.path.exists(instance_db):
+        db_path = instance_db
+    elif os.path.exists(root_db):
+        db_path = root_db
+    else:
+        os.makedirs(os.path.join(BASE_DIR, 'instance'), exist_ok=True)
+        db_path = instance_db
 
 db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI") or f"sqlite:///{db_path}"
 if db_url.startswith("postgres://"):
