@@ -242,12 +242,17 @@ def fetch_colleges_from_rank(rank_min, rank_max, branch, category, gender, colle
 
 def fetch_cgpa_to_rank_map(year):
     """Returns all CGPA-to-rank mappings for a year, ordered by CGPA descending."""
-    return (
-        CgpaRankRange.query
-        .filter(CgpaRankRange.year == year)
-        .order_by(CgpaRankRange.cgpa.desc())
-        .all()
-    )
+    try:
+        return (
+            CgpaRankRange.query
+            .filter(CgpaRankRange.year == year)
+            .order_by(CgpaRankRange.cgpa.desc())
+            .all()
+        )
+    except Exception as e:
+        db.session.rollback()
+        print(f"fetch_cgpa_to_rank_map({year}) note: {e}")
+        return []
 
 
 def _build_cgpa_lookup(years):

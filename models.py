@@ -241,6 +241,7 @@ class SiteSetting(db.Model):
             setting = cls.query.filter_by(key=key).first()
             return setting.value if setting else str(default)
         except Exception:
+            db.session.rollback()
             return str(default)
 
     @classmethod

@@ -154,6 +154,7 @@ def refresh_years_list():
             YEARS.clear()
             YEARS.extend(sorted(list(all_years), reverse=True))
     except Exception as e:
+        db.session.rollback()
         print("Failed to refresh years list:", e)
 
 
@@ -343,6 +344,7 @@ def inject_globals():
             if counter:
                 total_visits = counter.count
         except Exception:
+            db.session.rollback()
             pass
             
     return {
