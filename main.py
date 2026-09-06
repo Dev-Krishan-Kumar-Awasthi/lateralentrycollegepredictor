@@ -429,7 +429,72 @@ DEFAULT_RECOMMENDED_CHOICES = [
 
 
 with app.app_context():
-    db.create_all()
+    try:
+        db.create_all()
+    except Exception as e:
+        db.session.rollback()
+        print("db.create_all error:", e)
+
+    # Initial Data Sync from bundled SQLite to PostgreSQL if target database is newly created and empty
+    try:
+        if SeatInfo.query.count() == 0:
+            import sqlite3
+            sqlite_file = os.path.join(BASE_DIR, 'data.db')
+            if not os.path.exists(sqlite_file):
+                sqlite_file = os.path.join(BASE_DIR, 'instance', 'data.db')
+                
+            if os.path.exists(sqlite_file):
+                con = sqlite3.connect(sqlite_file)
+                con.row_factory = sqlite3.Row
+                cur = con.cursor()
+                
+                # 1. Sync SeatInfo
+                seat_rows = cur.execute("SELECT college_name, college_type, branch, opening_rank, closing_rank, category, gender, domicile, total_seats, year FROM SeatInfo").fetchall()
+                if seat_rows:
+                    seat_objs = [SeatInfo(**dict(r)) for r in seat_rows]
+                    db.session.bulk_save_objects(seat_objs)
+                    db.session.commit()
+                    print(f"Synced {len(seat_objs)} SeatInfo records to database.")
+                    
+                # 2. Sync CgpaRankRange
+                rank_rows = cur.execute("SELECT cgpa, min_rank, max_rank, year FROM CgpaRankRange").fetchall()
+                if rank_rows:
+                    rank_objs = [CgpaRankRange(**dict(r)) for r in rank_rows]
+                    db.session.bulk_save_objects(rank_objs)
+                    db.session.commit()
+                    print(f"Synced {len(rank_objs)} CgpaRankRange records to database.")
+                    
+                # 3. Sync User Table
+                try:
+                    user_rows = cur.execute("SELECT email, password_hash, display_name, mobile_number, polytechnic_college, diploma_branch, cgpa, category, gender, notify_counselling, coupon_used, referred_by_id, predictions_today, last_prediction_date, is_premium, coins, current_session_token FROM User").fetchall()
+                    if user_rows:
+                        for r in user_rows:
+                            d = dict(r)
+                            if not User.query.filter_by(email=d["email"]).first():
+                                db.session.add(User(**d))
+                        db.session.commit()
+                        print(f"Synced {len(user_rows)} Users to database.")
+                except Exception as u_err:
+                    db.session.rollback()
+                    print("User sync note:", u_err)
+
+                # 4. Sync Coupons
+                try:
+                    coupon_rows = cur.execute("SELECT code, for_whom, is_active, coins_reward FROM Coupon").fetchall()
+                    if coupon_rows:
+                        for r in coupon_rows:
+                            d = dict(r)
+                            if not Coupon.query.filter_by(code=d["code"]).first():
+                                db.session.add(Coupon(**d))
+                        db.session.commit()
+                except Exception:
+                    db.session.rollback()
+
+                con.close()
+    except Exception as sync_err:
+        db.session.rollback()
+        print("Initial database sync note:", sync_err)
+
     # Seed default recommended choice list if empty
     try:
         if RecommendationChoice.query.count() == 0:
@@ -444,59 +509,53 @@ with app.app_context():
             print("Successfully seeded default recommendations.")
     except Exception as e:
         db.session.rollback()
-        print("Failed to seed default recommendations:", e)
-    # Dynamic SQLite migration for User table columns and Performance Indexes
-    try:
-        from sqlalchemy import text
-        for col, col_type in [
-            ("mobile_number", "TEXT"),
-            ("polytechnic_college", "TEXT"),
-            ("diploma_branch", "TEXT"),
-            ("cgpa", "REAL"),
-            ("category", "TEXT"),
-            ("gender", "TEXT"),
-            ("notify_counselling", "INTEGER DEFAULT 1"),
-            ("coupon_used", "TEXT"),
-            ("referred_by_id", "INTEGER"),
-            ("predictions_today", "INTEGER DEFAULT 0"),
-            ("last_prediction_date", "TEXT"),
-            ("is_premium", "INTEGER DEFAULT 0"),
-            ("coins", "INTEGER DEFAULT 0")
-        ]:
+        print("RecommendationChoice seeding note:", e)
+
+    # SQLite-only dynamic migrations (safe fallback for older SQLite files)
+    if db.engine.name == 'sqlite':
+        try:
+            from sqlalchemy import text
+            for col, col_type in [
+                ("mobile_number", "TEXT"),
+                ("polytechnic_college", "TEXT"),
+                ("diploma_branch", "TEXT"),
+                ("cgpa", "REAL"),
+                ("category", "TEXT"),
+                ("gender", "TEXT"),
+                ("notify_counselling", "INTEGER DEFAULT 1"),
+                ("coupon_used", "TEXT"),
+                ("referred_by_id", "INTEGER"),
+                ("predictions_today", "INTEGER DEFAULT 0"),
+                ("last_prediction_date", "TEXT"),
+                ("is_premium", "INTEGER DEFAULT 0"),
+                ("coins", "INTEGER DEFAULT 0")
+            ]:
+                try:
+                    db.session.execute(text(f"ALTER TABLE User ADD COLUMN {col} {col_type}"))
+                    db.session.commit()
+                except Exception:
+                    db.session.rollback()
+                    
             try:
-                db.session.execute(text(f"ALTER TABLE User ADD COLUMN {col} {col_type}"))
+                db.session.execute(text("ALTER TABLE Coupon ADD COLUMN for_whom TEXT"))
                 db.session.commit()
             except Exception:
                 db.session.rollback()
                 
-        # Dynamic SQLite migration for Coupon table
-        try:
-            db.session.execute(text("ALTER TABLE Coupon ADD COLUMN for_whom TEXT"))
-            db.session.commit()
+            try:
+                db.session.execute(text("ALTER TABLE Coupon ADD COLUMN coins_reward INTEGER DEFAULT 50"))
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
         except Exception:
             db.session.rollback()
-            
-        try:
-            db.session.execute(text("ALTER TABLE Coupon ADD COLUMN coins_reward INTEGER DEFAULT 50"))
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-                
-        # Create performance-critical indexes dynamically if they don't exist
-        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_seatinfo_search ON SeatInfo (year, category, domicile, closing_rank, gender)"))
-        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_seatinfo_college ON SeatInfo (college_name)"))
-        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_seatinfo_branch ON SeatInfo (branch)"))
-        db.session.execute(text("CREATE INDEX IF NOT EXISTS idx_cgparank_year_cgpa ON CgpaRankRange (year, cgpa)"))
-        db.session.commit()
-    except Exception as e:
-        print("Dynamic schema migration or index creation failed:", e)
 
     # Auto-seed the admin user
     try:
         from werkzeug.security import generate_password_hash
         admin_email = os.getenv("ADMIN_EMAIL", "krishnaawasthi701@gmail.com").strip().lower()
         admin_pass = os.getenv("ADMIN_PASSWORD", "kkawasthi@202956@kka")
-        admin_user = User.query.filter_by(email=admin_email).first()
+        admin_user = User.query.filter(db.func.lower(User.email) == admin_email).first()
         if not admin_user:
             admin_user = User(
                 email=admin_email,
@@ -512,11 +571,11 @@ with app.app_context():
             db.session.add(admin_user)
             db.session.commit()
         else:
-            # Enforce the password specified by the user
             admin_user.password_hash = generate_password_hash(admin_pass)
             db.session.commit()
     except Exception as e:
-        print("Admin seeding failed:", e)
+        db.session.rollback()
+        print("Admin seeding note:", e)
 
     # Auto-seed initial choice vault slips
     try:
@@ -550,7 +609,8 @@ with app.app_context():
             db.session.bulk_save_objects(initial_slips)
             db.session.commit()
     except Exception as e:
-        print("ChoiceVault seeding failed:", e)
+        db.session.rollback()
+        print("ChoiceVault seeding note:", e)
 
     # Auto-seed visitor count if empty
     try:
@@ -559,9 +619,14 @@ with app.app_context():
             db.session.add(initial_count)
             db.session.commit()
     except Exception as e:
-        print("VisitorCount seeding failed:", e)
+        db.session.rollback()
+        print("VisitorCount seeding note:", e)
 
-    fetch_rank_maps_cache()
+    try:
+        fetch_rank_maps_cache()
+    except Exception as e:
+        db.session.rollback()
+        print("fetch_rank_maps_cache note:", e)
 
 
 def consume_prediction(user):
