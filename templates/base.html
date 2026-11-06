@@ -21,6 +21,42 @@
     <meta name="language" content="English">
     <meta name="revisit-after" content="1 days">
 
+    <!-- ═══ Advanced SEO & Geo Targeting ═══ -->
+    <meta name="geo.region" content="IN-MP">
+    <meta name="geo.placename" content="Madhya Pradesh, India">
+    <meta name="geo.position" content="23.4731;77.9479">
+    <meta name="ICBM" content="23.4731, 77.9479">
+    <meta name="DC.title" content="MP BTech Lateral Entry College Predictor 2026">
+    <meta name="DC.subject" content="MP DTE Lateral Entry, BTech Admission, Diploma to BTech, Counselling MP">
+    <meta name="DC.description" content="Predict your BTech college in Madhya Pradesh with official DTE MP cutoff data for lateral entry diploma students.">
+    <meta name="DC.language" content="en">
+    <meta name="DC.coverage" content="Madhya Pradesh, India">
+    <meta name="rating" content="general">
+    <meta name="category" content="Education, Engineering Admission, Counselling">
+    <meta name="classification" content="Education">
+    <meta name="target" content="all">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MP LTBE Predictor">
+    <meta name="application-name" content="MP Lateral Entry College Predictor">
+    <meta name="msapplication-TileColor" content="#1e40af">
+    <meta name="theme-color" content="#1e40af">
+
+    <!-- ═══ Additional Hindi / Bilingual SEO Keywords ═══ -->
+    <meta name="news_keywords" content="lateral entry 2026, DTE MP counselling 2026, MP LTBE 2026, BTech lateral entry cutoff 2026, diploma to btech mp 2026, lateral entry college list mp, mp lateral entry choice filling 2026, dte mp lateral entry result, lateral entry merit list mp 2026">
+    <meta name="subject" content="MP DTE BTech Lateral Entry College Predictor — Diploma to BTech Counselling Madhya Pradesh">
+    <meta name="abstract" content="Free tool for Madhya Pradesh diploma students to predict BTech college admission chances based on CGPA and DTE MP official cutoff data for lateral entry counselling 2025-26.">
+    <meta name="topic" content="BTech Lateral Entry College Prediction MP, DTE MP Counselling, Diploma to BTech Admission Madhya Pradesh">
+    <meta name="summary" content="Predict BTech college in MP for lateral entry students. Uses official DTE cutoff data 2024-25. Free college predictor for LTBE MP counselling.">
+    <meta name="url" content="https://{{ request.host }}{{ request.path }}">
+    <meta name="identifier-URL" content="https://{{ request.host }}">
+    <meta name="pagename" content="{% block pagename %}MP DTE Lateral Entry College Predictor 2026{% endblock %}">
+    <meta name="Coverage" content="Madhya Pradesh">
+    <meta name="Distribution" content="Global">
+    <meta name="Revisit" content="1 days">
+
     <!-- ═══ Canonical URL (prevents duplicate content penalty) ═══ -->
     <link rel="canonical" href="{% block canonical_url %}https://{{ request.host }}{{ request.path }}{% endblock %}">
 
@@ -50,13 +86,110 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "MP BTech Lateral Entry College Predictor",
+      "alternateName": ["MP LTBE Predictor", "DTE MP Lateral Entry Predictor", "MP Diploma to BTech Predictor"],
       "url": "https://{{ request.host }}",
-      "description": "Official DTE MP Lateral Entry College Predictor for Diploma holders seeking BTech admission in Madhya Pradesh.",
+      "description": "Free official DTE MP Lateral Entry College Predictor for Diploma holders seeking BTech admission in Madhya Pradesh. Check cutoff ranks, predict college, compare branches for LTBE counselling 2025-26.",
+      "inLanguage": "en-IN",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://{{ request.host }}/predictor?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "MP Lateral Entry College Predictor",
+      "url": "https://{{ request.host }}",
+      "logo": "{{ url_for('static', filename='favicon.png', _external=True) }}",
+      "description": "MP DTE BTech Lateral Entry College Predictor — helping diploma students find the right engineering college in Madhya Pradesh.",
+      "areaServed": {
+        "@type": "State",
+        "name": "Madhya Pradesh",
+        "containedInPlace": {
+          "@type": "Country",
+          "name": "India"
+        }
+      },
+      "sameAs": [
+        "https://github.com/Dev-Krishan-Kumar-Awasthi/lateralentrycollegepredictor"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "MP DTE Lateral Entry College Predictor",
+      "url": "https://{{ request.host }}/predictor",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Predict your BTech college in Madhya Pradesh using CGPA and DTE MP official lateral entry cutoff data 2025-26. Supports all categories — UR, OBC, SC, ST.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "featureList": [
+        "College prediction by CGPA",
+        "Branch-wise cutoff analysis",
+        "College comparison tool",
+        "Merit insights",
+        "Choice filling guide",
+        "Seat matrix viewer",
+        "Counselling simulator"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is MP DTE BTech Lateral Entry (LTBE)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MP DTE BTech Lateral Entry (LTBE) is a direct admission process for diploma holders to join the 2nd year of BTech programs in Madhya Pradesh engineering colleges. It is conducted by DTE MP (Directorate of Technical Education, Madhya Pradesh)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How to predict college in MP lateral entry?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter your CGPA, category (UR/OBC/SC/ST), gender, and preferred branch on the MP Lateral Entry College Predictor. The tool uses official DTE MP cutoff data to show your probability of admission in each college."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which are the top government colleges for lateral entry in MP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Top government colleges for lateral entry in MP include SGSITS Indore, IET DAVV Indore, JEC Jabalpur, UIT RGPV Bhopal, SATI Vidisha, Rewa Engineering College, and Ujjain Engineering College."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the cutoff CGPA for lateral entry in MP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cutoff CGPA varies by college, branch, and category. For top government colleges like SGSITS Indore CSE, the cutoff CGPA is typically above 8.0 for UR category. Use the MP LTBE College Predictor to check exact cutoffs for your preferred college and branch."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does DTE MP lateral entry choice filling work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In DTE MP LTBE counselling, students fill their college and branch preferences online in order of priority. Allotment is done based on merit rank. Our Choice Builder tool helps you plan the optimal order of choices."
+          }
+        }
+      ]
     }
     </script>
     {% endblock %}
